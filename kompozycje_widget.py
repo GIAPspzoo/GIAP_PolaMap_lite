@@ -2,7 +2,6 @@
 
 import os
 
-from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QWidget
 from qgis.PyQt.uic import loadUiType
 
@@ -16,11 +15,3 @@ class kompozycjeWidget(QWidget, FORM_CLASS):
     def __init__(self, parent=None):
         super(kompozycjeWidget, self).__init__(parent)
         self.setupUi(self)
-        self.setup_dialog()
-
-
-    def setup_dialog(self):
-        self.frame.hide()
-        self.frame_3.hide()
-        self.kompozycjeComboBox.hide()
-        self.label_92.hide()

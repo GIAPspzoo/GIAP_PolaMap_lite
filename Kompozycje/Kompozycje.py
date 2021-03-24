@@ -1,24 +1,26 @@
 # -*- coding: utf-8 -*-
 
+import os
 from collections import OrderedDict
+from time import sleep
 
 import uuid
 
-from PyQt5.QtCore import QObject, pyqtSignal, QItemSelectionModel, Qt
-from PyQt5.QtWidgets import QMessageBox, QApplication, QItemDelegate, QCheckBox
+from PyQt5.QtCore import QObject, pyqtSignal, QItemSelectionModel, \
+    Qt
+from PyQt5.QtWidgets import QMessageBox, QApplication, QItemDelegate, \
+    QCheckBox, QFileDialog, QProgressDialog
 
-from qgis.PyQt.QtGui import QStandardItemModel, QStandardItem
+from qgis.PyQt.QtGui import QStandardItemModel, QStandardItem, QIcon
 from qgis.core import QgsProject, QgsLayerTreeNode
 
-from GIAPSettings import write_user_compositions_gui, get_user_compositions_gui
 from .CompositionsSaverDialog import CompositionsSaverDialog
 from .dodajKompozycje import DodajKompozycjeDialog
 from .nowa_kompozycja import NowaKompozycjaDialog
-from GIAP_funkcje import (
-    set_project_config,
-    ConfigSaveProgressDialog,
-    CustomMessageBox,
-    identify_layer_by_id)
+from ..CustomMessageBox import CustomMessageBox
+
+from ..utils import get_project_config, SingletonModel,\
+    set_project_config, identify_layer_by_id, ConfigSaveProgressDialog
 
 from .CompositionsLib import (
     LayersPanel as lsp,
@@ -31,8 +33,80 @@ from .CompositionsLib import (
 from . import UserCompositions
 from . import DefaultCompositions
 
+
 LayersPanel = lsp
 wszystkie_warstwy_visible_groups = ['GRANICE', 'DOKUMENTY PLANISTYCZNE:MPZP']
+
+CODING_TYPE = 'utf-8'
+
+CONFIG_SEPARATOR = '::&*&::'
+CONFIG_LINES_SEPARATOR = ';;@@\n@@;;'
+
+FILE_CONFIG_EXTENSION = '.giapconfig'
+USER_COMPOSITIONS_EXTENSION = '.giapcomp'
+
+# COMPOSITIONS_SCOPE = "Kompozycje"
+
+
+def write_user_compositions(comp, filename):
+    text = comp
+    with open(filename, 'wb') as f:
+        f.write(text.encode(CODING_TYPE))
+
+
+def write_user_compositions_gui(comp_list):
+    save_path = get_project_config('Sciezka', 'sciezka_do_zapisu', '')
+    filename, __ = QFileDialog.getSaveFileName(
+        None,
+        "Zachowaj jako",
+        save_path,
+        f'*{USER_COMPOSITIONS_EXTENSION}'
+    )
+    if filename:
+        progress = ProgressDialog(None, 'Trwa zapisywanie')
+        progress.start()
+        new_dirname = os.path.dirname(save_path)
+        QApplication.processEvents()
+        set_project_config('Sciezka', 'sciezka_do_zapisu', new_dirname)
+        QApplication.processEvents()
+        if not filename.endswith(USER_COMPOSITIONS_EXTENSION):
+            filename += USER_COMPOSITIONS_EXTENSION
+        write_user_compositions(comp_list, filename)
+        QApplication.processEvents()
+        progress.stop()
+        CustomMessageBox(None, f'Zapisano plik {filename}.').button_ok()
+
+
+def get_user_compositions(filename):
+    with open(filename, 'rb') as f:
+        text = f.read().decode(CODING_TYPE)
+        comp_dict = eval(str(text))
+    return comp_dict
+
+
+def get_user_compositions_gui():
+    save_path = get_project_config('Sciezka', 'sciezka_do_zapisu', '')
+    filename, __ = QFileDialog.getOpenFileName(
+        None,
+        "Otwórz",
+        save_path,
+        f'*{USER_COMPOSITIONS_EXTENSION}'
+    )
+    user_comp = {}
+    if filename:
+        progress = ProgressDialog(None, "Trwa wczytywanie")
+        progress.start()
+        new_dirname = os.path.dirname(save_path)
+        QApplication.processEvents()
+        set_project_config('Sciezka', 'sciezka_do_zapisu', new_dirname)
+        QApplication.processEvents()
+        try:
+            QApplication.processEvents()
+            user_comp = get_user_compositions(filename)
+        except Exception:
+            CustomMessageBox(None, 'Nie udało się wczytać ustawień!').button_ok()
+        progress.stop()
+    return user_comp
 
 
 class CompositionsTool(object):
@@ -44,7 +118,8 @@ class CompositionsTool(object):
         self.domyslne_kompozycje = dict()
         self.stworzone_kompozycje = dict()
         self.combo_box = None
-        self.dock.kompozycje_config.clicked.connect(self.config)
+
+        self.dock.toolButton_compositions.clicked.connect(self.config)
 
     def start(self):
         prjpath = QgsProject.instance().fileName()
@@ -54,18 +129,28 @@ class CompositionsTool(object):
             self.modify_tool = CompositionsConfig(self)
             self.domyslne_kompozycje = DefaultCompositions.get_compositions()
             self.stworzone_kompozycje = UserCompositions.get_compositions()
-            self.modify_tool.check_comps_schema(self.domyslne_kompozycje, 'domyślnych')
-            self.modify_tool.check_comps_schema(self.stworzone_kompozycje, 'użytkownika')
+            self.modify_tool.check_comps_schema(
+                self.domyslne_kompozycje, 'domyślnych')
+            self.modify_tool.check_comps_schema(
+                self.stworzone_kompozycje, 'użytkownika')
 
             self.combo_box = CompositionsComboBox(self)
             connect_nodes(QgsProject.instance().layerTreeRoot())
 
-            self.modify_tool.compositionsSaved.connect(self.combo_box.fill_with_kompozycje)
+            self.modify_tool.compositionsSaved.connect(
+                self.combo_box.fill_with_kompozycje)
 
     def config(self):
         """
         Metoda służąca do otworzenia okna ustawian kompozycji.
         """
+        if self.modify_tool is None:
+            CustomMessageBox(
+                self.dock,
+                'Kompozycje są dostępne tylko w projekatach zapisanych'
+                'na dysku!'
+            ).button_ok()
+            return
         self.modify_tool.run()
 
     def unload(self):
@@ -86,12 +171,6 @@ class CompositionsConfig(QObject):
         self.model_kompozycji = QStandardItemModel()
         self.order_changed = False
 
-    def reset_default(self):
-        QgsProject.instance().writeEntry("Kompozycje", "domyslne_kompozycje", "{}")
-        QgsProject.instance().write()
-        self.dlg.close()
-        self.run()
-
     def save_to_project_file(self):
         self.save(False)
         QgsProject.instance().write()
@@ -110,19 +189,15 @@ class CompositionsConfig(QObject):
         self.model_kompozycji.clear()
         if self.dlg.radioButton_1.isChecked():
             self.load_compositions(self.kompozycje.stworzone_kompozycje)
-        else:
-            self.load_compositions(self.kompozycje.domyslne_kompozycje)
         self.order_changed = False
 
     def run(self):
         self.dlg = DodajKompozycjeDialog()
 
         self.dlg.radioButton_1.clicked.connect(self.create_table_model)
-        self.dlg.radioButton_2.clicked.connect(self.create_table_model)
         self.dlg.dodaj_kompozycje.clicked.connect(self.dodaj)
         self.dlg.edytuj_kompozycje.clicked.connect(self.edytuj)
         self.dlg.usun_kompozycje.clicked.connect(self.usun)
-        self.dlg.reset.clicked.connect(self.reset_default)
         self.dlg.zapisz.clicked.connect(self.write_file)
         self.dlg.wczytaj.clicked.connect(self.read_file)
         self.dlg.komp_dol.clicked.connect(self.move_comp_down)
@@ -189,7 +264,8 @@ class CompositionsConfig(QObject):
             self.order_changed = True
 
     def load_compositions(self, compositions):
-        sorted_comps = sorted(list(compositions.items()), key=lambda x: x[1]['order'])
+        sorted_comps = sorted(list(compositions.items()),
+                              key=lambda x: x[1]['order'])
         sorted_comps_names = [y[0] for y in sorted_comps]
         for comp_name in sorted_comps_names:
             item = QStandardItem(str(comp_name))
@@ -316,8 +392,10 @@ class CompositionsConfig(QObject):
     def check_all_layers_comp(self):
         layertree_changed = False
         all_groups_layers = get_all_groups_layers()
-        def_layers = [':'.join([tup[0], tup[1]]) if tup[0] else tup[1]
-                      for tup in self.kompozycje.domyslne_kompozycje['Wszystkie warstwy']['layers']]
+        def_layers = [
+            ':'.join([tup[0], tup[1]]) if tup[0] else tup[1] for tup in
+            self.kompozycje.domyslne_kompozycje['Wszystkie warstwy']['layers']
+        ]
         if sorted(all_groups_layers) != sorted(def_layers):
             self.update_all_layers_comp(all_groups_layers)
             layertree_changed = True
@@ -722,11 +800,11 @@ class CompositionsComboBox(object):
         LayersPanel().runShow()
         LayersPanel().uncheckAllGroup()
         LayersPanel().uncheckAll()
-        DefaultCompositions.set_default_styles()
         if comp_name in DefaultCompositions.compositions_names():
             DefaultCompositions.set_composition(comp_name)
         elif comp_name in UserCompositions.compositions_names():
             UserCompositions.set_composition(comp_name)
+        QApplication.processEvents()
         QApplication.processEvents()
         self.canvas.refresh()
 
@@ -744,3 +822,60 @@ class CheckBoxDelegate(QItemDelegate):
         self.check_box.setChecked(True)
         if not self.parent().indexWidget(index):
             self.parent().setIndexWidget(index, self.check_box)
+
+
+class ProgressDialog(QProgressDialog, SingletonModel):
+    stylesheet = """
+            * {
+                background-color: rgb(53, 85, 109, 220);
+                color: rgb(255, 255, 255);
+                font: 10pt "Segoe UI";
+            }
+            """
+
+    def __init__(self, parent=None, title='GIAP-Layout'):
+        super(ProgressDialog, self).__init__(parent)
+        self.setWindowTitle(title)
+        self.setWindowIcon(QIcon(':/plugins/giap_layout/icons/giap_logo.png'))
+        self.setLabelText('Proszę czekać...')
+        self.setFixedWidth(300)
+        self.setFixedHeight(100)
+        self.setMaximum(100)
+        self.setCancelButton(None)
+        # self.setStyleSheet(self.stylesheet)
+        self.setWindowFlags(Qt.Dialog | Qt.WindowCloseButtonHint)
+        self.rejected.connect(self.stop)
+        self.setWindowModality(Qt.WindowModal)
+
+    def make_percent_step(self, step=100, new_text=None):
+        if new_text:
+            self.setLabelText(new_text)
+            if "wczytywanie" in new_text:
+                for pos in range(100 - self.value()):
+                    sleep(0.0005)
+                    self.setValue(self.value() + 1)
+                return
+        for pos in range(step):
+            sleep(0.0005)
+            self.setValue(self.value() + 1)
+        QApplication.sendPostedEvents()
+        QApplication.processEvents()
+
+    def start_steped(self, title='Trwa ładowanie danych.\n  Proszę czekać...'):
+        self.setLabelText(title)
+        self.setValue(1)
+        self.show()
+        QApplication.sendPostedEvents()
+        QApplication.processEvents()
+
+    def start(self):
+        self.setFixedWidth(250)
+        self.setMaximum(0)
+        self.setCancelButton(None)
+        self.show()
+        QApplication.sendPostedEvents()
+        QApplication.processEvents()
+
+    def stop(self):
+        self.setValue(100)
+        self.close()

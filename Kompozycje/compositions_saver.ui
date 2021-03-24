@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>944</width>
+    <width>923</width>
     <height>428</height>
    </rect>
   </property>
@@ -41,7 +41,40 @@
     font: 10pt &quot;Segoe UI&quot;; 
 }
 
-</string>
+
+QAbstractItemView
+{
+	alternate-background-color:  #e7e7e7;
+	color:  black;
+	border: 1px solid  #1a2936;
+	border-radius: 3px;
+	padding: 1px;
+}
+
+QPushButton {
+	color: black;
+}
+
+QPushButton:disabled
+{
+	color: gray;
+}
+
+QToolButton {
+	color:  black;
+}
+
+QPushButton:disabled
+{
+	color: gray;
+}
+
+QHeaderView::section
+{
+	background-color:  #cfcfcf;
+	color:  black;
+	padding-left: 4px;
+}</string>
   </property>
   <property name="sizeGripEnabled">
    <bool>false</bool>

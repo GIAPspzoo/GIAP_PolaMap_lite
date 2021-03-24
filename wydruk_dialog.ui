@@ -13,7 +13,7 @@
     <x>0</x>
     <y>0</y>
     <width>550</width>
-    <height>518</height>
+    <height>526</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -42,6 +42,7 @@
    <string notr="true">* {
 	background-color: rgb(255, 255, 255);
     font: 10pt &quot;Segoe UI&quot;; 
+	color: black;
 }
 </string>
   </property>
