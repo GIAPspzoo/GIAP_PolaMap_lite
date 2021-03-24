@@ -28,7 +28,7 @@ tags=
 
 homepage=
 category=Plugins
-icon=icon.png
+icon=giap.ico
 # experimental flag
 experimental=True
 
