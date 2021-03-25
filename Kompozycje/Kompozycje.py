@@ -9,7 +9,7 @@ import uuid
 from PyQt5.QtCore import QObject, pyqtSignal, QItemSelectionModel, \
     Qt
 from PyQt5.QtWidgets import QMessageBox, QApplication, QItemDelegate, \
-    QCheckBox, QFileDialog, QProgressDialog
+    QCheckBox, QFileDialog, QProgressDialog, QToolButton
 
 from qgis.PyQt.QtGui import QStandardItemModel, QStandardItem, QIcon
 from qgis.core import QgsProject, QgsLayerTreeNode
@@ -118,39 +118,42 @@ class CompositionsTool(object):
         self.domyslne_kompozycje = dict()
         self.stworzone_kompozycje = dict()
         self.combo_box = None
+        self.update_buttons()
 
-        self.dock.toolButton_compositions.clicked.connect(self.config)
+    def update_buttons(self):
+        # self.dock.toolButton_compositions.clicked.connect(self.config)
+        ctools = self.dock.findChildren(QToolButton, 'giapCompositions')
+        # we need only one signal
+        for button in ctools:
+            try:
+                button.clicked.disconnect()
+            except Exception:
+                pass
+            button.clicked.connect(self.config)
 
     def start(self):
         prjpath = QgsProject.instance().fileName()
-        if prjpath:
-            if self.modify_tool:
-                del self.modify_tool
-            self.modify_tool = CompositionsConfig(self)
-            self.domyslne_kompozycje = DefaultCompositions.get_compositions()
-            self.stworzone_kompozycje = UserCompositions.get_compositions()
-            self.modify_tool.check_comps_schema(
-                self.domyslne_kompozycje, 'domyślnych')
-            self.modify_tool.check_comps_schema(
-                self.stworzone_kompozycje, 'użytkownika')
+        if self.modify_tool:
+            del self.modify_tool
+        self.modify_tool = CompositionsConfig(self)
+        self.domyslne_kompozycje = DefaultCompositions.get_compositions()
+        self.stworzone_kompozycje = UserCompositions.get_compositions()
+        self.modify_tool.check_comps_schema(
+            self.domyslne_kompozycje, 'domyślnych')
+        self.modify_tool.check_comps_schema(
+            self.stworzone_kompozycje, 'użytkownika')
 
-            self.combo_box = CompositionsComboBox(self)
-            connect_nodes(QgsProject.instance().layerTreeRoot())
+        self.combo_box = CompositionsComboBox(self)
+        connect_nodes(QgsProject.instance().layerTreeRoot())
 
-            self.modify_tool.compositionsSaved.connect(
-                self.combo_box.fill_with_kompozycje)
+        self.modify_tool.compositionsSaved.connect(
+            self.combo_box.fill_with_kompozycje)
 
     def config(self):
         """
         Metoda służąca do otworzenia okna ustawian kompozycji.
         """
-        if self.modify_tool is None:
-            CustomMessageBox(
-                self.dock,
-                'Kompozycje są dostępne tylko w projekatach zapisanych'
-                'na dysku!'
-            ).button_ok()
-            return
+        self.start()
         self.modify_tool.run()
 
     def unload(self):
@@ -481,6 +484,10 @@ class CompositionsAdder(object):
         self.model_warstw.clear()
         self.order_no = order_no
         self.root = QgsProject.instance().layerTreeRoot()
+        if not len(self.root.children()):
+            CustomMessageBox(
+                self.kompozycje.dock, 'Brak warstw w projekcie').button_ok()
+            return
         self.dlg = NowaKompozycjaDialog()
         self.dlg.pushButton_2.clicked.connect(self.save)
         self.dlg.dodaj_warstwe.clicked.connect(self.add_layer)

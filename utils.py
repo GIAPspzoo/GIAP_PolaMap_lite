@@ -291,4 +291,16 @@ STANDARD_TOOLS = [
                 ]
             },
 
+            {
+                'label': 'GIAP Tools',
+                'id': 'GIAP Tools',
+                'btn_size': 60,
+                'btns': [
+                    ['giapCompositions', 0, 0],
+                    ['giapWMS', 0, 1],
+                    ['giapWWWSite', 0, 2],
+                ]
+            },
+
+
 ]
