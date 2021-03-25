@@ -21,7 +21,6 @@ from .config import Config
 from .tools import StyleManager
 
 from .StyleManager.stylemanager import StyleManagerDialog
-from .OrtoTools import OrtoAddingTool
 
 from .giap_dynamic_layout import Widget
 from .ribbon_config import RIBBON_DEFAULT
@@ -58,6 +57,7 @@ class MainTabQgsWidget:
         self.style_manager = StyleManager(self)
 
         self.iface.projectRead.connect(self.projekt_wczytany)
+        self.iface.newProjectCreated.connect(self.projekt_wczytany)
 
     def initGui(self):
         style = self.main_widget.styleSheet()
@@ -68,8 +68,6 @@ class MainTabQgsWidget:
         """)
         self.save_default_user_layout()
         self.style_manager.run_last_style()
-
-        self.kompozycje = CompositionsTool(self.iface, self)
 
         # turn on ribbon editing
         self.main_widget.edit_session_toggle()
@@ -94,10 +92,11 @@ class MainTabQgsWidget:
                 if dsec['label'] == 'Prints':
                     self.custom_prints()
 
-        self.setup_orto()
         self.main_widget.tabWidget.setCurrentIndex(0)
         # turn off ribbon editing
         self.main_widget.edit_session_toggle()
+
+        self.kompozycje = CompositionsTool(self.iface, self)
 
         self.toolbar = QToolBar('GiapToolBar', self.iface.mainWindow())
         self.toolbar.setObjectName('GiapToolBar')
@@ -139,7 +138,9 @@ class MainTabQgsWidget:
 
         # signals
         self.main_widget.editChanged.connect(self.save_user_ribbon_config)
+        self.main_widget.editChanged.connect(self.kompozycje.update_buttons)
         self.main_widget.printsAdded.connect(self.custom_prints)
+        self.main_widget.editChanged.connect(self.custom_prints)
 
         self.project_path = os.path.dirname(
             os.path.abspath(project.fileName()))
@@ -261,9 +262,9 @@ class MainTabQgsWidget:
         self.iface.mainWindow().menuBar().show()
         self.style_manager.activate_style('')
         self.save_user_ribbon_config(False)
+        # self.main_widget.unload_custom_actions()
         self.kompozycje.unload()
         self.toolbar.hide()
-        self.orto_add.disconnect_ortofotomapa_group()
 
         # reinstitute original qgis layout
         self.load_default_user_layout()
@@ -370,27 +371,23 @@ class MainTabQgsWidget:
     def projekt_wczytany(self):
         """ setup after loading new project
         """
-        if not project.fileName():
-            return
 
         self.repair_layers_names_for_compositions()
         self.kompozycje.start()
-        # self.main_widget.btn_projekt_3.clicked.connect(
-        #     self.kompozycje.modify_tool.check_for_changes_in_comps)
         self.kompozycje.modify_tool.check_for_changes_in_comps()
 
-    def setup_orto(self):
-        """Setup qtoolbutton with menu, adds wms/wmts services to map
-        """
-        parent = self.main_widget
-        btn = self.main_widget.btn_orto_2
+    # def setup_orto(self):
+        # """Setup qtoolbutton with menu, adds wms/wmts services to map
+        # """
+        # parent = self.main_widget
+        # btn = self.main_widget.btn_orto_2
 
-        # przycisk dodawania ortofotomap
-        self.orto_add = OrtoAddingTool(parent, btn)
+        # # przycisk dodawania ortofotomap
+        # self.orto_add = OrtoAddingTool(parent, btn)
 
-        connect_orto = self.orto_add.connect_ortofotomapa_group
-        for service in self.orto_add.services:
-            service.orto_group_added.connect(connect_orto)
+        # connect_orto = self.orto_add.connect_ortofotomapa_group
+        # for service in self.orto_add.services:
+            # service.orto_group_added.connect(connect_orto)
 
     def delete_animation(self, animation, widget, mode):
         del animation

@@ -1,13 +1,15 @@
 import os
+import webbrowser
 
 from qgis.PyQt.QtCore import Qt, QSize, QEvent, pyqtSignal, QMimeData, QRect
 from qgis.PyQt import uic
-from qgis.PyQt.QtGui import QDrag, QPainter, QPixmap, QCursor
+from qgis.PyQt.QtGui import QDrag, QPainter, QPixmap, QCursor, QIcon
 from qgis.PyQt.QtWidgets import QWidget, QApplication, QHBoxLayout,\
     QFrame, QLabel, QPushButton, QTabBar, QToolButton, QVBoxLayout, \
     QGridLayout, QSpacerItem, QLineEdit, QWidgetItem, QAction, \
     QBoxLayout
 
+from .OrtoTools import OrtoAddingTool
 from .utils import STANDARD_TOOLS
 
 from .select_section import SelectSection
@@ -28,6 +30,9 @@ class Widget(QWidget, FORM_CLASS):
         self.parent = parent  # mainWindow()
         self.tabs = []  # list w tabwidgets
         self.edit_session = False
+
+        # Custom Tools
+        self.orto_add = False
 
         self.custom_tabbar = CustomTabBar('New Tab', self.tabWidget)
         self.tabWidget.setTabBar(self.custom_tabbar)
@@ -515,19 +520,53 @@ class CustomSection(QWidget):
             self.tbut.org_state = action.isEnabled()
         elif isinstance(action, str):
             self.tbut.setObjectName(action)
+            self.set_custom_action()
 
         self.tbut.setMaximumSize(QSize(self.button_size, self.button_size))
         self.tbut.setMinimumSize(QSize(self.button_size, self.button_size))
-        if self.button_size > 45:
+        if self.button_size == 30:
             self.tbut.setIconSize(
-                QSize(self.button_size-15, self.button_size-15)
+                QSize(self.button_size-4, self.button_size-4)
+            )
+        else:
+            self.tbut.setIconSize(
+                QSize(self.button_size-5, self.button_size-5)
             )
         self.tbut.setEnabled(True)
         self.tbut.installEventFilter(self)
-
         self.gridLayout.addWidget(self.tbut, row, col, 1, 1)
 
         return self.tbut
+
+    def set_custom_action(self):
+        oname = self.tbut.objectName()
+        dirnm = os.path.dirname(__file__)
+
+        if oname == 'giapWMS':
+            self.orto_add = OrtoAddingTool(self, self.tbut)
+            connect_orto = self.orto_add.connect_ortofotomapa_group
+            self.tbut.setIcon(
+                QIcon(os.path.join(dirnm, 'icons', 'orto_icon2.png'))
+            )
+            for service in self.orto_add.services:
+                service.orto_group_added.connect(connect_orto)
+
+        if oname == 'giapCompositions':
+            # this on will be find by compositions after loading
+            # documentation purposes
+            self.tbut.setIcon(
+                QIcon(os.path.join(dirnm, 'icons', 'wyrys.png'))
+            )
+
+        if oname == 'giapWWWSite':
+            self.tbut.clicked.connect(lambda x: webbrowser.open('www.giap.pl'))
+            self.tbut.setIcon(
+                QIcon(os.path.join(dirnm, 'icons', 'giap_logo.png'))
+            )
+
+    def unload_custom_actions(self):
+        if self.orto_add:
+            self.orto_add.disconnect_ortofotomapa_group()
 
     def change_label(self, lab):
         """Changes label

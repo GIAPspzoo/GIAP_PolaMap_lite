@@ -54,5 +54,3 @@ def set_composition(name):
     LayersPanel().uncheckAllGroup()
     LayersPanel().checkGroupsByName(groups)
     LayersPanel().checkLayersByIds(checked_layers_ids)
-
-

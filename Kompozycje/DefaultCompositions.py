@@ -9,7 +9,7 @@ from ..utils import (identify_layer_in_group, get_project_config)
 default_compositions = {}
 
 
-def update_wszystkie_default_compositions():
+def update_all_default_compositions():
     all_layers_list = []
     sel_list = LayersPanel().start_getting_visible_layers()
     for group_layer in get_all_groups_layers():
@@ -22,11 +22,11 @@ def update_wszystkie_default_compositions():
         map_layer, layer_group, layer_name = get_map_layer(
             layer_group, layer_name)
         active = True if map_layer.id() in sel_list else False
-        n = [layer_group, layer_name, active]
-
-        all_layers_list.append(tuple(n))
-
-    default_compositions['Wszystkie warstwy'] = all_layers_list
+        all_layers_list.append(
+            (layer_group, layer_name, map_layer.id(), active)
+        )
+    if {False} != set([x[3] for x in all_layers_list]):
+        default_compositions['Wszystkie warstwy'] = all_layers_list
 
 
 def set_wszystkie_warstwy():
@@ -44,17 +44,14 @@ compositons_special = {
 
 
 def get_compositions():
-    update_wszystkie_default_compositions()
-    comp = eval(
-        get_project_config('Kompozycje',
-                           'domyslne_kompozycje',
-                           str(default_compositions)
-                           )
-    )
-
-    for name in default_compositions:
-        if name not in comp:
-            comp[name] = default_compositions[name]
+    update_all_default_compositions()
+    comp = {
+        'Wszystkie warstwy': {
+            'id': '1',
+            'order': 0,
+            'layers': default_compositions['Wszystkie warstwy'],
+        }
+    }
     return comp
 
 
