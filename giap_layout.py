@@ -279,10 +279,15 @@ class MainTabQgsWidget:
 
     def menu_show(self):
         """Toggle visiblity of menubar"""
+        mbar = self.iface.mainWindow().menuBar()
+        splitter_start = QRect(0, -20, mbar.width(), 20)
+        splitter_end = QRect(0, 0, mbar.width(), 20)
         if self.menuButton.isChecked():
-            self.iface.mainWindow().menuBar().show()
+            mbar.show()
+            self.set_animation(mbar, splitter_start, splitter_end, 200)
         else:
-            self.iface.mainWindow().menuBar().hide()
+            self.set_animation(mbar, splitter_end, splitter_start, 200)
+            mbar.hide()
 
     def ustaw_legende(self):
         self.layer_panel = self.iface.mainWindow().findChild(

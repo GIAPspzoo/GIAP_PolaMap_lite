@@ -2,7 +2,7 @@
 QToolTip
 {
     color:  black;
-    background-color: rgb(255, 255, 185);
+    background-color: white;
     border-color: rgb(215, 215, 215);
     font: 9pt "Segoe UI";
 }
@@ -157,39 +157,25 @@ QTabBar {
 }
 
 QTabBar::tab {
-border-top-left-radius: 8px;
-border-top-right-radius: 8px;
-margin-right: -1px;
 padding:2px;
-padding-left: 25px;
-padding-right: 25px;
+padding-left: 35px;
+padding-right: 5px;
 height: 20px;
 font-weight: bold;
 }
 
 QTabBar::tab:selected {
-border-top-left-radius: 8px;
-border-top-right-radius: 8px;
-border: 1px solid;
-background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(79, 118, 150, 255), stop:1 rgba(105, 157, 200, 255));
-border-color: rgb(79, 118, 150);
+border: 1px solid transparent;
 }
 
 QTabBar::tab:!selected {
-border: 1px solid rgb(90, 135, 172);
-border-top-left-radius: 8px;
-border-top-right-radius: 8px;
-border-left-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(65, 97, 124, 255), stop:1 rgba(90, 135, 172, 255));
-border-right-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(65, 97, 124, 255), stop:1 rgba(90, 135, 172, 255));
-border-bottom: 1px solid;
-border-bottom-color: rgb(65, 97, 124);
+border: 1px solid transparent;
 color: rgb(203, 212, 220);
 }
 
 QTabBar::tab:last:!selected {
 margin-right: 1px;
-border-top-left-radius: 8px;
-border-top-right-radius: 8px;
+border: 1px solid transparent;
 }
 
 QTabWidget::pane {
@@ -523,9 +509,7 @@ QToolBar QToolButton
 {
     font: 8pt "Segoe UI";
 	font-weight: bold;
-    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(65, 97, 124, 255), stop:1 rgba(90, 135, 172, 255));
-    border-radius: 5px;
-    border: 1px solid rgba(0,0,0,0);
+    border: none;
 }
 QToolBar QToolButton::menu-arrow {
     background-image: url(icons/down_arrow_light.png);
@@ -557,6 +541,7 @@ QToolButton:hover
 QToolButton:checked {
     background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(65, 97, 124, 255), stop:1 rgba(31, 65, 90, 255));
     border: solid;
+    border-radius: 5px;
     border-width: 2px;
     border-color: rgb(65, 97, 124);
 }
