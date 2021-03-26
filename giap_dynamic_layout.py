@@ -306,7 +306,7 @@ class CustomTab(QWidget):
 
         self.lab = lab
         self.lay = QHBoxLayout()
-        self.lay.setSpacing(2)
+        self.lay.setSpacing(15)
         self.lay.setMargin(0)
         self.lay.setContentsMargins(1, 1, 1, 1)
         self.setLayout(self.lay)
@@ -382,7 +382,7 @@ class CustomSection(QWidget):
         self.edit = True
         self.setAcceptDrops(True)
         self.setMaximumSize(QSize(99999, 100))
-        self.setMinimumSize(QSize(60, 100))
+        self.setMinimumSize(QSize(70, 100))
 
         if parent is not None:
             parent.parent().editChanged.connect(self.edit_toggle)
@@ -394,9 +394,9 @@ class CustomSection(QWidget):
         self.target = None
 
         self.verticalLayout = QVBoxLayout()
-        self.verticalLayout.setSpacing(5)
+        self.verticalLayout.setSpacing(3)
         self.verticalLayout.setMargin(3)
-        self.verticalLayout.setContentsMargins(5, 0, 5, 0)
+        self.verticalLayout.setContentsMargins(7, 3, 7, 3)
         self.button_size = 30
 
         self.horizontalLayout_2 = QHBoxLayout()
@@ -422,7 +422,7 @@ class CustomSection(QWidget):
         self.verticalLayout.addLayout(self.horizontalLayout_2)
 
         self.gridLayout = QGridLayout()
-        self.gridLayout.setSpacing(4)
+        self.gridLayout.setSpacing(9)
         self.gridLayout.setObjectName(u"gridLayout")
 
         self.verticalLayout.addLayout(self.gridLayout)
@@ -616,6 +616,9 @@ class CustomSection(QWidget):
             if event.type() == QEvent.MouseButtonPress:
                 watched.setDown(False)
 
+        if event.type() == QEvent.HoverEnter:
+            # if tooltip should show wtihout delay code place here
+            pass
         return super().eventFilter(watched, event)
 
     def mouseReleaseEvent(self, event):
