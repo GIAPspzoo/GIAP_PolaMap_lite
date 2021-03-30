@@ -21,6 +21,7 @@ from .config import Config
 from .tools import StyleManager
 
 from .StyleManager.stylemanager import StyleManagerDialog
+from .Searcher.searchTool import SearcherTool
 
 from .giap_dynamic_layout import Widget
 from .ribbon_config import RIBBON_DEFAULT
@@ -52,6 +53,7 @@ class MainTabQgsWidget:
         # setup config structure for maintainning, toolbar and user interface
         # customization
         self.config = Config()
+        self.searcher = SearcherTool(self.main_widget, self.iface)
 
         # initialize StyleManager for styling handling
         self.style_manager = StyleManager(self)
@@ -141,11 +143,11 @@ class MainTabQgsWidget:
         self.main_widget.editChanged.connect(self.kompozycje.update_buttons)
         self.main_widget.printsAdded.connect(self.custom_prints)
         self.main_widget.editChanged.connect(self.custom_prints)
-
         self.project_path = os.path.dirname(
             os.path.abspath(project.fileName()))
         self.toolbar.show()
 
+        self.searcher.run()
         # set strong focus to get keypressevent
         self.main_widget.setFocusPolicy(Qt.StrongFocus)
 
@@ -380,19 +382,6 @@ class MainTabQgsWidget:
         self.repair_layers_names_for_compositions()
         self.kompozycje.start()
         self.kompozycje.modify_tool.check_for_changes_in_comps()
-
-    # def setup_orto(self):
-        # """Setup qtoolbutton with menu, adds wms/wmts services to map
-        # """
-        # parent = self.main_widget
-        # btn = self.main_widget.btn_orto_2
-
-        # # przycisk dodawania ortofotomap
-        # self.orto_add = OrtoAddingTool(parent, btn)
-
-        # connect_orto = self.orto_add.connect_ortofotomapa_group
-        # for service in self.orto_add.services:
-            # service.orto_group_added.connect(connect_orto)
 
     def delete_animation(self, animation, widget, mode):
         del animation
