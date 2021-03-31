@@ -4,6 +4,8 @@ import re
 from qgis.PyQt.QtWidgets import QApplication
 from qgis.PyQt.QtCore import QFileSystemWatcher
 
+from .utils import tr
+
 
 class StyleManager:
     def __init__(self, parent):
@@ -29,10 +31,6 @@ class StyleManager:
             'lightblue': 'lightblue.qss',
             'wombat': 'wombat.qss',
         }
-
-        # add default styles to settings
-        # for style, path in styles.items():
-            # self.set_style(style, os.path.join(self.style_dir, style, path))
 
     def get_style_list(self):
         return [x for x in self.style.keys()]
@@ -96,10 +94,10 @@ class StyleManager:
             self.app.setStyleSheet('')  # return do default, and save it in con
             if name == 'default':
                 self.config.set_active_style('')
-                return False, 'Default style set'
+                return False, tr('Default style set')
             else:
-                return False, 'Path to *.qss not found, load default style'
+                return False, tr('Path to *.qss not found, load default style')
 
         self.reload_style(pth)
         self.config.set_active_style(name)
-        return True, 'Style activated!'
+        return True, tr('Style activated!')

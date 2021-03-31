@@ -10,7 +10,7 @@ from qgis.PyQt.QtWidgets import QWidget, QApplication, QHBoxLayout,\
     QBoxLayout
 
 from .OrtoTools import OrtoAddingTool
-from .utils import STANDARD_TOOLS
+from .utils import STANDARD_TOOLS, DEFAULT_TABS, tr
 
 from .select_section import SelectSection
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -34,7 +34,7 @@ class Widget(QWidget, FORM_CLASS):
         # Custom Tools
         self.orto_add = False
 
-        self.custom_tabbar = CustomTabBar('New Tab', self.tabWidget)
+        self.custom_tabbar = CustomTabBar(tr('New Tab'), self.tabWidget)
         self.tabWidget.setTabBar(self.custom_tabbar)
         self.tabWidget.tabBar().tabBarClicked.connect(self.tab_clicked)
         self.tabWidget.tabBar().tabBarDoubleClicked.connect(
@@ -46,6 +46,7 @@ class Widget(QWidget, FORM_CLASS):
         """
         if not label:
             label = 'New Tab'
+        label = tr(label)
 
         tab = CustomTab(label, self.tabWidget)
         self.tabs.append(tab)
@@ -94,7 +95,7 @@ class Widget(QWidget, FORM_CLASS):
 
         cwidget = self.tabWidget.widget(itab)
         if str(lab) in ['', 'False', 'None']:
-            lab = 'New section'
+            lab = tr('New section')
         section = CustomSection(str(lab), self.tabWidget)
         section.installEventFilter(self)
         if size > 30:
@@ -178,8 +179,8 @@ class Widget(QWidget, FORM_CLASS):
         # selected tools
         selected = [x.text() for x in self.dlg.toolList.selectedItems()]
         self.tabWidget.setUpdatesEnabled(False)
+        print_trig = False
         for sel in selected:
-
             secdef = [x for x in STANDARD_TOOLS if x['label'] == sel][0]
             sec = self.add_section(ind, sel, secdef['btn_size'])
             for btn in secdef['btns']:
@@ -188,8 +189,10 @@ class Widget(QWidget, FORM_CLASS):
                     sec.add_action(*btn)
                 else:
                     sec.add_action(child, *btn[1:])
+                    if btn[0] in ['giapMyPrints', 'giapQuickPrint']:
+                        print_trig = True
 
-            if sel == 'Prints':
+            if sel == 'Prints' or print_trig:
                 self.printsAdded.emit()
 
         self.tabWidget.setUpdatesEnabled(True)
@@ -258,7 +261,12 @@ class Widget(QWidget, FORM_CLASS):
             if not isinstance(wid, CustomTab):
                 continue
             tdict = wid.return_tab_config()
-            tdict['tab_name'] = self.tabWidget.tabText(ind)
+            # if tab name not edited by user, save eng version
+            tab_name = self.tabWidget.tabText(ind)
+            trans_tab_names = [tr(key) for key in DEFAULT_TABS]
+            if tab_name in trans_tab_names:
+                tab_name = DEFAULT_TABS[trans_tab_names.index(tab_name)]
+            tdict['tab_name'] = tab_name
             riblist.append(tdict)
         self.tabWidget.setCurrentIndex(active_ind)
         return riblist
@@ -400,16 +408,16 @@ class CustomSection(QWidget):
         self.button_size = 30
 
         self.horizontalLayout_2 = QHBoxLayout()
-        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.horizontalLayout_2.setSpacing(0)
 
         self.clabel = CustomLabel(name, self)
-        self.clabel.setObjectName(u"giapSectionLabel")
+        self.clabel.setObjectName("giapSectionLabel")
         self.clabel.setMaximumSize(QSize(100000, 25))
         self.clabel.setMinimumSize(QSize(50, 25))
 
-        self.pushButton_close_sec = QPushButton(self)
-        self.pushButton_close_sec.setObjectName(u"giapSectionClose")
+        self.pushButton_close_sec = QToolButton(self)
+        self.pushButton_close_sec.setObjectName("giapSectionClose")
         self.pushButton_close_sec.setText('x')
         self.pushButton_close_sec.setStyleSheet(
             'border-radius: 3px; font: 7pt;'
@@ -456,10 +464,13 @@ class CustomSection(QWidget):
                     act = wid.actions()[0].objectName()
                 blist.append([act, row, col])
 
+        lab = self.clabel.text()
+        untra_lab = [ll['id'] for ll in STANDARD_TOOLS
+                     if tr(ll['label']) == lab]
+        if untra_lab:
+            lab = untra_lab[0]
         return {
-            'label': self.clabel.text(),
-            'btn_size': self.button_size,
-            'btns': blist,
+            'label': lab, 'btn_size': self.button_size, 'btns': blist,
         }
 
     def edit_toggle(self, state):
@@ -557,12 +568,14 @@ class CustomSection(QWidget):
             self.tbut.setIcon(
                 QIcon(os.path.join(dirnm, 'icons', 'wyrys.png'))
             )
+            self.tbut.setToolTip(tr("Composition settings"))
 
         if oname == 'giapWWWSite':
             self.tbut.clicked.connect(lambda x: webbrowser.open('www.giap.pl'))
             self.tbut.setIcon(
                 QIcon(os.path.join(dirnm, 'icons', 'giap_logo.png'))
             )
+            self.tbut.setToolTip(tr("GIAP www site"))
 
     def unload_custom_actions(self):
         if self.orto_add:

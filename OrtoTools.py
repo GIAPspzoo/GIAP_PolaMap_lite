@@ -7,16 +7,19 @@ from qgis.core import QgsProject, QgsRasterLayer, QgsMessageLog
 from qgis.utils import iface
 from .utils import WMS_SERVERS, WMS_SERVERS_GROUPS
 from .CustomMessageBox import CustomMessageBox
+from .giap_layout import tr
 
 
 class OrtoAddingTool(object):
-    def __init__(self, parent, button, group_names=("ORTOFOTOMAPA", "DANE DODATKOWE")):
+    def __init__(self,
+                 parent, button,
+                 group_names=(tr("ORTHOFOTOMAP"), tr("ADDITIONAL DATA"))):
         self.parent = parent
         self.button = button
         self.group_names = group_names
         self.layer_actions_dict = {}
 
-        self.button.setToolTip("Dodaj zdefiniowane adresy WMS/WMTS")
+        self.button.setToolTip(tr("Add defined WMS/WMTS services"))
         self.button.setPopupMode(QToolButton.InstantPopup)
         self.name_service = WMS_SERVERS
         self.groups_for_names = WMS_SERVERS_GROUPS
@@ -52,8 +55,9 @@ class OrtoAddingTool(object):
                     group.removedChildren.disconnect(self.create_menu)
                 except Exception:
                     QgsMessageLog.logMessage(
-                        'Błąd przy rozłączaniu sygnałów z grup '
-                        'warstw pomocniczych',
+                        tr("Error, detaching signals from "
+                           "groups in layers tree"
+                        ),
                         tag="GIAP Layout"
                     )
 
@@ -96,9 +100,11 @@ class OrtoAddingTool(object):
                 clone_node_layer.setItemVisibilityCheckedParentRecursive(True)
                 node_parent.removeChildNode(node_layer)
             else:
-                CustomMessageBox(None, f'Nie można dodać {name}').button_ok()
+                CustomMessageBox(
+                    None, tr('Can\'t add layer') + name).button_ok()
         else:
-            CustomMessageBox(None, f'Istnieje już warstwa {name}').button_ok()
+            CustomMessageBox(
+                None, tr('Layer already exists ') + name).button_ok()
 
     def create_menu(self):
         layers_names = []
@@ -149,7 +155,8 @@ class OrtoActionService(QObject):
     orto_added = pyqtSignal()
     orto_group_added = pyqtSignal()
 
-    def __init__(self, action, url, name, default_group="DANE DODATKOWE", parent=None):
+    def __init__(self, action, url, name,
+                 default_group=tr("ADDITIONAL DATA"), parent=None):
         QObject.__init__(self)
         self.parent = parent
         self.button = action

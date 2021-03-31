@@ -12,8 +12,10 @@ from qgis._core import QgsLayoutExporter, QgsWkbTypes, QgsLayoutItemMap, \
     QgsLayoutItemLabel, QgsLayoutItemScaleBar
 from qgis._gui import QgsRubberBand
 from qgis.utils import iface
+from .utils import tr
 
 from .wydruk_dialog import WydrukDialog
+
 
 def get_layer_with_selection():
     layer_with_selection = []
@@ -21,6 +23,7 @@ def get_layer_with_selection():
         if layer.type().value == 0 and layer.selectedFeatureCount():
             layer_with_selection.append(layer)
     return layer_with_selection
+
 
 class PrintMapTool:
     dpi = 600
@@ -72,7 +75,7 @@ class PrintMapTool:
         width, height = self.mm_paper_sizes[paper_format]
 
         if self.dialog.horizontalRadioButton.isChecked():
-            return  height, width
+            return height, width
         else:
             return width, height
 
@@ -95,15 +98,17 @@ class PrintMapTool:
             x, y = 16, 16
             page.setPageSize(QgsLayoutSize(width, height))
             canvas_extent = self.iface.mapCanvas().extent()
-            current_rect = QRectF(x,y,width - 2 * x, height - 2 * y)
+            current_rect = QRectF(x, y, width - 2 * x, height - 2 * y)
 
             map_item = QgsLayoutItemMap(self.layout)
             map_item.updateBoundingRect()
             map_item.setRect(current_rect)
-            map_item.setPos(x,y)
+            map_item.setPos(x, y)
             map_item.setFrameEnabled(True)
 
-            map_item.setLayers(QgsProject.instance().mapThemeCollection().masterVisibleLayers())
+            map_item.setLayers(
+                QgsProject.instance(
+                ).mapThemeCollection().masterVisibleLayers())
             map_item.setExtent(canvas_extent)
             map_item.attemptSetSceneRect(current_rect)
             map_item.setScale(round(self.iface.mapCanvas().scale()))
@@ -136,14 +141,15 @@ class PrintMapTool:
             self.dialog.activateWindow()
 
     def save(self):
-        filename, __ = QFileDialog.getSaveFileName(self.dialog, "Zapisz Plik")
+        filename, __ = QFileDialog.getSaveFileName(
+            self.dialog, tr("Save file"))
         tmp_layer = self.create_tmp_layer()
         self.create_composer()
         self.save_file(filename)
         QgsProject.instance().removeMapLayers(tmp_layer)
 
     def preview(self):
-        file_handle, filename = tempfile.mkstemp(suffix='szybki_wydruk')
+        file_handle, filename = tempfile.mkstemp(suffix=tr('quick_print'))
         os.close(file_handle)
         tmp_layer = self.create_tmp_layer()
         self.create_composer()
@@ -239,7 +245,7 @@ class PrintMapTool:
 
         if self.dialog.scaleCheckBox.isChecked():
             scale_label = QgsLayoutItemLabel(self.layout)
-            scale_label.setText("SKALA: ")
+            scale_label.setText(tr("SCALE: "))
             scale = QgsLayoutItemScaleBar(self.layout)
             scale.setLinkedMap(self.get_map_item())
             scale.setStyle('Numeric')
@@ -280,7 +286,6 @@ class PrintMapTool:
                 if len(self.dialog.adnotacje_lineEdit.text()) > 96:
                     default_font_Size = 3
                 if len(self.dialog.adnotacje_lineEdit.text()) > 128:
-                    # CustomMessageBox(self.dialog, 'Adnotacja zawiera za dużo znaków').button_ok()
                     return
                 else:
                     adnotation.setText(self.dialog.adnotacje_lineEdit.text())
@@ -297,7 +302,6 @@ class PrintMapTool:
                 if len(self.dialog.adnotacje_lineEdit.text()) > 175:
                     default_font_Size = 3
                 if len(self.dialog.adnotacje_lineEdit.text()) > 225:
-                    # CustomMessageBox(self.dialog, 'Adnotacja zawiera za dużo znaków').button_ok()
                     return
                 else:
                     adnotation.setText(self.dialog.adnotacje_lineEdit.text())
@@ -314,7 +318,6 @@ class PrintMapTool:
                 if len(self.dialog.adnotacje_lineEdit.text()) > 270:
                     default_font_Size = 3
                 if len(self.dialog.adnotacje_lineEdit.text()) > 368:
-                    # CustomMessageBox(self.dialog, 'Adnotacja zawiera za dużo znaków').button_ok()
                     return
                 else:
                     adnotation.setText(self.dialog.adnotacje_lineEdit.text())
@@ -331,7 +334,6 @@ class PrintMapTool:
                 if len(self.dialog.adnotacje_lineEdit.text()) > 425:
                     default_font_Size = 3
                 if len(self.dialog.adnotacje_lineEdit.text()) > 555:
-                    # CustomMessageBox(self.dialog, 'Adnotacja zawiera za dużo znaków').button_ok()
                     return
                 else:
                     adnotation.setText(self.dialog.adnotacje_lineEdit.text())
@@ -348,7 +350,6 @@ class PrintMapTool:
                 if len(self.dialog.adnotacje_lineEdit.text()) > 640:
                     default_font_Size = 3
                 if len(self.dialog.adnotacje_lineEdit.text()) > 850:
-                    # CustomMessageBox(self.dialog, 'Adnotacja zawiera za dużo znaków').button_ok()
                     return
                 else:
                     adnotation.setText(self.dialog.adnotacje_lineEdit.text())
@@ -365,7 +366,6 @@ class PrintMapTool:
                 if len(self.dialog.adnotacje_lineEdit.text()) > 960:
                     default_font_Size = 3
                 if len(self.dialog.adnotacje_lineEdit.text()) > 1250:
-                    # CustomMessageBox(self.dialog, 'Adnotacja zawiera za dużo znaków').button_ok()
                     return
                 else:
                     adnotation.setText(self.dialog.adnotacje_lineEdit.text())
