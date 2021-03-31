@@ -1,9 +1,13 @@
+from .utils import tr
+
+
 RIBBON_DEFAULT = [
     {
-        "tab_name": "Main",
+        "tab_name": tr("Main"),
+        "tab_id": 'Main',
         "sections": [
             {
-                "label": "Project",
+                "label": tr("Project"),
                 "btn_size": 30,
                 "btns": [
                     ["mActionOpenProject", 0, 0],
@@ -14,7 +18,7 @@ RIBBON_DEFAULT = [
             },
 
             {
-                "label": "Navigation",
+                "label": tr("Navigation"),
                 "btn_size": 30,
                 "btns": [
                     ["mActionPan", 0, 0],
@@ -30,7 +34,7 @@ RIBBON_DEFAULT = [
             },
 
             {
-                'label': 'Attributes',
+                'label': tr('Attributes'),
                 'btn_size': 30,
                 'btns': [
                     ['mActionIdentify', 0, 0],
@@ -41,7 +45,7 @@ RIBBON_DEFAULT = [
             },
 
             {
-                'label': 'Measures',
+                'label': tr('Measures'),
                 'btn_size': 30,
                 'btns': [
                     ['mActionMeasure', 0, 0],
@@ -51,7 +55,7 @@ RIBBON_DEFAULT = [
             },
 
             {
-                'label': 'Layers',
+                'label': tr('Layers'),
                 'btn_size': 30,
                 'btns': [
                     ['mActionAddOgrLayer', 0, 0],
@@ -73,10 +77,11 @@ RIBBON_DEFAULT = [
     },
 
     {
-        "tab_name": "Tools",
+        "tab_name": tr("Tools"),
+        "tab_id": "Tools",
         "sections": [
             {
-                'label': 'Attributes',
+                'label': tr('Adv. Attributes'),
                 'btn_size': 30,
                 'btns': [
                     ['mActionIdentify', 0, 0],
@@ -96,7 +101,7 @@ RIBBON_DEFAULT = [
             },
 
             {
-                'label': 'Labels',
+                'label': tr('Labels'),
                 'btn_size': 30,
                 'btns': [
                     ['mActionLabeling', 0, 0],
@@ -112,7 +117,7 @@ RIBBON_DEFAULT = [
             },
 
             {
-                'label': 'Vector',
+                'label': tr('Vector'),
                 'btn_size': 30,
                 'btns': [
                     ['mActionToggleEditing', 0, 0],
@@ -131,7 +136,7 @@ RIBBON_DEFAULT = [
             },
 
             {
-                'label': 'Digitalization',
+                'label': tr('Digitalization'),
                 'btn_size': 30,
                 'btns': [
                     ['EnableSnappingAction', 0, 0],
@@ -144,7 +149,6 @@ RIBBON_DEFAULT = [
                     ['mActionOffsetCurve', 0, 7],
                     ['mActionCircularStringCurvePoint', 0, 8],
 
-
                     ['mActionDeleteRing', 1, 0],
                     ['mActionDeletePart', 1, 1],
                     ['mActionReshapeFeatures', 1, 2],
@@ -156,6 +160,36 @@ RIBBON_DEFAULT = [
                     ['mActionTrimExtendFeature', 1, 8],
                 ]
             },
+        ]
+    },
+
+    {
+        "tab_name": tr("GIAP Tools"),
+        "tab_id": "GIAP Tools",
+        "sections": [
+            {
+                'label': tr('Prints'),
+                'id': 'Prints',
+                'btn_size': 30,
+                'btns': [
+                    ['mActionNewPrintLayout', 0, 0],
+                    ['giapMyPrints', 0, 1],
+                    ['mActionShowLayoutManager', 1, 0],
+                    ['giapQuickPrint', 1, 1],
+                ]
+            },
+
+            {
+                'label': tr('GIAP Tools'),
+                'id': 'GIAP Tools',
+                'btn_size': 60,
+                'btns': [
+                    ['giapCompositions', 0, 0],
+                    ['giapWMS', 0, 1],
+                    ['giapWWWSite', 0, 2],
+                ]
+            },
+
         ]
     },
 

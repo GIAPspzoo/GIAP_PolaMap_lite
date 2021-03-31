@@ -2,6 +2,7 @@ import os
 from qgis.PyQt import uic
 from qgis.PyQt.QtWidgets import QDialog, QFileDialog, QInputDialog, QMessageBox
 from qgis.PyQt.QtCore import Qt, QCoreApplication
+from ..utils import tr
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'ui_stylemanager.ui'))
@@ -28,16 +29,16 @@ class StyleManagerDialog(QDialog, FORM_CLASS):
     def add_style(self):
         """ add new style"""
         filename, _ = QFileDialog.getOpenFileName(
-            self, "Open qss", '',  "*.qss"
+            self, tr("Open qss"), '',  "*.qss"
         )
         text, ok = QInputDialog.getText(
-            self, 'Style Name', 'Enter name for Style:',
+            self, tr('Style Name'), tr('Enter name for style:'),
         )
 
         if ok:
             if str(text) in ['', 'None', 'False']:
                 msg = QMessageBox()
-                msg.setText('Not valid name, try again')
+                msg.setText(tr('Not valid name, try again'))
                 msg.exec_()
                 return
             self.mn.set_style(text, filename)

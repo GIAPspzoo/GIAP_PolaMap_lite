@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QThread
+from PyQt5.QtCore import QThread, QCoreApplication
 from PyQt5.QtWidgets import QApplication, QProgressDialog
 
 from qgis.core import QgsProject, QgsMessageLog, Qgis
@@ -54,6 +54,18 @@ def identify_layer_in_group_by_parts(group_name, layer_to_find):
 def set_project_config(parameter, key, value):
     if isinstance(project, QgsProject):
         return project.writeEntry(parameter, key, value)
+
+
+def tr(message):
+    """Get the translation for a string using Qt translation API.
+    We implement this ourselves since we do not inherit QObject.
+    :param message: String for translation.
+    :type message: str, QString
+
+    :returns: Translated version of message.
+    :rtype: QString
+    """
+    return QApplication.translate('@default', message)
 
 
 class ConfigSaveThread(QThread):
@@ -302,5 +314,6 @@ STANDARD_TOOLS = [
                 ]
             },
 
-
 ]
+
+DEFAULT_TABS = ['Main', 'Tools', 'GIAP Tools', ]

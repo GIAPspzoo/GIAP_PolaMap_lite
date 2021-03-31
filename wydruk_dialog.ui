@@ -32,7 +32,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Wydruk widoku mapy</string>
+   <string>Print visible map view</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -45,6 +45,9 @@
 	color: black;
 }
 </string>
+  </property>
+  <property name="locale">
+   <locale language="English" country="UnitedKingdom"/>
   </property>
   <property name="sizeGripEnabled">
    <bool>false</bool>
@@ -151,7 +154,7 @@
            <string notr="true">color : white;	font-weight: bold;</string>
           </property>
           <property name="text">
-           <string>Wydruk</string>
+           <string>Print</string>
           </property>
          </widget>
         </widget>
@@ -174,7 +177,7 @@
           <item row="6" column="0">
            <widget class="QGroupBox" name="groupBox_3">
             <property name="title">
-             <string>Format zapisu</string>
+             <string>Format</string>
             </property>
             <layout class="QGridLayout" name="gridLayout_7">
              <item row="0" column="0">
@@ -207,7 +210,7 @@
           <item row="1" column="0">
            <widget class="QGroupBox" name="groupBox_2">
             <property name="title">
-             <string>Tytuł wydruku</string>
+             <string>Print title</string>
             </property>
             <layout class="QGridLayout" name="gridLayout_2">
              <item row="0" column="0">
@@ -223,20 +226,20 @@
           <item row="2" column="0">
            <widget class="QGroupBox" name="groupBox">
             <property name="title">
-             <string>Opcje dodatkowe</string>
+             <string>Additional options</string>
             </property>
             <layout class="QGridLayout" name="gridLayout_6">
              <item row="0" column="0">
               <widget class="QCheckBox" name="scaleCheckBox">
                <property name="text">
-                <string>Dodaj skalę</string>
+                <string>Add scale</string>
                </property>
               </widget>
              </item>
              <item row="0" column="1">
               <widget class="QCheckBox" name="legendCheckBox">
                <property name="text">
-                <string>Dodaj legendę</string>
+                <string>add legend</string>
                </property>
               </widget>
              </item>
@@ -246,20 +249,20 @@
           <item row="3" column="0">
            <widget class="QGroupBox" name="groupBox_4">
             <property name="title">
-             <string>Orientacja wydruku</string>
+             <string>Page Orientation</string>
             </property>
             <layout class="QGridLayout" name="gridLayout_8">
              <item row="0" column="0">
               <widget class="QRadioButton" name="horizontalRadioButton">
                <property name="text">
-                <string>pozioma</string>
+                <string>horizontal</string>
                </property>
               </widget>
              </item>
              <item row="0" column="1">
               <widget class="QRadioButton" name="verticalRadioButton">
                <property name="text">
-                <string>pionowa</string>
+                <string>vertical</string>
                </property>
               </widget>
              </item>
@@ -276,7 +279,7 @@
           <item row="4" column="0">
            <widget class="QGroupBox" name="groupBox_6">
             <property name="title">
-             <string>Adnotacje</string>
+             <string>Annotations</string>
             </property>
             <layout class="QGridLayout" name="gridLayout_10">
              <item row="0" column="0">
@@ -292,7 +295,7 @@
           <item row="5" column="0">
            <widget class="QGroupBox" name="groupBox_5">
             <property name="title">
-             <string>Format arkusza</string>
+             <string>Paper size</string>
             </property>
             <layout class="QGridLayout" name="gridLayout_9">
              <item row="0" column="0">
@@ -369,7 +372,7 @@
            <string notr="true">color : white;	font-weight: bold;</string>
           </property>
           <property name="text">
-           <string>Zakończ</string>
+           <string>Finish</string>
           </property>
          </widget>
         </widget>
@@ -395,7 +398,7 @@
              <item row="0" column="0">
               <widget class="QPushButton" name="pushButton">
                <property name="text">
-                <string>Zarejestruj</string>
+                <string>Register</string>
                </property>
               </widget>
              </item>
@@ -448,7 +451,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Podgląd</string>
+        <string>Preview</string>
        </property>
       </widget>
      </item>
@@ -461,7 +464,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Zapisz</string>
+        <string>Save</string>
        </property>
       </widget>
      </item>
@@ -483,7 +486,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Anuluj</string>
+        <string>Abort</string>
        </property>
       </widget>
      </item>
@@ -733,7 +736,7 @@ QRadioButton {
 }</string>
         </property>
         <property name="text">
-         <string>Wydruk</string>
+         <string>Print</string>
         </property>
         <property name="checkable">
          <bool>true</bool>

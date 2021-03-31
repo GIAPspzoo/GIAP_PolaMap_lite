@@ -4,7 +4,7 @@ from __future__ import absolute_import
 from .CompositionsLib import get_all_groups_layers, LayersPanel, \
     get_checked_layers_ids_from_composition, get_layers_ids_from_composition,\
     get_map_layer
-from ..utils import (identify_layer_in_group, get_project_config)
+from ..utils import get_project_config, tr
 
 default_compositions = {}
 
@@ -26,30 +26,30 @@ def update_all_default_compositions():
             (layer_group, layer_name, map_layer.id(), active)
         )
     if {False} != set([x[3] for x in all_layers_list]):
-        default_compositions['Wszystkie warstwy'] = all_layers_list
+        default_compositions[tr('All layers')] = all_layers_list
 
 
 def set_wszystkie_warstwy():
     comp = get_compositions()
     checked_layers_ids, groups = get_checked_layers_ids_from_composition(
-        comp['Wszystkie warstwy']['layers']
+        comp[tr('All layers')]['layers']
     )
     LayersPanel().checkLayersByIds(checked_layers_ids)
     LayersPanel().checkGroupsByName(groups)
 
 
 compositons_special = {
-    'Wszystkie warstwy': set_wszystkie_warstwy,
+    tr('All layers'): set_wszystkie_warstwy,
 }
 
 
 def get_compositions():
     update_all_default_compositions()
     comp = {
-        'Wszystkie warstwy': {
+        tr('All layers'): {
             'id': '1',
             'order': 0,
-            'layers': default_compositions['Wszystkie warstwy'],
+            'layers': default_compositions[tr('All layers')],
         }
     }
     return comp
@@ -58,6 +58,8 @@ def get_compositions():
 def set_composition(name):
     if name in compositons_special:
         compositons_special[name]()
+    elif 'All layers' in compositons_special:
+        compositons_special['All layers']()
 
 
 def compositions_names():

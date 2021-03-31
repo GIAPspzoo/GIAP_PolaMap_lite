@@ -29,7 +29,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>KOMPOZYCJE</string>
+   <string>COMPOSITIONS</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -75,6 +75,9 @@ QHeaderView::section
 	color:  black;
 	padding-left: 4px;
 }</string>
+  </property>
+  <property name="locale">
+   <locale language="English" country="UnitedKingdom"/>
   </property>
   <property name="sizeGripEnabled">
    <bool>false</bool>
@@ -339,7 +342,7 @@ QRadioButton {
 }</string>
         </property>
         <property name="text">
-         <string>Wybór kompozycji</string>
+         <string>Select Composition</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -453,7 +456,7 @@ QRadioButton {
            <string notr="true">color : white;	font-weight: bold;</string>
           </property>
           <property name="text">
-           <string>Wybór kompozycji</string>
+           <string>Select compositions</string>
           </property>
          </widget>
         </widget>
@@ -478,28 +481,28 @@ QRadioButton {
                <item>
                 <widget class="QPushButton" name="zaznacz">
                  <property name="text">
-                  <string>Zaznacz</string>
+                  <string>Select</string>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="odznacz">
                  <property name="text">
-                  <string>Odznacz</string>
+                  <string>Unselect</string>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="zaznacz_wszystkie">
                  <property name="text">
-                  <string>Zaznacz wszystkie</string>
+                  <string>Select All</string>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="odznacz_wszystkie">
                  <property name="text">
-                  <string>Odznacz wszystkie</string>
+                  <string>Unselect All</string>
                  </property>
                 </widget>
                </item>
@@ -521,7 +524,7 @@ QRadioButton {
              <item row="2" column="0">
               <widget class="QPushButton" name="zapisz">
                <property name="text">
-                <string>Zapisz wybrane</string>
+                <string>Save selected</string>
                </property>
               </widget>
              </item>
@@ -583,7 +586,7 @@ QRadioButton {
         </font>
        </property>
        <property name="text">
-        <string>Anuluj</string>
+        <string>Cancel</string>
        </property>
       </widget>
      </item>

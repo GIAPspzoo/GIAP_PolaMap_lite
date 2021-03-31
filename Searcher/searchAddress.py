@@ -10,6 +10,8 @@ from qgis.PyQt.QtCore import QVariant
 from urllib.error import HTTPError, URLError
 from http.client import IncompleteRead
 
+from ..utils import tr
+
 
 class SearchAddress:
     def __init__(self):
@@ -42,13 +44,14 @@ class SearchAddress:
             with urlopen(url, timeout=5) as u:
                 res = u.read()
         except IncompleteRead:
-            iface.messageBar.pushCritical('Error', 'Service unavailable')
+            iface.messageBar().pushCritical(
+                tr('Error'), tr('Service unavailable'))
             return
         except HTTPError as e:
             raise e
         except URLError:
-            iface.messageBar.pushCritical(
-                'Error', 'Check if address is correct')
+            iface.messageBar().pushCritical(
+                tr('Error'), tr('Check if address is correct'))
             return
 
         self.res = res.decode()
@@ -86,21 +89,21 @@ class SearchAddress:
         try:
             self.jres = json.loads(self.res)
         except Exception:
-            return False, 'Can\'t parse results'
+            return False, tr('Can\'t parse results')
 
         if 'found objects' in self.jres:
             if self.jres['found objects'] == 0:
-                return False, 'Zero objects found'
+                return False, tr('Zero objects found')
         else:
-            return False, 'Zero objects found'
+            return False, tr('Zero objects found')
 
         if 'results' in self.jres:
             if self.jres['results'] is None:
-                return False, 'Zero objects found (api limits?)'
+                return False, tr('Zero objects found (api limits?)')
 
         lyr = self.get_layer()
         if not lyr:
-            return False, 'Check log, problems occured'
+            return False, tr('Check log, problems occured')
         fnm = lyr.dataProvider().fieldNameMap()
         feats = []
         for res in self.jres['results'].values():

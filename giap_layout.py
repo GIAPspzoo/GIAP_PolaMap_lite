@@ -2,14 +2,13 @@
 import os.path
 
 from qgis.PyQt.QtCore import QTranslator, QCoreApplication, QSize, \
-    Qt, QRect, QPropertyAnimation, QEasingCurve, QEvent
+    Qt, QRect, QPropertyAnimation, QEasingCurve, QEvent, QSettings
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QToolBar, QToolButton, QWidget, \
     QHBoxLayout, QDockWidget, QMenu, QVBoxLayout
 
 # Initialize Qt resources from file resources.py
 from qgis._core import QgsProject, Qgis
-
 from .QuickPrint import PrintMapTool
 
 from .Kompozycje.Kompozycje import CompositionsTool
@@ -19,6 +18,7 @@ from .kompozycje_widget import kompozycjeWidget
 # from .giap_layout_dialog import MainTabQgsWidgetDialog
 from .config import Config
 from .tools import StyleManager
+from .utils import tr
 
 from .StyleManager.stylemanager import StyleManagerDialog
 from .Searcher.searchTool import SearcherTool
@@ -44,6 +44,7 @@ class MainTabQgsWidget:
         self.iface = iface
         # initialize plugin directory
         self.plugin_dir = os.path.dirname(__file__)
+        self.install_translator()
         # initialize locale
         self.main_widget = Widget(self.iface.mainWindow())
         self.kompozycje_widget = kompozycjeWidget()
@@ -65,7 +66,7 @@ class MainTabQgsWidget:
         style = self.main_widget.styleSheet()
         self.iface.mainWindow().statusBar().setStyleSheet(style + """
         QSpinBox {
-            height: 25px;
+            height: 20px;
         }
         """)
         self.save_default_user_layout()
@@ -82,7 +83,7 @@ class MainTabQgsWidget:
             itab, tab = self.main_widget.add_tab(dtab['tab_name'])
             for dsec in dtab['sections']:
                 sec = self.main_widget.add_section(
-                    itab, dsec['label'], dsec['btn_size']
+                    itab, tr(dsec['label']), dsec['btn_size']
                 )
                 for btn in dsec['btns']:
                     child = self.iface.mainWindow().findChild(QAction, btn[0])
@@ -109,20 +110,20 @@ class MainTabQgsWidget:
 
         self.ustaw_legende()
         self.menuButton = QToolButton()
-        self.menuButton.setText("Show menu")
+        self.menuButton.setText(tr("Show menu"))
         self.menuButton.setCheckable(True)
         self.menuButton.setBaseSize(QSize(80, 25))
         self.menuButton.toggled.connect(self.menu_show)
 
         self.editButton = QToolButton()
-        self.editButton.setText("Edit menu")
+        self.editButton.setText(tr("Edit menu"))
         self.editButton.setCheckable(True)
         self.editButton.setBaseSize(QSize(25, 25))
         self.editButton.toggled.connect(self.main_widget.edit_session_toggle)
         self.menu_show()
 
         self.styleButton = QToolButton()
-        self.styleButton.setText("Theme")
+        self.styleButton.setText(tr("Theme"))
         self.styleButton.setBaseSize(QSize(25, 25))
         self.styleButton.clicked.connect(self.show_style_manager_dialog)
         self.styleButton.setObjectName('ThemeButton')
@@ -159,7 +160,7 @@ class MainTabQgsWidget:
             QToolButton, 'giapQuickPrint')
         for b_qprint in b_qprints:
             b_qprint.clicked.connect(self.quick_print.run)
-            b_qprint.setToolTip("Szybki wydruk widoku mapy")
+            b_qprint.setToolTip(tr("Map fast print"))
             b_qprint.setIcon(QIcon(f'{self.plugin_dir}/icons/quick_print.png'))
 
         b_mprints = self.main_widget.findChildren(QToolButton, 'giapMyPrints')
@@ -226,7 +227,7 @@ class MainTabQgsWidget:
         btns = self.iface.mainWindow().findChildren(
             QToolButton, 'giapMyPrints')
         for btn in btns:
-            btn.setToolTip("Moje wydruki")
+            btn.setToolTip(tr("My Prints"))
             btn.setPopupMode(QToolButton.InstantPopup)
             self.action_my_prints_menu()
             self.projectLayoutManager.layoutAdded.connect(
@@ -273,8 +274,7 @@ class MainTabQgsWidget:
 
         self.iface.messageBar().pushMessage(
             'GIAP Layout',
-            # QApplication.translate('giap_pl', 'Please, restart QGIS!'),
-            'Please, restart QGIS!',
+            tr('Please, restart QGIS!'),
             Qgis.Info,
             0
         )
@@ -395,3 +395,25 @@ class MainTabQgsWidget:
             Qt.Window | Qt.WindowCloseButtonHint
         )
         self.style_manager_dlg.exec_()
+
+    def install_translator(self):
+        locale = 'en'
+        try:
+            # not always locale can be converted to str, apparently
+            loc = str(QSettings().value('locale/userLocale'))
+            if len(locale) > 1:
+                locale = loc[:2]
+        except Exception:
+            # do not install translator -> english
+            return
+
+        if locale == 'en':
+            return
+
+        trans_path = os.path.join(self.plugin_dir, 'i18n', f'giap_{locale}.qm')
+        if not os.path.exists(trans_path):
+            return
+
+        self.translator = QTranslator()
+        self.translator.load(trans_path)
+        QCoreApplication.installTranslator(self.translator)

@@ -228,12 +228,13 @@ QPushButton:pressed
 QComboBox
 {
 	selection-background-color:  white;
-	background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(65, 97, 124, 255), stop:1 rgba(90, 135, 172, 255));
+    background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:1, y2:0.1, stop:0 rgba(26, 44, 60, 255), stop:1 rgba(38, 60, 78, 255));
 	border-style: solid;
 	border: 1px solid  #1a2936;
 	border-radius: 3px;
 	padding: 2px;
 	font: 9pt "Segoe UI";
+    height: 20px;
 }
 
 QComboBox:on
@@ -259,6 +260,7 @@ QComboBox::drop-down
 	subcontrol-origin: padding;
 	subcontrol-position: top right;
 	width: 15px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(65, 97, 124, 255), stop:1 rgba(90, 135, 172, 255));
 	border-left-width: 1px;
 	border-left-color:  #1a2936;
 	border-left-style: solid;

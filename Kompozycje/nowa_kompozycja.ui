@@ -38,7 +38,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>KOMPOZYCJA</string>
+   <string>COMPOSITIONS</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -85,6 +85,9 @@ QHeaderView::section
 	color:  black;
 	padding-left: 4px;
 }</string>
+  </property>
+  <property name="locale">
+   <locale language="English" country="UnitedKingdom"/>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
@@ -141,7 +144,7 @@ QHeaderView::section
         </size>
        </property>
        <property name="text">
-        <string>Zapisz</string>
+        <string>Save</string>
        </property>
       </widget>
      </item>
@@ -154,7 +157,7 @@ QHeaderView::section
         </size>
        </property>
        <property name="text">
-        <string>Anuluj</string>
+        <string>Cancel</string>
        </property>
       </widget>
      </item>
@@ -196,7 +199,7 @@ QHeaderView::section
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Grupy warstw</string>
+         <string>Groups</string>
         </property>
        </widget>
       </item>
@@ -209,7 +212,7 @@ QHeaderView::section
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Warstwy w grupie</string>
+         <string>Layers in Groups</string>
         </property>
        </widget>
       </item>
@@ -222,7 +225,7 @@ QHeaderView::section
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Wybrane warstwy</string>
+         <string>Selected Layers</string>
         </property>
        </widget>
       </item>
@@ -231,7 +234,7 @@ QHeaderView::section
         <item>
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Nazwa kompozycji</string>
+           <string>Composition name:</string>
           </property>
          </widget>
         </item>
@@ -286,28 +289,28 @@ QHeaderView::section
          <item>
           <widget class="QPushButton" name="checkPushButton">
            <property name="text">
-            <string>Zaznacz</string>
+            <string>Select</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="uncheckPushButton">
            <property name="text">
-            <string>Odznacz</string>
+            <string>Unselect</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="checkAllPushButton">
            <property name="text">
-            <string>Zaznacz wszystkie</string>
+            <string>Select All</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="uncheckAllPushButton">
            <property name="text">
-            <string>Odznacz wszystkie</string>
+            <string>Unselect All</string>
            </property>
           </widget>
          </item>
@@ -688,7 +691,7 @@ QRadioButton {
 }</string>
         </property>
         <property name="text">
-         <string>Ustawienia</string>
+         <string>Settings</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -759,7 +762,7 @@ QRadioButton {
        <string notr="true">color : white;	font-weight: bold;</string>
       </property>
       <property name="text">
-       <string>Dodawanie nowej kompozycji</string>
+       <string>Add new composition</string>
       </property>
      </widget>
     </widget>

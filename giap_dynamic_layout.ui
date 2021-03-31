@@ -127,7 +127,7 @@
        </property>
        <item>
         <property name="text">
-         <string>voivodeship</string>
+         <string>Voivodeship </string>
         </property>
        </item>
       </widget>
@@ -182,7 +182,7 @@
        <property name="minimumSize">
         <size>
          <width>150</width>
-         <height>0</height>
+         <height>26</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -221,6 +221,12 @@
      </item>
      <item>
       <widget class="QLineEdit" name="lineEdit_address">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>26</height>
+        </size>
+       </property>
        <property name="text">
         <string/>
        </property>

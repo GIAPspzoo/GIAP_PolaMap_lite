@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>409</width>
-    <height>117</height>
+    <height>80</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Form_comp</string>
   </property>
   <property name="styleSheet">
    <string notr="true">* {
@@ -92,6 +92,9 @@ border-color: rgb(215, 215, 215);
 font: 9pt &quot;Segoe UI&quot;;
 /*font-weight: bold;*/
 }</string>
+  </property>
+  <property name="locale">
+   <locale language="English" country="UnitedKingdom"/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
@@ -204,8 +207,11 @@ border-radius: 4px;
           <height>30</height>
          </size>
         </property>
+        <property name="locale">
+         <locale language="English" country="UnitedKingdom"/>
+        </property>
         <property name="text">
-         <string>Kompozycje:</string>
+         <string>Compositions:</string>
         </property>
        </widget>
       </item>

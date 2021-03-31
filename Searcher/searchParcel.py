@@ -6,6 +6,7 @@ from qgis.core import QgsGeometry, QgsFeature, \
     QgsProject, QgsVectorLayer, Qgis
 
 from qgis.utils import iface
+from ..utils import tr
 
 
 class FetchULDK:
@@ -45,17 +46,18 @@ class FetchULDK:
                 content = r.read()
         except IncompleteRead:
             iface.messageBar().pushMessage(
-                'Error', 'Service returned incompleted responce', Qgis.Warning
+                tr('Error'), tr('Service returned incompleted responce'),
+                Qgis.Warning
             )
             return False
         except HTTPError:
             iface.messageBar().pushMessage(
-                'Error', 'Service error', Qgis.Warning
+                tr('Error'), tr('Service error'), Qgis.Warning
             )
             return False
         except URLError:
             iface.messageBar().pushMessage(
-                'Error', 'Service not responding', Qgis.Warning
+                tr('Error'), tr('Service not responding'), Qgis.Warning
             )
             return False
 
@@ -63,7 +65,8 @@ class FetchULDK:
         res = content.split('\n')
         if res[0] != '0':
             iface.messageBar().pushMessage(
-                'UWAGA', f'Service returned: {res[0]}', Qgis.Warning
+                tr('INFO'), tr('Service returned: {}').format(str(res[0])),
+                Qgis.Warning
             )
             return False
 
@@ -106,14 +109,19 @@ class ParseResponce:
         iface.mapCanvas().refresh()
         if self.not_valid > 0:
             iface.messageBar().pushMessage(
-                'Warning',
-                f'Service return {self.not_valid} not valid features',
+                tr('Warning'),
+                tr('Service return {} not valid features'
+                   ).format(self.not_valid),
                 Qgis.Warning
             )
         if len(feats) > 0:
             lfeats = len(feats)
+            mess = tr('Service return {} feature')
+            if lfeats > 1:
+                mess = tr('Service return {} features')
             iface.messageBar().pushMessage(
-                'OK', f'Service return {lfeats} features', Qgis.Success
+                'OK', mess.format(lfeats),
+                Qgis.Success
             )
 
     def _create_feature(self, row):

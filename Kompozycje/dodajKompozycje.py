@@ -4,6 +4,7 @@ import os
 
 from qgis.PyQt import uic
 from qgis.PyQt.QtWidgets import QDialog
+from ..utils import tr
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'dodaj_kompozycje.ui'))
@@ -18,7 +19,7 @@ class DodajKompozycjeDialog(QDialog, FORM_CLASS):
 
     def radio_changed(self):
         if self.radioButton_1.isChecked():
-            self.groupBox_35.setTitle(u"Kompozycje użytkownika")
+            self.groupBox_35.setTitle(tr("User Compositions"))
             self.dodaj_kompozycje.show()
             self.usun_kompozycje.show()
             self.wczytaj.show()

@@ -1,6 +1,8 @@
 from .searchAddress import SearchAddress
 from .searchParcel import FetchULDK, ParseResponce
 
+from ..utils import tr
+
 
 class SearcherTool:
     def __init__(self, dock, iface):
@@ -28,13 +30,13 @@ class SearcherTool:
         se = SearchAddress()
         if not self.dock.lineEdit_address.text():
             self.iface.messageBar().pushWarning(
-                'Invalid', 'Empty address field')
+                tr('Invalid'), tr('Empty address field'))
 
         se.fetch_address(self.dock.lineEdit_address.text())
         ok, res = se.process_results()
         if not ok:
             self.iface.messageBar().pushWarning(
-                'Warning', res)
+                tr('Warning'), res)
             return
         se.add_feats(res)
 
@@ -84,21 +86,21 @@ class SearcherTool:
         """Clear comboboxes to level where user change something"""
         self.dock.comboBox_obr.blockSignals(True)
         self.dock.comboBox_obr.clear()
-        self.dock.comboBox_obr.addItem('Community')
+        self.dock.comboBox_obr.addItem(tr('Community'))
         self.dock.comboBox_obr.blockSignals(False)
         if level == 'mun':
             return
 
         self.dock.comboBox_gmina.blockSignals(True)
         self.dock.comboBox_gmina.clear()
-        self.dock.comboBox_gmina.addItem('Municipality')
+        self.dock.comboBox_gmina.addItem(tr('Municipality'))
         self.dock.comboBox_gmina.blockSignals(False)
         if level == 'dis':
             return
 
         self.dock.comboBox_pow.blockSignals(True)
         self.dock.comboBox_pow.clear()
-        self.dock.comboBox_pow.addItem('District')
+        self.dock.comboBox_pow.addItem(tr('District'))
         self.dock.comboBox_pow.blockSignals(False)
 
     def _get_voi_code(self):
@@ -131,7 +133,7 @@ class SearcherTool:
             comm = self.dock.comboBox_obr.currentText()
             if '|' not in comm:
                 self.iface.messageBar().pushWarning(
-                    'Address', 'Address of parcel is not valid'
+                    tr('Address'), tr('Address of parcel is not valid')
                 )
                 return
             comm = comm.split('|')[1]

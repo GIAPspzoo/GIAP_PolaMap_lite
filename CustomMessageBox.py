@@ -93,7 +93,7 @@ class CustomMessageBox(QMessageBox):
         self.layout().removeItem(self.layout().itemAt(0))
         self.layout().removeItem(self.layout().itemAt(0))
         self.setWindowTitle('GIAP-PolaMap')
-        self.setWindowIcon(QIcon(':/plugins/GIAP-PolaMap/icons/giap_logo.png'))
+        self.setWindowIcon(QIcon(':/plugins/giap_layout/icons/giap_logo.png'))
 
     def button_ok(self):
         self.setStandardButtons(QMessageBox.Ok)
