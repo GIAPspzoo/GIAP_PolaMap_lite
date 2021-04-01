@@ -154,6 +154,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
 
 QTabBar {
     qproperty-drawBase: 0;
+	font-weight: bold;
 }
 
 QTabBar::tab {
@@ -161,7 +162,6 @@ padding:2px;
 padding-left: 35px;
 padding-right: 5px;
 height: 20px;
-font-weight: bold;
 }
 
 QTabBar::tab:selected {
@@ -241,7 +241,7 @@ QComboBox:on
 {
 	background-color: #626873;
 	padding-top: 3px;
-	padding-left: 4px;
+	padding-left: 1px;
 	selection-background-color: #4a4a4a;
 }
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="pl" sourcelanguage="en">
+<!DOCTYPE TS>
+<TS version="2.1" language="pl" sourcelanguage="en">
 <context>
     <name>@default</name>
     <message>
@@ -528,6 +529,11 @@ Porszę czekać...</translation>
         <translation>formularz kompozycji</translation>
     </message>
     <message>
+        <location filename="../giap_dynamic_layout.ui" line="130"/>
+        <source>Voivodeship</source>
+        <translation>Województwo</translation>
+    </message>
+    <message>
         <location filename="../giap_dynamic_layout.ui" line="145"/>
         <source>District</source>
         <translation>Powiat</translation>
@@ -556,11 +562,6 @@ Porszę czekać...</translation>
         <location filename="../giap_dynamic_layout.ui" line="234"/>
         <source>address</source>
         <translation>adres</translation>
-    </message>
-    <message>
-        <location filename="../giap_dynamic_layout.ui" line="130"/>
-        <source>Voivodeship </source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

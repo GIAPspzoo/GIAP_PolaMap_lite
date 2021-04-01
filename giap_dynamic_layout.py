@@ -411,7 +411,7 @@ class CustomSection(QWidget):
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.horizontalLayout_2.setSpacing(0)
 
-        self.clabel = CustomLabel(name, self)
+        self.clabel = CustomLabel(tr(name), self)
         self.clabel.setObjectName("giapSectionLabel")
         self.clabel.setMaximumSize(QSize(100000, 25))
         self.clabel.setMinimumSize(QSize(50, 25))
@@ -831,6 +831,7 @@ class CustomSectionAdd(QToolButton):
         self.setMinimumSize(QSize(30, 30))
         self.setMaximumSize(QSize(30, 30))
         self.setText('+')
+        self.setStyleSheet('font: 14px; font-weight: bold;')
 
         self.button_size = 30
 

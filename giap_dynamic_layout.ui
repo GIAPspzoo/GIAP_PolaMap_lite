@@ -77,6 +77,9 @@
      <property name="spacing">
       <number>5</number>
      </property>
+     <property name="topMargin">
+      <number>2</number>
+     </property>
      <item>
       <widget class="QToolButton" name="pokaz_warstwy">
        <property name="minimumSize">
@@ -127,7 +130,7 @@
        </property>
        <item>
         <property name="text">
-         <string>Voivodeship </string>
+         <string>Voivodeship</string>
         </property>
        </item>
       </widget>
