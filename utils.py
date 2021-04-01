@@ -178,11 +178,11 @@ STANDARD_TOOLS = [
             {
                 'label': 'Measures',
                 'id': 'Measures',
-                'btn_size': 60,
+                'btn_size': 30,
                 'btns': [
                     ['mActionMeasure', 0, 0],
                     ['mActionMeasureArea', 0, 1],
-                    ['mActionMeasureAngle', 0, 2],
+                    ['mActionMeasureAngle', 1, 0],
                 ],
             },
 
