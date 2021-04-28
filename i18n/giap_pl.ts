@@ -54,12 +54,12 @@
         <translation>SKALA: </translation>
     </message>
     <message>
-        <location filename="../Kompozycje/Kompozycje.py" line="820"/>
+        <location filename="../Kompozycje/Kompozycje.py" line="824"/>
         <source>All layers</source>
         <translation>Wszystkie warstwy</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/dodajKompozycje.py" line="22"/>
+        <location filename="../Kompozycje/dodajKompozycje.py" line="19"/>
         <source>User Compositions</source>
         <translation>Kompozycje użytkownika</translation>
     </message>
@@ -101,87 +101,87 @@ Compositions will be updated.</source>
 Kompozycje zostaną uaktualnione.</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/Kompozycje.py" line="448"/>
+        <location filename="../Kompozycje/Kompozycje.py" line="449"/>
         <source>Compositions</source>
         <translation>Kompozycje</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/Kompozycje.py" line="320"/>
+        <location filename="../Kompozycje/Kompozycje.py" line="321"/>
         <source>Some layers from composition are missing,  check composition</source>
         <translation>Brakuje niektórych warstw z kompozycji, sprawdz kompozycję</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/Kompozycje.py" line="492"/>
+        <location filename="../Kompozycje/Kompozycje.py" line="496"/>
         <source>No layers in project!</source>
         <translation>Brak warstw w projekcie!</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/Kompozycje.py" line="757"/>
+        <location filename="../Kompozycje/Kompozycje.py" line="761"/>
         <source>Specified composition name already in use!</source>
         <translation>Wskazana nazwa już istnieje!</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/Kompozycje.py" line="524"/>
+        <location filename="../Kompozycje/Kompozycje.py" line="528"/>
         <source>Enter name for composition</source>
         <translation>Podaj nazwę dla kompozycji</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/Kompozycje.py" line="615"/>
+        <location filename="../Kompozycje/Kompozycje.py" line="619"/>
         <source>Choose layer, to add it to selected</source>
         <translation>Wybierz warstwę, aby dodać ją do wybranych</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/Kompozycje.py" line="620"/>
+        <location filename="../Kompozycje/Kompozycje.py" line="624"/>
         <source>Select group, to choose layer.</source>
         <translation>Zaznacz grupę aby wybrać warstwę.</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/Kompozycje.py" line="628"/>
+        <location filename="../Kompozycje/Kompozycje.py" line="632"/>
         <source>Select layer, to remove it from selected.</source>
         <translation>Zaznacz warstwę aby usunąc ją z wybranych.</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/Kompozycje.py" line="664"/>
+        <location filename="../Kompozycje/Kompozycje.py" line="668"/>
         <source>Choose composition, to change order</source>
         <translation>Wybierz kompozycję, żeby zmienić kolejność</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/Kompozycje.py" line="679"/>
+        <location filename="../Kompozycje/Kompozycje.py" line="683"/>
         <source>Edit</source>
         <translation>Edytuj</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/Kompozycje.py" line="698"/>
+        <location filename="../Kompozycje/Kompozycje.py" line="702"/>
         <source>Select composition to edit</source>
         <translation>Wybierz kompozycję do edycji</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/Kompozycje.py" line="771"/>
+        <location filename="../Kompozycje/Kompozycje.py" line="775"/>
         <source>Enter composition name</source>
         <translation>Wprowadź nazwę kompozycji</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/Kompozycje.py" line="784"/>
+        <location filename="../Kompozycje/Kompozycje.py" line="788"/>
         <source>Select composition to remove it</source>
         <translation>Wskaż kompozycję do usunięcia</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/Kompozycje.py" line="792"/>
+        <location filename="../Kompozycje/Kompozycje.py" line="796"/>
         <source>Selected composition is default!</source>
         <translation>Wskazana kompozycje jest domyślna!</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/Kompozycje.py" line="795"/>
+        <location filename="../Kompozycje/Kompozycje.py" line="799"/>
         <source>Selected composition will be deleted, proceed?</source>
         <translation>Wskazana kompozycja zostanie usunięta, kontynuować?</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/Kompozycje.py" line="874"/>
+        <location filename="../Kompozycje/Kompozycje.py" line="878"/>
         <source>Please wait...</source>
         <translation>Proszę czekać...</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/Kompozycje.py" line="897"/>
+        <location filename="../Kompozycje/Kompozycje.py" line="901"/>
         <source>Loading
 Please wait...</source>
         <translation>Ładowanie
@@ -408,27 +408,27 @@ Porszę czekać...</translation>
         <translation>Puste pole adresu</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchTool.py" line="89"/>
+        <location filename="../Searcher/searchTool.py" line="105"/>
         <source>Community</source>
         <translation>Obręb ewid.</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchTool.py" line="96"/>
+        <location filename="../Searcher/searchTool.py" line="112"/>
         <source>Municipality</source>
         <translation>Gmina</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchTool.py" line="103"/>
+        <location filename="../Searcher/searchTool.py" line="119"/>
         <source>District</source>
         <translation>Powiat</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchTool.py" line="135"/>
+        <location filename="../Searcher/searchTool.py" line="151"/>
         <source>Address</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchTool.py" line="135"/>
+        <location filename="../Searcher/searchTool.py" line="151"/>
         <source>Address of parcel is not valid</source>
         <translation>Adres działki jest niepoprawny</translation>
     </message>
@@ -466,44 +466,49 @@ Porszę czekać...</translation>
         <translation>KOMPOZYCJE</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/compositions_saver.ui" line="345"/>
+        <location filename="../Kompozycje/compositions_saver.ui" line="523"/>
         <source>Select Composition</source>
         <translation>Kompozycje</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/compositions_saver.ui" line="459"/>
+        <location filename="../Kompozycje/compositions_saver.ui" line="244"/>
         <source>Select compositions</source>
         <translation>Wybierz kompozycje</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/compositions_saver.ui" line="484"/>
+        <location filename="../Kompozycje/compositions_saver.ui" line="329"/>
         <source>Select</source>
         <translation>Zaznacz</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/compositions_saver.ui" line="491"/>
+        <location filename="../Kompozycje/compositions_saver.ui" line="336"/>
         <source>Unselect</source>
         <translation>Odznacz</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/compositions_saver.ui" line="498"/>
+        <location filename="../Kompozycje/compositions_saver.ui" line="343"/>
         <source>Select All</source>
         <translation>Zaznacz wszystkie</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/compositions_saver.ui" line="505"/>
+        <location filename="../Kompozycje/compositions_saver.ui" line="350"/>
         <source>Unselect All</source>
         <translation>Odznacz wszystkie</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/compositions_saver.ui" line="527"/>
+        <location filename="../Kompozycje/compositions_saver.ui" line="383"/>
         <source>Save selected</source>
         <translation>Zaznacz wybrane</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/compositions_saver.ui" line="589"/>
+        <location filename="../Kompozycje/compositions_saver.ui" line="466"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
+    </message>
+    <message>
+        <location filename="../Kompozycje/compositions_saver.ui" line="296"/>
+        <source>Compositions</source>
+        <translation>Kompozycje</translation>
     </message>
 </context>
 <context>
@@ -514,7 +519,7 @@ Porszę czekać...</translation>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../giap_dynamic_layout.ui" line="103"/>
+        <location filename="../giap_dynamic_layout.ui" line="106"/>
         <source>Layers</source>
         <translation>Warstwy</translation>
     </message>
@@ -529,37 +534,37 @@ Porszę czekać...</translation>
         <translation>formularz kompozycji</translation>
     </message>
     <message>
-        <location filename="../giap_dynamic_layout.ui" line="130"/>
+        <location filename="../giap_dynamic_layout.ui" line="133"/>
         <source>Voivodeship</source>
         <translation>Województwo</translation>
     </message>
     <message>
-        <location filename="../giap_dynamic_layout.ui" line="145"/>
+        <location filename="../giap_dynamic_layout.ui" line="148"/>
         <source>District</source>
         <translation>Powiat</translation>
     </message>
     <message>
-        <location filename="../giap_dynamic_layout.ui" line="160"/>
+        <location filename="../giap_dynamic_layout.ui" line="163"/>
         <source>Municipality</source>
         <translation>Gmina</translation>
     </message>
     <message>
-        <location filename="../giap_dynamic_layout.ui" line="175"/>
+        <location filename="../giap_dynamic_layout.ui" line="178"/>
         <source>Community</source>
         <translation>Obręb ewid.</translation>
     </message>
     <message>
-        <location filename="../giap_dynamic_layout.ui" line="204"/>
+        <location filename="../giap_dynamic_layout.ui" line="207"/>
         <source>parcel number or TERYT</source>
         <translation>nr działki lub TERYT</translation>
     </message>
     <message>
-        <location filename="../giap_dynamic_layout.ui" line="241"/>
+        <location filename="../giap_dynamic_layout.ui" line="244"/>
         <source>Search</source>
         <translation>Szukaj</translation>
     </message>
     <message>
-        <location filename="../giap_dynamic_layout.ui" line="234"/>
+        <location filename="../giap_dynamic_layout.ui" line="237"/>
         <source>address</source>
         <translation>adres</translation>
     </message>
@@ -572,107 +577,107 @@ Porszę czekać...</translation>
         <translation>KOMPOZYCJE</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="349"/>
+        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="690"/>
         <source>User compositions</source>
         <translation>Kompozycje użytkownika</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="378"/>
+        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="716"/>
         <source>Save to file</source>
         <translation>Zapisz do pliku</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="388"/>
+        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="726"/>
         <source>Load from file</source>
         <translation>Wczytaj z pliku</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="493"/>
+        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="281"/>
         <source>Composition settings</source>
         <translation>Ustawienia kompozycji</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="536"/>
+        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="505"/>
         <source>Delete</source>
         <translation>Skasuj</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="558"/>
+        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="380"/>
         <source>Compositions</source>
         <translation>Kompozycje</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="439"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="467"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="660"/>
+        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="498"/>
         <source>Edit</source>
         <translation>Edytuj</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="667"/>
+        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="491"/>
         <source>Add</source>
         <translation>Dodaj</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="147"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="218"/>
         <source>Save</source>
         <translation>Zapisz</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="160"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="231"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="202"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="342"/>
         <source>Groups</source>
         <translation>Grupy warstw</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="215"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="508"/>
         <source>Layers in Groups</source>
         <translation>Warstwy w grupach</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="228"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="584"/>
         <source>Selected Layers</source>
         <translation>Wybrane warstwy</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="237"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="427"/>
         <source>Composition name:</source>
         <translation>Nazwa kompozycji:</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="292"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="282"/>
         <source>Select</source>
         <translation>Zaznacz</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="299"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="289"/>
         <source>Unselect</source>
         <translation>Odznacz</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="306"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="296"/>
         <source>Select All</source>
         <translation>Zaznacz wszystkie</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="313"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="303"/>
         <source>Unselect All</source>
         <translation>Odznacz wszystkie</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="694"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="734"/>
         <source>Settings</source>
         <translation>Ustawienia</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="765"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="676"/>
         <source>Add new composition</source>
         <translation>Dodaj nową kompozycję</translation>
     </message>
@@ -680,22 +685,22 @@ Porszę czekać...</translation>
 <context>
     <name>SectionSelecterDialog</name>
     <message>
-        <location filename="../select_section_dialog.ui" line="32"/>
+        <location filename="../select_section_dialog.ui" line="316"/>
         <source>Sections</source>
         <translation>Sekcja</translation>
     </message>
     <message>
-        <location filename="../select_section_dialog.ui" line="474"/>
+        <location filename="../select_section_dialog.ui" line="430"/>
         <source>Add section</source>
         <translation>Dodaj sekcję</translation>
     </message>
     <message>
-        <location filename="../select_section_dialog.ui" line="497"/>
+        <location filename="../select_section_dialog.ui" line="348"/>
         <source>Add selected</source>
         <translation>Dodaj zaznaczone</translation>
     </message>
     <message>
-        <location filename="../select_section_dialog.ui" line="576"/>
+        <location filename="../select_section_dialog.ui" line="175"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
@@ -703,29 +708,34 @@ Porszę czekać...</translation>
 <context>
     <name>StyleSelectionDialog</name>
     <message>
-        <location filename="../StyleManager/ui_stylemanager.ui" line="32"/>
+        <location filename="../StyleManager/ui_stylemanager.ui" line="264"/>
         <source>Style</source>
         <translation>Styl</translation>
     </message>
     <message>
-        <location filename="../StyleManager/ui_stylemanager.ui" line="461"/>
+        <location filename="../StyleManager/ui_stylemanager.ui" line="446"/>
         <source>Change style</source>
         <translation>Wybierz styl</translation>
     </message>
     <message>
-        <location filename="../StyleManager/ui_stylemanager.ui" line="505"/>
+        <location filename="../StyleManager/ui_stylemanager.ui" line="309"/>
         <source>Activate</source>
         <translation>Aktywuj</translation>
     </message>
     <message>
-        <location filename="../StyleManager/ui_stylemanager.ui" line="512"/>
+        <location filename="../StyleManager/ui_stylemanager.ui" line="316"/>
         <source>Default</source>
         <translation>Domyślny</translation>
     </message>
     <message>
-        <location filename="../StyleManager/ui_stylemanager.ui" line="589"/>
+        <location filename="../StyleManager/ui_stylemanager.ui" line="393"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
+    </message>
+    <message>
+        <location filename="../StyleManager/ui_stylemanager.ui" line="264"/>
+        <source>Compositions</source>
+        <translation type="obsolete">Kompozycje</translation>
     </message>
 </context>
 <context>
@@ -736,97 +746,97 @@ Porszę czekać...</translation>
         <translation>Wydruk widoku mapy</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="739"/>
+        <location filename="../wydruk_dialog.ui" line="628"/>
         <source>Print</source>
         <translation>Wydruki</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="180"/>
+        <location filename="../wydruk_dialog.ui" line="266"/>
         <source>Format</source>
         <translation>Format zapisu</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="186"/>
+        <location filename="../wydruk_dialog.ui" line="272"/>
         <source>PDF</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="196"/>
+        <location filename="../wydruk_dialog.ui" line="282"/>
         <source>PNG</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="203"/>
+        <location filename="../wydruk_dialog.ui" line="289"/>
         <source>JPG</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="213"/>
+        <location filename="../wydruk_dialog.ui" line="299"/>
         <source>Print title</source>
         <translation>Tytuł wydruku</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="229"/>
+        <location filename="../wydruk_dialog.ui" line="315"/>
         <source>Additional options</source>
         <translation>Opcje dodatkowe</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="235"/>
+        <location filename="../wydruk_dialog.ui" line="321"/>
         <source>Add scale</source>
         <translation>Dodaj skalę</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="242"/>
+        <location filename="../wydruk_dialog.ui" line="328"/>
         <source>add legend</source>
         <translation>Dodaj legendę</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="258"/>
+        <location filename="../wydruk_dialog.ui" line="344"/>
         <source>horizontal</source>
         <translation>pozioma</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="265"/>
+        <location filename="../wydruk_dialog.ui" line="351"/>
         <source>vertical</source>
         <translation>pionowa</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="282"/>
+        <location filename="../wydruk_dialog.ui" line="368"/>
         <source>Annotations</source>
         <translation>Adnotacje</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="298"/>
+        <location filename="../wydruk_dialog.ui" line="384"/>
         <source>Paper size</source>
         <translation>Format Arkusza</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="454"/>
+        <location filename="../wydruk_dialog.ui" line="540"/>
         <source>Preview</source>
         <translation>Podgląd</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="467"/>
+        <location filename="../wydruk_dialog.ui" line="553"/>
         <source>Save</source>
         <translation>Zapisz</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="489"/>
+        <location filename="../wydruk_dialog.ui" line="575"/>
         <source>Abort</source>
         <translation>Anuluj</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="375"/>
+        <location filename="../wydruk_dialog.ui" line="461"/>
         <source>Finish</source>
         <translation>Zakończ</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="401"/>
+        <location filename="../wydruk_dialog.ui" line="487"/>
         <source>Register</source>
         <translation>Zarejestruj</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="252"/>
+        <location filename="../wydruk_dialog.ui" line="338"/>
         <source>Page Orientation</source>
         <translation>Orientacja wydruku</translation>
     </message>

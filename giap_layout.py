@@ -270,6 +270,7 @@ class MainTabQgsWidget:
         self.toolbar.hide()
 
         # reinstitute original qgis layout
+        self.kompozycje_widget.hide()
         self.load_default_user_layout()
 
         self.iface.messageBar().pushMessage(
@@ -301,7 +302,9 @@ class MainTabQgsWidget:
 
         layer_toolbar = self.layer_view.parent().children()[1]
 
-        layer_toolbar.children()[9].setPopupMode(2)
+        # not working on qgis 3.18+
+        if isinstance(layer_toolbar.children()[9], QToolButton):
+            layer_toolbar.children()[9].setPopupMode(2)
         widget_w_warstwach = QWidget()
         layout_widgetu = QVBoxLayout()
         layout_widgetu.addWidget(layer_toolbar)
@@ -309,6 +312,7 @@ class MainTabQgsWidget:
         layout_widgetu.addWidget(self.layer_view)
         layout_widgetu.setContentsMargins(0, 7, 0, 4)
         widget_w_warstwach.setLayout(layout_widgetu)
+        widget_w_warstwach.setObjectName('giapKompozycjeWidget')
         self.layer_panel.setWidget(widget_w_warstwach)
         self.layer_panel.setTitleBarWidget(QWidget())
         self.main_widget.pokaz_warstwy.toggled.connect(self.warstwy_show)

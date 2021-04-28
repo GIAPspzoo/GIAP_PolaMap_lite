@@ -13,7 +13,7 @@
     <x>0</x>
     <y>0</y>
     <width>550</width>
-    <height>526</height>
+    <height>527</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -40,11 +40,97 @@
   </property>
   <property name="styleSheet">
    <string notr="true">* {
-	background-color: rgb(255, 255, 255);
+	background-color: rgb(53, 85, 109);
     font: 10pt &quot;Segoe UI&quot;; 
-	color: black;
+	color: white;
 }
-</string>
+QComboBox
+{
+	selection-background-color: #b7d3e8;
+    background-color: #4f5a63;
+	border-style: solid;
+	border: 1px solid  #5689b0;
+	border-radius: 3px;
+	padding: 2px;
+	font: 9pt &quot;Segoe UI&quot;;
+    height: 20px;
+}
+
+QComboBox:on
+{
+	background-color: #4f5a63;
+	padding-top: 3px;
+	padding-left: 1px;
+	selection-background-color: #4a4a4a;
+}
+
+QComboBox QAbstractItemView
+{
+	background-color: #4f5a63;
+	border-radius: 4px;
+	border: 1px solid  #6fb1e3;
+	selection-background-color: #4f5a63;
+    padding: 4px 10px 4px 10px;
+    width: 1.9em;
+}
+
+QComboBox::drop-down
+{
+	subcontrol-origin: padding;
+	subcontrol-position: top right;
+	width: 15px;
+    background-color: #5689b0;
+	border-left-width: 0px;
+	border-left-color:  #1a2936;
+	border-left-style: solid;
+	border-top-right-radius: 3px; 
+	border-bottom-right-radius: 3px;
+}
+
+QComboBox::down-arrow
+{
+	image: url(icons/down_arrow_disabled.png);
+}
+
+QComboBox::down-arrow:on, 
+QComboBox::down-arrow:hover,
+QComboBox::down-arrow:focus
+{
+	image: url(icons/down_arrow.png);
+}
+
+QLineEdit
+{
+	border: 1px solid #5689b0;
+    border-radius: 3px;
+    background-color: #4f5a63;
+}
+
+QPushButton {
+	color: black;
+	border: 1px solid black;
+	background-color: #b7d3e8;
+	border-radius: 3px;
+	padding: 4px;
+}
+
+QPushButton:hover {
+
+	font-weight: bold;
+}
+QPushButton:pressed {
+   background-color: #5689b0;
+   border: 1px solid #6fb1e3;
+}
+
+QPushButton:disabled
+{
+	color: gray;
+}
+
+QGroupBox {
+border: 1px solid #5689b0;
+}</string>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedKingdom"/>
@@ -113,17 +199,17 @@
          <property name="minimumSize">
           <size>
            <width>200</width>
-           <height>20</height>
+           <height>30</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>20</height>
+           <height>30</height>
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true">background-color: rgb(252, 67, 73);
+          <string notr="true">background-color: #4f5a63;
 </string>
          </property>
          <property name="frameShape">
@@ -135,10 +221,10 @@
          <widget class="QLabel" name="title_label_7">
           <property name="geometry">
            <rect>
-            <x>1</x>
-            <y>1</y>
+            <x>10</x>
+            <y>0</y>
             <width>91</width>
-            <height>16</height>
+            <height>30</height>
            </rect>
           </property>
           <property name="font">
@@ -331,17 +417,17 @@
          <property name="minimumSize">
           <size>
            <width>200</width>
-           <height>20</height>
+           <height>30</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>20</height>
+           <height>30</height>
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true">background-color: rgb(252, 67, 73);
+          <string notr="true">background-color: #4f5a63;
 </string>
          </property>
          <property name="frameShape">
@@ -353,10 +439,10 @@
          <widget class="QLabel" name="title_label_9">
           <property name="geometry">
            <rect>
-            <x>1</x>
-            <y>1</y>
+            <x>10</x>
+            <y>0</y>
             <width>91</width>
-            <height>16</height>
+            <height>30</height>
            </rect>
           </property>
           <property name="font">
@@ -428,19 +514,19 @@
    <item row="2" column="1">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="spacing">
-      <number>0</number>
+      <number>5</number>
      </property>
      <property name="leftMargin">
-      <number>0</number>
+      <number>5</number>
      </property>
      <property name="topMargin">
-      <number>0</number>
+      <number>5</number>
      </property>
      <property name="rightMargin">
-      <number>0</number>
+      <number>5</number>
      </property>
      <property name="bottomMargin">
-      <number>0</number>
+      <number>5</number>
      </property>
      <item>
       <widget class="QPushButton" name="previewPushButton">
@@ -493,7 +579,7 @@
     </layout>
    </item>
    <item row="0" column="0" rowspan="3">
-    <widget class="QWidget" name="widget" native="true">
+    <widget class="QFrame" name="frame">
      <property name="minimumSize">
       <size>
        <width>120</width>
@@ -510,8 +596,7 @@
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(53, 85, 109);
-
+      <string notr="true">border-right: 2px solid #b7d3e8;
 </string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
@@ -531,218 +616,19 @@
        <number>5</number>
       </property>
       <item>
-       <widget class="QRadioButton" name="radioButton_4">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>20</height>
-         </size>
-        </property>
-        <property name="palette">
-         <palette>
-          <active>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>255</red>
-              <green>255</green>
-              <blue>255</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Button">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>53</red>
-              <green>85</green>
-              <blue>109</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Text">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>255</red>
-              <green>255</green>
-              <blue>255</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="ButtonText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>255</red>
-              <green>255</green>
-              <blue>255</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Base">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>53</red>
-              <green>85</green>
-              <blue>109</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Window">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>53</red>
-              <green>85</green>
-              <blue>109</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </active>
-          <inactive>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>255</red>
-              <green>255</green>
-              <blue>255</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Button">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>53</red>
-              <green>85</green>
-              <blue>109</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Text">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>255</red>
-              <green>255</green>
-              <blue>255</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="ButtonText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>255</red>
-              <green>255</green>
-              <blue>255</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Base">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>53</red>
-              <green>85</green>
-              <blue>109</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Window">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>53</red>
-              <green>85</green>
-              <blue>109</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </inactive>
-          <disabled>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>255</red>
-              <green>255</green>
-              <blue>255</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Button">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>53</red>
-              <green>85</green>
-              <blue>109</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Text">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>255</red>
-              <green>255</green>
-              <blue>255</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="ButtonText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>255</red>
-              <green>255</green>
-              <blue>255</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Base">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>53</red>
-              <green>85</green>
-              <blue>109</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Window">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>53</red>
-              <green>85</green>
-              <blue>109</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </disabled>
-         </palette>
-        </property>
+       <widget class="QLabel" name="label_2">
         <property name="styleSheet">
-         <string notr="true">QRadioButton::indicator::checked  {
-	border: 2px solid black;
-	border-radius: 9px;
-	background-color: rgb(252, 67, 73);
-	width: 15px;
-	height: 15px;
-}
-
-QRadioButton::indicator::unchecked  {
-	border: 2px solid black;
-	border-radius: 9px;
-	background-color: rgb(255, 255, 255);
-	width: 15px;
-	height: 15px;
-}
-
-QRadioButton {
-	color : white;
-	font-weight: bold; 
-}</string>
+         <string notr="true">   background-color: #b7d3e8;
+   color: black;
+   font: 10pt &quot;Segoe UI&quot;; 
+   font-weight: bold;
+</string>
         </property>
         <property name="text">
          <string>Print</string>
         </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
@@ -761,7 +647,7 @@ QRadioButton {
       </item>
      </layout>
      <zorder>verticalSpacer_3</zorder>
-     <zorder>radioButton_4</zorder>
+     <zorder>label_2</zorder>
     </widget>
    </item>
   </layout>
@@ -775,8 +661,8 @@ QRadioButton {
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>519</x>
-     <y>660</y>
+     <x>544</x>
+     <y>521</y>
     </hint>
     <hint type="destinationlabel">
      <x>461</x>
