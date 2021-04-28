@@ -15,12 +15,9 @@ class DodajKompozycjeDialog(QDialog, FORM_CLASS):
         """Constructor."""
         super(DodajKompozycjeDialog, self).__init__(parent)
         self.setupUi(self)
-        self.radioButton_1.clicked.connect(self.radio_changed)
 
-    def radio_changed(self):
-        if self.radioButton_1.isChecked():
-            self.groupBox_35.setTitle(tr("User Compositions"))
-            self.dodaj_kompozycje.show()
-            self.usun_kompozycje.show()
-            self.wczytaj.show()
-            self.zapisz.show()
+        self.groupBox_35.setTitle(tr("User Compositions"))
+        self.dodaj_kompozycje.show()
+        self.usun_kompozycje.show()
+        self.wczytaj.show()
+        self.zapisz.show()

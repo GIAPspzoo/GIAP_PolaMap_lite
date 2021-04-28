@@ -138,6 +138,18 @@ class Widget(QWidget, FORM_CLASS):
 
     def _section_control(self, tabind):
         """add buttons to every tab for adding new section"""
+        plug_dir = os.path.dirname(__file__)
+        lay = self.tabWidget.widget(tabind).lay
+        cnt = lay.count()
+
+        # remove button
+        it = lay.itemAt(cnt-1)
+        if it is not None:
+            if isinstance(it.widget(), QPushButton):
+                it.widget().hide()
+                it.widget().deleteLater()
+                QApplication.processEvents()
+
         if self.edit_session:
             self.frm = QFrame()
             self.frm.setObjectName('giapSectionAdd')
@@ -163,6 +175,17 @@ class Widget(QWidget, FORM_CLASS):
             self.tabWidget.widget(tabind).setUpdatesEnabled(False)
             self._section_control_remove(tabind)
             self.tabWidget.widget(tabind).lay.addStretch()
+            if not isinstance(lay.itemAt(cnt-1), QPushButton):
+                gbut = QPushButton()
+                gbut.setIcon(
+                    QIcon(os.path.join(plug_dir, 'icons', 'giap.png'))
+                )
+                gbut.setStyleSheet(
+                    'border-width: 0px; width: 220px; height:72px;'
+                    'background-color: transparent;'
+                )
+                gbut.setIconSize(QSize(220-4, 72-4))
+                self.tabWidget.widget(tabind).lay.addWidget(gbut)
             self.tabWidget.widget(tabind).setUpdatesEnabled(True)
 
     def add_user_selected_section(self):
@@ -246,7 +269,8 @@ class Widget(QWidget, FORM_CLASS):
 
     def keyPressEvent(self, e):
         if self.edit_session:
-            self.deletePressSignal.emit()
+            if e.key() == Qt.Key_Delete:
+                self.deletePressSignal.emit()
 
     def generate_ribbon_config(self):
         """ return ribbon setup to save in user config
@@ -334,12 +358,15 @@ class CustomTab(QWidget):
     def dropEvent(self, e):
         # accept only Custom Sections
         if not isinstance(e.source(), CustomSection):
-            return True
+            if isinstance(e.source(), CustomToolButton):
+                e.source().drag_state = False
+            e.setAccepted(False)
+            return
 
         try:
             lay = e.source().parent().lay
         except AttributeError:
-            return True
+            return
 
         source = None
         for i in range(lay.count()):
@@ -352,7 +379,7 @@ class CustomTab(QWidget):
                 break
 
         if source is None:
-            return True
+            return
         lay.takeAt(lay.count()-1)
         addsec = lay.takeAt(lay.count()-1)
         item = lay.takeAt(i)
@@ -493,7 +520,7 @@ class CustomSection(QWidget):
                 if not it.widget().selected:
                     continue
 
-                ind = self.gridLayout.indexOf(it)
+                ind = self.gridLayout.indexOf(it.widget())
                 wid = self.gridLayout.takeAt(ind)
                 wid.widget().turn_off_edit()
                 wid.widget().deleteLater()
@@ -566,14 +593,14 @@ class CustomSection(QWidget):
             # this on will be find by compositions after loading
             # documentation purposes
             self.tbut.setIcon(
-                QIcon(os.path.join(dirnm, 'icons', 'wyrys.png'))
+                QIcon(os.path.join(dirnm, 'icons', 'compositions_giap.png'))
             )
             self.tbut.setToolTip(tr("Composition settings"))
 
         if oname == 'giapWWWSite':
             self.tbut.clicked.connect(lambda x: webbrowser.open('www.giap.pl'))
             self.tbut.setIcon(
-                QIcon(os.path.join(dirnm, 'icons', 'giap_logo.png'))
+                QIcon(os.path.join(dirnm, 'icons', 'web_giap.png'))
             )
             self.tbut.setToolTip(tr("GIAP www site"))
 
@@ -666,6 +693,7 @@ class CustomSection(QWidget):
         if isinstance(event.source(), CustomToolButton):
             # check if source and target are in the same gridlayout
             if event.source().parent() is not self:
+                event.source().drag_state = False
                 return
 
             # swap toolbuttons
@@ -680,6 +708,10 @@ class CustomSection(QWidget):
                     break
 
             if source == self.target:
+                try:
+                    it.widget().drag_state = False
+                except Exception:
+                    pass
                 return
 
             if None not in [source, self.target]:
@@ -691,6 +723,8 @@ class CustomSection(QWidget):
                 it2 = self.gridLayout.takeAt(j)
                 it1.widget().setDown(False)
                 it2.widget().setDown(False)
+                it1.widget().drag_state = False
+                it2.widget().drag_state = False
                 self.gridLayout.addItem(it1, *p2)
                 self.gridLayout.addItem(it2, *p1)
 
@@ -754,6 +788,7 @@ class CustomToolButton(QToolButton):
         self.selected = False
         self.selected_style = '*{border: 3px solid red}'
         self.org_state = True  # True - enabled for click outside edit sesion
+        self.drag_state = False
 
     def eventFilter(self, widget, event):
         if event.type() == QEvent.MouseButtonRelease and self.edit:
@@ -793,9 +828,10 @@ class CustomToolButton(QToolButton):
             else:
                 self.setStyleSheet(self.selected_style)
                 self.selected = True
+            self.drag_state = False
 
     def mouseMoveEvent(self, e):
-        if not self.edit:
+        if not self.edit or not self.drag_state:
             return
         drag = QDrag(self)
         drag.setDragCursor(QPixmap("images/drag.png"), Qt.MoveAction)
@@ -815,6 +851,7 @@ class CustomToolButton(QToolButton):
         if self.edit:
             event.accept()
             self.setDown(False)
+            self.drag_state = not self.drag_state
             return
         else:
             super(CustomToolButton, self).mousePressEvent(event)

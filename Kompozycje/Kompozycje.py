@@ -192,14 +192,13 @@ class CompositionsConfig(QObject):
 
     def create_table_model(self):
         self.model_kompozycji.clear()
-        if self.dlg.radioButton_1.isChecked():
-            self.load_compositions(self.kompozycje.stworzone_kompozycje)
+        self.load_compositions(self.kompozycje.stworzone_kompozycje)
         self.order_changed = False
 
     def run(self):
         self.dlg = DodajKompozycjeDialog()
 
-        self.dlg.radioButton_1.clicked.connect(self.create_table_model)
+        # self.dlg.radioButton_1.clicked.connect(self.create_table_model)
         self.dlg.dodaj_kompozycje.clicked.connect(self.dodaj)
         self.dlg.edytuj_kompozycje.clicked.connect(self.edytuj)
         self.dlg.usun_kompozycje.clicked.connect(self.usun)
@@ -237,7 +236,7 @@ class CompositionsConfig(QObject):
         self.dlg.showNormal()
 
     def save(self, new_order=True):
-        if new_order and self.dlg.radioButton_1.isChecked():
+        if new_order: # and self.dlg.radioButton_1.isChecked():
             for row in range(self.model_kompozycji.rowCount()):
                 comp_name = self.model_kompozycji.item(row, 0).data(0)
                 self.kompozycje.stworzone_kompozycje[comp_name]['order'] = row
@@ -276,8 +275,10 @@ class CompositionsConfig(QObject):
             item = QStandardItem(str(comp_name))
             item.setEditable(False)
             self.model_kompozycji.appendRow(item)
-        self.model_kompozycji.setHorizontalHeaderLabels([tr("Compositions")])
+        # self.model_kompozycji.setHorizontalHeaderLabels([tr("Compositions")])
         self.dlg.tableView.setModel(self.model_kompozycji)
+        self.dlg.tableView.horizontalHeader().hide()
+        self.dlg.tableView.verticalHeader().hide()
 
     def move_comp_up(self):
         table_sel_model = self.dlg.tableView.selectionModel()
@@ -469,6 +470,9 @@ class CompositionsSaver(object):
     def run(self):
         self.dlg = CompositionsSaverDialog()
         self.dlg.tabela.setModel(self.model)
+        self.dlg.tabela.horizontalHeader().hide()
+        self.dlg.tabela.verticalHeader().hide()
+
         result = self.dlg.exec_()
         if result:
             self.write()

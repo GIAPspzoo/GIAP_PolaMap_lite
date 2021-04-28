@@ -42,10 +42,26 @@ class SearcherTool:
 
     def fetch_voivodeship(self):
         """Fetching voivodeship list from GUGiK"""
-        fe = FetchULDK()
-        fe.fetch_voivodeships()
+        voi_list = [
+            'Dolnośląskie|02',
+            'Kujawsko-Pomorskie|04',
+            'Lubelskie|06',
+            'Lubuskie|08',
+            'Łódzkie|10',
+            'Małopolskie|12',
+            'Mazowieckie|14',
+            'Opolskie|16',
+            'Podkarpackie|18',
+            'Podlaskie|20',
+            'Pomorskie|22',
+            'Śląskie|24',
+            'Świętokrzyskie|26',
+            'Warmińsko-Mazurskie|28',
+            'Wielkopolskie|30',
+            'Zachodniopomorskie|32',
+        ]
         self.dock.comboBox_woj.blockSignals(True)
-        self.dock.comboBox_woj.addItems(fe.responce)
+        self.dock.comboBox_woj.addItems(voi_list)
         self.dock.comboBox_woj.blockSignals(False)
         self.clear_comboBoxes('voi')
 
