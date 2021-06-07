@@ -2,7 +2,7 @@
 import os.path
 
 from qgis.PyQt.QtCore import QTranslator, QCoreApplication, QSize, \
-    Qt, QRect, QPropertyAnimation, QEasingCurve, QEvent, QSettings
+    Qt, QRect, QPropertyAnimation, QEasingCurve, QSettings
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QToolBar, QToolButton, QWidget, \
     QHBoxLayout, QDockWidget, QMenu, QVBoxLayout
