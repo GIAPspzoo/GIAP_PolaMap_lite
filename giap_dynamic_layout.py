@@ -177,12 +177,15 @@ class Widget(QWidget, FORM_CLASS):
             self.tabWidget.widget(tabind).lay.addStretch()
             if not isinstance(lay.itemAt(cnt-1), QPushButton):
                 gbut = QPushButton()
+                gbut.clicked.connect(lambda x: webbrowser.open('www.giap.pl'))
                 gbut.setIcon(
                     QIcon(os.path.join(plug_dir, 'icons', 'giap.png'))
                 )
+                gbut.setCursor(QCursor(Qt.PointingHandCursor))
+                gbut.setToolTip("GIAP.pl - Strona WWW")
                 gbut.setStyleSheet(
-                    'border-width: 0px; width: 220px; height:72px;'
-                    'background-color: transparent;'
+                    'QPushButton{border-width: 0px; width: 220px; height:72px;'
+                    'background-color: transparent;}'
                 )
                 gbut.setIconSize(QSize(220-4, 72-4))
                 self.tabWidget.widget(tabind).lay.addWidget(gbut)
@@ -596,13 +599,6 @@ class CustomSection(QWidget):
                 QIcon(os.path.join(dirnm, 'icons', 'compositions_giap.png'))
             )
             self.tbut.setToolTip(tr("Composition settings"))
-
-        if oname == 'giapWWWSite':
-            self.tbut.clicked.connect(lambda x: webbrowser.open('www.giap.pl'))
-            self.tbut.setIcon(
-                QIcon(os.path.join(dirnm, 'icons', 'web_giap.png'))
-            )
-            self.tbut.setToolTip(tr("GIAP www site"))
 
     def unload_custom_actions(self):
         if self.orto_add:
