@@ -23,13 +23,13 @@ class StyleManager:
 
         # here add default styles, otherwise the will not be seen in qgis
         self.styles = {
-            'giap': 'giap.qss',
-            'blueglass': 'blueglass.qss',
-            'coffee': 'coffee.qss',
-            'darkblue': 'darkblue.qss',
-            'darkorange': 'darkorange.qss',
-            'lightblue': 'lightblue.qss',
-            'wombat': 'wombat.qss',
+            'GIAP': 'giap.qss',
+            #'blueglass': 'blueglass.qss',
+            #'coffee': 'coffee.qss',
+            #'darkblue': 'darkblue.qss',
+            #'darkorange': 'darkorange.qss',
+            #'lightblue': 'lightblue.qss',
+            'ciemny': 'wombat.qss',
         }
 
     def get_style_list(self):
