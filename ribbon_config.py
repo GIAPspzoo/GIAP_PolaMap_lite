@@ -186,7 +186,6 @@ RIBBON_DEFAULT = [
                 'btns': [
                     ['giapCompositions', 0, 0],
                     ['giapWMS', 0, 1],
-                    ['giapWWWSite', 0, 2],
                 ]
             },
 
