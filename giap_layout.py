@@ -61,6 +61,7 @@ class MainTabQgsWidget:
 
         self.iface.projectRead.connect(self.projekt_wczytany)
         self.iface.newProjectCreated.connect(self.projekt_wczytany)
+        self.iface.initializationCompleted.connect(self.load_ribbons)
 
     def initGui(self):
         style = self.main_widget.styleSheet()
@@ -71,33 +72,6 @@ class MainTabQgsWidget:
         """)
         self.save_default_user_layout()
         self.style_manager.run_last_style()
-
-        # turn on ribbon editing
-        self.main_widget.edit_session_toggle()
-
-        ribbon_conf = self.config.load_user_ribbon_setup()
-        if not ribbon_conf:
-            ribbon_conf = RIBBON_DEFAULT
-
-        for dtab in ribbon_conf:
-            itab, tab = self.main_widget.add_tab(dtab['tab_name'])
-            for dsec in dtab['sections']:
-                sec = self.main_widget.add_section(
-                    itab, tr(dsec['label']), dsec['btn_size']
-                )
-                for btn in dsec['btns']:
-                    child = self.iface.mainWindow().findChild(QAction, btn[0])
-                    if child is None:
-                        sec.add_action(*btn)
-                    else:
-                        sec.add_action(child, *btn[1:])
-
-                if dsec['label'] == 'Prints':
-                    self.custom_prints()
-
-        self.main_widget.tabWidget.setCurrentIndex(0)
-        # turn off ribbon editing
-        self.main_widget.edit_session_toggle()
 
         self.kompozycje = CompositionsTool(self.iface, self)
 
@@ -151,6 +125,33 @@ class MainTabQgsWidget:
         self.searcher.run()
         # set strong focus to get keypressevent
         self.main_widget.setFocusPolicy(Qt.StrongFocus)
+
+    def load_ribbons(self):
+        # turn on ribbon editing
+        self.main_widget.edit_session_toggle()
+        self.main_widget.tabWidget.setCurrentIndex(0)
+
+        ribbon_conf = self.config.load_user_ribbon_setup()
+        if not ribbon_conf:
+            ribbon_conf = RIBBON_DEFAULT
+
+        for dtab in ribbon_conf:
+            itab, tab = self.main_widget.add_tab(dtab['tab_name'])
+            for dsec in dtab['sections']:
+                sec = self.main_widget.add_section(
+                    itab, tr(dsec['label']), dsec['btn_size']
+                )
+                for btn in dsec['btns']:
+                    child = self.iface.mainWindow().findChild(QAction, btn[0])
+                    if child is None:
+                        sec.add_action(*btn)
+                    else:
+                        sec.add_action(child, *btn[1:])
+                if dsec['label'] == 'Prints':
+                    self.custom_prints()
+
+        # turn off ribbon editing
+        self.main_widget.edit_session_toggle()
 
     def custom_prints(self):
         """Load custom tools to qgis"""
