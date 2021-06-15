@@ -313,6 +313,172 @@ STANDARD_TOOLS = [
                 ]
             },
 
+            {
+               'label': 'Geoprocessing',
+               'id': 'Geoprocessing',
+               'btn_size': 30,
+               'btns': [
+                   ['mProcessingUserMenu_native:buffer', 0, 0],
+                   ['mProcessingUserMenu_native:clip', 1, 0],
+                   ['mProcessingUserMenu_native:convexhull', 0, 1],
+                   ['mProcessingUserMenu_native:difference', 0, 2],
+                   ['mProcessingUserMenu_native:dissolve', 0, 3],
+                   ['mProcessingUserMenu_native:intersection',  1, 1],
+                   ['mProcessingUserMenu_native:symmetricaldifference', 1, 2],
+                   ['mProcessingUserMenu_native:union', 1, 3],
+                   ['mProcessingUserMenu_qgis:eliminateselectedpolygons', 0, 4],
+               ],
+           },
+
+           {
+               'label': 'Geometry',
+               'id': 'Geometry',
+               'btn_size': 30,
+               'btns': [
+                   ['mProcessingUserMenu_native:centroids', 0, 0],
+                   ['mProcessingUserMenu_native:collect', 0, 1],
+                   ['mProcessingUserMenu_native:densifygeometries', 0, 2],
+                   ['mProcessingUserMenu_native:extractvertices', 0, 3],
+                   ['mProcessingUserMenu_native:multiparttosingleparts', 0, 4],
+                   ['mProcessingUserMenu_native:polygonstolines', 0, 5],
+                   ['mProcessingUserMenu_native:simplifygeometries',  1, 0],
+                   ['mProcessingUserMenu_qgis:checkvalidity', 1, 1],
+                   ['mProcessingUserMenu_qgis:delaunaytriangulation', 1, 2],
+                   ['mProcessingUserMenu_qgis:exportaddgeometrycolumns', 1, 3],
+                   ['mProcessingUserMenu_qgis:linestopolygons', 1, 4],
+                   ['mProcessingUserMenu_qgis:voronoipolygons', 1, 5],
+                ],
+           },
+
+           {
+               'label': 'Analysis',
+               'id': 'Analysis',
+               'btn_size': 30,
+               'btns': [
+                   ['mProcessingUserMenu_native:countpointsinpolygon', 0, 0],
+                   ['mProcessingUserMenu_native:lineintersections', 0, 1],
+                   ['mProcessingUserMenu_native:meancoordinates', 0, 2],
+                   ['mProcessingUserMenu_native:nearestneighbouranalysis', 0, 3],
+                   ['mProcessingUserMenu_native:sumlinelengths', 1, 0],
+                   ['mProcessingUserMenu_qgis:basicstatisticsforfields', 1, 1],
+                   ['mProcessingUserMenu_qgis:distancematrix', 1, 2],
+                   ['mProcessingUserMenu_qgis:listuniquevalues', 1, 3],
+               ],
+           },
+
+           {
+               'label': 'Research',
+               'id': 'Research',
+               'btn_size': 30,
+               'btns': [
+                   ['mProcessingUserMenu_native:creategrid', 0, 0],
+                   ['mProcessingUserMenu_native:polygonfromlayerextent', 0, 1],
+                   ['mProcessingUserMenu_native:randompointsinextent', 0, 2],
+                   ['mProcessingUserMenu_native:randompointsinpolygons', 0, 3],
+                   ['mProcessingUserMenu_native:randompointsonlines', 0, 4],
+                   ['mProcessingUserMenu_native:selectbylocation', 0, 5],
+                   ['mProcessingUserMenu_qgis:randompointsinlayerbounds', 1, 0],
+                   ['mProcessingUserMenu_qgis:randompointsinsidepolygons', 1, 1],
+                   ['mProcessingUserMenu_qgis:randomselection', 1, 2],
+                   ['mProcessingUserMenu_qgis:randomselectionwithinsubsets', 1, 3],
+                   ['mProcessingUserMenu_qgis:regularpoints', 1, 4],
+               ],
+           },
+
+           {
+               'label': 'Data tools',
+               'id': 'Data tools',
+               'btn_size': 30,
+               'btns': [
+                   ['mProcessingUserMenu_native:createspatialindex', 0, 0],
+                   ['mProcessingUserMenu_native:joinattributesbylocation', 0, 1],
+                   ['mProcessingUserMenu_native:mergevectorlayers', 0, 2],
+                   ['mProcessingUserMenu_native:reprojectlayer', 1, 0],
+                   ['mProcessingUserMenu_native:splitvectorlayer', 1, 1],
+               ],
+           },
+
+           {
+               'label': 'Raster',
+               'id': 'Raster',
+               'btn_size': 60,
+               'btns': [
+                   ['mActionShowRasterCalculator', 0, 0],
+                   ['mActionShowGeoreferencer', 0, 1],
+                   ['mActionShowAlignRasterTool', 0, 2],
+               ],
+           },
+
+           {
+               'label': 'Raster analysis',
+               'id': 'Raster analysis',
+               'btn_size': 30,
+               'btns': [
+                   ['mProcessingUserMenu_gdal:aspect', 0, 0],
+                   ['mProcessingUserMenu_gdal:fillnodata', 0, 1],
+                   ['mProcessingUserMenu_gdal:gridaverage', 0, 2],
+                   ['mProcessingUserMenu_gdal:griddatametrics', 0, 3],
+                   ['mProcessingUserMenu_gdal:gridinversedistance', 0, 4],
+                   ['mProcessingUserMenu_gdal:gridnearestneighbor', 0, 5],
+                   ['mProcessingUserMenu_gdal:hillshade', 0, 6],
+                   ['mProcessingUserMenu_gdal:nearblack', 1, 0],
+                   ['mProcessingUserMenu_gdal:proximity', 1, 1],
+                   ['mProcessingUserMenu_gdal:roughness', 1, 2],
+                   ['mProcessingUserMenu_gdal:sieve', 1, 3],
+                   ['mProcessingUserMenu_gdal:slope', 1, 4],
+                   ['mProcessingUserMenu_gdal:tpitopographicpositionindex', 1, 5],
+                   ['mProcessingUserMenu_gdal:triterrainruggednessindex', 1, 6],
+               ],
+           },
+
+           {
+               'label': 'Projections',
+               'id': 'Projections',
+               'btn_size': 60,
+               'btns': [
+                   ['mProcessingUserMenu_gdal:warpreproject', 0, 0],
+                   ['mProcessingUserMenu_gdal:assignprojection', 0, 1],
+                   ['mProcessingUserMenu_gdal:extractprojection', 0, 2],
+               ],
+           },
+
+           {
+               'label': 'Miscellaneous',
+               'id': 'Miscellaneous',
+               'btn_size': 30,
+               'btns': [
+                   ['mProcessingUserMenu_gdal:buildvirtualraster', 0, 0],
+                   ['mProcessingUserMenu_gdal:gdalinfo', 0, 1],
+                   ['mProcessingUserMenu_gdal:merge', 0, 2],
+                   ['mProcessingUserMenu_gdal:overviews', 1, 0],
+                   ['mProcessingUserMenu_gdal:tileindex', 1, 1],
+               ],
+           },
+
+           {
+               'label': 'Extract',
+               'id': 'Extract',
+               'btn_size': 30,
+               'btns': [
+                   ['mProcessingUserMenu_gdal:cliprasterbyextent', 0, 0],
+                   ['mProcessingUserMenu_gdal:cliprasterbymasklayer', 0, 1],
+                   ['mProcessingUserMenu_gdal:contour', 1, 0],
+               ],
+           },
+
+           {
+               'label': 'Conversion',
+               'id': 'Conversion',
+               'btn_size': 30,
+               'btns': [
+                   ['mProcessingUserMenu_gdal:pcttorgb', 0, 0],
+                   ['mProcessingUserMenu_gdal:rgbtopct', 0, 1],
+                   ['mProcessingUserMenu_gdal:polygonize', 0, 1],
+                   ['mProcessingUserMenu_gdal:rasterize', 1, 0],
+                   ['mProcessingUserMenu_gdal:translate', 1, 1],
+               ],
+           },
+
 ]
 
 DEFAULT_TABS = ['Main', 'Tools', 'GIAP Tools', ]
