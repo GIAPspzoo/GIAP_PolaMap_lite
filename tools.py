@@ -33,7 +33,7 @@ class StyleManager:
         }
 
     def get_style_list(self):
-        return [x for x in self.style.keys()]
+        return [x for x in self.styles.keys()]
 
     def run_last_style(self):
         """ load active style on stratup"""
