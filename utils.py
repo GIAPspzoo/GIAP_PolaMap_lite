@@ -481,4 +481,4 @@ STANDARD_TOOLS = [
 
 ]
 
-DEFAULT_TABS = ['Main', 'Tools', 'GIAP Tools', ]
+DEFAULT_TABS = ['Main', 'Tools', 'GIAP Tools', 'Vector', 'Raster']

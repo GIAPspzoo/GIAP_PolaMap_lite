@@ -129,7 +129,6 @@ class MainTabQgsWidget:
     def load_ribbons(self):
         # turn on ribbon editing
         self.main_widget.edit_session_toggle()
-        self.main_widget.tabWidget.setCurrentIndex(0)
 
         ribbon_conf = self.config.load_user_ribbon_setup()
         if not ribbon_conf:
@@ -150,6 +149,7 @@ class MainTabQgsWidget:
                 if dsec['label'] == 'Prints':
                     self.custom_prints()
 
+        self.main_widget.tabWidget.setCurrentIndex(0)
         # turn off ribbon editing
         self.main_widget.edit_session_toggle()
 
