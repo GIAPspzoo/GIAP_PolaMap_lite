@@ -156,6 +156,26 @@ Kompozycje zostaną uaktualnione.</translation>
         <translation>Wybierz kompozycję do edycji</translation>
     </message>
     <message>
+    <location filename="../Kompozycje/nowa_kompozycja.py" line="42"/>
+        <source>No layers in selected layer</source>
+        <translation>Brak warstw w wybrane warstwy</translation>
+    </message>
+    <message>
+    <location filename="../Kompozycje/nowa_kompozycja.py" line="56"/>
+        <source>No layers in selected layer</source>
+        <translation>Brak warstw w wybrane warstwy</translation>
+    </message>
+    <message>
+    <location filename="../Kompozycje/nowa_kompozycja.py" line="68"/>
+        <source>No layers in selected layer</source>
+        <translation>Brak warstw w wybrane warstwy</translation>
+    </message>
+    <message>
+    <location filename="../Kompozycje/nowa_kompozycja.py" line="80"/>
+        <source>No layers in selected layer</source>
+        <translation>Brak warstw w wybrane warstwy</translation>
+    </message>
+    <message>
         <location filename="../Kompozycje/Kompozycje.py" line="775"/>
         <source>Enter composition name</source>
         <translation>Wprowadź nazwę kompozycji</translation>
