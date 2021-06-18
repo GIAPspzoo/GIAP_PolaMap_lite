@@ -3,3 +3,4 @@ __pycache__/*
 *.py[cod]
 Session.vim
 .idea/
+config.json

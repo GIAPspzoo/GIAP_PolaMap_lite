@@ -305,6 +305,7 @@ color: black;</string>
                   <property name="styleSheet">
                    <string notr="true">QTableView {
 border-width: 0px;
+color: black;
 }</string>
                   </property>
                   <property name="selectionMode">
