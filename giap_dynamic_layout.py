@@ -7,8 +7,10 @@ from qgis.PyQt.QtGui import QDrag, QPainter, QPixmap, QCursor, QIcon
 from qgis.PyQt.QtWidgets import QWidget, QApplication, QHBoxLayout,\
     QFrame, QLabel, QPushButton, QTabBar, QToolButton, QVBoxLayout, \
     QGridLayout, QSpacerItem, QLineEdit, QWidgetItem, QAction, \
-    QBoxLayout
+    QBoxLayout, QMessageBox
 
+from .config import Config
+from .CustomMessageBox import CustomMessageBox
 from .OrtoTools import OrtoAddingTool
 from .utils import STANDARD_TOOLS, DEFAULT_TABS, tr
 
@@ -30,7 +32,8 @@ class Widget(QWidget, FORM_CLASS):
         self.parent = parent  # mainWindow()
         self.tabs = []  # list w tabwidgets
         self.edit_session = False
-
+        self.conf = Config()
+        self.save = QMessageBox.Yes
         # Custom Tools
         self.orto_add = False
 
@@ -110,15 +113,26 @@ class Widget(QWidget, FORM_CLASS):
         # sep.setObjectName('giapLine')
         # sep.setMinimumSize(QSize(6, 100))
         # cwidget.lay.addWidget(sep)
+        section.setVisible(True)
         self._section_control(itab)
 
         return section
 
-    def edit_session_toggle(self):
+    def edit_session_toggle(self, ask=False):
         """Show controls for edti session"""
 
         self.edit_session = not self.edit_session
-        self.editChanged.emit(self.edit_session)
+
+        self.conf = Config()
+        if ask and self.conf.setts['ribbons_config'] != self.generate_ribbon_config():
+            self.save = CustomMessageBox(None, tr("Do you want to save your changes?")).button_yes_no()
+            if self.save == QMessageBox.Yes:
+                self.editChanged.emit(False)
+            else:
+                self.editChanged.emit(True)
+        else:
+            self.editChanged.emit(self.edit_session)
+
         self._tab_controls()
 
     def _tab_controls(self):
