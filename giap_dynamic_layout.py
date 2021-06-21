@@ -204,7 +204,7 @@ class Widget(QWidget, FORM_CLASS):
         ind = self.tabWidget.currentIndex()
         # selected tools
         selected = [x.text() for x in self.dlg.toolList.selectedItems()]
-        self.tabWidget.setUpdatesEnabled(False)
+        self.tabWidget.setUpdatesEnabled(True)
         print_trig = False
         for sel in selected:
             secdef = [x for x in STANDARD_TOOLS if x['label'] == sel][0]
