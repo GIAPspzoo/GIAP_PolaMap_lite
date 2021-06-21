@@ -341,9 +341,8 @@ class CustomTab(QWidget):
 
         self.lab = lab
         self.lay = QHBoxLayout()
-        self.lay.setSpacing(15)
-        self.lay.setMargin(0)
-        self.lay.setContentsMargins(1, 1, 1, 1)
+        self.lay.setSpacing(0)
+        self.lay.setMargin(6)
         self.setLayout(self.lay)
         self.setObjectName('giapTab')
 
@@ -419,8 +418,8 @@ class CustomSection(QWidget):
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.edit = True
         self.setAcceptDrops(True)
-        self.setMaximumSize(QSize(99999, 100))
-        self.setMinimumSize(QSize(70, 100))
+        self.setMaximumSize(QSize(99999, 110))
+        self.setMinimumSize(QSize(70, 110))
 
         if parent is not None:
             parent.parent().editChanged.connect(self.edit_toggle)
@@ -432,8 +431,6 @@ class CustomSection(QWidget):
         self.target = None
 
         self.verticalLayout = QVBoxLayout()
-        self.verticalLayout.setSpacing(3)
-        self.verticalLayout.setMargin(3)
         self.verticalLayout.setContentsMargins(7, 3, 7, 3)
         self.button_size = 30
 
@@ -445,6 +442,7 @@ class CustomSection(QWidget):
         self.clabel.setObjectName("giapSectionLabel")
         self.clabel.setMaximumSize(QSize(100000, 25))
         self.clabel.setMinimumSize(QSize(50, 25))
+        self.clabel.setAlignment(Qt.AlignCenter)
 
         self.pushButton_close_sec = QToolButton(self)
         self.pushButton_close_sec.setObjectName("giapSectionClose")
@@ -457,6 +455,12 @@ class CustomSection(QWidget):
 
         self.horizontalLayout_2.addWidget(self.clabel)
         self.horizontalLayout_2.addWidget(self.pushButton_close_sec)
+        self.sep = QFrame()
+        self.sep.setFrameShape(QFrame.VLine)
+        self.sep.setFrameShadow(QFrame.Raised)
+        self.sep.setObjectName('giapLine')
+        self.sep.setMinimumSize(QSize(6, 100))
+
         self.verticalLayout.addLayout(self.horizontalLayout_2)
 
         self.gridLayout = QGridLayout()
@@ -464,10 +468,14 @@ class CustomSection(QWidget):
         self.gridLayout.setObjectName(u"gridLayout")
 
         self.verticalLayout.addLayout(self.gridLayout)
-
+        self.horizontalLayout = QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.horizontalLayout.addLayout(self.verticalLayout)
+        self.horizontalLayout.addWidget(self.sep)
+        self.horizontalLayout.setContentsMargins(4,2,4,2)
         self.update()
 
-        self.setLayout(self.verticalLayout)
+        self.setLayout(self.horizontalLayout)
         self.pushButton_close_sec.clicked.connect(self.unload)
 
     def unload(self):
