@@ -348,6 +348,16 @@ Porszę czekać...</translation>
         <translation>Zmień styl</translation>
     </message>
     <message>
+        <location filename="../giap_layout.py" line="298"/>
+        <source>Complete edit</source>
+        <translation>Zakończ edycję</translation>
+    </message>
+    <message>
+        <location filename="../giap_dynamic_layout.py" line="128"/>
+        <source>Do you want to save your changes?</source>
+        <translation>Czy chcesz zakończyć edycję?</translation>
+    </message>
+    <message>
         <location filename="../giap_dynamic_layout.py" line="571"/>
         <source>Composition settings</source>
         <translation>Ustawienia kompozycji</translation>
@@ -518,7 +528,7 @@ Porszę czekać...</translation>
     <message>
         <location filename="../Kompozycje/compositions_saver.ui" line="383"/>
         <source>Save selected</source>
-        <translation>Zaznacz wybrane</translation>
+        <translation>Zapisz wybrane</translation>
     </message>
     <message>
         <location filename="../Kompozycje/compositions_saver.ui" line="466"/>

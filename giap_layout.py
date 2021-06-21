@@ -5,7 +5,7 @@ from qgis.PyQt.QtCore import QTranslator, QCoreApplication, QSize, \
     Qt, QRect, QPropertyAnimation, QEasingCurve, QSettings
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QToolBar, QToolButton, QWidget, \
-    QHBoxLayout, QDockWidget, QMenu, QVBoxLayout
+    QHBoxLayout, QDockWidget, QMenu, QVBoxLayout, QMessageBox
 
 # Initialize Qt resources from file resources.py
 from qgis._core import QgsProject, Qgis
@@ -93,7 +93,7 @@ class MainTabQgsWidget:
         self.editButton.setText(tr("Edit menu"))
         self.editButton.setCheckable(True)
         self.editButton.setBaseSize(QSize(25, 25))
-        self.editButton.toggled.connect(self.main_widget.edit_session_toggle)
+        self.editButton.toggled.connect(self.set_edit_session)
         self.menu_show()
 
         self.styleButton = QToolButton()
@@ -292,6 +292,20 @@ class MainTabQgsWidget:
         else:
             self.set_animation(mbar, splitter_end, splitter_start, 200)
             mbar.hide()
+
+    def set_edit_session(self):
+        if self.editButton.isChecked():
+            self.editButton.setText(tr("Complete edit"))
+            self.main_widget.edit_session_toggle()
+        else:
+            self.editButton.setText(tr("Edit menu"))
+            self.main_widget.edit_session_toggle(True)
+
+            if self.main_widget.save == QMessageBox.No:
+
+                for tabind in range(len(self.main_widget.tabs)):
+                    self.main_widget.remove_tab(0)
+                self.load_ribbons()
 
     def ustaw_legende(self):
         self.layer_panel = self.iface.mainWindow().findChild(
