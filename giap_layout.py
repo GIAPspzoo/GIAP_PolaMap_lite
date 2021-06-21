@@ -300,10 +300,21 @@ class MainTabQgsWidget:
 
         self.layer_view = self.iface.layerTreeView()
         self.layer_view.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-
         layer_toolbar = self.layer_view.parent().children()[1]
 
         # not working on qgis 3.18+
+
+        for toolbar_item in range(2,13):
+            if isinstance(layer_toolbar.children()[toolbar_item], QToolButton):
+                layer_toolbar.children()[toolbar_item].setStyleSheet(
+                    'background-color:qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 #41617c, stop:1 #5a87ac);'
+                    'width: 25px;'
+                    'heigth 25px;'
+                    'margin-left: 6px;'
+                    'border-radius: 4px;'
+                    'padding: 3px;'
+                )
+
         if isinstance(layer_toolbar.children()[9], QToolButton):
             layer_toolbar.children()[9].setPopupMode(2)
         widget_w_warstwach = QWidget()

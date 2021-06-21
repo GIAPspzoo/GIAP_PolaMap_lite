@@ -2,14 +2,6 @@
 <ui version="4.0">
  <class>Form</class>
  <widget class="QWidget" name="Form">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>409</width>
-    <height>80</height>
-   </rect>
-  </property>
   <property name="windowTitle">
    <string>Form_comp</string>
   </property>
@@ -114,6 +106,9 @@ font: 9pt &quot;Segoe UI&quot;;
    </property>
    <item>
     <widget class="QFrame" name="frame_3">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -144,6 +139,9 @@ font: 9pt &quot;Segoe UI&quot;;
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="Line" name="line_2">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="minimumSize">
          <size>
           <width>0</width>

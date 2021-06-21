@@ -1,24 +1,22 @@
 
 QToolTip
 {
-    color:  black;
-    background-color: white;
-    border-color: rgb(215, 215, 215);
+    color:white;
     font: 9pt "Segoe UI";
+    font-weight: normal;
+    border-style: outset;
+    border: none;
+    border-radius: 6px;
+    background-color:qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 #41617c, stop:1 #5a87ac);
 }
 
 QWidget
 {
-	color:  white;
+	color: white;
 	background-color:  rgb(53, 85, 109);
 	selection-background-color: white;
 	selection-color:  black;
     font: 9pt "Segoe UI";
-}
-
-QWidget:item:selected
-{
-	background-color: #b7d3e8;
 }
 
 QMenuBar
@@ -66,6 +64,12 @@ QMenu::item:selected
 	color:  black;
 }
 
+QMenu::icon
+{
+    position:absolute;
+    left: 6px;
+}
+
 QWidget:disabled
 {
 	color:  #8b8b8b;
@@ -95,6 +99,11 @@ QLineEdit
 	border: 1px solid #5689b0;
     border-radius: 3px;
     background-color: #4f5a63;
+}
+
+QLineEdit:disabled
+{
+    color: white;
 }
 
 QGroupBox {
@@ -246,7 +255,8 @@ QComboBox:on
 	background-color: #4f5a63;
 	padding-top: 3px;
 	padding-left: 1px;
-	selection-background-color: #4a4a4a;
+	selection-background-color: rgb(53, 85, 109);
+	selection-color: white;
 }
 
 QComboBox QAbstractItemView
@@ -255,7 +265,7 @@ QComboBox QAbstractItemView
 	border-radius: 4px;
 	border: 1px solid  #6fb1e3;
 	selection-background-color: #4f5a63;
-    padding: 4px 10px 4px 10px;
+    padding: 4px;
     width: 1.9em;
 }
 
@@ -428,6 +438,10 @@ QTreeView:item:selected
 	background-color: #b7d3e8;
 }
 
+QTreeView:item:hover
+{
+    background-color: #b7d3e8;
+}
 
 QTreeView:branch:selected, 
 QTreeView:branch:hover
@@ -516,7 +530,6 @@ QToolBar QToolButton
 {
     font: 8pt "Segoe UI";
 	font-weight: bold;
-    border: none;
 }
 QToolBar QToolButton::menu-arrow {
     background-image: url(icons/down_arrow_light.png);
@@ -549,11 +562,11 @@ QToolButton:hover
 
 QToolButton:checked {
     color: white;
-    background-color: #b7d3e8;
+    background-color: #5689b0;
     border: solid;
     border-radius: 2px;
     border-width: 2px;
-    border-color: #b7d3e8;
+    border-color: #5689b0;
 }
 
 QTableView#tagView
