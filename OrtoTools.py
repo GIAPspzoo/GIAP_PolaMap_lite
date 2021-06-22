@@ -76,10 +76,9 @@ class OrtoAddingTool(object):
                         QgsProject.instance().layerTreeRoot().findLayer(
                             layer).setItemVisibilityChecked(checked)
             except RuntimeError:
-                item.setChecked(False)
-        else:
-            self.add_to_map(layer_name)
-            self.create_menu()
+                item.setChecked(True)
+        self.add_to_map(layer_name)
+        self.create_menu()
 
     def add_to_map(self, name):
         if not QgsProject.instance().mapLayersByName(name):
