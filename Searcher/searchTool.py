@@ -10,8 +10,6 @@ class SearcherTool:
         self.dock = dock
 
     def run(self):
-        self.dock.toolButton_address.clicked.connect(
-            self.search_address)
         self.dock.lineEdit_address.returnPressed.connect(
             self.search_address)
         self.dock.comboBox_woj.currentIndexChanged.connect(

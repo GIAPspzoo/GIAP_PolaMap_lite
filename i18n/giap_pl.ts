@@ -589,6 +589,21 @@ Porszę czekać...</translation>
         <translation>nr działki lub TERYT</translation>
     </message>
     <message>
+        <location filename="../giap_dynamic_layout.ui" line="198"/>
+        <source>Enter the data according to the scheme: TERYT: 146513_8.1016.17/2 or fill in the previous fields and indicate the parcel number, e.g. 17/2</source>
+        <translation>Wpisz dane według schematu: TERYT: 146513_8.1016.17/2 lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
+    </message>
+    <message>
+        <location filename="../giap_dynamic_layout.ui" line="237"/>
+        <source>Enter the data according to the scheme: for the address point: Warszawa, Pasaż Ursynowski 1, for the street: Warszawa, Pasaż Ursynowsk</source>
+        <translation>Wpisz dane według schematu: dla punktu adresowego: Warszawa, Pasaż Ursynowski 1, dla ulicy: Warszawa, Pasaż Ursynowski</translation>
+    </message>
+    <message>
+        <location filename="../giap_dynamic_layout.ui" line="243"/>
+        <source>Search address point</source>
+        <translation>Wyszukaj punkt adresowy</translation>
+    </message>
+    <message>
         <location filename="../giap_dynamic_layout.ui" line="244"/>
         <source>Search</source>
         <translation>Szukaj</translation>
@@ -597,6 +612,11 @@ Porszę czekać...</translation>
         <location filename="../giap_dynamic_layout.ui" line="237"/>
         <source>address</source>
         <translation>adres</translation>
+    </message>
+    <message>
+        <location filename="../giap_dynamic_layout.ui" line="295"/>
+        <source>Turn off or turn on search tool</source>
+        <translation>Wyłącz lub włącz wyszukiwarke</translation>
     </message>
 </context>
 <context>

@@ -13,13 +13,13 @@
   <property name="minimumSize">
    <size>
     <width>1291</width>
-    <height>167</height>
+    <height>150</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>1291000</width>
-    <height>178</height>
+    <height>179</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -49,12 +49,6 @@
    </property>
    <item>
     <widget class="QTabWidget" name="tabWidget">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -200,6 +194,9 @@
          <height>16777215</height>
         </size>
        </property>
+       <property name="toolTip">
+        <string>Enter the data according to the scheme: TERYT: 146513_8.1016.17/2 or fill in the previous fields and indicate the parcel number, e.g. 17/2</string>
+       </property>
        <property name="statusTip">
         <string extracomment="wpisz numer działki"/>
        </property>
@@ -236,18 +233,14 @@
          <height>26</height>
         </size>
        </property>
+       <property name="toolTip">
+        <string>Enter the data according to the scheme: for the address point: Warszawa, Pasaż Ursynowski 1, for the street: Warszawa, Pasaż Ursynowsk</string>
+       </property>
        <property name="text">
         <string/>
        </property>
        <property name="placeholderText">
-        <string>address</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="toolButton_address">
-       <property name="text">
-        <string>Search</string>
+        <string>Search address point</string>
        </property>
       </widget>
      </item>
@@ -263,6 +256,48 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelGiapTools">
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 255, 255);
+font: 87 10pt &quot;Arial Black&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Narzędzia GIAP  </string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="runQuickPrintButton">
+       <property name="text">
+        <string>...</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="runCompositionButton">
+       <property name="text">
+        <string>...</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="runOrtoTool">
+       <property name="text">
+        <string>...</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="offOnSearchButton">
+       <property name="toolTip">
+        <string>Turn off or turn on search tool</string>
+       </property>
+       <property name="text">
+        <string>...</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
