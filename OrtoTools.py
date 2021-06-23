@@ -7,7 +7,7 @@ from qgis.core import QgsProject, QgsRasterLayer, QgsMessageLog
 from qgis.utils import iface
 from .utils import WMS_SERVERS, WMS_SERVERS_GROUPS
 from .CustomMessageBox import CustomMessageBox
-from .giap_layout import tr
+from .utils import tr
 
 
 class OrtoAddingTool(object):
