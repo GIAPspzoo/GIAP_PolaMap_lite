@@ -530,6 +530,7 @@ QToolBar QToolButton
 {
     font: 8pt "Segoe UI";
 	font-weight: bold;
+	border: no;
 }
 QToolBar QToolButton::menu-arrow {
     background-image: url(icons/down_arrow_light.png);
