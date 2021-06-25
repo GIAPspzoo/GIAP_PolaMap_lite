@@ -1,15 +1,23 @@
 from .searchAddress import SearchAddress
+
+import json
+
 from .searchParcel import FetchULDK, ParseResponce
+
+from PyQt5.QtWidgets import QCompleter
+
+from urllib.request import urlopen
+
+from urllib.parse import quote
 
 from ..utils import tr
 
-
 class SearcherTool:
+
     def __init__(self, dock, iface):
         self.iface = iface
         self.dock = dock
-
-    def run(self):
+        self.searchaddress_call = SearchAddress()
         self.dock.lineEdit_address.returnPressed.connect(
             self.search_address)
         self.dock.comboBox_woj.currentIndexChanged.connect(
@@ -21,22 +29,114 @@ class SearcherTool:
         self.dock.toolButton_parcel.clicked.connect(self.search_parcel)
         self.dock.lineEdit_parcel.returnPressed.connect(
             self.search_parcel)
-
         self.fetch_voivodeship()
+        # COMPLETER SETUP
+        self.names = []
+        self.completer = QCompleter(self.names)
+        self.dock.lineEdit_address.setCompleter(self.completer)
+        self.dock.lineEdit_address.textEdited.connect(self.adress_changed)
+
+
+
+
+    def adress_changed(self):
+        # data storage for list of strings adresses defined by input in search bracket
+        score = self.tips(self.dock.lineEdit_address)
+        # setting completer as None and deleting previous completer
+        self.dock.lineEdit_address.setCompleter(None)
+        self.completer.deleteLater()
+        # new completer for actual purposes
+        self.completer = QCompleter(score)
+        self.dock.lineEdit_address.setCompleter(self.completer)
+
+
+
+
+    def tips(self, user_input):
+
+        address = user_input.displayText()
+
+        if len(address.split(',')) == 1:
+            return ['']
+
+
+        url_pref = 'http://services.gugik.gov.pl/uug/?request=GetAddress&location='
+        quo_adr = quote(address)
+
+
+        # trying to open link which script made above by prefix and quoting the search bracket input
+        with urlopen(url_pref + quo_adr) as json_file:
+            try:
+                # loading json type of data from link
+                data = json.loads(json_file.read().decode())
+                obj_type, limit = data['type'], data['found objects']
+                counter, score= 1, []
+                # if finds nothing completion field is empty
+                if limit == 0:
+                    return ['']
+                # dictionary with objects found on json_file
+                obj = data['results']
+
+
+                # there is only 1 object when obj_type == 'address' thats why variable in first bracket in obj is '1'
+                if obj_type == 'address' and data['returned objects'] > 0:
+                    #return [obj['1']['city'] + ', ' + obj['1']['street'] + ' ' + obj['1']['number']]
+                    return [f"{obj['1']['city']}, {obj['1']['street']} {obj['1']['number']}"]
+
+
+                # it has to iterate through streets, we don't know how many streets might be in search result
+                # when we put full name of street it displays only this particular one
+                if obj_type == 'street':
+                    if limit == 1:
+                        return [f"{obj['1']['city']}, {obj['1']['street']}"]
+                    else:
+                        validate=obj[str(counter)]['street'].split()
+                        if len(validate) > 1 and validate[0] == 'ulica':
+                            # loop for streets with 'Miasto, ulica xxx' json coding
+                            while counter <= limit:
+                                street=obj[str(counter)]['street'].split()
+                                score.append(f"{obj[str(counter)]['city']}, {street[1]}")
+                                counter += 1
+                                if len(score) == 3:
+                                    return score
+
+                        else:
+                            # loop for streets with 'Miasto, xxx' json coding
+                            while counter <= limit:
+                                score.append(f"{obj[str(counter)]['city']}, {obj[str(counter)]['street']}")
+                                counter += 1
+                                if len(score) == 3:
+                                    return score
+
+
+                # displays only one city in completer
+                # TODO: when limit > 1 and obj_type == 'city' it has to display all city names in each voivodeship
+                # TODO: and search for this particular but feature wont add voivodeship to search bracket
+                if obj_type == 'city':
+                    return [obj['1']['city']]
+
+
+            # if any error occurred displays nothing TODO: expand errors with popups
+            except (TypeError, IndexError):
+                return ['']
 
     def search_address(self):
-        se = SearchAddress()
-        if not self.dock.lineEdit_address.text():
-            self.iface.messageBar().pushWarning(
-                tr('Invalid'), tr('Empty address field'))
-
-        se.fetch_address(self.dock.lineEdit_address.text())
-        ok, res = se.process_results()
-        if not ok:
-            self.iface.messageBar().pushWarning(
-                tr('Warning'), res)
+        validate_address = self.validate_lineedit()
+        if validate_address:
+            self.searchaddress_call.fetch_address(self.dock.lineEdit_address.text())
+            ok, res = self.searchaddress_call.process_results()
+            if not ok:
+                self.iface.messageBar().pushWarning(
+                    tr('Warning'), res)
+            self.searchaddress_call.add_feats(res)
             return
-        se.add_feats(res)
+
+    def validate_lineedit(self):
+        if self.dock.lineEdit_address.text():
+            return True
+        else:
+            self.iface.messageBar().createMessage(tr('Invalid'), tr('Empty address field'))
+
 
     def fetch_voivodeship(self):
         """Fetching voivodeship list from GUGiK"""

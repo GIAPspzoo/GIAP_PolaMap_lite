@@ -48,6 +48,11 @@
         <source>quick_print</source>
         <translation>Szybki wydruk</translation>
     </message>
+     <message>
+        <location filename="../QuickPrint.py" line="161"/>
+        <source>quick_print</source>
+        <translation>Odznacz zaznaczone warstwy</translation>
+    </message>
     <message>
         <location filename="../QuickPrint.py" line="248"/>
         <source>SCALE: </source>
@@ -109,6 +114,11 @@ Kompozycje zostaną uaktualnione.</translation>
         <location filename="../Kompozycje/Kompozycje.py" line="321"/>
         <source>Some layers from composition are missing,  check composition</source>
         <translation>Brakuje niektórych warstw z kompozycji, sprawdz kompozycję</translation>
+    </message>
+    <message>
+        <location filename="../Kompozycje/Kompozycje.py" line="313"/>
+        <source>The order of the compositions has not been saved! Do you want to save it?</source>
+        <translation>Kolejność kompozycji nie została zapisana! Czy chcesz ją zapisać?</translation>
     </message>
     <message>
         <location filename="../Kompozycje/Kompozycje.py" line="496"/>
