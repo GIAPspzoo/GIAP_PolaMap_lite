@@ -61,7 +61,8 @@ QMenu::item
 
 QMenu::item:selected
 {
-	color:  black;
+    background: #b7d3e8;
+	color:  white;
 }
 
 QMenu::icon
