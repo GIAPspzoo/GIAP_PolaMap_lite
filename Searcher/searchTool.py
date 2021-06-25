@@ -36,9 +36,6 @@ class SearcherTool:
         self.dock.lineEdit_address.setCompleter(self.completer)
         self.dock.lineEdit_address.textEdited.connect(self.adress_changed)
 
-
-
-
     def adress_changed(self):
         # data storage for list of strings adresses defined by input in search bracket
         score = self.tips(self.dock.lineEdit_address)
