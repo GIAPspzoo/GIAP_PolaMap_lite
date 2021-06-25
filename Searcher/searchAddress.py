@@ -7,7 +7,11 @@ from qgis.core import QgsGeometry, QgsFeature, QgsField, QgsFields, \
     QgsProject, QgsVectorLayer, QgsMessageLog, Qgis
 from qgis.PyQt.QtCore import QVariant
 
+
+
 from urllib.error import HTTPError, URLError
+
+
 from http.client import IncompleteRead
 
 from ..utils import tr
@@ -16,7 +20,7 @@ from ..utils import tr
 class SearchAddress:
     def __init__(self):
         self.address = ''
-
+        self.adres = ''
         # fields for layer
         self.layer_fields = [
             QgsField('accuracy', QVariant.String, len=10),
@@ -35,14 +39,15 @@ class SearchAddress:
             QgsField("y", QVariant.Double, "double", 10, 4),
         ]
 
+
+
     def fetch_address(self, address):
         self.address = address
         uug = 'https://services.gugik.gov.pl/uug?request=GetAddress&address='
         url = uug + quote(self.address)
-
         try:
-            with urlopen(url, timeout=5) as u:
-                res = u.read()
+            with urlopen(url, timeout=2) as openedurl:
+                self.res = openedurl.read()
         except IncompleteRead:
             iface.messageBar().pushCritical(
                 tr('Error'), tr('Service unavailable'))
@@ -53,8 +58,7 @@ class SearchAddress:
             iface.messageBar().pushCritical(
                 tr('Error'), tr('Check if address is correct'))
             return
-
-        self.res = res.decode()
+        self.res.decode()
 
     def get_layer(self):
         req_type = self.jres['type']
@@ -122,8 +126,12 @@ class SearchAddress:
         return True, feats
 
     def add_feats(self, feats):
-        lyr = self.get_layer()
-        lyr.dataProvider().addFeatures(feats)
-        lyr.updateExtents()
-        iface.mapCanvas().setExtent(lyr.extent())
-        iface.mapCanvas().refresh()
+        if isinstance(feats, str):
+            pass
+        else:
+            lyr = self.get_layer()
+            lyr.dataProvider().addFeatures(feats)
+            lyr.updateExtents()
+            iface.mapCanvas().setExtent(lyr.extent())
+            iface.mapCanvas().refresh()
+

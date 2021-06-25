@@ -13,7 +13,7 @@ from qgis._core import QgsLayoutExporter, QgsWkbTypes, QgsLayoutItemMap, \
 from qgis._gui import QgsRubberBand
 from qgis.utils import iface
 from .utils import tr
-
+from .CustomMessageBox import CustomMessageBox
 from .wydruk_dialog import WydrukDialog
 
 

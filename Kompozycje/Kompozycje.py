@@ -310,7 +310,7 @@ class CompositionsConfig(QObject):
     def check_comps_order(self):
         if self.order_changed:
             stoper = CustomMessageBox(self.dlg,
-                                      'Kolejność kompozycji nie została zapisana! Zapisać?').button_yes_no()
+                tr('The order of the compositions has not been saved! Do you want to save it?')).button_yes_no()
             if stoper == QMessageBox.Yes:
                 self.save()
 

@@ -127,7 +127,6 @@ class ParseResponce:
     def _create_feature(self, row):
         if row[:4].upper() == 'SRID':
             row = row[row.index(';')+1:]
-
         feat = QgsFeature()
         lrow = row.split('|')
         geom = QgsGeometry().fromWkt(lrow[0])
