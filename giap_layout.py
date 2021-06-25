@@ -347,10 +347,9 @@ class MainTabQgsWidget:
         for toolbar_item in range(2,13):
             if isinstance(layer_toolbar.children()[toolbar_item], QToolButton):
                 layer_toolbar.children()[toolbar_item].setStyleSheet(
-                    'background-color:qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 #41617c, stop:1 #5a87ac);'
-                    'width: 25px;'
+                    'width: 20px;'
                     'heigth 25px;'
-                    'margin-left: 6px;'
+                    'margin-left: 3px;'
                     'border-radius: 4px;'
                     'padding: 3px;'
                 )
