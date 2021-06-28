@@ -5,7 +5,6 @@ from qgis.core import QgsProject, QgsMessageLog, Qgis
 
 project = QgsProject.instance()
 
-
 class SingletonModel:
     __instance = None
 

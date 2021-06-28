@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
+import subprocess
+import sys
 import tempfile
 
 from PyQt5.QtCore import QRectF
@@ -13,9 +15,28 @@ from qgis._core import QgsLayoutExporter, QgsWkbTypes, QgsLayoutItemMap, \
 from qgis._gui import QgsRubberBand
 from qgis.utils import iface
 from .utils import tr
-from .CustomMessageBox import CustomMessageBox
+from .CustomMessageBox import CustomMessageBox, normalize_path
 from .wydruk_dialog import WydrukDialog
 
+pdf_open_error_msg = '''
+    Nie znaleziono programu do otwierania plików PDF. Sprawdź, czy jest\n
+    zainstalowany program do otwierania plików PDF, np. Acrobat Reader.\n
+    Jeżeli tak, sprawdź, czy pliki PDF otwierają się po podwójnym kliknięciu.\n
+    Jeżeli nie, ustaw skojarzenie dla plików PDF z tą przeglądarką plików PDF.
+'''
+
+def only_preview_file(output_file):
+    output_file = normalize_path(output_file)
+    if sys.platform.startswith('darwin'):
+        subprocess.call(('open', output_file))
+    elif os.name in ('nt', 'posix'):
+        try:
+            if os.name == 'nt':
+                os.startfile(output_file)
+            else:
+                subprocess.call(('xdg-open', output_file))
+        except OSError:
+            CustomMessageBox(None, pdf_open_error_msg).button_ok()
 
 def get_layer_with_selection():
     layer_with_selection = []
@@ -413,7 +434,7 @@ class PrintMapTool:
             if not filename.endswith(ext):
                 filename += ext
             function(filename)
-            # only_preview_file(filename)
+            only_preview_file(filename)
         p.setValue(100)
         p.hide()
 

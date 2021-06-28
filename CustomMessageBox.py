@@ -1,17 +1,12 @@
 import os
 import re
-from qgis.PyQt.QtWidgets import (
-    QWidget, QWidgetAction, QCalendarWidget, QMenu, QToolButton, QPushButton,
-    QApplication, QAbstractItemView, QStyleOptionViewItem, QDataWidgetMapper,
-    QMessageBox, QCheckBox, QHeaderView, QGridLayout, QItemDelegate, QStyle,
-    QLabel, QDialogButtonBox, QProgressDialog, QScrollArea, QCompleter,
-    QFileDialog,
-    QComboBox, QFontComboBox, QFrame, QDialog)
-from qgis.PyQt.QtGui import (
-    QRegExpValidator, QColor, QIcon, QPen, QStandardItemModel, QStandardItem,
-    QTextDocument, QPixmap, QDesktopServices
-)
+
 from PyQt5.QtCore import Qt
+from qgis.PyQt.QtGui import (
+    QIcon, QPixmap
+)
+from qgis.PyQt.QtWidgets import (
+    QWidget, QMessageBox, QGridLayout, QLabel, QDialogButtonBox, QScrollArea)
 
 
 def normalize_path(path):
@@ -92,7 +87,7 @@ class CustomMessageBox(QMessageBox):
         grd.addWidget(scrll, 0, 1)
         self.layout().removeItem(self.layout().itemAt(0))
         self.layout().removeItem(self.layout().itemAt(0))
-        self.setWindowTitle('GIAP-PolaMap')
+        self.setWindowTitle('GIAP-Layout')
         self.setWindowIcon(QIcon(':/plugins/giap_layout/icons/giap_logo.png'))
 
     def button_ok(self):
