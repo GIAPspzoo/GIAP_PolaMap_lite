@@ -141,6 +141,8 @@ class MainTabQgsWidget:
         self.visibility_search_tool = False
         self.main_widget.offOnSearchButton.clicked.connect(lambda: self.off_on_search_tool(self.visibility_search_tool))
         self.main_widget.offOnSearchButton.setIcon(QIcon(f'{self.plugin_dir}/styles/giap/icons/close.png'))
+
+        #self.searcher.run()
         # set strong focus to get keypressevent
         self.main_widget.setFocusPolicy(Qt.StrongFocus)
 
@@ -173,7 +175,7 @@ class MainTabQgsWidget:
 
     def off_on_search_tool(self, visibility):
         elements = ['comboBox_woj', 'comboBox_pow', 'comboBox_gmina', 'comboBox_obr',
-                    'lineEdit_parcel', 'toolButton_parcel', 'lineEdit_address',
+                    'lineEdit_parcel', 'lineEdit_address',
                     'line', 'line_2']
 
         for elem in elements:
