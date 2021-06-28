@@ -26,7 +26,6 @@ class SearcherTool:
             self.pow_changed)
         self.dock.comboBox_gmina.currentIndexChanged.connect(
             self.gmi_changed)
-        self.dock.toolButton_parcel.clicked.connect(self.search_parcel)
         self.dock.lineEdit_parcel.returnPressed.connect(
             self.search_parcel)
         self.fetch_voivodeship()
@@ -42,6 +41,7 @@ class SearcherTool:
         # setting completer as None and deleting previous completer
         self.dock.lineEdit_address.setCompleter(None)
         self.completer.deleteLater()
+
         # new completer for actual purposes
         self.completer = QCompleter(score)
         self.dock.lineEdit_address.setCompleter(self.completer)
@@ -87,7 +87,7 @@ class SearcherTool:
                     if limit == 1:
                         return [f"{obj['1']['city']}, {obj['1']['street']}"]
                     else:
-                        validate=obj[str(counter)]['street'].split()
+                        validate = obj[str(counter)]['street'].split()
                         if len(validate) > 1 and validate[0] == 'ulica':
                             # loop for streets with 'Miasto, ulica xxx' json coding
                             while counter <= limit:

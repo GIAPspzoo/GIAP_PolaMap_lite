@@ -212,13 +212,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="toolButton_parcel">
-       <property name="text">
-        <string>Search</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="Line" name="line">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
