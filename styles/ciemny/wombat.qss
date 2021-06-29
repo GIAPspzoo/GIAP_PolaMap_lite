@@ -296,6 +296,13 @@ QToolBar {
 	font-weight: bold;
 }
 
+QToolBar QLabel
+{
+    font: 9pt "Segoe UI";
+	font-weight: bold;
+	border: no;
+}
+
 QToolBar::handle:horizontal
 {
 	image: url(:/qss_icons/rc/Hmovetoolbar.png);

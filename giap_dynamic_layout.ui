@@ -195,7 +195,9 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Enter the data according to the scheme: TERYT: 146513_8.1016.17/2 or fill in the previous fields and indicate the parcel number, e.g. 17/2</string>
+        <string>Enter the data according to the scheme:
+TERYT: 146513_8.1016.17/2
+or fill in the previous fields and indicate the parcel number e.g. 17/2</string>
        </property>
        <property name="statusTip">
         <string extracomment="wpisz numer działki"/>
@@ -227,7 +229,9 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Enter the data according to the scheme: for the address point: Warszawa, Pasaż Ursynowski 1, for the street: Warszawa, Pasaż Ursynowsk</string>
+        <string>Enter the data according to the scheme:
+for the address point: Warszawa, Pasaż Ursynowski 1
+for the street: Warszawa, Pasaż Ursynowski</string>
        </property>
        <property name="text">
         <string/>
@@ -253,8 +257,7 @@
      <item>
       <widget class="QLabel" name="labelGiapTools">
        <property name="styleSheet">
-        <string notr="true">color: rgb(255, 255, 255);
-font: 87 10pt &quot;Arial Black&quot;;</string>
+        <string notr="true">color: rgb(255, 255, 255);</string>
        </property>
        <property name="text">
         <string>Narzędzia GIAP  </string>

@@ -142,7 +142,6 @@ class MainTabQgsWidget:
         self.main_widget.offOnSearchButton.clicked.connect(lambda: self.off_on_search_tool(self.visibility_search_tool))
         self.main_widget.offOnSearchButton.setIcon(QIcon(f'{self.plugin_dir}/styles/giap/icons/close.png'))
 
-        #self.searcher.run()
         # set strong focus to get keypressevent
         self.main_widget.setFocusPolicy(Qt.StrongFocus)
 

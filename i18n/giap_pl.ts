@@ -600,13 +600,21 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.ui" line="198"/>
-        <source>Enter the data according to the scheme: TERYT: 146513_8.1016.17/2 or fill in the previous fields and indicate the parcel number, e.g. 17/2</source>
-        <translation>Wpisz dane według schematu: TERYT: 146513_8.1016.17/2 lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
+        <source>Enter the data according to the scheme:
+TERYT: 146513_8.1016.17/2
+or fill in the previous fields and indicate the parcel number e.g. 17/2</source>
+        <translation>Wpisz dane według schematu:
+TERYT: 146513_8.1016.17/2
+lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.ui" line="237"/>
-        <source>Enter the data according to the scheme: for the address point: Warszawa, Pasaż Ursynowski 1, for the street: Warszawa, Pasaż Ursynowsk</source>
-        <translation>Wpisz dane według schematu: dla punktu adresowego: Warszawa, Pasaż Ursynowski 1, dla ulicy: Warszawa, Pasaż Ursynowski</translation>
+        <source>Enter the data according to the scheme:
+for the address point: Warszawa, Pasaż Ursynowski 1
+for the street: Warszawa, Pasaż Ursynowski</source>
+        <translation>Wpisz dane według schematu:
+dla punktu adresowego: Warszawa, Pasaż Ursynowski 1
+dla ulicy: Warszawa, Pasaż Ursynowski</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.ui" line="243"/>
