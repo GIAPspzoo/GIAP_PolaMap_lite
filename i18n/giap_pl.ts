@@ -4,6 +4,11 @@
 <context>
     <name>@default</name>
     <message>
+        <location filename="../config.py" line="20"/>
+        <source>Failed to load config from config.json</source>
+        <translation>Wystąpił błąd podczas wczytywania pliku konfiguracyjnego config.json</translation>
+    </message>
+    <message>
         <location filename="../giap_dynamic_layout.py" line="37"/>
         <source>New Tab</source>
         <translation>Nowa zakładka</translation>

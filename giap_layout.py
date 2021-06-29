@@ -67,6 +67,10 @@ class MainTabQgsWidget:
         self.iface.initializationCompleted.connect(self.load_ribbons)
 
     def initGui(self):
+        # set default style and active style if config.json doesn't extists
+        dic_style = self.style_manager.get_style_dictionary()
+        self.config.set_default_style(dic_style)
+
         style = self.main_widget.styleSheet()
         self.iface.mainWindow().statusBar().setStyleSheet(style + """
         QSpinBox {
