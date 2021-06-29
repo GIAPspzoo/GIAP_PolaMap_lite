@@ -1,16 +1,23 @@
 import os
 import json
+from qgis._core import QgsMessageLog
+from .utils import DEFAULT_STYLE
 
 
 class Config:
     def __init__(self):
         """Constructor"""
         # load config from file
+        self.setts = {}
         self.conf_dir = os.path.dirname(__file__)
-        fl = open(os.path.join(self.conf_dir, 'config.json'), 'r')
-        conf = fl.read()
-        fl.close()
-        self.setts = json.loads(conf)[0]
+        config_path = os.path.join(self.conf_dir, 'config.json')
+        if os.path.exists(config_path):
+            with open(config_path, 'r') as fl:
+                conf = fl.read()
+            try:
+                self.setts = json.loads(conf)[0]
+            except ValueError:
+                QgsMessageLog.logMessage('Failed to load config from config.json')
 
     def save_config(self):
         """
@@ -153,6 +160,13 @@ class Config:
         :path: style name (style.qss)
         """
         self.setts['styles'][style] = path
+
+    def set_default_style(self, dic_styles):
+        if 'styles' not in self.setts:
+            self.setts['styles'] = dic_styles
+        if 'active_style' not in self.setts:
+            self.setts['active_style'] = DEFAULT_STYLE
+        self.save_config()
 
     def set_active_style(self, style):
         """

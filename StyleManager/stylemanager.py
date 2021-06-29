@@ -3,6 +3,7 @@ from qgis.PyQt import uic
 from qgis.PyQt.QtWidgets import QDialog, QFileDialog, QInputDialog, QMessageBox
 from qgis.PyQt.QtCore import Qt, QCoreApplication
 from ..utils import tr
+from ..utils import DEFAULT_STYLE
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'ui_stylemanager.ui'))
@@ -57,7 +58,7 @@ class StyleManagerDialog(QDialog, FORM_CLASS):
 
     def set_default(self):
         """Set default qgis style"""
-        res, msg = self.mn.activate_style('default')
+        res, msg = self.mn.activate_style(DEFAULT_STYLE)
 
     def change_style(self):
         """Change style to user selected"""

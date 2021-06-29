@@ -5,6 +5,7 @@ from qgis.PyQt.QtWidgets import QApplication
 from qgis.PyQt.QtCore import QFileSystemWatcher
 
 from .utils import tr
+from .utils import DEFAULT_STYLE
 
 
 class StyleManager:
@@ -34,6 +35,9 @@ class StyleManager:
 
     def get_style_list(self):
         return [x for x in self.styles.keys()]
+
+    def get_style_dictionary(self):
+        return self.styles
 
     def run_last_style(self):
         """ load active style on stratup"""
@@ -86,14 +90,14 @@ class StyleManager:
 
         # if path to style not found set default style
         if pth in ['', None]:
-            self.app.setStyleSheet('')
+            self.app.setStyleSheet(DEFAULT_STYLE)
             pth = ''
 
         # check if file exist
         if not os.path.exists(pth):
-            self.app.setStyleSheet('')  # return do default, and save it in con
+            self.app.setStyleSheet(DEFAULT_STYLE)  # return do default, and save it in con
             if name == 'default':
-                self.config.set_active_style('')
+                self.config.set_active_style(DEFAULT_STYLE)
                 return False, tr('Default style set')
             else:
                 return False, tr('Path to *.qss not found, load default style')

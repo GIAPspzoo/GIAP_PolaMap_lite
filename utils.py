@@ -480,4 +480,5 @@ STANDARD_TOOLS = [
 
 ]
 
+DEFAULT_STYLE = "GIAP"
 DEFAULT_TABS = ['Main', 'Tools', 'Vector', 'Raster']
