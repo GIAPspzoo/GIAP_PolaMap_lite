@@ -1,3 +1,6 @@
+from qgis.PyQt.QtCore import QTimer
+from qgis.utils import iface
+
 from .searchAddress import SearchAddress
 
 import json
@@ -126,6 +129,16 @@ class SearcherTool:
                 self.iface.messageBar().pushWarning(
                     tr('Warning'), res)
             self.searchaddress_call.add_feats(res)
+
+            def change_scale():
+                if iface.mapCanvas().scale() < 500:
+                    iface.mapCanvas().zoomScale(500)
+
+            self.timer = QTimer()
+            self.timer.setSingleShot(True)
+            self.timer.timeout.connect(change_scale)
+            self.timer.start(10)
+
             return
 
     def validate_lineedit(self):
