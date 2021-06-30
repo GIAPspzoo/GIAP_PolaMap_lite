@@ -615,3 +615,8 @@ QToolBar QLabel
 	font-weight: bold;
 	border: no;
 }
+
+QStatusBar QComboBox
+{
+    width: 70px;
+}
