@@ -1,3 +1,4 @@
+import os.path
 from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
 
@@ -93,6 +94,8 @@ class ParseResponce:
             self.lyr = lyr[0]
             return
         QgsProject.instance().addMapLayer(self.lyr)
+        direc = os.path.dirname(__file__)
+        self.lyr.loadNamedStyle(os.path.join(direc, 'layer_style', 'dzialki.qml'))
 
     def parse_responce(self, resp):
         feats = []

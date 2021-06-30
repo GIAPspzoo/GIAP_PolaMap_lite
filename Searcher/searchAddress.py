@@ -7,6 +7,7 @@ from qgis.core import QgsGeometry, QgsFeature, QgsField, QgsFields, \
     QgsProject, QgsVectorLayer, QgsMessageLog, Qgis
 from qgis.PyQt.QtCore import QVariant
 
+import os
 
 
 from urllib.error import HTTPError, URLError
@@ -65,9 +66,11 @@ class SearchAddress:
         if req_type in ['city', 'address']:
             org = 'MultiPoint?crs=epsg:2180&index=yes'
             obj_type = 'UUG_pkt'
+            qml = os.path.join('layer_style', 'PUNKT_ADRESOWY.qml')
         elif self.jres['type'] == 'street':
             org = 'MultiLineString?crs=epsg:2180&index=yes'
             obj_type = 'UUG_ulice'
+            qml = os.path.join('layer_style', 'ULICE.qml')
         else:
             QgsMessageLog.logMessage(
                 'Fetched unknown object: ' + str(req_type),
@@ -87,6 +90,8 @@ class SearchAddress:
         lyr.dataProvider().addAttributes(flds)
         lyr.updateFields()
         QgsProject.instance().addMapLayer(lyr)
+        direc = os.path.dirname(__file__)
+        lyr.loadNamedStyle(os.path.join(direc, qml))
         return lyr
 
     def process_results(self):
