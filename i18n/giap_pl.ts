@@ -418,6 +418,11 @@ Porszę czekać...</translation>
         <translation>Sprawdź log, zarejestrowano problemy</translation>
     </message>
     <message>
+        <location filename="../Searcher/searchAddress.py" line="109"/>
+        <source>Service unavailable</source>
+        <translation>Nie znaleziono obiektów. Wpisz poprawną wartość.</translation>
+    </message>
+    <message>
         <location filename="../Searcher/searchParcel.py" line="48"/>
         <source>Service returned incompleted responce</source>
         <translation>Usługa zwróciła niepełną odpowiedź</translation>
