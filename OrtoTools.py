@@ -13,7 +13,7 @@ from .utils import tr
 class OrtoAddingTool(object):
     def __init__(self,
                  parent, button,
-                 group_names=(tr("ORTHOFOTOMAP"), tr("ADDITIONAL DATA"))):
+                 group_names=("WMS/WMTS")):
         self.parent = parent
         self.button = button
         self.group_names = group_names
@@ -155,7 +155,7 @@ class OrtoActionService(QObject):
     orto_group_added = pyqtSignal()
 
     def __init__(self, action, url, name,
-                 default_group=tr("ADDITIONAL DATA"), parent=None):
+                 default_group="WMS/WMTS", parent=None):
         QObject.__init__(self)
         self.parent = parent
         self.button = action

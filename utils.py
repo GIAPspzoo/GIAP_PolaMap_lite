@@ -120,16 +120,16 @@ WMS_SERVERS = {
     'Uzbrojenie terenu': 'contextualWMSLegend=0&crs=EPSG:2180&dpiMode=7&featureCount=10&format=image/png&layers=gesut&layers=kgesut&layers=kgesut_dane&layers=przewod_elektroenergetyczny&layers=przewod_telekomunikacyjny&layers=przewod_wodociagowy&layers=przewod_kanalizacyjny&layers=przewod_gazowy&layers=przewod_cieplowniczy&layers=przewod_specjalny&layers=przewod_inny&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&url=http://integracja.gugik.gov.pl/cgi-bin/KrajowaIntegracjaUzbrojeniaTerenu?'
 }
 
-
+group_name = "WMS/WMTS"
 WMS_SERVERS_GROUPS = {
-    'ORTOFOTOMAPA - WMTS': 'ORTOFOTOMAPA',
-    'Wizualizacja BDOT10k - WMS': 'DANE DODATKOWE',
-    'Mapa topograficzna - WMTS': 'DANE DODATKOWE',
-    'Krajowa Integracja Ewidencji Gruntów - WMS': 'DANE DODATKOWE',
-    'Bank Danych o Lasach - WMS': 'DANE DODATKOWE',
-    'Wody Polskie - mapa zagrożenia powodziowego': 'DANE DODATKOWE',
-    'Monitoring Warunków Glebowych': 'DANE DODATKOWE',
-    'Uzbrojenie terenu': 'DANE DODATKOWE'
+    'ORTOFOTOMAPA - WMTS': group_name,
+    'Wizualizacja BDOT10k - WMS': group_name,
+    'Mapa topograficzna - WMTS': group_name,
+    'Krajowa Integracja Ewidencji Gruntów - WMS': group_name,
+    'Bank Danych o Lasach - WMS': group_name,
+    'Wody Polskie - mapa zagrożenia powodziowego': group_name,
+    'Monitoring Warunków Glebowych': group_name,
+    'Uzbrojenie terenu': group_name
 }
 
 STANDARD_TOOLS = [
