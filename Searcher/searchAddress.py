@@ -12,10 +12,11 @@ import os
 
 from urllib.error import HTTPError, URLError
 
-
 from http.client import IncompleteRead
 
 from ..utils import tr
+
+from ..CustomMessageBox import CustomMessageBox
 
 
 class SearchAddress:
@@ -85,8 +86,12 @@ class SearchAddress:
 
         lyr = QgsVectorLayer(org, obj_type, 'memory')
         flds = QgsFields()
-        for fld in self.layer_fields:
-            flds.append(fld)
+        if self.jres['only exact numbers'] == 1:
+            for fld in self.layer_fields:
+                flds.append(fld)
+        else:
+            for fld in self.layer_fields:
+                flds.append(fld)
         lyr.dataProvider().addAttributes(flds)
         lyr.updateFields()
         QgsProject.instance().addMapLayer(lyr)
@@ -108,26 +113,40 @@ class SearchAddress:
 
         if 'results' in self.jres:
             if self.jres['results'] is None:
-                return False, tr('Zero objects found (api limits?)')
+                return False, CustomMessageBox(None, tr("No objects found. Please enter a valid value.")).button_ok()
 
         lyr = self.get_layer()
         if not lyr:
             return False, tr('Check log, problems occured')
         fnm = lyr.dataProvider().fieldNameMap()
         feats = []
-        for res in self.jres['results'].values():
+        if self.jres['only exact numbers'] == 1:    # if jezeli znajdzie dokladnie ten adres
+            exact_adr = self.jres['results']['1']   # poprzednia metoda zapelniala warstwe wszystkim co znalazla
             feat = QgsFeature()
             feat.setFields(lyr.fields())
-            for col in fnm.keys():
-                if col in res:
-                    feat[col] = res[col]
-
+            for column in feat.fields():
+                name = column.name()
+                if name in exact_adr.keys():
+                    feat[name] = exact_adr[name]
             geom = QgsGeometry()
-            geom = geom.fromWkt(res['geometry_wkt'])
+            geom = geom.fromWkt(exact_adr['geometry_wkt'])
             feat.setGeometry(geom)
-
             if feat.isValid():
                 feats.append(feat)
+        else:
+            for res in self.jres['results'].values():
+                feat = QgsFeature()
+                feat.setFields(lyr.fields())
+                for col in fnm.keys():
+                    if col in res:
+                        feat[col] = res[col]
+                geom = QgsGeometry()
+                geom = geom.fromWkt(res['geometry_wkt'])
+                feat.setGeometry(geom)
+                if feat.isValid():
+                    feats.append(feat)
+
+
         return True, feats
 
     def add_feats(self, feats):
@@ -139,4 +158,5 @@ class SearchAddress:
             lyr.updateExtents()
             iface.mapCanvas().setExtent(lyr.extent())
             iface.mapCanvas().refresh()
+        return True
 

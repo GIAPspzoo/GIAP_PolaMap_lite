@@ -9,6 +9,8 @@ from .searchParcel import FetchULDK, ParseResponce
 
 from PyQt5.QtWidgets import QCompleter
 
+from PyQt5.QtCore import Qt
+
 from urllib.request import urlopen
 
 from urllib.parse import quote
@@ -37,6 +39,9 @@ class SearcherTool:
         self.completer = QCompleter(self.names)
         self.dock.lineEdit_address.setCompleter(self.completer)
         self.dock.lineEdit_address.textEdited.connect(self.adress_changed)
+        self.completer.setFilterMode(Qt.MatchContains)
+
+
 
     def adress_changed(self):
         # data storage for list of strings adresses defined by input in search bracket
@@ -47,22 +52,21 @@ class SearcherTool:
 
         # new completer for actual purposes
         self.completer = QCompleter(score)
+        self.completer.setCaseSensitivity(Qt.CaseInsensitive)
+        self.completer.popup().pressed.connect(self.search_address)
         self.dock.lineEdit_address.setCompleter(self.completer)
+        self.completer.setFilterMode(Qt.MatchContains)
 
 
 
 
     def tips(self, user_input):
-
         address = user_input.displayText()
-
         if len(address.split(',')) == 1:
             return ['']
 
-
         url_pref = 'http://services.gugik.gov.pl/uug/?request=GetAddress&location='
         quo_adr = quote(address)
-
 
         # trying to open link which script made above by prefix and quoting the search bracket input
         with urlopen(url_pref + quo_adr) as json_file:
@@ -77,11 +81,13 @@ class SearcherTool:
                 # dictionary with objects found on json_file
                 obj = data['results']
 
+                # if this particular address found, displays this address
+                if 'only exact numbers' in data:
+                    return [f"{obj['1']['city']}, {obj['1']['street']} {obj['1']['number']}"]
 
                 # there is only 1 object when obj_type == 'address' thats why variable in first bracket in obj is '1'
-                if obj_type == 'address' and data['returned objects'] > 0:
-                    #return [obj['1']['city'] + ', ' + obj['1']['street'] + ' ' + obj['1']['number']]
-                    return [f"{obj['1']['city']}, {obj['1']['street']} {obj['1']['number']}"]
+                if obj_type == 'address': # and data['returned objects'] == 1:
+                    return [f"{obj['1']['city']}, {obj['1']['street']}"]
 
 
                 # it has to iterate through streets, we don't know how many streets might be in search result
@@ -113,12 +119,26 @@ class SearcherTool:
                 # TODO: when limit > 1 and obj_type == 'city' it has to display all city names in each voivodeship
                 # TODO: and search for this particular but feature wont add voivodeship to search bracket
                 if obj_type == 'city':
+                    print('city')
                     return [obj['1']['city']]
 
 
             # if any error occurred displays nothing TODO: expand errors with popups
             except (TypeError, IndexError):
                 return ['']
+
+    def zoom_to_feature(self):
+        # feature is our new layer added by searcher tool
+        if self.iface.mapCanvas().layers():
+            layer = self.identify_layer('UUG_pkt')
+            layer.selectByIds([max(layer.allFeatureIds())])
+            self.iface.mapCanvas().zoomToSelected()
+            self.iface.mapCanvas().flashFeatureIds(layer, [max(layer.allFeatureIds())])
+
+    def identify_layer(self, layer_to_find):
+        for layer in self.iface.mapCanvas().layers():
+            if layer.name() == layer_to_find:
+                return layer
 
     def search_address(self):
         validate_address = self.validate_lineedit()
@@ -129,7 +149,7 @@ class SearcherTool:
                 self.iface.messageBar().pushWarning(
                     tr('Warning'), res)
             self.searchaddress_call.add_feats(res)
-
+            self.zoom_to_feature()
             def change_scale():
                 if iface.mapCanvas().scale() < 500:
                     iface.mapCanvas().zoomScale(500)
@@ -139,7 +159,6 @@ class SearcherTool:
             self.timer.timeout.connect(change_scale)
             self.timer.start(10)
 
-            return
 
     def validate_lineedit(self):
         if self.dock.lineEdit_address.text():
