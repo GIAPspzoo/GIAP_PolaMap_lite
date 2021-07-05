@@ -86,7 +86,7 @@ class SearchAddress:
 
         lyr = QgsVectorLayer(org, obj_type, 'memory')
         flds = QgsFields()
-        if self.jres['only exact numbers'] == 1:
+        if 'only exact numbers' in self.jres.keys():
             for fld in self.layer_fields:
                 flds.append(fld)
         else:
@@ -120,7 +120,7 @@ class SearchAddress:
             return False, tr('Check log, problems occured')
         fnm = lyr.dataProvider().fieldNameMap()
         feats = []
-        if self.jres['only exact numbers'] == 1:    # if jezeli znajdzie dokladnie ten adres
+        if 'only exact numbers' in self.jres.keys():    # if jezeli znajdzie dokladnie ten adres
             exact_adr = self.jres['results']['1']   # poprzednia metoda zapelniala warstwe wszystkim co znalazla
             feat = QgsFeature()
             feat.setFields(lyr.fields())

@@ -160,6 +160,7 @@ class SearcherTool:
             self.timer.start(10)
 
 
+
     def validate_lineedit(self):
         if self.dock.lineEdit_address.text():
             return True
