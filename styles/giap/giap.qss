@@ -162,6 +162,13 @@ QTabBar {
 	font-weight: bold;
 }
 
+QDialog QTabBar::tab {
+    padding: 2px;
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 20px;
+}
+
 QTabBar::tab {
     padding:2px;
     padding-left: 30px;
@@ -237,6 +244,11 @@ QPushButton:pressed
 {
 	background-color: #5689b0;
     border: 1px solid rgb(65, 97, 124);
+}
+
+QWidget QPushButton:disabled
+{
+    color: #878787;
 }
 
 QComboBox
@@ -334,6 +346,11 @@ QHeaderView::section
 QCheckBox:disabled
 {
 	color:  #5d5d5d;
+}
+
+QWidget QCheckBox:Disabled
+{
+    color: #878787;
 }
 
 QHeaderView::down-arrow,
@@ -595,6 +612,14 @@ QTextEdit
 	background-color:  rgb(53, 85, 109);
 	color:  white;
 	border: 1px solid  #1a2936;
+}
+
+QDialog QTextEdit
+{
+	background-color: white;
+	selection-background-color: rgb(53, 85, 109);
+	selection-color: white;
+	color: black;
 }
 
 QPlainTextEdit
