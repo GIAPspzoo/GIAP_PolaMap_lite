@@ -424,7 +424,7 @@ QListView,
 QTableView
 {
 	border: 1px solid  #1a2936;
-	background-color:  rgb(53, 85, 109);
+	background-color:  rgb(53, 85, 109, 180);
 	color: white;
 }
 
@@ -435,7 +435,7 @@ QTreeView:item
 
 QTreeView:item:selected
 {
-    color: black;
+    color: white;
 	background-color: #b7d3e8;
 }
 
