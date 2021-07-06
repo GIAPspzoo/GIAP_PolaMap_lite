@@ -89,7 +89,28 @@ class MainTabQgsWidget:
         self.toolbar.setFloatable(False)
         self.toolbar.addWidget(self.main_widget)
 
-        self.ustaw_legende()
+        self.layer_view = self.iface.layerTreeView()
+        self.layer_toolbar = self.layer_view.parent().children()[1]
+        self.layer_toolbar.setGeometry(0,0, 280, 35)
+        for toolbar_item in range(2, 13):
+            if isinstance(self.layer_toolbar.children()[toolbar_item], QToolButton):
+                self.layer_toolbar.children()[toolbar_item].setStyleSheet(
+                    'width: 20px;'
+                    'heigth 25px;'
+                    'margin-left: 3px;'
+                    'border-radius: 4px;'
+                    'padding: 3px;'
+                )
+
+        if isinstance(self.layer_toolbar.children()[9], QToolButton):
+            self.layer_toolbar.children()[9].setPopupMode(2)
+
+        self.layer_view.setGeometry(0, 85, 280, 1200)
+        self.kompozycje_widget.setGeometry(0, 35, 280, 50)
+        self.main_widget.pokaz_warstwy.toggled.connect(self.warstwy_show)
+        self.kompozycje_widget.setParent(self.iface.mapCanvas())
+        self.layer_view.setParent(self.iface.mapCanvas())
+        self.layer_toolbar.setParent(self.iface.mapCanvas())
         self.menuButton = QToolButton()
         self.menuButton.setText(tr("Show menu"))
         self.menuButton.setCheckable(True)
@@ -339,86 +360,22 @@ class MainTabQgsWidget:
                     self.main_widget.remove_tab(0)
                 self.load_ribbons()
 
-    def ustaw_legende(self):
-        self.layer_panel = self.iface.mainWindow().findChild(
-            QDockWidget, 'Layers')
-        self.layer_panel.setTitleBarWidget(QWidget())
-
-        self.layer_view = self.iface.layerTreeView()
-        self.layer_view.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        layer_toolbar = self.layer_view.parent().children()[1]
-
-        # not working on qgis 3.18+
-
-        for toolbar_item in range(2,13):
-            if isinstance(layer_toolbar.children()[toolbar_item], QToolButton):
-                layer_toolbar.children()[toolbar_item].setStyleSheet(
-                    'width: 20px;'
-                    'heigth 25px;'
-                    'margin-left: 3px;'
-                    'border-radius: 4px;'
-                    'padding: 3px;'
-                )
-
-        if isinstance(layer_toolbar.children()[9], QToolButton):
-            layer_toolbar.children()[9].setPopupMode(2)
-        widget_w_warstwach = QWidget()
-        layout_widgetu = QVBoxLayout()
-        layout_widgetu.addWidget(layer_toolbar)
-        layout_widgetu.addWidget(self.kompozycje_widget)
-        layout_widgetu.addWidget(self.layer_view)
-        layout_widgetu.setContentsMargins(0, 7, 0, 4)
-        widget_w_warstwach.setLayout(layout_widgetu)
-        widget_w_warstwach.setObjectName('giapKompozycjeWidget')
-        self.layer_panel.setWidget(widget_w_warstwach)
-        self.layer_panel.setTitleBarWidget(QWidget())
-        self.main_widget.pokaz_warstwy.toggled.connect(self.warstwy_show)
-
-    def get_left_docks(self):
-        docks = [x for x in self.iface.mainWindow().findChildren(QDockWidget)
-                 if x.isVisible()
-                 ]
-        left_docks = [
-            x for x in docks if
-            self.iface.mainWindow().dockWidgetArea(x) == Qt.LeftDockWidgetArea
-        ]
-        return left_docks
-
     def warstwy_show(self):
         if self.main_widget.pokaz_warstwy.isChecked():
-            left_docks = self.left_docks
-            # there shoulde be docks if there is none add default from qgis.
-            # (User turned off qgis with hidden docks)
-            if len(self.left_docks) == 0:
-                for dock in ['Layers', 'Browser']:
-                    child = self.iface.mainWindow().findChild(QDockWidget,
-                                                              dock)
-                    if child:
-                        left_docks.append(child)
+            self.layer_view.show()
+            self.layer_toolbar.show()
+            self.kompozycje_widget.show()
+            canvas_geom = self.iface.mapCanvas().geometry()
+            self.layer_view.setGeometry(0, 85, 280, canvas_geom.height()-85)
+            self.layer_view.resizeColumnToContents(0)
         else:
-            left_docks = self.get_left_docks()
+            self.layer_view.hide()
+            self.layer_toolbar.hide()
+            self.kompozycje_widget.hide()
 
-        for ldock in left_docks:
-            splitter_start = QRect(
-                -ldock.width(), ldock.y(),
-                ldock.width(), ldock.height())
-            splitter_end = QRect(
-                0, ldock.y(),
-                ldock.width(), ldock.height())
-            if self.main_widget.pokaz_warstwy.isChecked():
-                ldock.show()
-                self.set_animation(
-                    ldock, splitter_start, splitter_end, 200
-                )
-                self.layer_view.resizeColumnToContents(0)
-            else:
-                self.set_animation(
-                    ldock, splitter_end, splitter_start, 200, 'out'
-                )
-
-        self.left_docks = []
-        if not self.main_widget.pokaz_warstwy.isChecked():
-            self.left_docks = left_docks
+    def resize_layer_view(self):
+        canvas_geom = self.iface.mapCanvas().geometry()
+        self.layer_view.setGeometry(0, 85, 280, canvas_geom.height()-85)
 
     def set_animation(
             self, widget, qrect_start, qrect_end, duration, mode='in'):
