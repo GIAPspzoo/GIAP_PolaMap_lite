@@ -149,7 +149,16 @@ QToolButton:hover {
 QToolButton:pressed {
    background-color: #5689b0;
    border: 1px solid #6fb1e3;
-}</string>
+}
+
+QTableView:item:selected {
+   background-color: #5689b0;
+}
+
+QTableView:item:hover {
+   background-color: #b7d3e8;
+}
+   </string>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedKingdom"/>
