@@ -445,7 +445,7 @@ class CustomSection(QWidget):
         self.target = None
 
         self.verticalLayout = QVBoxLayout()
-        self.verticalLayout.setContentsMargins(7, 3, 7, 3)
+        self.verticalLayout.setContentsMargins(7, 0, 7, 0)
         self.button_size = 30
 
         self.horizontalLayout_2 = QHBoxLayout()
@@ -454,8 +454,8 @@ class CustomSection(QWidget):
 
         self.clabel = CustomLabel(tr(name), self)
         self.clabel.setObjectName("giapSectionLabel")
-        self.clabel.setMaximumSize(QSize(100000, 25))
-        self.clabel.setMinimumSize(QSize(50, 25))
+        self.clabel.setMaximumSize(QSize(100000, 20))
+        self.clabel.setMinimumSize(QSize(50, 20))
         self.clabel.setAlignment(Qt.AlignCenter)
 
         self.pushButton_close_sec = QToolButton(self)
@@ -478,7 +478,8 @@ class CustomSection(QWidget):
         self.verticalLayout.addLayout(self.horizontalLayout_2)
 
         self.gridLayout = QGridLayout()
-        self.gridLayout.setSpacing(9)
+        self.gridLayout.setSpacing(10)
+        self.gridLayout.setContentsMargins(0,6,0,8)
         self.gridLayout.setObjectName(u"gridLayout")
 
         self.verticalLayout.addLayout(self.gridLayout)
@@ -486,8 +487,7 @@ class CustomSection(QWidget):
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.horizontalLayout.addLayout(self.verticalLayout)
         self.horizontalLayout.addWidget(self.sep)
-        self.horizontalLayout.setContentsMargins(4,2,4,2)
-        self.update()
+        self.horizontalLayout.setContentsMargins(4, 0, 4, 2)
 
         self.setLayout(self.horizontalLayout)
         self.pushButton_close_sec.clicked.connect(self.unload)
@@ -901,13 +901,13 @@ class CustomLabel(QLabel):
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.setText(lab)
         self.setStyleSheet(
-            'font: 9pt "Segoe UI"; font-weight: bold; '
+            'font: 10pt "Segoe UI"; font-weight: bold; '
         )
         self.cinput = QLineEdit(self)
         self.cinput.setWindowFlags(Qt.Popup)
         self.cinput.setFocusProxy(self)
         self.cinput.editingFinished.connect(self.handleEditingFinished)
-        self.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)
+        self.setAlignment(Qt.AlignCenter)
 
     def mousePressEvent(self, event):
         if not self.parent().edit:
