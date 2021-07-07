@@ -129,9 +129,18 @@ QPushButton:disabled
 	color: gray;
 }
 
+QTableView:item:selected {
+   background-color: #5689b0;
+}
+
+QTableView:item:hover {
+   background-color: #b7d3e8;
+}
+
 QGroupBox {
 border: 1px solid #5689b0;
-}</string>
+}
+   </string>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedKingdom"/>
