@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 import os.path
+import webbrowser
 
+from PyQt5.QtGui import QCursor
+from PyQt5.QtWidgets import QPushButton
 from qgis.PyQt.QtCore import QTranslator, QCoreApplication, QSize, \
     Qt, QRect, QPropertyAnimation, QEasingCurve, QSettings
 from qgis.PyQt.QtGui import QIcon
@@ -8,7 +11,7 @@ from qgis.PyQt.QtWidgets import QAction, QToolBar, QToolButton, QWidget, \
     QHBoxLayout, QDockWidget, QMenu, QVBoxLayout, QMessageBox
 
 # Initialize Qt resources from file resources.py
-from qgis._core import QgsProject, Qgis
+from qgis._core import QgsProject, Qgis, QgsMessageLog
 
 from .OrtoTools import OrtoAddingTool
 from .QuickPrint import PrintMapTool
@@ -137,6 +140,31 @@ class MainTabQgsWidget:
         corner_layout.addWidget(self.editButton)
         corner_layout.addWidget(self.styleButton)
 
+        #logo icon
+        plug_dir = os.path.dirname(__file__)
+        gbut = QPushButton()
+        gbut.clicked.connect(lambda: webbrowser.open('www.giap.pl'))
+        gbut.setIcon(
+            QIcon(os.path.join(plug_dir, 'icons', 'giap.png'))
+        )
+        gbut.setCursor(QCursor(Qt.PointingHandCursor))
+        gbut.setToolTip("GIAP.pl - Strona WWW")
+        gbut.setStyleSheet(
+            'QPushButton{border-width: 0px; width: 220px; height:72px;'
+            'background-color: transparent;}'
+        )
+        gbut.setIconSize(QSize(216, 68))
+
+        #toolbar with only logo
+        self.logo_toolbar = QToolBar('GiapLogoBar', self.iface.mainWindow())
+        self.logo_toolbar.setObjectName('GiapLogoBar')
+        self.iface.mainWindow().addToolBar(self.logo_toolbar)
+        self.logo_toolbar.setMovable(False)
+        self.logo_toolbar.setFloatable(True)
+        self.logo_toolbar.addWidget(gbut)
+        self.toolbar.visibilityChanged.connect(self.visible_logo_giap_toolbar)
+        self.logo_toolbar.setLayoutDirection(Qt.RightToLeft)
+
         corner_widget.setLayout(corner_layout)
         self.main_widget.tabWidget.setCornerWidget(corner_widget)
         self.iface.mapCanvas().refresh()
@@ -197,6 +225,9 @@ class MainTabQgsWidget:
         self.main_widget.tabWidget.setCurrentIndex(0)
         # turn off ribbon editing
         self.main_widget.edit_session_toggle()
+
+    def visible_logo_giap_toolbar(self, visible):
+        self.logo_toolbar.setVisible(not visible)
 
     def off_on_search_tool(self, visibility):
         elements = ['comboBox_woj', 'comboBox_pow', 'comboBox_gmina', 'comboBox_obr',
