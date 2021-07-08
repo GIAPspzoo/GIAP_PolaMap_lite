@@ -417,8 +417,8 @@ class CustomTab(QWidget):
             wid = it.widget()
             if not isinstance(wid, CustomSection):
                 continue
-            if wid.isVisible():
-                sec_conf.append(wid.return_section_config())
+
+            sec_conf.append(wid.return_section_config())
 
         return {
             'tab_name': self.lab,
