@@ -10,6 +10,7 @@ from PyQt5.QtCore import QObject, pyqtSignal, QItemSelectionModel, \
     Qt
 from PyQt5.QtWidgets import QMessageBox, QApplication, QItemDelegate, \
     QCheckBox, QFileDialog, QProgressDialog, QToolButton
+from qgis.PyQt import QtCore
 
 from qgis.PyQt.QtGui import QStandardItemModel, QStandardItem, QIcon
 from qgis.core import QgsProject, QgsLayerTreeNode
@@ -633,7 +634,13 @@ class CompositionsAdder(object):
                 self.dlg, tr('Select layer, to remove it from selected.')
             ).button_ok()
         else:
-            self.model_warstw.removeRow(rows[0].row())
+            index_list = []
+            for model_index in rows:
+                index = QtCore.QPersistentModelIndex(model_index)
+                index_list.append(index)
+
+            for index in index_list:
+                self.model_warstw.removeRow(index.row())
             self.dlg.warstwy_table.selectionModel().clear()
 
     def move_down(self):
