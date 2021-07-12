@@ -76,15 +76,15 @@ QWidget:disabled
 	color:  #8b8b8b;
 	background-color:  rgb(53, 85, 109);
 }
+
 QAbstractItemView
 {
 	alternate-background-color:  #4f5a63;
 	color:  white;
-	border: 1px solid  #1a2936;
 	border-radius: 3px;
-	padding: 1px;
 	font: 9pt "Segoe UI";
 }
+
 QWidget:focus, QMenuBar:focus
 {
 	border: 1px solid #5689b0;
@@ -335,6 +335,13 @@ QAbstractSpinBox:down-button
     background-color: #5689b0;
     border-bottom-right-radius: 3px
 }
+
+QHeaderView
+{
+	border-bottom: 1px solid  #1a2936;
+	border-right: 1px solid  #1a2936;
+}
+
 QHeaderView::section
 {
 	background-color:  #4f5a63;
@@ -437,7 +444,7 @@ QDockWidget::float-button:pressed {
 }
 
 QTreeView, 
-QListView, 
+QListView,
 QTableView
 {
 	border: 1px solid  #1a2936;
@@ -602,10 +609,6 @@ QToolButton:checked {
     border-color: #5689b0;
 }
 
-QTableView#tagView
-{
-	background-color: transparent;
-}
 
 QLabel#inTotalLabel, QLabel#outTotalLabel, QLabel#recordCountLabel
 {
