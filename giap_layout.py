@@ -93,6 +93,7 @@ class MainTabQgsWidget:
         self.toolbar.addWidget(self.main_widget)
 
         self.layer_view = self.iface.layerTreeView()
+        self.layer_view.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.layer_toolbar = self.layer_view.parent().children()[1]
         self.layer_toolbar.setGeometry(0,0, 280, 35)
         for toolbar_item in range(2, 13):
@@ -108,7 +109,7 @@ class MainTabQgsWidget:
         if isinstance(self.layer_toolbar.children()[9], QToolButton):
             self.layer_toolbar.children()[9].setPopupMode(2)
 
-        self.layer_view.setGeometry(0, 85, 280, 1200)
+        self.layer_view.setGeometry(0, 79, 280, 1200)
         self.kompozycje_widget.setGeometry(0, 35, 280, 50)
         self.main_widget.pokaz_warstwy.toggled.connect(self.warstwy_show)
         self.kompozycje_widget.setParent(self.iface.mapCanvas())
@@ -397,7 +398,7 @@ class MainTabQgsWidget:
             self.layer_toolbar.show()
             self.kompozycje_widget.show()
             canvas_geom = self.iface.mapCanvas().geometry()
-            self.layer_view.setGeometry(0, 85, 280, canvas_geom.height()-85)
+            self.layer_view.setGeometry(0, 79, 280, canvas_geom.height()-79)
             self.layer_view.resizeColumnToContents(0)
         else:
             self.layer_view.hide()
@@ -406,7 +407,7 @@ class MainTabQgsWidget:
 
     def resize_layer_view(self):
         canvas_geom = self.iface.mapCanvas().geometry()
-        self.layer_view.setGeometry(0, 85, 280, canvas_geom.height()-85)
+        self.layer_view.setGeometry(0, 79, 280, canvas_geom.height()-79)
 
     def set_animation(
             self, widget, qrect_start, qrect_end, duration, mode='in'):

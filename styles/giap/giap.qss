@@ -441,8 +441,9 @@ QListView,
 QTableView
 {
 	border: 1px solid  #1a2936;
-	background-color:  rgb(53, 85, 109, 180);
+	background-color:  rgb(53, 85, 109, 190);
 	color: white;
+	icon-size: 20px;
 }
 
 QTreeView:item
@@ -455,6 +456,18 @@ QTreeView:item:selected
 {
     color: white;
 	background-color: #b7d3e8;
+}
+QTreeView::indicator:checked
+{
+    image: url(icons/checkbox_light.png);
+    border: 0.11em solid black;
+    background: rgb(53, 85, 109, 200)
+}
+
+QTreeView::indicator:unchecked
+{
+    border: 0.11em solid black;
+    background: rgb(53, 85, 109, 200)
 }
 
 QTreeView:item:hover
