@@ -330,6 +330,7 @@ class CustomTabBar(QTabBar):
              not self._editor.geometry().contains(event.globalPos())) or
             (event.type() == QEvent.KeyPress and
              event.key() == Qt.Key_Escape)):
+            self.handleEditingFinished()
             self._editor.hide()
         return super().eventFilter(widget, event)
 
@@ -907,6 +908,7 @@ class CustomLabel(QLabel):
         self.cinput.setWindowFlags(Qt.Popup)
         self.cinput.setFocusProxy(self)
         self.cinput.editingFinished.connect(self.handleEditingFinished)
+        self.cinput.installEventFilter(self)
         self.setAlignment(Qt.AlignCenter)
 
     def mousePressEvent(self, event):
@@ -919,6 +921,15 @@ class CustomLabel(QLabel):
         self.cinput.setText(self.text())
         if not self.cinput.isVisible():
             self.cinput.show()
+
+    def eventFilter(self, widget, event):
+        if ((event.type() == QEvent.MouseButtonPress and
+             not self.cinput.geometry().contains(event.globalPos())) or
+            (event.type() == QEvent.KeyPress and
+             event.key() == Qt.Key_Escape)):
+            self.handleEditingFinished()
+            self.cinput.hide()
+        return super().eventFilter(widget, event)
 
     def handleEditingFinished(self):
         self.cinput.hide()
