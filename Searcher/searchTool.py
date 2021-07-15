@@ -1,3 +1,4 @@
+import requests
 from qgis.PyQt.QtCore import QTimer
 from qgis.utils import iface
 
@@ -7,9 +8,10 @@ import json
 
 from .searchParcel import FetchULDK, ParseResponce
 
-from PyQt5.QtWidgets import QCompleter
+from PyQt5.QtWidgets import QCompleter, QItemDelegate
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QStringListModel
+
 
 from urllib.request import urlopen
 
@@ -35,97 +37,97 @@ class SearcherTool:
             self.search_parcel)
         self.fetch_voivodeship()
         # COMPLETER SETUP
-        self.names = []
+        self.names = QStringListModel()
         self.completer = QCompleter(self.names)
+        self.completer.setModel(self.names)
         self.dock.lineEdit_address.setCompleter(self.completer)
         self.dock.lineEdit_address.textEdited.connect(self.adress_changed)
         self.completer.setFilterMode(Qt.MatchContains)
-
+        self.completer.setCaseSensitivity(False)
+        self.completer.setMaxVisibleItems(10)
 
 
     def adress_changed(self):
         # data storage for list of strings adresses defined by input in search bracket
         score = self.tips(self.dock.lineEdit_address)
-        # setting completer as None and deleting previous completer
-        self.dock.lineEdit_address.setCompleter(None)
-        self.completer.deleteLater()
+        if score:
+            self.names.setStringList(score)
 
-        # new completer for actual purposes
-        self.completer = QCompleter(score)
-        self.completer.setCaseSensitivity(Qt.CaseInsensitive)
-        self.completer.popup().pressed.connect(self.search_address)
-        self.dock.lineEdit_address.setCompleter(self.completer)
-        self.completer.setFilterMode(Qt.MatchContains)
+
+
+    def getstreets(self, simc, city):
+        try:
+            url_pref = 'https://services.gugik.gov.pl/uug/?request=GetStreet&simc='
+            data = json.loads(urlopen(url_pref + simc).read().decode())
+            obj, score = data['results'], []
+            elemscount = obj.keys()
+            limit = len(elemscount)-1
+            for i in range(1, limit):
+                score.append(f'{city}, {obj[str(i)]["street"]}')
+            return score
+        except Exception:
+            return ['']
+
+
+    def validatecity(self, obj, limit):
+        city = obj['1']['city']
+        if limit == 1:
+            return self.getstreets(obj['1']['simc'], city)
+        else:
+            self.names.setStringList(self.pickacity(obj, limit))
+            self.completer.popup().pressed.connect(lambda: self.userpick())
+
+
+
+
+    def userpick(self):
+        try:
+            simc = self.dock.lineEdit_address.text().split(',')[2].strip()
+            city = self.dock.lineEdit_address.text().split(',')[0].strip()
+            self.names.setStringList(self.getstreets(simc, city))
+            self.dock.lineEdit_address.setText(city)
+        except:
+            pass
+
+
+
+
+    def pickacity(self, obj, limit):
+        city = obj['1']['city']
+        same_names = []
+        for i in range(1, limit):
+            same_names.append(f'{city}, {obj[str(i)]["county"]}, {obj[str(i)]["simc"]}')
+        return same_names
 
 
 
 
     def tips(self, user_input):
         address = user_input.displayText()
-        if len(address.split(',')) == 1:
-            return ['']
-
         url_pref = 'http://services.gugik.gov.pl/uug/?request=GetAddress&location='
         quo_adr = quote(address)
-
         # trying to open link which script made above by prefix and quoting the search bracket input
-        with urlopen(url_pref + quo_adr) as json_file:
-            try:
-                # loading json type of data from link
-                data = json.loads(json_file.read().decode())
-                obj_type, limit = data['type'], data['found objects']
-                counter, score= 1, []
-                # if finds nothing completion field is empty
-                if limit == 0:
-                    return ['']
-                # dictionary with objects found on json_file
-                obj = data['results']
-
-                # if this particular address found, displays this address
-                if 'only exact numbers' in data:
-                    return [f"{obj['1']['city']}, {obj['1']['street']} {obj['1']['number']}"]
-
-                # there is only 1 object when obj_type == 'address' thats why variable in first bracket in obj is '1'
-                if obj_type == 'address': # and data['returned objects'] == 1:
-                    return [f"{obj['1']['city']}, {obj['1']['street']}"]
-
-
-                # it has to iterate through streets, we don't know how many streets might be in search result
-                # when we put full name of street it displays only this particular one
-                if obj_type == 'street':
-                    if limit == 1:
-                        return [f"{obj['1']['city']}, {obj['1']['street']}"]
-                    else:
-                        validate = obj[str(counter)]['street'].split()
-                        if len(validate) > 1 and validate[0] == 'ulica':
-                            # loop for streets with 'Miasto, ulica xxx' json coding
-                            while counter <= limit:
-                                street=obj[str(counter)]['street'].split()
-                                score.append(f"{obj[str(counter)]['city']}, {street[1]}")
-                                counter += 1
-                                if len(score) == 3:
-                                    return score
-
-                        else:
-                            # loop for streets with 'Miasto, xxx' json coding
-                            while counter <= limit:
-                                score.append(f"{obj[str(counter)]['city']}, {obj[str(counter)]['street']}")
-                                counter += 1
-                                if len(score) == 3:
-                                    return score
-
-
-                # displays only one city in completer
-                # TODO: when limit > 1 and obj_type == 'city' it has to display all city names in each voivodeship
-                # TODO: and search for this particular but feature wont add voivodeship to search bracket
-                if obj_type == 'city':
-                    print('city')
-                    return [obj['1']['city']]
-
-
-            # if any error occurred displays nothing TODO: expand errors with popups
-            except (TypeError, IndexError):
-                return ['']
+        try:
+            # loading json type of data from link
+            data = json.loads(requests.get(url_pref + quo_adr).text)
+            obj_type, limit = data['type'], data['found objects']
+            # if finds nothing completion field is empty
+            if limit == 0:
+                return
+            # dictionary with objects found on json_file
+            obj = data['results']
+            # if this particular address found, displays this address
+            if 'only exact numbers' in data:
+                return [f"{obj['1']['city']}, {obj['1']['street']} {obj['1']['number']}"]
+            # there is only 1 object when obj_type == 'address' thats why variable in first bracket in obj is '1'
+            # displays only one city in completer
+            # TODO: when limit > 1 and obj_type == 'city' it has to display all city names in each voivodeship
+            # TODO: and search for this particular but feature wont add voivodeship to search bracket
+            if obj_type == 'city':
+                return self.validatecity(obj, limit)
+        # if any error occurred displays nothing TODO: expand errors with popups
+        except Exception:
+            return
 
     def zoom_to_feature(self):
         # feature is our new layer added by searcher tool
