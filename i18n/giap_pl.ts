@@ -418,7 +418,7 @@ Porszę czekać...</translation>
         <translation>Sprawdź log, zarejestrowano problemy</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchAddress.py" line="109"/>
+        <location filename="../Searcher/searchAddress.py" line="116"/>
         <source>Service unavailable</source>
         <translation>Nie znaleziono obiektów. Wpisz poprawną wartość.</translation>
     </message>
