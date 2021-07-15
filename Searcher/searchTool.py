@@ -61,8 +61,8 @@ class SearcherTool:
             data = json.loads(urlopen(url_pref + simc).read().decode())
             obj, score = data['results'], []
             elemscount = obj.keys()
-            limit = len(elemscount)-1
-            for i in range(1, limit):
+            limit = len(elemscount)
+            for i in range(1, limit + 1):
                 score.append(f'{city}, {obj[str(i)]["street"]}')
             return score
         except Exception:

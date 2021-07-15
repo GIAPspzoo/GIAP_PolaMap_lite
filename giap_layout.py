@@ -2,6 +2,7 @@
 import os.path
 import webbrowser
 
+import qgis
 from PyQt5.QtGui import QCursor
 from PyQt5.QtWidgets import QPushButton
 from qgis.PyQt.QtCore import QTranslator, QCoreApplication, QSize, \
@@ -199,6 +200,12 @@ class MainTabQgsWidget:
         #self.searcher.run()
         # set strong focus to get keypressevent
         self.main_widget.setFocusPolicy(Qt.StrongFocus)
+
+        process = qgis.utils.plugins.get('processing')
+        if process:
+            process.initGui()
+            process.initProcessing()
+            self.load_ribbons()
 
     def load_ribbons(self):
         # turn on ribbon editing
