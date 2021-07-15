@@ -93,7 +93,6 @@ class MainTabQgsWidget:
         self.toolbar.addWidget(self.main_widget)
 
         self.layer_view = self.iface.layerTreeView()
-        self.layer_view.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.layer_toolbar = self.layer_view.parent().children()[1]
         self.layer_toolbar.setGeometry(0,0, 280, 35)
         for toolbar_item in range(2, 13):
@@ -110,6 +109,7 @@ class MainTabQgsWidget:
             self.layer_toolbar.children()[9].setPopupMode(2)
 
         self.layer_view.setGeometry(0, 79, 280, 1200)
+        self.layer_view.setTextElideMode(Qt.ElideRight)
         self.kompozycje_widget.setGeometry(0, 35, 280, 50)
         self.main_widget.pokaz_warstwy.toggled.connect(self.warstwy_show)
         self.kompozycje_widget.setParent(self.iface.mapCanvas())
@@ -232,8 +232,7 @@ class MainTabQgsWidget:
 
     def off_on_search_tool(self, visibility):
         elements = ['comboBox_woj', 'comboBox_pow', 'comboBox_gmina', 'comboBox_obr',
-                    'lineEdit_parcel', 'lineEdit_address',
-                    'line', 'line_2']
+                    'lineEdit_parcel', 'lineEdit_address', 'line']
 
         for elem in elements:
             getattr(self.main_widget, elem).setVisible(visibility)
