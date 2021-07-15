@@ -131,9 +131,9 @@ class SearcherTool:
 
     def zoom_to_feature(self):
         # feature is our new layer added by searcher tool
-        if self.iface.mapCanvas().layers():
+        layer = self.identify_layer('UUG_pkt')
+        if self.iface.mapCanvas().layers() and len(layer.allFeatureIds()) > 0:
             self.iface.mapCanvas().zoomScale(500)
-            layer = self.identify_layer('UUG_pkt')
             layer.selectByIds([max(layer.allFeatureIds())])
             self.iface.mapCanvas().zoomToSelected()
             self.iface.mapCanvas().flashFeatureIds(layer, [max(layer.allFeatureIds())])

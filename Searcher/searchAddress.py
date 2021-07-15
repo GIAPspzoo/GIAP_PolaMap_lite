@@ -154,7 +154,10 @@ class SearchAddress:
             pass
         else:
             lyr = self.get_layer()
-            lyr.dataProvider().addFeatures(feats)
+            try:
+                lyr.dataProvider().addFeatures(feats)
+            except:
+                return
             lyr.updateExtents()
             iface.mapCanvas().setExtent(lyr.extent())
             iface.mapCanvas().refresh()
