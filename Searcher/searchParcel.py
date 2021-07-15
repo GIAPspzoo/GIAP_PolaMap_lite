@@ -1,4 +1,5 @@
 import os.path
+import re
 from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
 
@@ -71,9 +72,13 @@ class FetchULDK:
             )
             return False
 
-        self.responce = [x for x in res[1:] if x != '']
+        self.responce = self.natural_sort([x for x in res[1:] if x != ''])
         return True
 
+    def natural_sort(self, list):
+        convert = lambda text: int(text) if text.isdigit() else text.lower()
+        alpha_key = lambda key: [convert(c) for c in re.split('([0-9]+)', key)]
+        return sorted(list, key=alpha_key)
 
 class ParseResponce:
     def __init__(self):

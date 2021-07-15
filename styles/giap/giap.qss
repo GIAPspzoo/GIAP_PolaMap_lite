@@ -456,7 +456,6 @@ QTableView
 QTreeView:item
 {
     color: white;
-    width: 1500px;
 }
 
 QTreeView:item:selected

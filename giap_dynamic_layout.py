@@ -323,7 +323,6 @@ class CustomTabBar(QTabBar):
         self._editor.setFocusProxy(self)
         self._editor.editingFinished.connect(self.handleEditingFinished)
         self._editor.installEventFilter(self)
-        self.tabBarDoubleClicked.connect(self.editTab)
 
     def eventFilter(self, widget, event):
         if ((event.type() == QEvent.MouseButtonPress and
@@ -458,6 +457,8 @@ class CustomSection(QWidget):
         self.clabel.setMaximumSize(QSize(100000, 20))
         self.clabel.setMinimumSize(QSize(50, 20))
         self.clabel.setAlignment(Qt.AlignCenter)
+        charakter = len(self.clabel.text())
+        self.clabel.setMinimumSize(QSize(charakter * 8, 20))
 
         self.pushButton_close_sec = QToolButton(self)
         self.pushButton_close_sec.setObjectName("giapSectionClose")
@@ -934,3 +935,5 @@ class CustomLabel(QLabel):
     def handleEditingFinished(self):
         self.cinput.hide()
         self.setText(self.cinput.text())
+        charakter = len(self.cinput.text())
+        self.setMinimumSize(QSize(charakter*8, 20))
