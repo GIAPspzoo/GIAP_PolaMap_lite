@@ -309,6 +309,7 @@ STANDARD_TOOLS = [
                 'btns': [
                     ['giapCompositions', 0, 0],
                     ['giapWMS', 0, 1],
+                    ['giapQuickPrint', 0, 2],
                 ]
             },
 
