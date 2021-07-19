@@ -8,9 +8,9 @@ import json
 
 from .searchParcel import FetchULDK, ParseResponce
 
-from PyQt5.QtWidgets import QCompleter, QItemDelegate
-
-from PyQt5.QtCore import Qt, QStringListModel
+from qgis.PyQt.QtWidgets import QCompleter
+from qgis.PyQt.QtCore import QStringListModel
+from PyQt5.QtCore import Qt
 
 
 from urllib.request import urlopen
@@ -45,7 +45,11 @@ class SearcherTool:
         self.completer.setFilterMode(Qt.MatchContains)
         self.completer.setCaseSensitivity(False)
         self.completer.setMaxVisibleItems(10)
-
+        self.dock.setStyleSheet("QComboBox{combobox-popup: 0;}")
+        self.dock.comboBox_gmina.setMaxVisibleItems(15)
+        self.dock.comboBox_obr.setMaxVisibleItems(15)
+        self.dock.comboBox_pow.setMaxVisibleItems(15)
+        self.dock.comboBox_woj.setMaxVisibleItems(17)
 
     def adress_changed(self):
         # data storage for list of strings adresses defined by input in search bracket
