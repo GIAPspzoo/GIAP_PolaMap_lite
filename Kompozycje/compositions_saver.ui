@@ -84,7 +84,7 @@ QComboBox::drop-down
 	border-left-width: 0px;
 	border-left-color:  #1a2936;
 	border-left-style: solid;
-	border-top-right-radius: 3px; 
+	border-top-right-radius: 3px;
 	border-bottom-right-radius: 3px;
 }
 
@@ -93,7 +93,7 @@ QComboBox::down-arrow
 	image: url(icons/down_arrow_disabled.png);
 }
 
-QComboBox::down-arrow:on, 
+QComboBox::down-arrow:on,
 QComboBox::down-arrow:hover,
 QComboBox::down-arrow:focus
 {
