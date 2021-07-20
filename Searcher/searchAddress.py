@@ -113,7 +113,7 @@ class SearchAddress:
 
         if 'results' in self.jres:
             if self.jres['results'] is None:
-                return False, CustomMessageBox(None, tr("No objects found. Please enter a valid value.")).button_ok()
+                return False, tr("No objects found. Please enter a valid value.")
 
         lyr = self.get_layer()
         if not lyr:
@@ -158,8 +158,10 @@ class SearchAddress:
                 lyr.dataProvider().addFeatures(feats)
             except:
                 return
-            lyr.updateExtents()
-            iface.mapCanvas().setExtent(lyr.extent())
-            iface.mapCanvas().refresh()
+            iface.mapCanvas().zoomScale(500)
+            lyr.selectByIds([len(lyr)])
+            iface.mapCanvas().zoomToSelected()
+            lyr.removeSelection()
         return True
+
 

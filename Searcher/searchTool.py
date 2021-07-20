@@ -7,7 +7,7 @@ from .searchAddress import SearchAddress
 import json
 
 from .searchParcel import FetchULDK, ParseResponce
-
+from ..CustomMessageBox import CustomMessageBox
 from qgis.PyQt.QtWidgets import QCompleter
 from qgis.PyQt.QtCore import QStringListModel
 from PyQt5.QtCore import Qt
@@ -133,15 +133,6 @@ class SearcherTool:
         except Exception:
             return
 
-    def zoom_to_feature(self):
-        # feature is our new layer added by searcher tool
-        layer = self.identify_layer('UUG_pkt')
-        if self.iface.mapCanvas().layers() and len(layer.allFeatureIds()) > 0:
-            self.iface.mapCanvas().zoomScale(500)
-            layer.selectByIds([max(layer.allFeatureIds())])
-            self.iface.mapCanvas().zoomToSelected()
-            self.iface.mapCanvas().flashFeatureIds(layer, [max(layer.allFeatureIds())])
-
     def identify_layer(self, layer_to_find):
         for layer in self.iface.mapCanvas().layers():
             if layer.name() == layer_to_find:
@@ -153,10 +144,8 @@ class SearcherTool:
             self.searchaddress_call.fetch_address(self.dock.lineEdit_address.text())
             ok, res = self.searchaddress_call.process_results()
             if not ok:
-                self.iface.messageBar().pushWarning(
-                    tr('Warning'), res)
+                CustomMessageBox(None, f'{tr("Warning")} {res}').button_ok()
             self.searchaddress_call.add_feats(res)
-            self.zoom_to_feature()
             def change_scale():
                 if iface.mapCanvas().scale() < 500:
                     iface.mapCanvas().zoomScale(500)

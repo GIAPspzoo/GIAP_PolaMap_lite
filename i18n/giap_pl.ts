@@ -597,6 +597,11 @@ Porszę czekać...</translation>
         <translation>Adres działki jest niepoprawny</translation>
     </message>
     <message>
+        <location filename="../Searcher/searchTool.py" line="147"/>
+        <source>Warning</source>
+        <translation>Uwaga</translation>
+    </message>
+    <message>
         <location filename="../Searcher/searchParcel.py" line="111"/>
         <source>Service return {} not valid features</source>
         <translation>Usługa zwróciła {} niepoprawnych obiektów</translation>
