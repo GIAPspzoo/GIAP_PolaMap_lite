@@ -318,6 +318,120 @@ Porszę czekać...</translation>
         <translation>Styl aktywowano!</translation>
     </message>
     <message>
+        <location filename="../utils.py" line="137"/>
+        <source>Project</source>
+        <translation>Projekt</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="149"/>
+        <source>Navigation</source>
+        <translation>Nawigacja</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="166"/>
+        <source>Attributes</source>
+        <translation>Atrybuty</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="178"/>
+        <source>Measures</source>
+        <translation>Pomiary</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="189"/>
+        <source>Layers</source>
+        <translation>Warstwy</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="209"/>
+        <source>Adv. Attributes</source>
+        <translation>Zaaw. Atrybuty</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="230"/>
+        <source>Labels</source>
+        <translation>Etykiety</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="247"/>
+        <source>Vector</source>
+        <translation>Wektor</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="267"/>
+        <source>Digitalization</source>
+        <translation>Digitalizacja</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="294"/>
+        <source>Prints</source>
+        <translation>Wydruki</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="306"/>
+        <source>GIAP Tools</source>
+        <translation>Narzędzia GIAP</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="316"/>
+        <source>Geoprocessing</source>
+        <translation>Geoprocessing</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="333"/>
+        <source>Geometry</source>
+        <translation>Geometria</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="353"/>
+        <source>Analysis</source>
+        <translation>Analiza</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="369"/>
+        <source>Research</source>
+        <translation>Badania</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="388"/>
+        <source>Data tools</source>
+        <translation>Narzędzia danych</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="401"/>
+        <source>Raster</source>
+        <translation>Raster</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="412"/>
+        <source>Raster analysis</source>
+        <translation>Analizy rastrowe</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="434"/>
+        <source>Projections</source>
+        <translation>Projekcje</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="445"/>
+        <source>Miscellaneous</source>
+        <translation>Różne</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="458"/>
+        <source>Extract</source>
+        <translation>Wyodrębniane danych</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="469"/>
+        <source>Conversion</source>
+        <translation>Konwersja</translation>
+    </message>
+
+
+
+
+    <message>
         <location filename="../giap_layout.py" line="163"/>
         <source>Map fast print</source>
         <translation>Szybki wydruk mapy</translation>

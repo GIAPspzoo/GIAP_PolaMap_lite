@@ -134,7 +134,7 @@ WMS_SERVERS_GROUPS = {
 
 STANDARD_TOOLS = [
             {
-                "label": "Project",
+                "label": tr("Project"),
                 "id": "Project",
                 "btn_size": 30,
                 "btns": [
@@ -146,7 +146,7 @@ STANDARD_TOOLS = [
             },
 
             {
-                "label": "Navigation",
+                "label": tr("Navigation"),
                 "id": "Navigation",
                 "btn_size": 30,
                 "btns": [
@@ -163,7 +163,7 @@ STANDARD_TOOLS = [
             },
 
             {
-                'label': 'Attributes',
+                'label': tr('Attributes'),
                 'id': 'Attributes',
                 'btn_size': 30,
                 'btns': [
@@ -175,7 +175,7 @@ STANDARD_TOOLS = [
             },
 
             {
-                'label': 'Measures',
+                'label': tr('Measures'),
                 'id': 'Measures',
                 'btn_size': 30,
                 'btns': [
@@ -186,7 +186,7 @@ STANDARD_TOOLS = [
             },
 
             {
-                'label': 'Layers',
+                'label': tr('Layers'),
                 'id': 'Layers',
                 'btn_size': 30,
                 'btns': [
@@ -206,7 +206,7 @@ STANDARD_TOOLS = [
             },
 
             {
-                'label': 'Adv. Attributes',
+                'label': tr('Adv. Attributes'),
                 'id': 'Adv. Attributes',
                 'btn_size': 30,
                 'btns': [
@@ -227,7 +227,7 @@ STANDARD_TOOLS = [
             },
 
             {
-                'label': 'Labels',
+                'label': tr('Labels'),
                 'id': 'Labels',
                 'btn_size': 30,
                 'btns': [
@@ -244,7 +244,7 @@ STANDARD_TOOLS = [
             },
 
             {
-                'label': 'Vector',
+                'label': tr('Vector'),
                 'id': 'Vector',
                 'btn_size': 30,
                 'btns': [
@@ -264,7 +264,7 @@ STANDARD_TOOLS = [
             },
 
             {
-                'label': 'Digitalization',
+                'label': tr('Digitalization'),
                 'id': 'Digitalization',
                 'btn_size': 30,
                 'btns': [
@@ -291,7 +291,7 @@ STANDARD_TOOLS = [
             },
 
             {
-                'label': 'Prints',
+                'label': tr('Prints'),
                 'id': 'Prints',
                 'btn_size': 30,
                 'btns': [
@@ -303,7 +303,7 @@ STANDARD_TOOLS = [
             },
 
             {
-                'label': 'GIAP Tools',
+                'label': tr('GIAP Tools'),
                 'id': 'GIAP Tools',
                 'btn_size': 60,
                 'btns': [
@@ -314,7 +314,7 @@ STANDARD_TOOLS = [
             },
 
             {
-               'label': 'Geoprocessing',
+               'label': tr('Geoprocessing'),
                'id': 'Geoprocessing',
                'btn_size': 30,
                'btns': [
@@ -331,7 +331,7 @@ STANDARD_TOOLS = [
            },
 
            {
-               'label': 'Geometry',
+               'label': tr('Geometry'),
                'id': 'Geometry',
                'btn_size': 30,
                'btns': [
@@ -351,7 +351,7 @@ STANDARD_TOOLS = [
            },
 
            {
-               'label': 'Analysis',
+               'label': tr('Analysis'),
                'id': 'Analysis',
                'btn_size': 30,
                'btns': [
@@ -367,7 +367,7 @@ STANDARD_TOOLS = [
            },
 
            {
-               'label': 'Research',
+               'label': tr('Research'),
                'id': 'Research',
                'btn_size': 30,
                'btns': [
@@ -386,7 +386,7 @@ STANDARD_TOOLS = [
            },
 
            {
-               'label': 'Data tools',
+               'label': tr('Data tools'),
                'id': 'Data tools',
                'btn_size': 30,
                'btns': [
@@ -399,7 +399,7 @@ STANDARD_TOOLS = [
            },
 
            {
-               'label': 'Raster',
+               'label': tr('Raster'),
                'id': 'Raster',
                'btn_size': 60,
                'btns': [
@@ -410,7 +410,7 @@ STANDARD_TOOLS = [
            },
 
            {
-               'label': 'Raster analysis',
+               'label': tr('Raster analysis'),
                'id': 'Raster analysis',
                'btn_size': 30,
                'btns': [
@@ -432,7 +432,7 @@ STANDARD_TOOLS = [
            },
 
            {
-               'label': 'Projections',
+               'label': tr('Projections'),
                'id': 'Projections',
                'btn_size': 60,
                'btns': [
@@ -443,7 +443,7 @@ STANDARD_TOOLS = [
            },
 
            {
-               'label': 'Miscellaneous',
+               'label': tr('Miscellaneous'),
                'id': 'Miscellaneous',
                'btn_size': 30,
                'btns': [
@@ -456,7 +456,7 @@ STANDARD_TOOLS = [
            },
 
            {
-               'label': 'Extract',
+               'label': tr('Extract'),
                'id': 'Extract',
                'btn_size': 30,
                'btns': [
@@ -467,7 +467,7 @@ STANDARD_TOOLS = [
            },
 
            {
-               'label': 'Conversion',
+               'label': tr('Conversion'),
                'id': 'Conversion',
                'btn_size': 30,
                'btns': [
