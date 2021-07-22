@@ -1,6 +1,7 @@
 import os
 import webbrowser
 
+from plugins.processing.tools.general import execAlgorithmDialog
 from qgis.PyQt.QtCore import Qt, QSize, QEvent, pyqtSignal, QMimeData, QRect
 from qgis.PyQt import uic
 from qgis.PyQt.QtGui import QDrag, QPainter, QPixmap, QCursor, QIcon
@@ -8,7 +9,7 @@ from qgis.PyQt.QtWidgets import QWidget, QApplication, QHBoxLayout,\
     QFrame, QLabel, QPushButton, QTabBar, QToolButton, QVBoxLayout, \
     QGridLayout, QSpacerItem, QLineEdit, QWidgetItem, QAction, \
     QBoxLayout, QMessageBox
-
+from qgis._core import QgsApplication
 from .config import Config
 from .CustomMessageBox import CustomMessageBox
 from .OrtoTools import OrtoAddingTool
@@ -210,6 +211,7 @@ class Widget(QWidget, FORM_CLASS):
             if there should be more cutom tools, here is the place to put them
         """
         self.dlg = SelectSection()
+        self.run_select_section()
         responce = self.dlg.exec_()
 
         if not responce:
@@ -236,6 +238,67 @@ class Widget(QWidget, FORM_CLASS):
                 self.printsAdded.emit()
 
         self.tabWidget.setUpdatesEnabled(True)
+
+    def run_select_section(self):
+        self.dlg.addSectionTab.clicked.connect(self.next_widget)
+        self.dlg.searchToolTab.clicked.connect(self.previous_widget)
+        self.dlg.addTool.clicked.connect(self.add_tool_search)
+        self.dlg.addSection.clicked.connect(self.add_section_search)
+        self.dlg.searchBox.textChanged.connect(self.search_tree)
+
+    def add_tool_search(self):
+        self.tabWidget.setUpdatesEnabled(True)
+        selected = self.dlg.algorithmTree.selectedAlgorithm()
+        sel_ind = self.dlg.algorithmTree.selectedIndexes()
+        if not selected and not sel_ind:
+            CustomMessageBox(self.dlg, "Select tool").button_ok()
+            return
+        if not selected:
+            CustomMessageBox(self.dlg, "Selected item is not a tool").button_ok()
+            return
+        sec = self.add_section(self.tabWidget.currentIndex(), selected.group(), 30)
+        sec.add_action(selected.id(), 0, 0)
+        self.tabWidget.setUpdatesEnabled(True)
+        self.dlg.close()
+
+    def add_section_search(self):
+        self.tabWidget.setUpdatesEnabled(True)
+        selected = self.dlg.algorithmTree.selectedAlgorithm()
+        tree_ind = self.dlg.algorithmTree.selectedIndexes()
+        if not selected and not tree_ind:
+            CustomMessageBox(self.dlg, "Select section").button_ok()
+            return
+        if selected:
+            CustomMessageBox(self.dlg, "Selected item is not a section").button_ok()
+            return
+        if not self.dlg.algorithmTree.algorithmForIndex(tree_ind[0].child(0, 0)):
+            CustomMessageBox(self.dlg, "Selected item has sub-section").button_ok()
+            return
+        sec = self.add_section(self.tabWidget.currentIndex(), self.dlg.algorithmTree.algorithmForIndex(tree_ind[0].child(0, 0)).group(), 30)
+        row = 0
+        col = 0
+        alg_ind = 0
+        alg = self.dlg.algorithmTree.algorithmForIndex(tree_ind[0].child(alg_ind, 0))
+        while alg:
+            sec.add_action(alg.id(), row, col)
+            if row == 1:
+                row = 0
+                col += 1
+            else:
+                row += 1
+            alg_ind += 1
+            alg = self.dlg.algorithmTree.algorithmForIndex(tree_ind[0].child(alg_ind, 0))
+        self.tabWidget.setUpdatesEnabled(True)
+        self.dlg.close()
+
+    def search_tree(self):
+        self.dlg.algorithmTree.setFilterString(self.dlg.searchBox.value())
+
+    def next_widget(self):
+        self.dlg.stackedWidget.setCurrentIndex(0)
+
+    def previous_widget(self):
+        self.dlg.stackedWidget.setCurrentIndex(1)
 
     def _section_control_remove(self, tabind):
         lay = self.tabWidget.widget(tabind).lay
@@ -512,7 +575,7 @@ class CustomSection(QWidget):
                 itw = it.widget()
                 ind = self.gridLayout.indexOf(itw)
                 wid = self.gridLayout.itemAt(ind).widget()
-                if wid.objectName()[:4].lower() == 'giap':
+                if wid.objectName()[:4].lower() == 'giap' or not wid.actions():
                     act = wid.objectName()
                 else:
                     act = wid.actions()[0].objectName()
@@ -583,6 +646,20 @@ class CustomSection(QWidget):
             self.tbut.setObjectName('gp_'+action.objectName())
             self.tbut.setDefaultAction(action)
             self.tbut.org_state = action.isEnabled()
+        elif QgsApplication.processingRegistry().algorithmById(action):
+            alg = QgsApplication.processingRegistry().algorithmById(action)
+            self.tbut.setObjectName(alg.id())
+            newAct = QAction(alg.icon(), alg.displayName(), self)
+
+            def open_window():
+                execAlgorithmDialog(newAct.objectName())
+
+            newAct.setObjectName(alg.id())
+            newAct.triggered.connect(open_window)
+            self.tbut.setDefaultAction(newAct)
+            self.tbut.setIcon(alg.icon())
+            self.tbut.org_state = True
+            self.tbut.setText(alg.id())
         elif isinstance(action, str):
             self.tbut.setObjectName(action)
             self.set_custom_action()
