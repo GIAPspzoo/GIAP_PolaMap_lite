@@ -251,10 +251,10 @@ class Widget(QWidget, FORM_CLASS):
         selected = self.dlg.algorithmTree.selectedAlgorithm()
         sel_ind = self.dlg.algorithmTree.selectedIndexes()
         if not selected and not sel_ind:
-            CustomMessageBox(self.dlg, "Select tool").button_ok()
+            CustomMessageBox(self.dlg, tr("Select tool")).button_ok()
             return
         if not selected:
-            CustomMessageBox(self.dlg, "Selected item is not a tool").button_ok()
+            CustomMessageBox(self.dlg, tr("Selected item is not a tool")).button_ok()
             return
         sec = self.add_section(self.tabWidget.currentIndex(), selected.group(), 30)
         sec.add_action(selected.id(), 0, 0)
@@ -266,13 +266,13 @@ class Widget(QWidget, FORM_CLASS):
         selected = self.dlg.algorithmTree.selectedAlgorithm()
         tree_ind = self.dlg.algorithmTree.selectedIndexes()
         if not selected and not tree_ind:
-            CustomMessageBox(self.dlg, "Select section").button_ok()
+            CustomMessageBox(self.dlg, tr("Select section")).button_ok()
             return
         if selected:
-            CustomMessageBox(self.dlg, "Selected item is not a section").button_ok()
+            CustomMessageBox(self.dlg, tr("Selected item is not a section")).button_ok()
             return
         if not self.dlg.algorithmTree.algorithmForIndex(tree_ind[0].child(0, 0)):
-            CustomMessageBox(self.dlg, "Selected item has sub-section").button_ok()
+            CustomMessageBox(self.dlg, tr("Selected item has sub-section")).button_ok()
             return
         sec = self.add_section(self.tabWidget.currentIndex(), self.dlg.algorithmTree.algorithmForIndex(tree_ind[0].child(0, 0)).group(), 30)
         row = 0
