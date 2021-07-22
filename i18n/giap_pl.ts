@@ -482,9 +482,34 @@ Porszę czekać...</translation>
         <translation>Zakończ edycję</translation>
     </message>
     <message>
-        <location filename="../giap_dynamic_layout.py" line="128"/>
+        <location filename="../giap_dynamic_layout.py" line="132"/>
         <source>Do you want to save your changes?</source>
-        <translation>Czy chcesz zakończyć edycję?</translation>
+        <translation>Czy chcesz zapisać zmiany?</translation>
+    </message>
+    <message>
+        <location filename="../giap_dynamic_layout.py" line="254"/>
+        <source>Select tool</source>
+        <translation>Wybierz narzędzię</translation>
+    </message>
+    <message>
+        <location filename="../giap_dynamic_layout.py" line="257"/>
+        <source>Selected item is not a tool</source>
+        <translation>Wybrany element nie jest narzędziem</translation>
+    </message>
+    <message>
+        <location filename="../giap_dynamic_layout.py" line="269"/>
+        <source>Select section</source>
+        <translation>Wybierz sekcję</translation>
+    </message>
+    <message>
+        <location filename="../giap_dynamic_layout.py" line="272"/>
+        <source>Selected item is not a section</source>
+        <translation>Wybrany elemenet nie jest sekcją</translation>
+    </message>
+    <message>
+        <location filename="../giap_dynamic_layout.py" line="275"/>
+        <source>Selected item has sub-section</source>
+        <translation>Wybrany element ma podsekcję</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.py" line="571"/>
@@ -900,6 +925,26 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
         <location filename="../select_section_dialog.ui" line="175"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
+    </message>
+    <message>
+        <location filename="../select_section_dialog.ui" line="338"/>
+        <source>Search for the tool</source>
+        <translation>Wyszukaj narzędzie</translation>
+    </message>
+    <message>
+        <location filename="../select_section_dialog.ui" line="559"/>
+        <source>Search...</source>
+        <translation>Szukaj...</translation>
+    </message>
+    <message>
+        <location filename="../select_section_dialog.ui" line="680"/>
+        <source>Add tool to ribbon</source>
+        <translation>Dodaj narzędzie do wstęgi</translation>
+    </message>
+    <message>
+        <location filename="../select_section_dialog.ui" line="702"/>
+        <source>Add section to ribbon</source>
+        <translation>Dodaj sekcję do wstęgi</translation>
     </message>
 </context>
 <context>
