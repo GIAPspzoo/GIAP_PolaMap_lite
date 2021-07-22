@@ -226,6 +226,8 @@ class MainTabQgsWidget:
                     if child is None:
                         sec.add_action(*btn)
                     else:
+                        if btn[0] == 'mActionShowAlignRasterTool':
+                            child.setIcon(QIcon(f'{self.plugin_dir}/icons/orto_icon2.png'))
                         sec.add_action(child, *btn[1:])
                 if dsec['label'] == 'Prints':
                     self.custom_prints()
