@@ -2,7 +2,7 @@
 
 from __future__ import absolute_import
 from qgis.PyQt.QtCore import QObject, pyqtSignal
-from qgis.PyQt.QtWidgets import QToolButton, QMenu, QAction
+from qgis.PyQt.QtWidgets import QToolButton, QMenu, QAction, QCheckBox
 from qgis.core import QgsProject, QgsRasterLayer, QgsMessageLog
 from qgis.utils import iface
 from .utils import WMS_SERVERS, WMS_SERVERS_GROUPS
@@ -72,18 +72,18 @@ class OrtoAddingTool(object):
                     if QgsProject.instance().layerTreeRoot().findLayer(layer):
                         QgsProject.instance().layerTreeRoot().findLayer(
                             layer).parent().setItemVisibilityChecked(True)
+
                         checked = action.isChecked()
                         QgsProject.instance().layerTreeRoot().findLayer(
                             layer).setItemVisibilityChecked(checked)
             except RuntimeError:
                 item.setChecked(True)
         self.add_to_map(layer_name)
-        self.create_menu()
 
     def add_to_map(self, name):
+        url = self.name_service[name]
+        rlayer = QgsRasterLayer(url, name, 'wms')
         if not QgsProject.instance().mapLayersByName(name):
-            url = self.name_service[name]
-            rlayer = QgsRasterLayer(url, name, 'wms')
             root = QgsProject.instance().layerTreeRoot()
             group_name = self.groups_for_names[name]
             if rlayer.isValid():
@@ -104,6 +104,8 @@ class OrtoAddingTool(object):
         else:
             CustomMessageBox(
                 None, tr('Layer already exists ') + name).button_ok()
+            lyr = QgsProject.instance().mapLayersByName(name)[0]
+            QgsProject.instance().layerTreeRoot().findLayer(lyr.id()).setItemVisibilityChecked(True)
 
     def create_menu(self):
         layers_names = []
@@ -118,8 +120,6 @@ class OrtoAddingTool(object):
                     layers_names.append(layer.name())
                     action = QAction(layer.name(), self.parent)
                     action.setCheckable(True)
-                    layer_visible = iface.layerTreeView().layerTreeModel().rootGroup().findLayer(layer).itemVisibilityChecked()
-                    action.setChecked(layer_visible)
                     action.triggered.connect(
                         lambda checked, item=action: self.action_clicked(item))
                     self.layer_name_dict[action] = layer.name()
@@ -129,7 +129,6 @@ class OrtoAddingTool(object):
         list(map(menu.addAction, values))
 
         self.services = []
-
         for name, service in self.name_service.items():
             if name not in layers_names:
                 action = QAction(name, self.parent)
@@ -146,9 +145,18 @@ class OrtoAddingTool(object):
                     )
                 )
                 menu.addAction(action)
-
+                menu.aboutToShow.connect(self.ortocheck)
         self.button.setMenu(menu)
+        self.ortomenu = menu
 
+    def ortocheck(self):
+        lyrs = [layer.name() for layer in QgsProject.instance().mapLayers().values()]
+        ortos = self.ortomenu
+        for orto in ortos.actions():
+            if orto.text() in lyrs:
+                orto.setChecked(True)
+            else:
+                orto.setChecked(False)
 
 class OrtoActionService(QObject):
     orto_added = pyqtSignal()
@@ -162,6 +170,5 @@ class OrtoActionService(QObject):
         self.url = url
         self.name = name
         self.group_name = default_group
-
         self.button.triggered.connect(
             lambda checked, item=self.button: self.parent.action_clicked(item))
