@@ -427,10 +427,11 @@ Porszę czekać...</translation>
         <source>Conversion</source>
         <translation>Konwersja</translation>
     </message>
-
-
-
-
+    <message>
+        <location filename="../giap_layout.py" line="140"/>
+        <source>Settings</source>
+        <translation>Ustawienia</translation>
+    </message>
     <message>
         <location filename="../giap_layout.py" line="163"/>
         <source>Map fast print</source>
@@ -504,7 +505,7 @@ Porszę czekać...</translation>
     <message>
         <location filename="../giap_dynamic_layout.py" line="272"/>
         <source>Selected item is not a section</source>
-        <translation>Wybrany elemenet nie jest sekcją</translation>
+        <translation>Wybrany element nie jest sekcją</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.py" line="275"/>
@@ -978,6 +979,44 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
         <location filename="../StyleManager/ui_stylemanager.ui" line="264"/>
         <source>Compositions</source>
         <translation type="obsolete">Kompozycje</translation>
+    </message>
+</context>
+<context>
+    <name>SettingsDialog</name>
+    <message>
+        <location filename="../Settings/ui_settings_layout.ui" line="35"/>
+        <source>Settings</source>
+        <translation>Ustawienia</translation>
+    </message>
+    <message>
+        <location filename="../Settings/ui_settings_layout.ui" line="247"/>
+        <source>Settings</source>
+        <translation>Ustawienia</translation>
+    </message>
+    <message>
+        <location filename="../Settings/ui_settings_layout.ui" line="270"/>
+        <source>Choose language</source>
+        <translation>Wybór wersji językowej</translation>
+    </message>
+    <message>
+        <location filename="../Settings/ui_settings_layout.ui" line="299"/>
+        <source>Restore default settings</source>
+        <translation>Przywracanie ustawień domyślnych</translation>
+    </message>
+    <message>
+        <location filename="../Settings/ui_settings_layout.ui" line="330"/>
+        <source>Restore the toolbars to the default settings</source>
+        <translation>Przywróć wstęgi narzędzi do ustawień domyślnych</translation>
+    </message>
+    <message>
+        <location filename="../Settings/ui_settings_layout.ui" line="340"/>
+        <source>Contact</source>
+        <translation>Kontakt</translation>
+    </message>
+    <message>
+        <location filename="../Settings/ui_settings_layout.ui" line="540"/>
+        <source>Settings</source>
+        <translation>Ustawienia</translation>
     </message>
 </context>
 <context>
