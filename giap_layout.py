@@ -257,13 +257,6 @@ class MainTabQgsWidget:
 
     def custom_prints(self):
         """Load custom tools to qgis"""
-        self.quick_print = PrintMapTool(self.iface, self.main_widget)
-        b_qprints = self.main_widget.findChildren(
-            QToolButton, 'giapQuickPrint')
-        for b_qprint in b_qprints:
-            b_qprint.clicked.connect(self.quick_print.run)
-            b_qprint.setToolTip(tr("Map fast print"))
-            b_qprint.setIcon(QIcon(f'{self.plugin_dir}/icons/quick_print.png'))
 
         b_mprints = self.main_widget.findChildren(QToolButton, 'giapMyPrints')
         for b_mprint in b_mprints:

@@ -10,6 +10,9 @@ from qgis.PyQt.QtWidgets import QWidget, QApplication, QHBoxLayout,\
     QGridLayout, QSpacerItem, QLineEdit, QWidgetItem, QAction, \
     QBoxLayout, QMessageBox
 from qgis._core import QgsApplication
+from qgis.utils import iface
+
+from .QuickPrint import PrintMapTool
 from .config import Config
 from .CustomMessageBox import CustomMessageBox
 from .OrtoTools import OrtoAddingTool
@@ -701,6 +704,12 @@ class CustomSection(QWidget):
             )
             self.tbut.setToolTip(tr("Composition settings"))
 
+        if oname == "giapQuickPrint":
+            plugin_dir = os.path.dirname(__file__)
+            self.quick_print = PrintMapTool(iface, self)
+            self.tbut.clicked.connect(self.quick_print.run)
+            self.tbut.setToolTip(tr("Map fast print"))
+            self.tbut.setIcon(QIcon(f'{plugin_dir}/icons/quick_print.png'))
     def unload_custom_actions(self):
         if self.orto_add:
             self.orto_add.disconnect_ortofotomapa_group()
