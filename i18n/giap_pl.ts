@@ -458,9 +458,11 @@ Porszę czekać...</translation>
         <translation>Zaaw. narzędzia digitalizacji</translation>
     </message>
 
-
-
-
+    <message>
+        <location filename="../giap_layout.py" line="163"/>
+        <source>Switch on manually missing core plugin: Topology Checker</source>
+        <translation>Włącz brakującą wtyczkę wbudowaną: Kontrola Geometrii</translation>
+    </message>
     <message>
         <location filename="../giap_layout.py" line="163"/>
         <source>Map fast print</source>
