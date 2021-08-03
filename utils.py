@@ -253,7 +253,7 @@ STANDARD_TOOLS = [
                     ['mActionVertexTool', 0, 2],
                     ['mActionUndo', 0, 3],
                     ['mActionRedo', 0, 4],
-
+                    ['mQActionPointer', 0, 5],
                     ['mActionAddFeature', 1, 0],
                     ['mActionMoveFeature', 1, 1],
                     ['mActionDeleteSelected', 1, 2],
@@ -478,6 +478,115 @@ STANDARD_TOOLS = [
                    ['mProcessingUserMenu_gdal:translate', 1, 1],
                ],
            },
+
+           {
+               'label': tr('Data bases'),
+               'id': 'Data bases',
+               'btn_size': 30,
+               'btns': [
+                   ['dbManager', 0, 0],
+               ],
+           },
+           {
+               'label': tr('Digitizing'),
+               'id': 'Digitizing',
+               'btn_size': 30,
+               'btns': [
+                   ['mActionAllEdits', 0, 0],
+                   ['mActionToggleEditing', 0, 1],
+                   ['mActionSaveLayerEdits', 0, 2],
+                   ['mActionAddFeature', 0, 3],
+                   ['mActionVertexTool', 0, 4],
+                   ['mActionMultiEditAttributes', 0, 5],
+                   ['mActionMultiEditAttributes', 1, 0],
+                   ['mActionDeleteSelected', 1, 1],
+                   ['mActionCutFeatures', 1, 2],
+                   ['mActionCopyFeatures', 1, 3],
+                   ['mActionPasteFeatures', 1, 4],
+                   ['mActionCopyFeatures', 1, 5],
+                   ['mActionUndo', 0, 6],
+                   ['mActionRedo', 1, 6]
+               ],
+           },
+           {
+               'label': tr('Selection'),
+               'id': 'Selection',
+               'btn_size': 30,
+               'btns': [
+                   ['mActionSelectFeatures', 0, 0],
+                   ['mActionSelectFreehand', 0, 1],
+                   ['mActionSelectPolygon', 1, 0],
+                   ['mActionSelectRadius', 1, 1],
+                   ['qgis:selectbyattribute', 0, 2],
+                   ['qgis:selectbyexpression', 0, 3],
+                   ['mActionSelectAll', 1, 2],
+                   ['mActionInvertSelection', 1, 3],
+                   ['mActionDeselectAll', 0, 4],
+                   ['mActionDeselectActiveLayer', 1, 4],
+                   ['mProcessingAlg_native:selectbylocation', 1, 5],
+               ],
+           },
+           {
+               'label': tr('Help'),
+               'id': 'Help',
+               'btn_size': 30,
+               'btns': [
+                   ['mActionHelpContents', 0, 0],
+               ],
+           },
+           {
+               'label': tr('Plugins'),
+               'id': 'Plugins',
+               'btn_size': 30,
+               'btns': [
+                   ['mActionShowPythonDialog', 0, 0]
+               ],
+           },
+           {
+               'label': tr('Data Source Manager'),
+               'id': 'Data Source Manager',
+               'btn_size': 30,
+               'btns': [
+                   ['mActionDataSourceManager', 0, 0],
+                   ['mActionNewGeoPackageLayer', 0, 1],
+                   ['mActionNewVectorLayer', 0, 2],
+                   ['mActionNewSpatiaLiteLayer', 1, 0],
+                   ['mActionNewMemoryLayer', 1, 1],
+                   ['mActionNewVirtualLayer', 1, 2]
+               ],
+           },
+           {
+               'label': tr('Advanced digitizing tools'),
+               'id': 'Advanced digitizing tools',
+               'btn_size': 30,
+               'btns': [
+                   ['mActionDigitizeWithCurve', 0, 0],
+                   ['mEnableAction', 0, 1],
+                   ['mActionMoveFeature', 0, 2],
+                   ['mActionMoveFeatureCopy', 0, 3],
+                   ['mActionRotateFeature', 0, 4],
+                   ['mActionSimplifyFeature', 0, 5],
+                   ['mActionAddRing', 0, 6],
+                   ['mActionAddPart', 0, 7],
+                   ['mActionFillRing', 0, 8],
+                   ['mActionDeleteRing', 0, 9],
+                   ['mActionDeletePart', 0, 10],
+                   ['mActionAddRing', 1, 0],
+                   ['mActionAddPart', 1, 1],
+                   ['mActionReshapeFeatures', 1, 2],
+                   ['mActionOffsetCurve', 1, 3],
+                   ['mActionReverseLine', 1, 4],
+                   ['mActionTrimExtendFeature', 1, 5],
+                   ['mActionSplitFeatures', 1, 6],
+                   ['mActionSplitParts', 1, 7],
+                   ['mActionMergeFeatures', 1, 8],
+                   ['mActionMergeFeatureAttributes', 1, 9],
+                   ['ActionPointSymbolTools', 1, 10]
+               ],
+           },
+
+
+
 
 ]
 

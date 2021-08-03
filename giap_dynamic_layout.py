@@ -8,7 +8,7 @@ from qgis.PyQt.QtGui import QDrag, QPainter, QPixmap, QCursor, QIcon
 from qgis.PyQt.QtWidgets import QWidget, QApplication, QHBoxLayout,\
     QFrame, QLabel, QPushButton, QTabBar, QToolButton, QVBoxLayout, \
     QGridLayout, QSpacerItem, QLineEdit, QWidgetItem, QAction, \
-    QBoxLayout, QMessageBox
+    QBoxLayout, QMessageBox, QWidgetAction
 from qgis._core import QgsApplication
 from qgis.utils import iface
 

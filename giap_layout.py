@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os.path
 import webbrowser
-
+from qgis.utils import iface
 import qgis
 from PyQt5.QtGui import QCursor
 from PyQt5.QtWidgets import QPushButton
@@ -32,7 +32,7 @@ from .Searcher.searchTool import SearcherTool
 
 from .giap_dynamic_layout import Widget, CustomToolButton
 from .ribbon_config import RIBBON_DEFAULT
-
+from .CustomMessageBox import CustomMessageBox
 project = QgsProject.instance()
 
 
@@ -66,10 +66,14 @@ class MainTabQgsWidget:
         # initialize StyleManager for styling handling
         self.style_manager = StyleManager(self)
         self.print_map_tool = PrintMapTool(self.iface)
-
         self.iface.projectRead.connect(self.projekt_wczytany)
         self.iface.newProjectCreated.connect(self.projekt_wczytany)
         self.iface.initializationCompleted.connect(self.load_ribbons)
+        self.iface.newProjectCreated.connect(self.isVectorHere)
+
+    def isVectorHere(self):
+        if len(iface.mainWindow().findChild(QToolBar, 'mVectorToolBar').actions()) == 0:
+            CustomMessageBox(None, f'{tr("Switch on manually missing core plugin: Topology Checker")}').button_ok()
 
     def initGui(self):
         # set default style and active style if config.json doesn't extists

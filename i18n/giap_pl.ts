@@ -423,15 +423,50 @@ Porszę czekać...</translation>
         <translation>Wyodrębniane danych</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="469"/>
-        <source>Conversion</source>
-        <translation>Konwersja</translation>
+        <location filename="../utils.py" line="483"/>
+        <source>Data bases</source>
+        <translation>Bazy danych</translation>
     </message>
     <message>
-        <location filename="../giap_layout.py" line="140"/>
-        <source>Settings</source>
-        <translation>Ustawienia</translation>
+        <location filename="../utils.py" line="491"/>
+        <source>Digitizing</source>
+        <translation>Digitalizacja</translation>
     </message>
+    <message>
+        <location filename="../utils.py" line="512"/>
+        <source>Selection</source>
+        <translation>Selekcja</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="523"/>
+        <source>Help</source>
+        <translation>Pomoc</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="531"/>
+        <source>Plugins</source>
+        <translation>Pluginy</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="539"/>
+        <source>Data Source Manager</source>
+        <translation>Zarządzanie bazami danych</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="552"/>
+        <source>Advanced digitizing tools</source>
+        <translation>Zaaw. narzędzia digitalizacji</translation>
+    </message>
+
+    <message>
+        <location filename="../giap_layout.py" line="163"/>
+        <source>Switch on manually missing core plugin: Topology Checker</source>
+        <translation>Włącz brakującą wtyczkę wbudowaną: Kontrola Geometrii</translation>
+    </message>
+
+
+
+
     <message>
         <location filename="../giap_layout.py" line="163"/>
         <source>Map fast print</source>
