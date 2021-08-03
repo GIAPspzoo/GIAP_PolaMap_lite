@@ -12,7 +12,6 @@ from qgis.PyQt.QtWidgets import QCompleter
 from qgis.PyQt.QtCore import QStringListModel
 from PyQt5.QtCore import Qt
 
-
 from urllib.request import urlopen
 
 from urllib.parse import quote
@@ -57,8 +56,6 @@ class SearcherTool:
         if score:
             self.names.setStringList(score)
 
-
-
     def getstreets(self, simc, city):
         try:
             url_pref = 'https://services.gugik.gov.pl/uug/?request=GetStreet&simc='
@@ -72,7 +69,6 @@ class SearcherTool:
         except Exception:
             return ['']
 
-
     def validatecity(self, obj, limit):
         city = obj['1']['city']
         if limit == 1:
@@ -81,20 +77,11 @@ class SearcherTool:
             self.names.setStringList(self.pickacity(obj, limit))
             self.completer.popup().pressed.connect(lambda: self.userpick())
 
-
-
-
     def userpick(self):
-        try:
-            simc = self.dock.lineEdit_address.text().split(',')[2].strip()
-            city = self.dock.lineEdit_address.text().split(',')[0].strip()
-            self.names.setStringList(self.getstreets(simc, city))
-            self.dock.lineEdit_address.setText(city)
-        except:
-            pass
-
-
-
+        simc = self.dock.lineEdit_address.text().split(',')[2].strip()
+        city = self.dock.lineEdit_address.text().split(',')[0].strip()
+        self.names.setStringList(self.getstreets(simc, city))
+        self.dock.lineEdit_address.setText(city)
 
     def pickacity(self, obj, limit):
         city = obj['1']['city']
@@ -102,9 +89,6 @@ class SearcherTool:
         for i in range(1, limit):
             same_names.append(f'{city}, {obj[str(i)]["county"]}, {obj[str(i)]["simc"]}')
         return same_names
-
-
-
 
     def tips(self, user_input):
         address = user_input.displayText()
@@ -144,7 +128,7 @@ class SearcherTool:
             self.searchaddress_call.fetch_address(self.dock.lineEdit_address.text())
             ok, res = self.searchaddress_call.process_results()
             if not ok:
-                CustomMessageBox(None, f'{tr("Warning")} {res}').button_ok()
+                CustomMessageBox(None, f'{tr("Warning!")} {res}').button_ok()
             self.searchaddress_call.add_feats(res)
             def change_scale():
                 if iface.mapCanvas().scale() < 500:

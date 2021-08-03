@@ -579,8 +579,8 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../Searcher/searchAddress.py" line="98"/>
-        <source>Zero objects found</source>
-        <translation>Nie znaleziono obiektów</translation>
+        <source>Zero objects found.</source>
+        <translation>Nie znaleziono obiektów.</translation>
     </message>
     <message>
         <location filename="../Searcher/searchAddress.py" line="102"/>
@@ -646,6 +646,11 @@ Porszę czekać...</translation>
         <location filename="../Searcher/searchTool.py" line="119"/>
         <source>District</source>
         <translation>Powiat</translation>
+    </message>
+    <message>
+        <location filename="../Searcher/searchTool.py" line="144"/>
+        <source>Warning!</source>
+        <translation>Uwaga!</translation>
     </message>
     <message>
         <location filename="../Searcher/searchTool.py" line="151"/>
