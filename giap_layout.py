@@ -73,8 +73,6 @@ class MainTabQgsWidget:
     def isVectorHere(self):
         if len(iface.mainWindow().findChild(QToolBar, 'mVectorToolBar').actions()) == 0:
             CustomMessageBox(None, f'{tr("Switch on manually missing core plugin: Topology Checker")}').button_ok()
-        else:
-            return
 
     def initGui(self):
         # set default style and active style if config.json doesn't extists
