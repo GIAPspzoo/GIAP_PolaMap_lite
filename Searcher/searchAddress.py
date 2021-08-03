@@ -103,13 +103,13 @@ class SearchAddress:
         try:
             self.jres = json.loads(self.res)
         except Exception:
-            return False, tr('Can\'t parse results')
+            return False, tr('Can\'t parse results.')
 
         if 'found objects' in self.jres:
             if self.jres['found objects'] == 0:
-                return False, tr('Zero objects found')
+                return False, tr('Zero objects found.')
         else:
-            return False, tr('Zero objects found')
+            return False, tr('Zero objects found.')
 
         if 'results' in self.jres:
             if self.jres['results'] is None:
@@ -117,7 +117,7 @@ class SearchAddress:
 
         lyr = self.get_layer()
         if not lyr:
-            return False, tr('Check log, problems occured')
+            return False, tr('Check log, problems occured.')
         fnm = lyr.dataProvider().fieldNameMap()
         feats = []
         if 'only exact numbers' in self.jres.keys():    # if jezeli znajdzie dokladnie ten adres
@@ -154,14 +154,11 @@ class SearchAddress:
             pass
         else:
             lyr = self.get_layer()
-            try:
+            if lyr:
                 lyr.dataProvider().addFeatures(feats)
-            except:
-                return
             iface.mapCanvas().zoomScale(500)
             lyr.selectByIds([len(lyr)])
             iface.mapCanvas().zoomToSelected()
             lyr.removeSelection()
         return True
-
 
