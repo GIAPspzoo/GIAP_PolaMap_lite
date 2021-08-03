@@ -14,6 +14,7 @@ from qgis.PyQt.QtWidgets import QAction, QToolBar, QToolButton, QWidget, \
 # Initialize Qt resources from file resources.py
 from qgis._core import QgsProject, Qgis, QgsMessageLog
 
+from .Settings.settings_layout import SettingsDialog
 from .OrtoTools import OrtoAddingTool
 from .QuickPrint import PrintMapTool
 
@@ -139,12 +140,19 @@ class MainTabQgsWidget:
         self.styleButton.clicked.connect(self.show_style_manager_dialog)
         self.styleButton.setObjectName('ThemeButton')
 
+        self.settingsButton = QToolButton()
+        self.settingsButton.setText(tr("Settings"))
+        self.settingsButton.setBaseSize(QSize(25, 25))
+        self.settingsButton.clicked.connect(self.show_settings_dialog)
+        self.settingsButton.setObjectName('SettingsButton')
+
         corner_widget = QWidget(self.main_widget.tabWidget)
         corner_layout = QHBoxLayout()
         corner_layout.setContentsMargins(0, 0, 0, 0)
         corner_layout.addWidget(self.menuButton)
         corner_layout.addWidget(self.editButton)
         corner_layout.addWidget(self.styleButton)
+        corner_layout.addWidget(self.settingsButton)
 
         #logo icon
         plug_dir = os.path.dirname(__file__)
@@ -253,13 +261,6 @@ class MainTabQgsWidget:
 
     def custom_prints(self):
         """Load custom tools to qgis"""
-        self.quick_print = PrintMapTool(self.iface, self.main_widget)
-        b_qprints = self.main_widget.findChildren(
-            QToolButton, 'giapQuickPrint')
-        for b_qprint in b_qprints:
-            b_qprint.clicked.connect(self.quick_print.run)
-            b_qprint.setToolTip(tr("Map fast print"))
-            b_qprint.setIcon(QIcon(f'{self.plugin_dir}/icons/quick_print.png'))
 
         b_mprints = self.main_widget.findChildren(QToolButton, 'giapMyPrints')
         for b_mprint in b_mprints:
@@ -457,6 +458,32 @@ class MainTabQgsWidget:
             Qt.Window | Qt.WindowCloseButtonHint
         )
         self.style_manager_dlg.exec_()
+
+    def show_settings_dialog(self):
+        self.set_dlg=SettingsDialog()
+        self.set_dlg.pushButton_restore.clicked.connect(self.restore_default_ribbon_settings)
+        self.set_dlg.radioButton_pl.toggled.connect(self.set_polish)
+        self.set_dlg.radioButton_en.toggled.connect(self.set_english)
+        self.set_dlg.exec_()
+
+    def set_polish(self):
+        QSettings().setValue('locale/userLocale', 'pl')
+
+    def set_english(self):
+        QSettings().setValue('locale/userLocale', 'en')
+
+    def restore_default_ribbon_settings(self):
+        self.set_dlg.pushButton_restore.clicked.disconnect()
+        edit_ses_on_start = self.main_widget.edit_session
+        if edit_ses_on_start:
+            self.main_widget.edit_session_toggle()
+        for tabind in range(len(self.main_widget.tabs)):
+            self.main_widget.remove_tab(0)
+        self.save_user_ribbon_config(False)
+        self.load_ribbons()
+        if edit_ses_on_start:
+            self.main_widget.edit_session_toggle()
+        self.set_dlg.pushButton_restore.clicked.connect(self.restore_default_ribbon_settings)
 
     def install_translator(self):
         locale = 'en'
