@@ -196,12 +196,20 @@ STANDARD_TOOLS = [
                     ['mActionAddMeshLayer', 0, 3],
                     ['mActionAddWcsLayer', 0, 4],
                     ['mActionAddDelimitedText', 0, 5],
+                    ['mActionAddMssqlLayer', 0, 6],
+                    ['mActionAddDb2Layer', 0, 7],
+                    ['mActionAddOracleLayer', 0, 8],
+                    ['mActionNewGeoPackageLayer', 0, 9],
 
                     ['mActionAddRasterLayer', 1, 0],
                     ['mActionAddWfsLayer', 1, 1],
                     ['mActionAddSpatiaLiteLayer', 1, 2],
                     ['mActionAddVirtualLayer', 1, 3],
                     ['mActionNewMemoryLayer', 1, 4],
+                    ['mActionAddAmsLayer', 1, 5],
+                    ['mActionAddAfsLayer', 1, 6],
+                    ['mActionNewVectorLayer', 1, 7],
+                    ['mActionNewSpatiaLiteLayer', 1, 8]
                 ],
             },
 
