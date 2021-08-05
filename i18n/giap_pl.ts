@@ -579,8 +579,8 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../Searcher/searchAddress.py" line="98"/>
-        <source>Zero objects found.</source>
-        <translation>Nie znaleziono obiektów.</translation>
+        <source>Service did not find any objects for this query.</source>
+        <translation>Usługa nie znalazła żadnych obiektów dla tego zapytania.</translation>
     </message>
     <message>
         <location filename="../Searcher/searchAddress.py" line="102"/>

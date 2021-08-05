@@ -107,7 +107,7 @@ class SearchAddress:
 
         if 'found objects' in self.jres:
             if self.jres['found objects'] == 0:
-                return False, tr('Zero objects found.')
+                return False, tr('Service did not find any objects for this query.')
         else:
             return False, tr('Zero objects found.')
 
