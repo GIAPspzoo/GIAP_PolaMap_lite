@@ -102,10 +102,9 @@ class OrtoAddingTool(object):
                 CustomMessageBox(
                     None, tr('Can\'t add layer') + name).button_ok()
         else:
-            CustomMessageBox(
-                None, tr('Layer already exists ') + name).button_ok()
             lyr = QgsProject.instance().mapLayersByName(name)[0]
-            QgsProject.instance().layerTreeRoot().findLayer(lyr.id()).setItemVisibilityChecked(True)
+            lyrontree = QgsProject.instance().layerTreeRoot().findLayer(lyr.id())
+            lyrontree.setItemVisibilityChecked(not lyrontree.isItemVisibilityCheckedRecursive())
 
     def create_menu(self):
         layers_names = []
@@ -150,13 +149,9 @@ class OrtoAddingTool(object):
         self.ortomenu = menu
 
     def ortocheck(self):
-        lyrs = [layer.name() for layer in QgsProject.instance().mapLayers().values()]
-        ortos = self.ortomenu
-        for orto in ortos.actions():
-            if orto.text() in lyrs:
-                orto.setChecked(True)
-            else:
-                orto.setChecked(False)
+        checked = [layer.name() for layer in QgsProject.instance().layerTreeRoot().checkedLayers()]
+        for orto in self.ortomenu.actions():
+            orto.setChecked(orto.text() in checked)
 
 class OrtoActionService(QObject):
     orto_added = pyqtSignal()
