@@ -11,6 +11,7 @@ from ..CustomMessageBox import CustomMessageBox
 from qgis.PyQt.QtWidgets import QCompleter
 from qgis.PyQt.QtCore import QStringListModel
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QFont, QFontMetrics
 
 from urllib.request import urlopen
 
@@ -49,6 +50,8 @@ class SearcherTool:
         self.dock.comboBox_obr.setMaxVisibleItems(15)
         self.dock.comboBox_pow.setMaxVisibleItems(15)
         self.dock.comboBox_woj.setMaxVisibleItems(17)
+        self.font = QFont('Agency FB')
+        self.fontm = QFontMetrics(self.font)
 
     def adress_changed(self):
         # data storage for list of strings adresses defined by input in search bracket
@@ -147,6 +150,10 @@ class SearcherTool:
         else:
             self.iface.messageBar().createMessage(tr('Invalid'), tr('Empty address field'))
 
+    def widthforcombo(self, result):
+        longest = max(result, key=len)
+        width = 2 * self.fontm.width(longest)
+        return width
 
     def fetch_voivodeship(self):
         """Fetching voivodeship list from GUGiK"""
@@ -181,7 +188,9 @@ class SearcherTool:
         fe = FetchULDK()
         fe.fetch_list('powiat', voi)
         self.dock.comboBox_pow.blockSignals(True)
-        self.dock.comboBox_pow.addItems(fe.responce)
+        result = fe.responce
+        self.dock.comboBox_pow.addItems(result)
+        self.dock.comboBox_pow.view().setFixedWidth(self.widthforcombo(result))
         self.dock.comboBox_pow.blockSignals(False)
 
     def pow_changed(self):
@@ -192,7 +201,9 @@ class SearcherTool:
         fe = FetchULDK()
         fe.fetch_list('gmina', dis)
         self.dock.comboBox_gmina.blockSignals(True)
-        self.dock.comboBox_gmina.addItems(fe.responce)
+        result = fe.responce
+        self.dock.comboBox_gmina.addItems(result)
+        self.dock.comboBox_gmina.view().setFixedWidth(self.widthforcombo(result))
         self.dock.comboBox_gmina.blockSignals(False)
 
     def gmi_changed(self):
@@ -203,7 +214,9 @@ class SearcherTool:
         fe = FetchULDK()
         fe.fetch_list('obreb', mun)
         self.dock.comboBox_obr.blockSignals(True)
-        self.dock.comboBox_obr.addItems(fe.responce)
+        result = fe.responce
+        self.dock.comboBox_obr.addItems(result)
+        self.dock.comboBox_obr.view().setFixedWidth(self.widthforcombo(result))
         self.dock.comboBox_obr.blockSignals(False)
 
     def clear_comboBoxes(self, level=None):
