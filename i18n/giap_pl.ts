@@ -269,8 +269,13 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../ribbon_config.py" line="58"/>
-        <source>Layers</source>
-        <translation>Warstwy</translation>
+        <source>Add Layer</source>
+        <translation>Dodaj warstwe</translation>
+    </message>
+    <message>
+        <location filename="../ribbon_config.py" line="81"/>
+        <source>Create Layer</source>
+        <translation>Twórz warstwe</translation>
     </message>
     <message>
         <location filename="../ribbon_config.py" line="80"/>
@@ -339,8 +344,13 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../utils.py" line="189"/>
-        <source>Layers</source>
-        <translation>Warstwy</translation>
+        <source>Add Layer</source>
+        <translation>Dodaj warstwe</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="212"/>
+        <source>Create Layer</source>
+        <translation>Twórz warstwe</translation>
     </message>
     <message>
         <location filename="../utils.py" line="209"/>
