@@ -186,8 +186,8 @@ STANDARD_TOOLS = [
             },
 
             {
-                'label': tr('Layers'),
-                'id': 'Layers',
+                'label': tr('Add Layer'),
+                'id': 'Add Layer',
                 'btn_size': 30,
                 'btns': [
                     ['mActionAddOgrLayer', 0, 0],
@@ -197,19 +197,27 @@ STANDARD_TOOLS = [
                     ['mActionAddWcsLayer', 0, 4],
                     ['mActionAddDelimitedText', 0, 5],
                     ['mActionAddMssqlLayer', 0, 6],
-                    ['mActionAddDb2Layer', 0, 7],
-                    ['mActionAddOracleLayer', 0, 8],
-                    ['mActionNewGeoPackageLayer', 0, 9],
-
+                    ['mActionAddDb2Layer', 1, 6],
+                    ['mActionAddOracleLayer', 0, 7],
                     ['mActionAddRasterLayer', 1, 0],
                     ['mActionAddWfsLayer', 1, 1],
                     ['mActionAddSpatiaLiteLayer', 1, 2],
                     ['mActionAddVirtualLayer', 1, 3],
-                    ['mActionNewMemoryLayer', 1, 4],
-                    ['mActionAddAmsLayer', 1, 5],
-                    ['mActionAddAfsLayer', 1, 6],
-                    ['mActionNewVectorLayer', 1, 7],
-                    ['mActionNewSpatiaLiteLayer', 1, 8]
+                    ['mActionAddAmsLayer', 1, 4],
+                    ['mActionAddAfsLayer', 1, 5],
+                ],
+            },
+
+            {
+                'label': tr('Create Layer'),
+                'id': 'Create Layer',
+                'btn_size': 30,
+                'btns': [
+                    ['mActionNewGeoPackageLayer', 0, 1],
+                    ['mActionNewMemoryLayer', 0, 2],
+                    ['mActionNewVectorLayer', 1, 1],
+                    ['mActionNewSpatiaLiteLayer', 1, 2],
+                    ['mActionnewVirtualLayer', 0, 3]
                 ],
             },
 
