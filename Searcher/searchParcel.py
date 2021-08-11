@@ -140,7 +140,7 @@ class ParseResponce:
         geom = QgsGeometry().fromWkt(lrow[0])
         feat.setGeometry(geom)
         feat.setFields(self.lyr.fields())
-        cols = ['teryt', 'woj', 'powiat', 'gmina', 'obreb', 'nr_dz']
+        cols = ['teryt', 'woj', 'powiat', 'obreb', 'gmina', 'nr_dz']
 
         for eni, val in enumerate(lrow[1:]):
             if val:
