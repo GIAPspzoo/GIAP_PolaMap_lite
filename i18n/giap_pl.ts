@@ -345,12 +345,12 @@ Porszę czekać...</translation>
     <message>
         <location filename="../utils.py" line="189"/>
         <source>Add Layer</source>
-        <translation>Dodaj warstwe</translation>
+        <translation>Dodaj warstwę</translation>
     </message>
     <message>
         <location filename="../utils.py" line="212"/>
         <source>Create Layer</source>
-        <translation>Twórz warstwe</translation>
+        <translation>Twórz warstwę</translation>
     </message>
     <message>
         <location filename="../utils.py" line="209"/>

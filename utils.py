@@ -217,7 +217,7 @@ STANDARD_TOOLS = [
                     ['mActionNewMemoryLayer', 0, 2],
                     ['mActionNewVectorLayer', 1, 1],
                     ['mActionNewSpatiaLiteLayer', 1, 2],
-                    ['mActionnewVirtualLayer', 0, 3]
+                    ['mActionNewVirtualLayer', 0, 3]
                 ],
             },
 
