@@ -226,7 +226,7 @@ class Widget(QWidget, FORM_CLASS):
         self.tabWidget.setUpdatesEnabled(True)
         print_trig = False
         for sel in selected:
-            secdef = [x for x in STANDARD_TOOLS if x['label'] == sel][0]
+            secdef = [x for x in STANDARD_TOOLS if tr(x['label']) == sel][0]
             sec = self.add_section(ind, sel, secdef['btn_size'])
             for btn in secdef['btns']:
                 child = self.parent.findChild(QAction, btn[0])
