@@ -573,6 +573,11 @@ Porszę czekać...</translation>
         <translation>GIAP.pl - Strona WWW</translation>
     </message>
     <message>
+        <location filename="../Searcher/searchParcel.py" line="51"/>
+        <source>Service did not find any matches, wrong plot number.</source>
+        <translation>Usługa nie znalazła dopasowań, zły numer działki.</translation>
+    </message>
+    <message>
         <location filename="../Searcher/searchParcel.py" line="59"/>
         <source>Error</source>
         <translation>Bład</translation>

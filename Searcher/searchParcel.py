@@ -67,7 +67,7 @@ class FetchULDK:
         res = content.split('\n')
         if res[0] != '0':
             iface.messageBar().pushMessage(
-                tr('INFO'), tr('Service returned: {}').format(str(res[0])),
+                tr('Service did not find any matches, wrong plot number.'),
                 Qgis.Warning
             )
             return False
