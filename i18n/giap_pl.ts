@@ -1079,7 +1079,7 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
     </message>
     <message>
         <location filename="../select_section.py" line="35"/>
-        <source>Research/source>
+        <source>Research</source>
         <translation>Badania</translation>
     </message>
     <message>
