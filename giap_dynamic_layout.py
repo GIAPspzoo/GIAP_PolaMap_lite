@@ -386,7 +386,6 @@ class CustomTabBar(QTabBar):
 
         self._editor = QLineEdit(self)
         self._editor.setWindowFlags(Qt.Popup)
-        self._editor.setFocusProxy(self)
         self._editor.editingFinished.connect(self.handleEditingFinished)
         self._editor.installEventFilter(self)
 
@@ -1143,7 +1142,6 @@ class CustomLabel(QLabel):
         )
         self.cinput = QLineEdit(self)
         self.cinput.setWindowFlags(Qt.Popup)
-        self.cinput.setFocusProxy(self)
         self.cinput.editingFinished.connect(self.handleEditingFinished)
         self.cinput.installEventFilter(self)
         self.setAlignment(Qt.AlignCenter)
