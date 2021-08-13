@@ -81,10 +81,11 @@ class SearcherTool:
             self.completer.popup().pressed.connect(lambda: self.userpick())
 
     def userpick(self):
-        simc = self.dock.lineEdit_address.text().split(',')[2].strip()
-        city = self.dock.lineEdit_address.text().split(',')[0].strip()
-        self.names.setStringList(self.getstreets(simc, city))
-        self.dock.lineEdit_address.setText(city)
+        if len(self.dock.lineEdit_address.text().split(',')) == 3:
+            simc = self.dock.lineEdit_address.text().split(',')[2].strip()
+            city = self.dock.lineEdit_address.text().split(',')[0].strip()
+            self.names.setStringList(self.getstreets(simc, city))
+            self.dock.lineEdit_address.setText(city)
 
     def pickacity(self, obj, limit):
         city = obj['1']['city']
