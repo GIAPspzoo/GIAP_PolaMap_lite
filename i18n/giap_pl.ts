@@ -433,6 +433,11 @@ Porszę czekać...</translation>
         <translation>Wyodrębniane danych</translation>
     </message>
     <message>
+        <location filename="../utils.py" line="486"/>
+        <source>Conversion</source>
+        <translation>Konwersja</translation>
+    </message>
+    <message>
         <location filename="../utils.py" line="483"/>
         <source>Data bases</source>
         <translation>Bazy danych</translation>
@@ -996,6 +1001,156 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
         <location filename="../select_section_dialog.ui" line="702"/>
         <source>Add section to ribbon</source>
         <translation>Dodaj sekcję do wstęgi</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="20"/>
+        <source>Project</source>
+        <translation>Projekt</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="21"/>
+        <source>Navigation</source>
+        <translation>Nawigacja</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="22"/>
+        <source>Attributes</source>
+        <translation>Atrybuty</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="23"/>
+        <source>Measures</source>
+        <translation>Miary</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="24"/>
+        <source>Add Layer</source>
+        <translation>Dodaj warstwę</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="25"/>
+        <source>Create Layer</source>
+        <translation>Twórz warstwę</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="26"/>
+        <source>Adv. Attributes</source>
+        <translation>Zaaw. Atrybuty</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="27"/>
+        <source>Labels</source>
+        <translation>Etykiety</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="28"/>
+        <source>Vector</source>
+        <translation>Wektor</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="29"/>
+        <source>Digitalization</source>
+        <translation>Digitalizacja</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="30"/>
+        <source>Prints</source>
+        <translation>Wydruki</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="31"/>
+        <source>GIAP Tools</source>
+        <translation>Narzędzia GIAP</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="32"/>
+        <source>Geoprocessing</source>
+        <translation>Geoprocessing</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="33"/>
+        <source>Geometry</source>
+        <translation>Geometria</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="34"/>
+        <source>Analysis</source>
+        <translation>Analiza</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="35"/>
+        <source>Research/source>
+        <translation>Badania</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="36"/>
+        <source>Data tools</source>
+        <translation>Narzędzia do danych</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="37"/>
+        <source>Raster</source>
+        <translation>Raster</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="38"/>
+        <source>Raster analysis</source>
+        <translation>Analiza rastrowa</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="39"/>
+        <source>Projections</source>
+        <translation>Projekcje</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="40"/>
+        <source>Miscellaneous</source>
+        <translation>Różne</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="41"/>
+        <source>Extract</source>
+        <translation>Wypis</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="42"/>
+        <source>Conversion</source>
+        <translation>Konwersja</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="43"/>
+        <source>Data bases</source>
+        <translation>Bazy danych</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="44"/>
+        <source>Digitizing</source>
+        <translation>Digitalizuj</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="45"/>
+        <source>Selection</source>
+        <translation>Selekcja</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="46"/>
+        <source>Help</source>
+        <translation>Pomoc</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="47"/>
+        <source>Plugins</source>
+        <translation>Wtyczki</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="48"/>
+        <source>Data Source Manager</source>
+        <translation>Menedżer źródeł danych</translation>
+    </message>
+    <message>
+        <location filename="../select_section.py" line="49"/>
+        <source>Advanced digitizing tools</source>
+        <translation>Zaawansowane narzędzia digitalizacji</translation>
     </message>
 </context>
 <context>
