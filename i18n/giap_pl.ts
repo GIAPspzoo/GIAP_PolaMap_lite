@@ -471,7 +471,7 @@ Porszę czekać...</translation>
     <message>
         <location filename="../giap_layout.py" line="163"/>
         <source>Switch on manually missing core plugin: Topology Checker</source>
-        <translation>Włącz brakującą wtyczkę wbudowaną: Kontrola Geometrii</translation>
+        <translation>Włącz brakującą wtyczkę wbudowaną: Kontrola Topologii</translation>
     </message>
 
 
