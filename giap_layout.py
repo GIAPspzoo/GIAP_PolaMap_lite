@@ -69,9 +69,9 @@ class MainTabQgsWidget:
         self.iface.projectRead.connect(self.projekt_wczytany)
         self.iface.newProjectCreated.connect(self.projekt_wczytany)
         self.iface.initializationCompleted.connect(self.load_ribbons)
-        self.iface.newProjectCreated.connect(self.isVectorHere)
+        self.iface.newProjectCreated.connect(self.missingCorePlugins)
 
-    def isVectorHere(self):
+    def missingCorePlugins(self):
         if len(iface.mainWindow().findChild(QToolBar, 'mVectorToolBar').actions()) == 0:
             CustomMessageBox(None, f'{tr("Switch on manually missing core plugin: Topology Checker")}').button_ok()
 
