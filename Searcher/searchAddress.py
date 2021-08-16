@@ -103,7 +103,7 @@ class SearchAddress:
         try:
             self.jres = json.loads(self.res)
         except Exception:
-            return False, tr('Can\'t parse results.')
+            return False, tr('Cannot parse results.')
 
         if 'found objects' in self.jres:
             if self.jres['found objects'] == 0:
@@ -113,7 +113,7 @@ class SearchAddress:
 
         if 'results' in self.jres:
             if self.jres['results'] is None:
-                return False, tr("No objects found. Please enter a valid value.")
+                return False, tr("No objects found. Please enter valid value.")
 
         lyr = self.get_layer()
         if not lyr:

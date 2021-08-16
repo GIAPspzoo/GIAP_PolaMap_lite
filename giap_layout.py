@@ -9,10 +9,10 @@ from qgis.PyQt.QtCore import QTranslator, QCoreApplication, QSize, \
     Qt, QRect, QPropertyAnimation, QEasingCurve, QSettings
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QToolBar, QToolButton, QWidget, \
-    QHBoxLayout, QDockWidget, QMenu, QVBoxLayout, QMessageBox
+    QHBoxLayout, QMenu, QMessageBox
 
 # Initialize Qt resources from file resources.py
-from qgis._core import QgsProject, Qgis, QgsMessageLog
+from qgis._core import QgsProject, Qgis, QgsSettings
 
 from .Settings.settings_layout import SettingsDialog
 from .OrtoTools import OrtoAddingTool
@@ -30,7 +30,7 @@ from .utils import tr
 from .StyleManager.stylemanager import StyleManagerDialog
 from .Searcher.searchTool import SearcherTool
 
-from .giap_dynamic_layout import Widget, CustomToolButton
+from .giap_dynamic_layout import Widget
 from .ribbon_config import RIBBON_DEFAULT
 from .CustomMessageBox import CustomMessageBox
 project = QgsProject.instance()
@@ -407,9 +407,7 @@ class MainTabQgsWidget:
         else:
             self.editButton.setText(tr("Edit menu"))
             self.main_widget.edit_session_toggle(True)
-
             if self.main_widget.save == QMessageBox.No:
-
                 for tabind in range(len(self.main_widget.tabs)):
                     self.main_widget.remove_tab(0)
                 self.load_ribbons()
@@ -455,8 +453,7 @@ class MainTabQgsWidget:
 
     def delete_animation(self, animation, widget, mode):
         del animation
-        if mode == 'out':
-            widget.hide()
+        if mode == 'out': widget.hide()
 
     def show_style_manager_dialog(self):
         """Show dialog to manage qgis styles"""
@@ -467,32 +464,47 @@ class MainTabQgsWidget:
         self.style_manager_dlg.exec_()
 
     def show_settings_dialog(self):
-        self.set_dlg=SettingsDialog()
+        self.set_dlg = SettingsDialog()
         self.set_dlg.pushButton_restore.clicked.connect(self.restore_default_ribbon_settings)
         self.set_dlg.radioButton_pl.toggled.connect(self.set_polish)
         self.set_dlg.radioButton_en.toggled.connect(self.set_english)
         self.set_dlg.exec_()
 
     def set_polish(self):
-        QSettings().setValue('locale/userLocale', 'pl')
+        QSettings().setValue('locale/userLocale', 'pl_PL')
+        self.iface.messageBar().pushMessage(
+            'GIAP Layout',
+            tr('Please, restart QGIS!'),
+            Qgis.Info,
+            0
+        )
 
     def set_english(self):
         QSettings().setValue('locale/userLocale', 'en')
+        self.iface.messageBar().pushMessage(
+            'GIAP Layout',
+            tr('Please, restart QGIS!'),
+            Qgis.Info,
+            0
+        )
 
     def restore_default_ribbon_settings(self):
         self.set_dlg.pushButton_restore.clicked.disconnect()
         edit_ses_on_start = self.main_widget.edit_session
-        if edit_ses_on_start:
-            self.main_widget.edit_session_toggle()
+        if edit_ses_on_start: self.main_widget.edit_session_toggle()
         for tabind in range(len(self.main_widget.tabs)):
             self.main_widget.remove_tab(0)
         self.save_user_ribbon_config(False)
         self.load_ribbons()
-        if edit_ses_on_start:
-            self.main_widget.edit_session_toggle()
+        if edit_ses_on_start: self.main_widget.edit_session_toggle()
         self.set_dlg.pushButton_restore.clicked.connect(self.restore_default_ribbon_settings)
 
+    def check_lang_win_flag(self):
+        if QgsSettings().value('locale/overrideFlag') != 'true':
+            QgsSettings().setValue('locale/overrideFlag', 'true')
+
     def install_translator(self):
+        self.check_lang_win_flag()
         locale = 'en'
         try:
             # not always locale can be converted to str, apparently
@@ -502,11 +514,11 @@ class MainTabQgsWidget:
         except Exception:
             # do not install translator -> english
             return
-
-        if locale == 'en':
+        if 'pl' in locale:
+            trans_path = os.path.join(self.plugin_dir, 'i18n',
+                                      f'giap_pl.qm')
+        else:
             return
-
-        trans_path = os.path.join(self.plugin_dir, 'i18n', f'giap_{locale}.qm')
         if not os.path.exists(trans_path):
             return
 

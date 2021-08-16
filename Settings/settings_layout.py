@@ -12,9 +12,9 @@ class SettingsDialog(QDialog, FORM_CLASS):
     def __init__(self, parent=None):
         super(SettingsDialog, self).__init__(parent)
         self.setupUi(self)
-        if str(QSettings().value('locale/userLocale')) == "en":
+        if 'en' in str(QSettings().value('locale/userLocale')):
             self.radioButton_en.setChecked(True)
-        elif str(QSettings().value('locale/userLocale')) == "pl":
+        elif 'pl' in str(QSettings().value('locale/userLocale')):
             self.radioButton_pl.setChecked(True)
 
 

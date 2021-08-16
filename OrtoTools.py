@@ -19,7 +19,7 @@ class OrtoAddingTool(object):
         self.group_names = group_names
         self.layer_actions_dict = {}
 
-        self.button.setToolTip(tr("Add defined WMS/WMTS services"))
+        self.button.setToolTip(tr("Add WMS/WMTS services"))
         self.button.setPopupMode(QToolButton.InstantPopup)
         self.name_service = WMS_SERVERS
         self.groups_for_names = WMS_SERVERS_GROUPS
