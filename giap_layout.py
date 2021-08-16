@@ -121,6 +121,15 @@ class MainTabQgsWidget:
         self.kompozycje_widget.setParent(self.iface.mapCanvas())
         self.layer_view.setParent(self.iface.mapCanvas())
         self.layer_toolbar.setParent(self.iface.mapCanvas())
+        self.layer_panel = self.iface.mainWindow().findChildren(QDockWidget, 'Layers')[0]
+        layer_panel_widget = QWidget()
+        self.layout = QVBoxLayout()
+        self.layout.addWidget(self.layer_toolbar)
+        self.layout.addWidget(self.kompozycje_widget)
+        self.layout.addWidget(self.layer_view)
+        layer_panel_widget.setLayout(self.layout)
+        self.layer_panel.setWidget(layer_panel_widget)
+        self.layer_panel.setTitleBarWidget(QWidget())
         self.menuButton = QToolButton()
         self.menuButton.setText(tr("Show menu"))
         self.menuButton.setCheckable(True)
@@ -406,17 +415,15 @@ class MainTabQgsWidget:
                 self.load_ribbons()
 
     def warstwy_show(self):
+        splitter_start = QRect(-self.layer_panel.width(), self.layer_panel.y(),
+                               self.layer_panel.width(), self.layer_panel.height())
+        splitter_end = QRect(0, self.layer_panel.y(),
+                             self.layer_panel.width(), self.layer_panel.height())
         if self.main_widget.pokaz_warstwy.isChecked():
-            self.layer_view.show()
-            self.layer_toolbar.show()
-            self.kompozycje_widget.show()
-            canvas_geom = self.iface.mapCanvas().geometry()
-            self.layer_view.setGeometry(0, 79, 280, canvas_geom.height()-79)
-            self.layer_view.resizeColumnToContents(0)
+            self.layer_panel.show()
+            self.set_animation(self.layer_panel, splitter_start, splitter_end, 200)
         else:
-            self.layer_view.hide()
-            self.layer_toolbar.hide()
-            self.kompozycje_widget.hide()
+            self.set_animation(self.layer_panel, splitter_end, splitter_start, 200, 'out')
 
     def resize_layer_view(self):
         canvas_geom = self.iface.mapCanvas().geometry()
