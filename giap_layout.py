@@ -4,7 +4,7 @@ import webbrowser
 from qgis.utils import iface
 import qgis
 from PyQt5.QtGui import QCursor
-from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QPushButton, QDockWidget, QVBoxLayout
 from qgis.PyQt.QtCore import QTranslator, QCoreApplication, QSize, \
     Qt, QRect, QPropertyAnimation, QEasingCurve, QSettings
 from qgis.PyQt.QtGui import QIcon
