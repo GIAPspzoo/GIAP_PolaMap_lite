@@ -175,8 +175,8 @@ STANDARD_TOOLS = [
             },
 
             {
-                'label': tr('Measures'),
-                'id': 'Measures',
+                'label': tr('Measurement'),
+                'id': 'Measurement',
                 'btn_size': 30,
                 'btns': [
                     ['mActionMeasure', 0, 0],
@@ -222,8 +222,8 @@ STANDARD_TOOLS = [
             },
 
             {
-                'label': tr('Adv. Attributes'),
-                'id': 'Adv. Attributes',
+                'label': tr('Advanced Attributes'),
+                'id': 'Advanced Attributes',
                 'btn_size': 30,
                 'btns': [
                     ['mActionIdentify', 0, 0],
@@ -280,8 +280,8 @@ STANDARD_TOOLS = [
             },
 
             {
-                'label': tr('Digitalization'),
-                'id': 'Digitalization',
+                'label': tr('Digitizing'),
+                'id': 'Digitizing',
                 'btn_size': 30,
                 'btns': [
                     ['EnableSnappingAction', 0, 0],
@@ -330,8 +330,8 @@ STANDARD_TOOLS = [
             },
 
             {
-               'label': tr('Geoprocessing'),
-               'id': 'Geoprocessing',
+               'label': tr('Geoprocessing Tools'),
+               'id': 'Geoprocessing Tools',
                'btn_size': 30,
                'btns': [
                    ['mProcessingUserMenu_native:buffer', 0, 0],
@@ -347,8 +347,8 @@ STANDARD_TOOLS = [
            },
 
            {
-               'label': tr('Geometry'),
-               'id': 'Geometry',
+               'label': tr('Geometry Tools'),
+               'id': 'Geometry Tools',
                'btn_size': 30,
                'btns': [
                    ['mProcessingUserMenu_native:centroids', 0, 0],
@@ -367,8 +367,8 @@ STANDARD_TOOLS = [
            },
 
            {
-               'label': tr('Analysis'),
-               'id': 'Analysis',
+               'label': tr('Analysis Tools'),
+               'id': 'Analysis Tools',
                'btn_size': 30,
                'btns': [
                    ['mProcessingUserMenu_native:countpointsinpolygon', 0, 0],
@@ -383,8 +383,8 @@ STANDARD_TOOLS = [
            },
 
            {
-               'label': tr('Research'),
-               'id': 'Research',
+               'label': tr('Research Tools'),
+               'id': 'Research Tools',
                'btn_size': 30,
                'btns': [
                    ['mProcessingUserMenu_native:creategrid', 0, 0],
@@ -402,8 +402,8 @@ STANDARD_TOOLS = [
            },
 
            {
-               'label': tr('Data tools'),
-               'id': 'Data tools',
+               'label': tr('Data Management Tools'),
+               'id': 'Data Management Tools',
                'btn_size': 30,
                'btns': [
                    ['mProcessingUserMenu_native:createspatialindex', 0, 0],
@@ -472,8 +472,8 @@ STANDARD_TOOLS = [
            },
 
            {
-               'label': tr('Extract'),
-               'id': 'Extract',
+               'label': tr('Extract Projection'),
+               'id': 'Extract Projection',
                'btn_size': 30,
                'btns': [
                    ['mProcessingUserMenu_gdal:cliprasterbyextent', 0, 0],
@@ -496,8 +496,8 @@ STANDARD_TOOLS = [
            },
 
            {
-               'label': tr('Data bases'),
-               'id': 'Data bases',
+               'label': tr('Data base'),
+               'id': 'Data base',
                'btn_size': 30,
                'btns': [
                    ['dbManager', 0, 0],
@@ -607,4 +607,4 @@ STANDARD_TOOLS = [
 ]
 
 DEFAULT_STYLE = "GIAP"
-DEFAULT_TABS = ['Main', 'Tools', 'Vector', 'Raster']
+DEFAULT_TABS = ['Main tools', 'Advanced tools', 'Vector', 'Raster']

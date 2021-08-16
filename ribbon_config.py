@@ -3,8 +3,8 @@ from .utils import tr
 
 RIBBON_DEFAULT = [
     {
-        "tab_name": tr("Main"),
-        "tab_id": 'Main',
+        "tab_name": tr("Main Tools"),
+        "tab_id": 'Main Tools',
         "sections": [
             {
                 "label": tr("Project"),
@@ -45,7 +45,7 @@ RIBBON_DEFAULT = [
             },
 
             {
-                'label': tr('Measures'),
+                'label': tr('Measurement'),
                 'btn_size': 30,
                 'btns': [
                     ['mActionMeasure', 0, 0],
@@ -105,11 +105,11 @@ RIBBON_DEFAULT = [
     },
 
     {
-        "tab_name": tr("Tools"),
-        "tab_id": "Tools",
+        "tab_name": tr("Advanced Tools"),
+        "tab_id": "Advanced Tools",
         "sections": [
             {
-                'label': tr('Adv. Attributes'),
+                'label': tr('Advanced Attributes'),
                 'btn_size': 30,
                 'btns': [
                     ['mActionIdentify', 0, 0],
@@ -164,7 +164,7 @@ RIBBON_DEFAULT = [
             },
 
             {
-                'label': tr('Digitalization'),
+                'label': tr('Digitizing'),
                 'btn_size': 30,
                 'btns': [
                     ['EnableSnappingAction', 0, 0],
@@ -196,8 +196,8 @@ RIBBON_DEFAULT = [
         "tab_id": "Vector",
         "sections": [
             {
-                'label': tr('Geoprocessing'),
-                'id': 'Geoprocessing',
+                'label': tr('Geoprocessing Tools'),
+                'id': 'Geoprocessing Tools',
                 'btn_size': 30,
                 'btns': [
                     ['mProcessingUserMenu_native:buffer', 0, 0],
@@ -213,8 +213,8 @@ RIBBON_DEFAULT = [
             },
 
             {
-                'label': tr('Geometry'),
-                'id': 'Geometry',
+                'label': tr('Geometry Tools'),
+                'id': 'Geometry Tools',
                 'btn_size': 30,
                 'btns': [
                     ['mProcessingUserMenu_native:centroids', 0, 0],
@@ -233,8 +233,8 @@ RIBBON_DEFAULT = [
             },
 
             {
-               'label': tr('Analysis'),
-               'id': 'Analysis',
+               'label': tr('Analysis Tools'),
+               'id': 'Analysis Tools',
                'btn_size': 30,
                'btns': [
                    ['mProcessingUserMenu_native:countpointsinpolygon', 0, 0],
@@ -249,8 +249,8 @@ RIBBON_DEFAULT = [
            },
 
             {
-               'label': tr('Research'),
-               'id': 'Research',
+               'label': tr('Research Tools'),
+               'id': 'Research Tools',
                'btn_size': 30,
                'btns': [
                    ['mProcessingUserMenu_native:creategrid', 0, 0],
@@ -268,8 +268,8 @@ RIBBON_DEFAULT = [
            },
 
             {
-               'label': tr('Data tools'),
-               'id': 'Data tools',
+               'label': tr('Data Management Tools'),
+               'id': 'Data Management Tools',
                'btn_size': 30,
                'btns': [
                    ['mProcessingUserMenu_native:createspatialindex', 0, 0],
@@ -345,8 +345,8 @@ RIBBON_DEFAULT = [
             },
 
             {
-                'label': tr('Extract'),
-                'id': 'Extract',
+                'label': tr('Extract Projection'),
+                'id': 'Extract Projection',
                 'btn_size': 30,
                 'btns': [
                     ['mProcessingUserMenu_gdal:cliprasterbyextent', 0, 0],

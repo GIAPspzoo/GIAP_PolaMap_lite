@@ -5,12 +5,12 @@
     <name>@default</name>
     <message>
         <location filename="../config.py" line="20"/>
-        <source>Failed to load config from config.json</source>
-        <translation>Wystąpił błąd podczas wczytywania pliku konfiguracyjnego config.json</translation>
+        <source>Failed to load confing.json.</source>
+        <translation>Wystąpił błąd podczas wczytywania pliku konfiguracyjnego config.json.</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.py" line="37"/>
-        <source>New Tab</source>
+        <source>New tab</source>
         <translation>Nowa zakładka</translation>
     </message>
     <message>
@@ -20,7 +20,7 @@
     </message>
     <message>
         <location filename="../OrtoTools.py" line="14"/>
-        <source>ORTHOFOTOMAP</source>
+        <source>ORTHOPHOTOMAP</source>
         <translation>ORTOFOTOMAPA</translation>
     </message>
     <message>
@@ -30,18 +30,18 @@
     </message>
     <message>
         <location filename="../OrtoTools.py" line="22"/>
-        <source>Add defined WMS/WMTS services</source>
+        <source>Add WMS/WMTS services</source>
         <translation>Dodaj usługę WMS/WMTS</translation>
     </message>
     <message>
         <location filename="../OrtoTools.py" line="103"/>
-        <source>Can&apos;t add layer</source>
-        <translation>Nie można dodać warstwy</translation>
+        <source>The layer could not be added.</source>
+        <translation>Nie można dodać warstwy.</translation>
     </message>
     <message>
         <location filename="../OrtoTools.py" line="106"/>
-        <source>Layer already exists </source>
-        <translation>Warstwa już istnieje </translation>
+        <source>Layer already exists.</source>
+        <translation>Warstwa już istnieje.</translation>
     </message>
     <message>
         <location filename="../QuickPrint.py" line="144"/>
@@ -50,12 +50,12 @@
     </message>
     <message>
         <location filename="../QuickPrint.py" line="152"/>
-        <source>quick_print</source>
+        <source>Quick print</source>
         <translation>Szybki wydruk</translation>
     </message>
      <message>
         <location filename="../QuickPrint.py" line="161"/>
-        <source>quick_print</source>
+        <source>Uncheck mark layers</source>
         <translation>Odznacz zaznaczone warstwy</translation>
     </message>
     <message>
@@ -100,14 +100,14 @@
     </message>
     <message>
         <location filename="../Kompozycje/Kompozycje.py" line="107"/>
-        <source>Loading settings failed</source>
-        <translation>Nie udało się załadować ustawień</translation>
+        <source>Failed to load settings.</source>
+        <translation>Nie udało się załadować ustawień.</translation>
     </message>
     <message>
         <location filename="../Kompozycje/Kompozycje.py" line="186"/>
-        <source>Changes in layer&apos;s panel detected
+        <source>Changes in layer&apos;s panel are detected.
 Compositions will be updated.</source>
-        <translation>Wykryto zmiany w panelu warsw
+        <translation>Wykryto zmiany w panelu warstw.
 Kompozycje zostaną uaktualnione.</translation>
     </message>
     <message>
@@ -117,8 +117,8 @@ Kompozycje zostaną uaktualnione.</translation>
     </message>
     <message>
         <location filename="../Kompozycje/Kompozycje.py" line="321"/>
-        <source>Some layers from composition are missing,  check composition</source>
-        <translation>Brakuje niektórych warstw z kompozycji, sprawdz kompozycję</translation>
+        <source>The layers from composition are missing. Check composition</source>
+        <translation>Brakuje niektórych warstw z kompozycji. Sprawdź kompozycję.</translation>
     </message>
     <message>
         <location filename="../Kompozycje/Kompozycje.py" line="313"/>
@@ -132,33 +132,33 @@ Kompozycje zostaną uaktualnione.</translation>
     </message>
     <message>
         <location filename="../Kompozycje/Kompozycje.py" line="761"/>
-        <source>Specified composition name already in use!</source>
+        <source>A composition unit with name already exists!</source>
         <translation>Wskazana nazwa już istnieje!</translation>
     </message>
     <message>
         <location filename="../Kompozycje/Kompozycje.py" line="528"/>
-        <source>Enter name for composition</source>
+        <source>Enter composition name</source>
         <translation>Podaj nazwę dla kompozycji</translation>
     </message>
     <message>
         <location filename="../Kompozycje/Kompozycje.py" line="619"/>
-        <source>Choose layer, to add it to selected</source>
-        <translation>Wybierz warstwę, aby dodać ją do wybranych</translation>
+        <source>Choose layer to add to tick.</source>
+        <translation>Wybierz warstwę, aby dodać ją do wybranych.</translation>
     </message>
     <message>
         <location filename="../Kompozycje/Kompozycje.py" line="624"/>
-        <source>Select group, to choose layer.</source>
-        <translation>Zaznacz grupę aby wybrać warstwę.</translation>
+        <source>Mark group to choose layer.</source>
+        <translation>Zaznacz grupę, aby wybrać warstwę.</translation>
     </message>
     <message>
         <location filename="../Kompozycje/Kompozycje.py" line="632"/>
-        <source>Select layer, to remove it from selected.</source>
-        <translation>Zaznacz warstwę aby usunąc ją z wybranych.</translation>
+        <source>Select layer to remove from the mark layers.</source>
+        <translation>Zaznacz warstwę, aby usunąc ją z wybranych.</translation>
     </message>
     <message>
         <location filename="../Kompozycje/Kompozycje.py" line="668"/>
-        <source>Choose composition, to change order</source>
-        <translation>Wybierz kompozycję, żeby zmienić kolejność</translation>
+        <source>Choose composition to change order.</source>
+        <translation>Wybierz kompozycję, żeby zmienić kolejność.</translation>
     </message>
     <message>
         <location filename="../Kompozycje/Kompozycje.py" line="683"/>
@@ -167,43 +167,43 @@ Kompozycje zostaną uaktualnione.</translation>
     </message>
     <message>
         <location filename="../Kompozycje/Kompozycje.py" line="702"/>
-        <source>Select composition to edit</source>
-        <translation>Wybierz kompozycję do edycji</translation>
+        <source>Select composition to edit.</source>
+        <translation>Wybierz kompozycję do edycji.</translation>
     </message>
     <message>
     <location filename="../Kompozycje/nowa_kompozycja.py" line="42"/>
-        <source>No layers in selected layer</source>
-        <translation>Brak warstw w wybrane warstwy</translation>
+        <source>No layers in selected layer.</source>
+        <translation>Brak warstw w wybrane warstwy.</translation>
     </message>
     <message>
     <location filename="../Kompozycje/nowa_kompozycja.py" line="56"/>
-        <source>No layers in selected layer</source>
-        <translation>Brak warstw w wybrane warstwy</translation>
+        <source>No layers in selected layer.</source>
+        <translation>Brak warstw w wybrane warstwy.</translation>
     </message>
     <message>
     <location filename="../Kompozycje/nowa_kompozycja.py" line="68"/>
-        <source>No layers in selected layer</source>
-        <translation>Brak warstw w wybrane warstwy</translation>
+        <source>No layers in selected layer.</source>
+        <translation>Brak warstw w wybrane warstwy.</translation>
     </message>
     <message>
     <location filename="../Kompozycje/nowa_kompozycja.py" line="80"/>
-        <source>No layers in selected layer</source>
-        <translation>Brak warstw w wybrane warstwy</translation>
+        <source>No layers in selected layer.</source>
+        <translation>Brak warstw w wybrane warstwy.</translation>
     </message>
     <message>
         <location filename="../Kompozycje/Kompozycje.py" line="775"/>
-        <source>Enter composition name</source>
-        <translation>Wprowadź nazwę kompozycji</translation>
+        <source>Enter composition name:</source>
+        <translation>Wprowadź nazwę kompozycji:</translation>
     </message>
     <message>
         <location filename="../Kompozycje/Kompozycje.py" line="788"/>
-        <source>Select composition to remove it</source>
+        <source>Select composition to remove</source>
         <translation>Wskaż kompozycję do usunięcia</translation>
     </message>
     <message>
         <location filename="../Kompozycje/Kompozycje.py" line="796"/>
         <source>Selected composition is default!</source>
-        <translation>Wskazana kompozycje jest domyślna!</translation>
+        <translation>Wskazana kompozycja jest domyślna!</translation>
     </message>
     <message>
         <location filename="../Kompozycje/Kompozycje.py" line="799"/>
@@ -220,7 +220,7 @@ Kompozycje zostaną uaktualnione.</translation>
         <source>Loading
 Please wait...</source>
         <translation>Ładowanie
-Porszę czekać...</translation>
+Proszę czekać...</translation>
     </message>
     <message>
         <location filename="../StyleManager/stylemanager.py" line="31"/>
@@ -235,16 +235,16 @@ Porszę czekać...</translation>
     <message>
         <location filename="../StyleManager/stylemanager.py" line="34"/>
         <source>Enter name for style:</source>
-        <translation>Wprowadz nazwę dla stylu:</translation>
+        <translation>Wprowadź nazwę dla stylu:</translation>
     </message>
     <message>
         <location filename="../StyleManager/stylemanager.py" line="41"/>
-        <source>Not valid name, try again</source>
-        <translation>Niepoprawna nazwa, spróbuj ponownie</translation>
+        <source>Not valid name, try again!</source>
+        <translation>Niepoprawna nazwa! Spróbuj ponownie.</translation>
     </message>
     <message>
         <location filename="../ribbon_config.py" line="6"/>
-        <source>Main</source>
+        <source>Main Tools</source>
         <translation>Narzędzia podstawowe</translation>
     </message>
     <message>
@@ -264,22 +264,22 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../ribbon_config.py" line="48"/>
-        <source>Measures</source>
+        <source>Measurement</source>
         <translation>Pomiar</translation>
     </message>
     <message>
         <location filename="../ribbon_config.py" line="58"/>
         <source>Add Layer</source>
-        <translation>Dodaj warstwe</translation>
+        <translation>Dodaj warstwę</translation>
     </message>
     <message>
         <location filename="../ribbon_config.py" line="81"/>
         <source>Create Layer</source>
-        <translation>Twórz warstwe</translation>
+        <translation>Twórz warstwę</translation>
     </message>
     <message>
         <location filename="../ribbon_config.py" line="80"/>
-        <source>Tools</source>
+        <source>Advanced Tools</source>
         <translation>Narzędzia zaawansowane</translation>
     </message>
     <message>
@@ -294,7 +294,7 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../ribbon_config.py" line="139"/>
-        <source>Digitalization</source>
+        <source>Digitizing</source>
         <translation>Digitalizacja</translation>
     </message>
     <message>
@@ -314,8 +314,8 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../tools.py" line="99"/>
-        <source>Path to *.qss not found, load default style</source>
-        <translation>Nie odnaleziono ścieżki do *.qss, ustawiono styl domyślny</translation>
+        <source>Path to *.qss not found, load default style.</source>
+        <translation>Nie odnaleziono ścieżki do *.qss, ustawiono styl domyślny.</translation>
     </message>
     <message>
         <location filename="../tools.py" line="103"/>
@@ -339,7 +339,7 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../utils.py" line="178"/>
-        <source>Measures</source>
+        <source>Measurement</source>
         <translation>Pomiary</translation>
     </message>
     <message>
@@ -354,8 +354,8 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../utils.py" line="209"/>
-        <source>Adv. Attributes</source>
-        <translation>Zaaw. Atrybuty</translation>
+        <source>Advanced Attributes</source>
+        <translation>Zaawansowane Atrybuty</translation>
     </message>
     <message>
         <location filename="../utils.py" line="230"/>
@@ -369,7 +369,7 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../utils.py" line="267"/>
-        <source>Digitalization</source>
+        <source>Digitizing</source>
         <translation>Digitalizacja</translation>
     </message>
     <message>
@@ -384,28 +384,28 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../utils.py" line="316"/>
-        <source>Geoprocessing</source>
-        <translation>Geoprocessing</translation>
+        <source>Geoprocessing Tools</source>
+        <translation>Narzędzia Geoprocesingu</translation>
     </message>
     <message>
         <location filename="../utils.py" line="333"/>
-        <source>Geometry</source>
-        <translation>Geometria</translation>
+        <source>Geometry Tools</source>
+        <translation>Narzędzia geometrii</translation>
     </message>
     <message>
         <location filename="../utils.py" line="353"/>
-        <source>Analysis</source>
-        <translation>Analiza</translation>
+        <source>Analysis Tools</source>
+        <translation>Narzędzia analizy</translation>
     </message>
     <message>
         <location filename="../utils.py" line="369"/>
-        <source>Research</source>
-        <translation>Badania</translation>
+        <source>Research Tools</source>
+        <translation>Narzędzia badawcze</translation>
     </message>
     <message>
         <location filename="../utils.py" line="388"/>
-        <source>Data tools</source>
-        <translation>Narzędzia danych</translation>
+        <source>Data Management Tools</source>
+        <translation>Narzędzia zarządzania danymi</translation>
     </message>
     <message>
         <location filename="../utils.py" line="401"/>
@@ -420,7 +420,7 @@ Porszę czekać...</translation>
     <message>
         <location filename="../utils.py" line="434"/>
         <source>Projections</source>
-        <translation>Projekcje</translation>
+        <translation>Odwzorowania</translation>
     </message>
     <message>
         <location filename="../utils.py" line="445"/>
@@ -429,7 +429,7 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../utils.py" line="458"/>
-        <source>Extract</source>
+        <source>Extract Projection</source>
         <translation>Wyodrębniane danych</translation>
     </message>
     <message>
@@ -439,8 +439,8 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../utils.py" line="483"/>
-        <source>Data bases</source>
-        <translation>Bazy danych</translation>
+        <source>Data base</source>
+        <translation>Baza danych</translation>
     </message>
     <message>
         <location filename="../utils.py" line="491"/>
@@ -460,7 +460,7 @@ Porszę czekać...</translation>
     <message>
         <location filename="../utils.py" line="531"/>
         <source>Plugins</source>
-        <translation>Pluginy</translation>
+        <translation>Wtyczki</translation>
     </message>
     <message>
         <location filename="../utils.py" line="539"/>
@@ -470,7 +470,7 @@ Porszę czekać...</translation>
     <message>
         <location filename="../utils.py" line="552"/>
         <source>Advanced digitizing tools</source>
-        <translation>Zaaw. narzędzia digitalizacji</translation>
+        <translation>Zaawansowane narzędzia digitalizacji</translation>
     </message>
 
     <message>
@@ -484,7 +484,7 @@ Porszę czekać...</translation>
 
     <message>
         <location filename="../giap_layout.py" line="163"/>
-        <source>Map fast print</source>
+        <source>Map quick print</source>
         <translation>Szybki wydruk mapy</translation>
     </message>
     <message>
@@ -524,12 +524,17 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../giap_layout.py" line="126"/>
-        <source>Theme</source>
+        <source>Change Theme</source>
         <translation>Zmień styl</translation>
+    </message>
+        <message>
+        <location filename="../giap_layout.py" />
+        <source>Settings</source>
+        <translation>Ustawienia</translation>
     </message>
     <message>
         <location filename="../giap_layout.py" line="298"/>
-        <source>Complete edit</source>
+        <source>Finish edition</source>
         <translation>Zakończ edycję</translation>
     </message>
     <message>
@@ -554,8 +559,8 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.py" line="272"/>
-        <source>Selected item is not a section</source>
-        <translation>Wybrany element nie jest sekcją</translation>
+        <source>Selected item is not a section.</source>
+        <translation>Wybrany element nie jest sekcją.</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.py" line="275"/>
@@ -569,7 +574,7 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.py" line="578"/>
-        <source>GIAP www site</source>
+        <source>GIAP.pl website</source>
         <translation>GIAP.pl - Strona WWW</translation>
     </message>
     <message>
@@ -580,7 +585,7 @@ Porszę czekać...</translation>
     <message>
         <location filename="../Searcher/searchParcel.py" line="59"/>
         <source>Error</source>
-        <translation>Bład</translation>
+        <translation>Błąd</translation>
     </message>
     <message>
         <location filename="../Searcher/searchAddress.py" line="47"/>
@@ -589,13 +594,13 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../Searcher/searchAddress.py" line="53"/>
-        <source>Check if address is correct</source>
-        <translation>Sprawdź czy adres jest poprawny</translation>
+        <source>Check address correctness.</source>
+        <translation>Sprawdź, czy adres jest poprawny.</translation>
     </message>
     <message>
         <location filename="../Searcher/searchAddress.py" line="92"/>
-        <source>Can&apos;t parse results</source>
-        <translation>Nie mogę przetworzyć pobranych danych</translation>
+        <source>Cannot parse results.</source>
+        <translation>Nie można przetworzyć pobranych danych.</translation>
     </message>
     <message>
         <location filename="../Searcher/searchAddress.py" line="98"/>
@@ -609,18 +614,18 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../Searcher/searchAddress.py" line="106"/>
-        <source>Check log, problems occured</source>
-        <translation>Sprawdź log, zarejestrowano problemy</translation>
+        <source>Check log, problems occured.</source>
+        <translation>Sprawdź log, zarejestrowano problemy.</translation>
     </message>
     <message>
         <location filename="../Searcher/searchAddress.py" line="116"/>
-        <source>Service unavailable</source>
+        <source>Service unavailable. Enter correct value.</source>
         <translation>Nie znaleziono obiektów. Wpisz poprawną wartość.</translation>
     </message>
     <message>
         <location filename="../Searcher/searchParcel.py" line="48"/>
-        <source>Service returned incompleted responce</source>
-        <translation>Usługa zwróciła niepełną odpowiedź</translation>
+        <source>Service returned incompleted responce.</source>
+        <translation>Usługa zwróciła niepełną odpowiedź.</translation>
     </message>
     <message>
         <location filename="../Searcher/searchParcel.py" line="54"/>
@@ -629,8 +634,8 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../Searcher/searchParcel.py" line="59"/>
-        <source>Service not responding</source>
-        <translation>Usługa nie odpowiada</translation>
+        <source>Service is not responding.</source>
+        <translation>Usługa nie odpowiada.</translation>
     </message>
     <message>
         <location filename="../Searcher/searchParcel.py" line="67"/>
@@ -654,8 +659,8 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../Searcher/searchTool.py" line="105"/>
-        <source>Community</source>
-        <translation>Obręb ewid.</translation>
+        <source>Cadastral district</source>
+        <translation>Obręb ewidencyjny</translation>
     </message>
     <message>
         <location filename="../Searcher/searchTool.py" line="112"/>
@@ -674,13 +679,13 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../Searcher/searchTool.py" line="151"/>
-        <source>Address</source>
+        <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
         <location filename="../Searcher/searchTool.py" line="151"/>
-        <source>Address of parcel is not valid</source>
-        <translation>Adres działki jest niepoprawny</translation>
+        <source>Address of parcel is not valid.</source>
+        <translation>Adres działki jest niepoprawny.</translation>
     </message>
     <message>
         <location filename="../Searcher/searchTool.py" line="147"/>
@@ -689,28 +694,28 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../Searcher/searchParcel.py" line="111"/>
-        <source>Service return {} not valid features</source>
-        <translation>Usługa zwróciła {} niepoprawnych obiektów</translation>
+        <source>Service return {} not valid features.</source>
+        <translation>Usługa zwróciła {} niepoprawnych obiektów.</translation>
     </message>
     <message>
         <location filename="../Searcher/searchParcel.py" line="121"/>
-        <source>Service return {} features</source>
-        <translation>Usługa zwróciła {} obiektów</translation>
+        <source>Service return {} features.</source>
+        <translation>Usługa zwróciła {} obiektów.</translation>
     </message>
     <message>
         <location filename="../Searcher/searchParcel.py" line="67"/>
         <source>Service returned: {}</source>
-        <translation>Usługa zwróciła {}</translation>
+        <translation>Usługa zwróciła: {}</translation>
     </message>
     <message>
         <location filename="../Searcher/searchParcel.py" line="119"/>
-        <source>Service return {} feature</source>
-        <translation>Usługa zwróciła {} obiekt</translation>
+        <source>Service return {} feature.</source>
+        <translation>Usługa zwróciła {} obiekt.</translation>
     </message>
     <message>
         <location filename="../ribbon_config.py" line="84"/>
-        <source>Adv. Attributes</source>
-        <translation>Zaaw. Atrybuty</translation>
+        <source>Advanced Attributes</source>
+        <translation>Zaawansowane Atrybuty</translation>
     </message>
 </context>
 <context>
@@ -723,12 +728,12 @@ Porszę czekać...</translation>
     <message>
         <location filename="../Kompozycje/compositions_saver.ui" line="523"/>
         <source>Select Composition</source>
-        <translation>Kompozycje</translation>
+        <translation>Wybierz kompozycję</translation>
     </message>
     <message>
         <location filename="../Kompozycje/compositions_saver.ui" line="244"/>
         <source>Select compositions</source>
-        <translation>Wybierz kompozycje</translation>
+        <translation>Wybierz kompozycję</translation>
     </message>
     <message>
         <location filename="../Kompozycje/compositions_saver.ui" line="329"/>
@@ -785,7 +790,7 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../kompozycje_widget.ui" line="14"/>
-        <source>Form_comp</source>
+        <source>Form composition</source>
         <translation>formularz kompozycji</translation>
     </message>
     <message>
@@ -805,8 +810,8 @@ Porszę czekać...</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.ui" line="178"/>
-        <source>Community</source>
-        <translation>Obręb ewid.</translation>
+        <source>Cadastral district</source>
+        <translation>Obręb ewidencyjny</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.ui" line="207"/>
@@ -916,17 +921,17 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
     </message>
     <message>
         <location filename="../Kompozycje/nowa_kompozycja.ui" line="342"/>
-        <source>Groups</source>
+        <source>Layers group</source>
         <translation>Grupy warstw</translation>
     </message>
     <message>
         <location filename="../Kompozycje/nowa_kompozycja.ui" line="508"/>
-        <source>Layers in Groups</source>
+        <source>Layers in groups</source>
         <translation>Warstwy w grupach</translation>
     </message>
     <message>
         <location filename="../Kompozycje/nowa_kompozycja.ui" line="584"/>
-        <source>Selected Layers</source>
+        <source>Selected layers</source>
         <translation>Wybrane warstwy</translation>
     </message>
     <message>
@@ -946,12 +951,12 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
     </message>
     <message>
         <location filename="../Kompozycje/nowa_kompozycja.ui" line="296"/>
-        <source>Select All</source>
+        <source>Select all</source>
         <translation>Zaznacz wszystkie</translation>
     </message>
     <message>
         <location filename="../Kompozycje/nowa_kompozycja.ui" line="303"/>
-        <source>Unselect All</source>
+        <source>Unselect all</source>
         <translation>Odznacz wszystkie</translation>
     </message>
     <message>
@@ -969,7 +974,7 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
     <name>SectionSelecterDialog</name>
     <message>
         <location filename="../select_section_dialog.ui" line="316"/>
-        <source>Sections</source>
+        <source>Section</source>
         <translation>Sekcja</translation>
     </message>
     <message>
@@ -979,7 +984,7 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
     </message>
     <message>
         <location filename="../select_section_dialog.ui" line="348"/>
-        <source>Add selected</source>
+        <source>Add selection</source>
         <translation>Dodaj zaznaczone</translation>
     </message>
     <message>
@@ -1039,8 +1044,8 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
     </message>
     <message>
         <location filename="../select_section.py" line="26"/>
-        <source>Adv. Attributes</source>
-        <translation>Zaaw. Atrybuty</translation>
+        <source>Advanced Attributes</source>
+        <translation>Zaawansowane Atrybuty</translation>
     </message>
     <message>
         <location filename="../select_section.py" line="27"/>
@@ -1054,7 +1059,7 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
     </message>
     <message>
         <location filename="../select_section.py" line="29"/>
-        <source>Digitalization</source>
+        <source>Digitizing</source>
         <translation>Digitalizacja</translation>
     </message>
     <message>
@@ -1070,27 +1075,27 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
     <message>
         <location filename="../select_section.py" line="32"/>
         <source>Geoprocessing</source>
-        <translation>Geoprocessing</translation>
+        <translation>Narzędzia geoprocesingu</translation>
     </message>
     <message>
         <location filename="../select_section.py" line="33"/>
         <source>Geometry</source>
-        <translation>Geometria</translation>
+        <translation>Narzędzia geometrii</translation>
     </message>
     <message>
         <location filename="../select_section.py" line="34"/>
-        <source>Analysis</source>
-        <translation>Analiza</translation>
+        <source>Analysis Tools</source>
+        <translation>Narzędzia analizy</translation>
     </message>
     <message>
         <location filename="../select_section.py" line="35"/>
-        <source>Research</source>
-        <translation>Badania</translation>
+        <source>Research Tools</source>
+        <translation>Narzędzia badawcze</translation>
     </message>
     <message>
         <location filename="../select_section.py" line="36"/>
-        <source>Data tools</source>
-        <translation>Narzędzia do danych</translation>
+        <source>Data Management Tools</source>
+        <translation>Narzędzia zarządzania danymi</translation>
     </message>
     <message>
         <location filename="../select_section.py" line="37"/>
@@ -1105,7 +1110,7 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
     <message>
         <location filename="../select_section.py" line="39"/>
         <source>Projections</source>
-        <translation>Projekcje</translation>
+        <translation>Odwzorowania</translation>
     </message>
     <message>
         <location filename="../select_section.py" line="40"/>
@@ -1124,8 +1129,8 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
     </message>
     <message>
         <location filename="../select_section.py" line="43"/>
-        <source>Data bases</source>
-        <translation>Bazy danych</translation>
+        <source>Data base</source>
+        <translation>Baza danych</translation>
     </message>
     <message>
         <location filename="../select_section.py" line="44"/>
@@ -1154,7 +1159,7 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
     </message>
     <message>
         <location filename="../select_section.py" line="49"/>
-        <source>Advanced digitizing tools</source>
+        <source>Advanced digitizing</source>
         <translation>Zaawansowane narzędzia digitalizacji</translation>
     </message>
 </context>
@@ -1194,16 +1199,6 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
 <context>
     <name>SettingsDialog</name>
     <message>
-        <location filename="../Settings/ui_settings_layout.ui" line="35"/>
-        <source>Settings</source>
-        <translation>Ustawienia</translation>
-    </message>
-    <message>
-        <location filename="../Settings/ui_settings_layout.ui" line="247"/>
-        <source>Settings</source>
-        <translation>Ustawienia</translation>
-    </message>
-    <message>
         <location filename="../Settings/ui_settings_layout.ui" line="270"/>
         <source>Choose language</source>
         <translation>Wybór wersji językowej</translation>
@@ -1224,7 +1219,7 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
         <translation>Kontakt</translation>
     </message>
     <message>
-        <location filename="../Settings/ui_settings_layout.ui" line="540"/>
+        <location filename="../Settings/ui_settings_layout.ui"/>
         <source>Settings</source>
         <translation>Ustawienia</translation>
     </message>
@@ -1233,13 +1228,13 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
     <name>WydrukDialog</name>
     <message>
         <location filename="../wydruk_dialog.ui" line="35"/>
-        <source>Print visible map view</source>
+        <source>Map view printout</source>
         <translation>Wydruk widoku mapy</translation>
     </message>
     <message>
         <location filename="../wydruk_dialog.ui" line="628"/>
-        <source>Print</source>
-        <translation>Wydruki</translation>
+        <source>Prints</source>
+        <translation>Wydruk</translation>
     </message>
     <message>
         <location filename="../wydruk_dialog.ui" line="266"/>
@@ -1278,7 +1273,7 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
     </message>
     <message>
         <location filename="../wydruk_dialog.ui" line="328"/>
-        <source>add legend</source>
+        <source>Add legend</source>
         <translation>Dodaj legendę</translation>
     </message>
     <message>
@@ -1313,7 +1308,7 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
     </message>
     <message>
         <location filename="../wydruk_dialog.ui" line="575"/>
-        <source>Abort</source>
+        <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
     <message>

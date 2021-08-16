@@ -32,7 +32,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Print visible map view</string>
+   <string>Map view printout</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -240,7 +240,7 @@ border: 1px solid #5689b0;
            <string notr="true">color : white;	font-weight: bold;</string>
           </property>
           <property name="text">
-           <string>Print</string>
+           <string>Prints</string>
           </property>
          </widget>
         </widget>
@@ -572,7 +572,7 @@ border: 1px solid #5689b0;
         </font>
        </property>
        <property name="text">
-        <string>Abort</string>
+        <string>Cancel</string>
        </property>
       </widget>
      </item>
@@ -625,7 +625,7 @@ border: 1px solid #5689b0;
 </string>
         </property>
         <property name="text">
-         <string>Print</string>
+         <string>Prints</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
