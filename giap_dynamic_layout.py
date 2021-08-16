@@ -4,7 +4,7 @@ import webbrowser
 from plugins.processing.tools.general import execAlgorithmDialog
 from qgis.PyQt.QtCore import Qt, QSize, QEvent, pyqtSignal, QMimeData, QRect
 from qgis.PyQt import uic
-from qgis.PyQt.QtGui import QDrag, QPainter, QPixmap, QCursor, QIcon
+from qgis.PyQt.QtGui import QDrag, QPainter, QPixmap, QCursor, QIcon, QFont, QFontMetrics
 from qgis.PyQt.QtWidgets import QWidget, QApplication, QHBoxLayout,\
     QFrame, QLabel, QPushButton, QTabBar, QToolButton, QVBoxLayout, \
     QGridLayout, QSpacerItem, QLineEdit, QWidgetItem, QAction, \
@@ -1145,6 +1145,8 @@ class CustomLabel(QLabel):
         self.cinput.editingFinished.connect(self.handleEditingFinished)
         self.cinput.installEventFilter(self)
         self.setAlignment(Qt.AlignCenter)
+        self.font = QFont('Segoe UI')
+        self.fontm = QFontMetrics(self.font)
 
     def mousePressEvent(self, event):
         if not self.parent().edit:
@@ -1169,5 +1171,5 @@ class CustomLabel(QLabel):
     def handleEditingFinished(self):
         self.cinput.hide()
         self.setText(self.cinput.text())
-        charakter = len(self.cinput.text())
-        self.setMinimumSize(QSize(charakter*8, 20))
+        charakter = self.cinput.text()
+        self.setMinimumSize(QSize(self.fontm.width(charakter), self.fontm.height()))
