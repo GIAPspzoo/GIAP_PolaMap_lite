@@ -9,7 +9,7 @@ from qgis.core import QgsGeometry, QgsFeature, \
 
 from qgis.utils import iface
 from ..utils import tr
-
+from ..CustomMessageBox import CustomMessageBox
 
 class FetchULDK:
     def __init__(self, params=None):
@@ -47,29 +47,19 @@ class FetchULDK:
             with urlopen(url, timeout=19) as r:
                 content = r.read()
         except IncompleteRead:
-            iface.messageBar().pushMessage(
-                tr('Error'), tr('Service returned incompleted responce'),
-                Qgis.Warning
-            )
+            CustomMessageBox(None, f"{tr('Error')} {tr('Service returned incompleted responce')}").button_ok()
             return False
         except HTTPError:
-            iface.messageBar().pushMessage(
-                tr('Error'), tr('Service error'), Qgis.Warning
-            )
+            CustomMessageBox(None, f"{tr('Error')} {tr('Service error')}").button_ok()
             return False
         except URLError:
-            iface.messageBar().pushMessage(
-                tr('Error'), tr('Service not responding'), Qgis.Warning
-            )
+            CustomMessageBox(None, f"{tr('Error')} {tr('Service not responding')}").button_ok()
             return False
 
         content = content.decode()
         res = content.split('\n')
         if res[0] != '0':
-            iface.messageBar().pushMessage(
-                tr('Service did not find any matches, wrong plot number.'),
-                Qgis.Warning
-            )
+            CustomMessageBox(None, f"{tr('Service did not find any matches, wrong plot number.')}").button_ok()
             return False
 
         self.responce = self.natural_sort([x for x in res[1:] if x != ''])

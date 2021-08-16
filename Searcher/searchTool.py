@@ -149,7 +149,7 @@ class SearcherTool:
         if self.dock.lineEdit_address.text():
             return True
         else:
-            self.iface.messageBar().createMessage(tr('Invalid'), tr('Empty address field'))
+            CustomMessageBox(None, f" {tr('Invalid')} {tr('Empty address field')}").button_ok()
 
     def widthforcombo(self, result):
         longest = max(result, key=len)
@@ -270,9 +270,8 @@ class SearcherTool:
         else:
             comm = self.dock.comboBox_obr.currentText()
             if '|' not in comm:
-                self.iface.messageBar().pushWarning(
-                    tr('Address'), tr('Address of parcel is not valid')
-                )
+                CustomMessageBox(None,
+                    f"{tr('Address')} {tr('Address of parcel is not valid')}").button_ok()
                 return
             comm = comm.split('|')[1]
             adr = f'{comm}.{parc}'
