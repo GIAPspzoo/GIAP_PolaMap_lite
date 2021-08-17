@@ -18,4 +18,5 @@ class SelectSection(QDialog, FORM_CLASS):
             filters |= QgsProcessingToolboxProxyModel.FilterShowKnownIssues
         self.algorithmTree.setFilters(filters)
         tools = [tr(x['label']) for x in STANDARD_TOOLS]
+        tools.sort()
         self.toolList.addItems(tools)
