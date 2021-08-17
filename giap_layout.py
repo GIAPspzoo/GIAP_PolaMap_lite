@@ -144,7 +144,7 @@ class MainTabQgsWidget:
         self.menu_show()
 
         self.styleButton = QToolButton()
-        self.styleButton.setText(tr("Theme"))
+        self.styleButton.setText(tr("Change Theme"))
         self.styleButton.setBaseSize(QSize(25, 25))
         self.styleButton.clicked.connect(self.show_style_manager_dialog)
         self.styleButton.setObjectName('ThemeButton')
@@ -171,7 +171,7 @@ class MainTabQgsWidget:
             QIcon(os.path.join(plug_dir, 'icons', 'giap.png'))
         )
         gbut.setCursor(QCursor(Qt.PointingHandCursor))
-        gbut.setToolTip("GIAP.pl - Strona WWW")
+        gbut.setToolTip(tr("GIAP.pl - Website"))
         gbut.setStyleSheet(
             'QPushButton{border-width: 0px; width: 220px; height:72px;'
             'background-color: transparent;}'
@@ -203,7 +203,7 @@ class MainTabQgsWidget:
 
         #tools under GIAP logo
         self.main_widget.runQuickPrintButton.clicked.connect(self.print_map_tool.run)
-        self.main_widget.runQuickPrintButton.setToolTip(tr("Map fast print"))
+        self.main_widget.runQuickPrintButton.setToolTip(tr("Map quick print"))
         self.main_widget.runQuickPrintButton.setIcon(QIcon(f'{self.plugin_dir}/icons/quick_print.png'))
 
         self.main_widget.runCompositionButton.clicked.connect(self.kompozycje.config)
@@ -402,7 +402,7 @@ class MainTabQgsWidget:
 
     def set_edit_session(self):
         if self.editButton.isChecked():
-            self.editButton.setText(tr("Complete edit"))
+            self.editButton.setText(tr("Finish edition"))
             self.main_widget.edit_session_toggle()
         else:
             self.editButton.setText(tr("Edit menu"))

@@ -41,7 +41,7 @@ class Widget(QWidget, FORM_CLASS):
         # Custom Tools
         self.orto_add = False
 
-        self.custom_tabbar = CustomTabBar(tr('New Tab'), self.tabWidget)
+        self.custom_tabbar = CustomTabBar(tr('New tab'), self.tabWidget)
         self.tabWidget.setTabBar(self.custom_tabbar)
         self.tabWidget.tabBar().tabBarClicked.connect(self.tab_clicked)
         self.tabWidget.tabBar().tabBarDoubleClicked.connect(
@@ -52,7 +52,7 @@ class Widget(QWidget, FORM_CLASS):
         :return: tab widget
         """
         if not label:
-            label = 'New Tab'
+            label = 'New tab'
         label = tr(label)
 
         tab = CustomTab(label, self.tabWidget)
@@ -200,7 +200,7 @@ class Widget(QWidget, FORM_CLASS):
                     QIcon(os.path.join(plug_dir, 'icons', 'giap.png'))
                 )
                 gbut.setCursor(QCursor(Qt.PointingHandCursor))
-                gbut.setToolTip("GIAP.pl - Strona WWW")
+                gbut.setToolTip(tr("GIAP.pl - Website"))
                 gbut.setStyleSheet(
                     'QPushButton{border-width: 0px; width: 220px; height:72px;'
                     'background-color: transparent;}'
@@ -380,7 +380,7 @@ class Widget(QWidget, FORM_CLASS):
 
 
 class CustomTabBar(QTabBar):
-    def __init__(self, label='New Tab', parent=None):
+    def __init__(self, label='New tab', parent=None):
         super().__init__(parent)
         self.setAttribute(Qt.WA_DeleteOnClose)
 
@@ -857,7 +857,7 @@ class CustomSection(QWidget):
             plugin_dir = os.path.dirname(__file__)
             self.quick_print = PrintMapTool(iface, self)
             self.tbut.clicked.connect(self.quick_print.run)
-            self.tbut.setToolTip(tr("Map fast print"))
+            self.tbut.setToolTip(tr("Map quick print"))
             self.tbut.setIcon(QIcon(f'{plugin_dir}/icons/quick_print.png'))
     def unload_custom_actions(self):
         if self.orto_add:
