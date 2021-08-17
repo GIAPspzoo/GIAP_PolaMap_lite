@@ -354,7 +354,7 @@ Proszę czekać...</translation>
     </message>
     <message>
         <location filename="../utils.py" line="209"/>
-        <source>Advanced Attributes</source>
+        <source>Advanced attributes</source>
         <translation>Zaawansowane atrybuty</translation>
     </message>
     <message>
@@ -430,7 +430,7 @@ Proszę czekać...</translation>
     <message>
         <location filename="../utils.py" line="458"/>
         <source>Extract Projection</source>
-        <translation>Wyodrębniane danych </translation>
+        <translation>Wyodrębnianie danych </translation>
     </message>
     <message>
         <location filename="../utils.py" line="486"/>
@@ -715,7 +715,7 @@ Proszę czekać...</translation>
     </message>
     <message>
         <location filename="../ribbon_config.py" line="84"/>
-        <source>Advanced Attributes</source>
+        <source>Advanced attributes</source>
         <translation>Zaawansowane atrybuty</translation>
     </message>
 </context>
@@ -1050,7 +1050,7 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
     </message>
     <message>
         <location filename="../select_section.py" line="26"/>
-        <source>Advanced Attributes</source>
+        <source>Advanced attributes</source>
         <translation>Zaawansowane atrybuty</translation>
     </message>
     <message>

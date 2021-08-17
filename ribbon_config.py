@@ -109,7 +109,7 @@ RIBBON_DEFAULT = [
         "tab_id": "Advanced Tools",
         "sections": [
             {
-                'label': tr('Advanced Attributes'),
+                'label': tr('Advanced attributes'),
                 'btn_size': 30,
                 'btns': [
                     ['mActionIdentify', 0, 0],

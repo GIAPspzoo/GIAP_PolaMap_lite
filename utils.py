@@ -222,8 +222,8 @@ STANDARD_TOOLS = [
             },
 
             {
-                'label': tr('Advanced Attributes'),
-                'id': 'Advanced Attributes',
+                'label': tr('Advanced attributes'),
+                'id': 'Advanced attributes',
                 'btn_size': 30,
                 'btns': [
                     ['mActionIdentify', 0, 0],
