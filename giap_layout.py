@@ -5,6 +5,7 @@ from qgis.utils import iface
 import qgis
 from PyQt5.QtGui import QCursor
 from PyQt5.QtWidgets import QPushButton, QDockWidget, QVBoxLayout
+from qgis.PyQt.QtWidgets import QPushButton, QStyleFactory
 from qgis.PyQt.QtCore import QTranslator, QCoreApplication, QSize, \
     Qt, QRect, QPropertyAnimation, QEasingCurve, QSettings
 from qgis.PyQt.QtGui import QIcon
@@ -97,39 +98,9 @@ class MainTabQgsWidget:
         self.toolbar.setMovable(False)
         self.toolbar.setFloatable(False)
         self.toolbar.addWidget(self.main_widget)
+        style = self.main_widget.styleSheet()
+        self.ustaw_legende(style)
 
-        self.layer_view = self.iface.layerTreeView()
-        self.layer_toolbar = self.layer_view.parent().children()[1]
-        self.layer_toolbar.setGeometry(0,0, 280, 35)
-        for toolbar_item in range(2, 13):
-            if isinstance(self.layer_toolbar.children()[toolbar_item], QToolButton):
-                self.layer_toolbar.children()[toolbar_item].setStyleSheet(
-                    'width: 20px;'
-                    'heigth 25px;'
-                    'margin-left: 3px;'
-                    'border-radius: 4px;'
-                    'padding: 3px;'
-                )
-
-        if isinstance(self.layer_toolbar.children()[9], QToolButton):
-            self.layer_toolbar.children()[9].setPopupMode(2)
-
-        self.layer_view.setGeometry(0, 79, 280, 1200)
-        self.layer_view.setTextElideMode(Qt.ElideRight)
-        self.kompozycje_widget.setGeometry(0, 35, 280, 50)
-        self.main_widget.pokaz_warstwy.toggled.connect(self.warstwy_show)
-        self.kompozycje_widget.setParent(self.iface.mapCanvas())
-        self.layer_view.setParent(self.iface.mapCanvas())
-        self.layer_toolbar.setParent(self.iface.mapCanvas())
-        self.layer_panel = self.iface.mainWindow().findChildren(QDockWidget, 'Layers')[0]
-        layer_panel_widget = QWidget()
-        self.layout = QVBoxLayout()
-        self.layout.addWidget(self.layer_toolbar)
-        self.layout.addWidget(self.kompozycje_widget)
-        self.layout.addWidget(self.layer_view)
-        layer_panel_widget.setLayout(self.layout)
-        self.layer_panel.setWidget(layer_panel_widget)
-        self.layer_panel.setTitleBarWidget(QWidget())
         self.menuButton = QToolButton()
         self.menuButton.setText(tr("Show menu"))
         self.menuButton.setCheckable(True)
@@ -227,6 +198,70 @@ class MainTabQgsWidget:
             process.initGui()
             process.initProcessing()
             self.load_ribbons()
+
+    def ustaw_legende(self, style):
+
+        qt_style = QStyleFactory.create('Cleanlooks')
+        self.layer_panel = self.iface.mainWindow().findChildren(QDockWidget, 'Layers')[0]
+        self.layer_panel.setStyle(qt_style)
+        self.layer_panel.setStyleSheet(style + """
+        QToolBar {
+            spacing: 9.4px;
+            margin: 4px 7px 0 7px;
+            border: none;
+            
+        }
+        QToolButton  {
+            padding: 3px;
+        }
+        QMenu {
+            background-color: rgb(53, 85, 109);
+            color: rgb(255, 255, 255);
+            font: 10pt "Segoe UI";
+        }
+        QMenu::item:disabled {
+            color: rgb(200, 200, 200);
+        }
+        """)
+
+        self.layer_view = self.iface.layerTreeView()
+        self.layer_view.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.layer_view.setStyleSheet(style + """
+        QTreeView::item, QTreeView::branch {
+            color: rgb(255, 255, 255);
+        }
+        QTreeView {
+            border: 2px solid;
+            border-top-color: rgb(79, 118, 150);
+            border-left: none;
+            border-bottom-color: rgb(79, 118, 150);
+            border-right: none;
+            padding-top: 5px;
+        }
+        """)
+        layer_toolbar = self.layer_view.parent().children()[1]
+
+        #QMenu associated QToolButton "Manage Map Themes"
+        layer_toolbar.children()[6].menu().setStyleSheet(style + """
+        QMenu {
+            background-color: rgb(53, 85, 109);
+            color: rgb(255, 255, 255);
+            font: 10pt "Segoe UI";
+        }
+        QMenu::item:disabled {
+            color: rgb(200, 200, 200);
+        }
+        """)
+        widget_w_warstwach = QWidget()
+        layout_widgetu = QVBoxLayout()
+        layout_widgetu.addWidget(layer_toolbar)
+        layout_widgetu.addWidget(self.kompozycje_widget)
+        layout_widgetu.addWidget(self.layer_view)
+        layout_widgetu.setContentsMargins(0, 7, 0, 4)
+        widget_w_warstwach.setLayout(layout_widgetu)
+        self.layer_panel.setWidget(widget_w_warstwach)
+        self.layer_panel.setTitleBarWidget(QWidget())
+        self.main_widget.pokaz_warstwy.toggled.connect(self.warstwy_show)
 
     def load_ribbons(self):
         # turn on ribbon editing
@@ -420,6 +455,7 @@ class MainTabQgsWidget:
         if self.main_widget.pokaz_warstwy.isChecked():
             self.layer_panel.show()
             self.set_animation(self.layer_panel, splitter_start, splitter_end, 200)
+            self.layer_view.resizeColumnToContents(0)
         else:
             self.set_animation(self.layer_panel, splitter_end, splitter_start, 200, 'out')
 
