@@ -280,8 +280,8 @@ STANDARD_TOOLS = [
             },
 
             {
-                'label': tr('Digitizing'),
-                'id': 'Digitizing',
+                'label': tr('Vector tools'),
+                'id': 'Vector tools',
                 'btn_size': 30,
                 'btns': [
                     ['EnableSnappingAction', 0, 0],

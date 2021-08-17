@@ -368,9 +368,9 @@ Proszę czekać...</translation>
         <translation>Wektor</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="267"/>
-        <source>Digitizing</source>
-        <translation>Digitalizacja</translation>
+        <location filename="../utils.py" line="283"/>
+        <source>Vector tools</source>
+        <translation>Narzędzia wektorowe</translation>
     </message>
     <message>
         <location filename="../utils.py" line="294"/>
@@ -430,7 +430,7 @@ Proszę czekać...</translation>
     <message>
         <location filename="../utils.py" line="458"/>
         <source>Extract Projection</source>
-        <translation> Wyodrębniane danych </translation>
+        <translation>Wyodrębniane danych </translation>
     </message>
     <message>
         <location filename="../utils.py" line="486"/>
