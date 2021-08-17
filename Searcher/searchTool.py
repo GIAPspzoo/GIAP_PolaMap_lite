@@ -44,7 +44,7 @@ class SearcherTool:
         self.dock.lineEdit_address.textEdited.connect(self.adress_changed)
         self.completer.setFilterMode(Qt.MatchContains)
         self.completer.setCaseSensitivity(False)
-        self.completer.setMaxVisibleItems(10)
+        self.completer.setMaxVisibleItems(15)
         self.dock.setStyleSheet("QComboBox{combobox-popup: 0;}")
         self.dock.comboBox_gmina.setMaxVisibleItems(15)
         self.dock.comboBox_obr.setMaxVisibleItems(15)
@@ -86,6 +86,7 @@ class SearcherTool:
             city = self.dock.lineEdit_address.text().split(',')[0].strip()
             self.names.setStringList(self.getstreets(simc, city))
             self.dock.lineEdit_address.setText(city)
+            self.completer.popup().setFixedHeight(200)
 
     def pickacity(self, obj, limit):
         city = obj['1']['city']
@@ -151,7 +152,7 @@ class SearcherTool:
         else:
             CustomMessageBox(None, f" {tr('Invalid')} {tr('Empty address field')}").button_ok()
 
-    def widthforcombo(self, result):
+    def widthforview(self, result):
         longest = max(result, key=len)
         width = 2 * self.fontm.width(longest)
         return width
@@ -191,7 +192,7 @@ class SearcherTool:
         self.dock.comboBox_pow.blockSignals(True)
         result = fe.responce
         self.dock.comboBox_pow.addItems(result)
-        self.dock.comboBox_pow.view().setFixedWidth(self.widthforcombo(result))
+        self.dock.comboBox_pow.view().setFixedWidth(self.widthforview(result))
         self.dock.comboBox_pow.blockSignals(False)
 
     def pow_changed(self):
@@ -204,7 +205,7 @@ class SearcherTool:
         self.dock.comboBox_gmina.blockSignals(True)
         result = fe.responce
         self.dock.comboBox_gmina.addItems(result)
-        self.dock.comboBox_gmina.view().setFixedWidth(self.widthforcombo(result))
+        self.dock.comboBox_gmina.view().setFixedWidth(self.widthforview(result))
         self.dock.comboBox_gmina.blockSignals(False)
 
     def gmi_changed(self):
@@ -217,7 +218,7 @@ class SearcherTool:
         self.dock.comboBox_obr.blockSignals(True)
         result = fe.responce
         self.dock.comboBox_obr.addItems(result)
-        self.dock.comboBox_obr.view().setFixedWidth(self.widthforcombo(result))
+        self.dock.comboBox_obr.view().setFixedWidth(self.widthforview(result))
         self.dock.comboBox_obr.blockSignals(False)
 
     def clear_comboBoxes(self, level=None):

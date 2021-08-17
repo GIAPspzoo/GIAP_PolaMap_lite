@@ -112,15 +112,6 @@ class ParseResponce:
                    ).format(self.not_valid),
                 Qgis.Warning
             )
-        if len(feats) > 0:
-            lfeats = len(feats)
-            mess = tr('Service return {} feature')
-            if lfeats > 1:
-                mess = tr('Service return {} features')
-            iface.messageBar().pushMessage(
-                'OK', mess.format(lfeats),
-                Qgis.Success
-            )
 
     def _create_feature(self, row):
         if row[:4].upper() == 'SRID':

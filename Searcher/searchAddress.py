@@ -4,7 +4,7 @@ from urllib.parse import quote
 from qgis.utils import iface
 
 from qgis.core import QgsGeometry, QgsFeature, QgsField, QgsFields, \
-    QgsProject, QgsVectorLayer, QgsMessageLog, Qgis
+    QgsProject, QgsVectorLayer, QgsMessageLog, Qgis, QgsExpression
 from qgis.PyQt.QtCore import QVariant
 
 import os
@@ -79,7 +79,9 @@ class SearchAddress:
                 Qgis.Warning
             )
             return False
+        return org, obj_type, qml
 
+    def get_layer_data(self, org, obj_type, qml):
         lyr = QgsProject.instance().mapLayersByName(obj_type)
         if lyr:
             return lyr[0]
@@ -114,8 +116,8 @@ class SearchAddress:
         if 'results' in self.jres:
             if self.jres['results'] is None:
                 return False, tr("No objects found. Please enter valid value.")
-
-        lyr = self.get_layer()
+        org, obj_type, qml = self.get_layer()
+        lyr = self.get_layer_data(org, obj_type, qml)
         if not lyr:
             return False, tr('Check log, problems occured.')
         fnm = lyr.dataProvider().fieldNameMap()
@@ -149,16 +151,22 @@ class SearchAddress:
 
         return True, feats
 
+    def zoom_to_feature(self, layer):
+        layer = QgsProject.instance().mapLayersByName(layer)[0]
+        iface.mapCanvas().zoomScale(500)
+        layer.selectByIds([len(layer)])
+        iface.mapCanvas().zoomToSelected(layer)
+        layer.removeSelection()
+
     def add_feats(self, feats):
         if isinstance(feats, str):
             pass
         else:
-            lyr = self.get_layer()
-            if lyr:
-                lyr.dataProvider().addFeatures(feats)
-            iface.mapCanvas().zoomScale(500)
-            lyr.selectByIds([len(lyr)])
-            iface.mapCanvas().zoomToSelected()
-            lyr.removeSelection()
+            org, obj_type, qml = self.get_layer()
+            if not self.get_layer():
+                return
+            lyr = self.get_layer_data(org, obj_type, qml)
+            lyr.dataProvider().addFeatures(feats)
+            self.zoom_to_feature(obj_type)
         return True
 
