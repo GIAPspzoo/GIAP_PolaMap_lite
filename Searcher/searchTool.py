@@ -271,7 +271,7 @@ class SearcherTool:
             comm = self.dock.comboBox_obr.currentText()
             if '|' not in comm:
                 CustomMessageBox(None,
-                    f"{tr('Address')} {tr('Address of parcel is not valid')}").button_ok()
+                    f"{tr('Address of parcel is not valid.')}").button_ok()
                 return
             comm = comm.split('|')[1]
             adr = f'{comm}.{parc}'
