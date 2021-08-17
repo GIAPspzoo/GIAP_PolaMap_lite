@@ -245,52 +245,46 @@ class Widget(QWidget, FORM_CLASS):
     def run_select_section(self):
         self.dlg.addSectionTab.clicked.connect(self.next_widget)
         self.dlg.searchToolTab.clicked.connect(self.previous_widget)
-        self.dlg.addTool.clicked.connect(self.add_tool_search)
-        self.dlg.addSection.clicked.connect(self.add_section_search)
+        self.dlg.addAlgButton.clicked.connect(self.add_to_ribbon)
         self.dlg.searchBox.textChanged.connect(self.search_tree)
 
-    def add_tool_search(self):
+    def add_to_ribbon(self):
         self.tabWidget.setUpdatesEnabled(True)
-        selected = self.dlg.algorithmTree.selectedAlgorithm()
         sel_ind = self.dlg.algorithmTree.selectedIndexes()
-        if not selected and not sel_ind:
-            CustomMessageBox(self.dlg, tr("Select tool")).button_ok()
-            return
-        if not selected:
-            CustomMessageBox(self.dlg, tr("Selected item is not a tool")).button_ok()
-            return
-        sec = self.add_section(self.tabWidget.currentIndex(), selected.group(), 30)
-        sec.add_action(selected.id(), 0, 0)
-        self.tabWidget.setUpdatesEnabled(True)
-        self.dlg.close()
-
-    def add_section_search(self):
-        self.tabWidget.setUpdatesEnabled(True)
-        selected = self.dlg.algorithmTree.selectedAlgorithm()
-        tree_ind = self.dlg.algorithmTree.selectedIndexes()
-        if not selected and not tree_ind:
-            CustomMessageBox(self.dlg, tr("Select section")).button_ok()
-            return
-        if selected:
-            CustomMessageBox(self.dlg, tr("Selected item is not a section")).button_ok()
-            return
-        if not self.dlg.algorithmTree.algorithmForIndex(tree_ind[0].child(0, 0)):
-            CustomMessageBox(self.dlg, tr("Selected item has sub-section")).button_ok()
-            return
-        sec = self.add_section(self.tabWidget.currentIndex(), self.dlg.algorithmTree.algorithmForIndex(tree_ind[0].child(0, 0)).group(), 30)
-        row = 0
-        col = 0
-        alg_ind = 0
-        alg = self.dlg.algorithmTree.algorithmForIndex(tree_ind[0].child(alg_ind, 0))
-        while alg:
-            sec.add_action(alg.id(), row, col)
-            if row == 1:
-                row = 0
-                col += 1
+        tool = {}
+        for ind in sel_ind:
+            alg_ind = 0
+            alg = self.dlg.algorithmTree.algorithmForIndex(ind)
+            if alg:
+                if not alg.group() in tool:
+                    tool[alg.group()] = []
+                tool[alg.group()].append(alg)
+            elif self.dlg.algorithmTree.algorithmForIndex(ind.child(0, 0)):
+                alg = self.dlg.algorithmTree.algorithmForIndex(ind.child(alg_ind, 0))
+                while alg:
+                    if not alg.group() in tool:
+                        tool[alg.group()] = []
+                    tool[alg.group()].append(alg)
+                    alg_ind += 1
+                    alg = self.dlg.algorithmTree.algorithmForIndex(ind.child(alg_ind, 0))
             else:
-                row += 1
-            alg_ind += 1
-            alg = self.dlg.algorithmTree.algorithmForIndex(tree_ind[0].child(alg_ind, 0))
+                CustomMessageBox(self.dlg, tr("Selected item has sub-section")).button_ok()
+                return
+
+        for group in tool:
+            tool[group] = list(set(tool[group]))
+
+        for name_sec in tool:
+            section = self.add_section(self.tabWidget.currentIndex(), name_sec, 30)
+            row = 0
+            col = 0
+            for alg in tool[name_sec]:
+                section.add_action(alg.id(), row, col)
+                if row == 1:
+                    row = 0
+                    col += 1
+                else:
+                    row += 1
         self.tabWidget.setUpdatesEnabled(True)
         self.dlg.close()
 
@@ -666,7 +660,9 @@ class CustomSection(QWidget):
             self.tbut.org_state = True
             self.tbut.setText(alg.id())
             action = action.replace(':', '_')
-            self.tbut.setIcon(QIcon(os.path.join(os.path.dirname(__file__), 'icons', action)))
+            lista = [x.split('.')[0] for x in os.listdir(os.path.join(os.path.dirname(__file__), 'icons'))]
+            if action in lista:
+                self.tbut.setIcon(QIcon(os.path.join(os.path.dirname(__file__), 'icons', action)))
         elif isinstance(action, str):
             self.tbut.setObjectName(action)
             self.set_custom_action()

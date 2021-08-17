@@ -1014,6 +1014,11 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
         <translation>Dodaj narzędzie do wstęgi</translation>
     </message>
     <message>
+        <location filename="../select_section_dialog.ui" line="683"/>
+        <source>Add to ribbon</source>
+        <translation>Dodaj do wstęgi</translation>
+    </message>
+    <message>
         <location filename="../select_section_dialog.ui" line="702"/>
         <source>Add section to ribbon</source>
         <translation>Dodaj sekcję do wstęgi</translation>

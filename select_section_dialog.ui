@@ -391,7 +391,7 @@ QPushButton:disabled
       <enum>QFrame::Plain</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="zakoncz">
       <layout class="QGridLayout" name="gridLayout_9">
@@ -633,6 +633,9 @@ QToolTip
             <property name="showDropIndicator" stdset="0">
              <bool>false</bool>
             </property>
+            <property name="selectionMode">
+             <enum>QAbstractItemView::MultiSelection</enum>
+            </property>
             <property name="headerHidden">
              <bool>true</bool>
             </property>
@@ -660,7 +663,7 @@ QToolTip
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QPushButton" name="addTool">
+          <widget class="QPushButton" name="addAlgButton">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -677,29 +680,7 @@ QToolTip
             </font>
            </property>
            <property name="text">
-            <string>Add tool to ribbon</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="addSection">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="font">
-            <font>
-             <family>Segoe UI</family>
-             <pointsize>10</pointsize>
-             <weight>50</weight>
-             <italic>false</italic>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Add section to ribbon</string>
+            <string>Add to ribbon</string>
            </property>
           </widget>
          </item>
