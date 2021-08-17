@@ -610,8 +610,8 @@ Proszę czekać...</translation>
     </message>
     <message>
         <location filename="../Searcher/searchAddress.py" line="102"/>
-        <source>Zero objects found (api limits?)</source>
-        <translation>Nie znaleziono obiektów (limit api?)</translation>
+        <source>Zero objects found.</source>
+        <translation>Nie znaleziono obiektów.</translation>
     </message>
     <message>
         <location filename="../Searcher/searchAddress.py" line="106"/>
