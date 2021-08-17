@@ -224,7 +224,7 @@ class SearcherTool:
         """Clear comboboxes to level where user change something"""
         self.dock.comboBox_obr.blockSignals(True)
         self.dock.comboBox_obr.clear()
-        self.dock.comboBox_obr.addItem(tr('Community'))
+        self.dock.comboBox_obr.addItem(tr('Cadastral district'))
         self.dock.comboBox_obr.blockSignals(False)
         if level == 'mun':
             return

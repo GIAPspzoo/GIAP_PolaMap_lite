@@ -355,7 +355,7 @@ Proszę czekać...</translation>
     <message>
         <location filename="../utils.py" line="209"/>
         <source>Advanced Attributes</source>
-        <translation>Zaawansowane Atrybuty</translation>
+        <translation>Zaawansowane atrybuty</translation>
     </message>
     <message>
         <location filename="../utils.py" line="230"/>
@@ -385,7 +385,7 @@ Proszę czekać...</translation>
     <message>
         <location filename="../utils.py" line="316"/>
         <source>Geoprocessing Tools</source>
-        <translation>Narzędzia Geoprocesingu</translation>
+        <translation>Narzędzia geoprocesingu</translation>
     </message>
     <message>
         <location filename="../utils.py" line="333"/>
@@ -430,7 +430,7 @@ Proszę czekać...</translation>
     <message>
         <location filename="../utils.py" line="458"/>
         <source>Extract Projection</source>
-        <translation>Wyodrębniane danych</translation>
+        <translation> Wyodrębniane danych </translation>
     </message>
     <message>
         <location filename="../utils.py" line="486"/>
@@ -478,10 +478,11 @@ Proszę czekać...</translation>
         <source>Switch on manually missing core plugin: Topology Checker</source>
         <translation>Włącz brakującą wtyczkę wbudowaną: Kontrola Topologii</translation>
     </message>
-
-
-
-
+    <message>
+        <location filename="../giap_layout.py"/>
+        <source>GIAP.pl - Website</source>
+        <translation>GIAP.pl - Strona WWW</translation>
+    </message>
     <message>
         <location filename="../giap_layout.py" line="163"/>
         <source>Map quick print</source>
@@ -574,7 +575,7 @@ Proszę czekać...</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.py" line="578"/>
-        <source>GIAP.pl website</source>
+        <source>GIAP.pl - Website</source>
         <translation>GIAP.pl - Strona WWW</translation>
     </message>
     <message>
@@ -715,7 +716,7 @@ Proszę czekać...</translation>
     <message>
         <location filename="../ribbon_config.py" line="84"/>
         <source>Advanced Attributes</source>
-        <translation>Zaawansowane Atrybuty</translation>
+        <translation>Zaawansowane atrybuty</translation>
     </message>
 </context>
 <context>
@@ -773,6 +774,11 @@ Proszę czekać...</translation>
 </context>
 <context>
     <name>Form</name>
+    <message>
+        <location filename="../giap_dynamic_layout.ui"/>
+        <source>GIAP Tools</source>
+        <translation>Narzędzia GIAP</translation>
+    </message>
     <message>
         <location filename="../giap_dynamic_layout.ui" line="26"/>
         <source>Form</source>
@@ -974,7 +980,7 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
     <name>SectionSelecterDialog</name>
     <message>
         <location filename="../select_section_dialog.ui" line="316"/>
-        <source>Section</source>
+        <source>Sections</source>
         <translation>Sekcja</translation>
     </message>
     <message>
@@ -994,7 +1000,7 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
     </message>
     <message>
         <location filename="../select_section_dialog.ui" line="338"/>
-        <source>Search for the tool</source>
+        <source>Search tool</source>
         <translation>Wyszukaj narzędzie</translation>
     </message>
     <message>
@@ -1045,7 +1051,7 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
     <message>
         <location filename="../select_section.py" line="26"/>
         <source>Advanced Attributes</source>
-        <translation>Zaawansowane Atrybuty</translation>
+        <translation>Zaawansowane atrybuty</translation>
     </message>
     <message>
         <location filename="../select_section.py" line="27"/>

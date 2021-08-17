@@ -347,7 +347,7 @@ QPushButton:disabled
 }</string>
            </property>
            <property name="text">
-            <string>Search for the tool</string>
+            <string>Search tool</string>
            </property>
           </widget>
          </item>
@@ -536,7 +536,7 @@ color: black;</string>
           <item row="1" column="1">
            <widget class="QPushButton" name="pushButton_add">
             <property name="text">
-             <string>Add selected</string>
+             <string>Add selection</string>
             </property>
            </widget>
           </item>

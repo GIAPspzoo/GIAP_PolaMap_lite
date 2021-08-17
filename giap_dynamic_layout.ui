@@ -181,7 +181,7 @@
        </property>
        <item>
         <property name="text">
-         <string>Community</string>
+         <string>Cadastral district</string>
         </property>
        </item>
       </widget>
@@ -266,7 +266,7 @@ for the street: Warszawa, Pasaż Ursynowski</string>
         <string notr="true">color: rgb(255, 255, 255);</string>
        </property>
        <property name="text">
-        <string>Narzędzia GIAP  </string>
+        <string>GIAP Tools</string>
        </property>
       </widget>
      </item>
