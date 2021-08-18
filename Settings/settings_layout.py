@@ -1,6 +1,6 @@
 import os
 
-from PyQt5.QtCore import QSettings
+from qgis.PyQt.QtCore import QSettings
 from qgis.PyQt import uic
 from qgis.PyQt.QtWidgets import QDialog
 
@@ -12,10 +12,14 @@ class SettingsDialog(QDialog, FORM_CLASS):
     def __init__(self, parent=None):
         super(SettingsDialog, self).__init__(parent)
         self.setupUi(self)
-        if 'en' in str(QSettings().value('locale/userLocale')):
-            self.radioButton_en.setChecked(True)
-        elif 'pl' in str(QSettings().value('locale/userLocale')):
-            self.radioButton_pl.setChecked(True)
+
+        if str(QSettings().value('locale/overrideFlag')) == "false":
+            self.radioButton_sys.setChecked(True)
+        else:
+            if str(QSettings().value('locale/userLocale')) == "en":
+                self.radioButton_en.setChecked(True)
+            elif str(QSettings().value('locale/userLocale')) == "pl_PL":
+                self.radioButton_pl.setChecked(True)
 
 
 

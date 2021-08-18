@@ -1215,6 +1215,11 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
         <translation>Wybór wersji językowej</translation>
     </message>
     <message>
+        <location filename="../Settings/ui_settings_layout.ui" line="296"/>
+        <source>System settings</source>
+        <translation>Ustawienia systemowe</translation>
+    </message>
+    <message>
         <location filename="../Settings/ui_settings_layout.ui" line="299"/>
         <source>Restore default settings</source>
         <translation>Przywracanie ustawień domyślnych</translation>
