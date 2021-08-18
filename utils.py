@@ -213,9 +213,9 @@ STANDARD_TOOLS = [
                 'id': 'Create Layer',
                 'btn_size': 30,
                 'btns': [
-                    ['mActionNewGeoPackageLayer', 0, 1],
+                    ['mActionNewGeoPackageLayer', 1, 1],
                     ['mActionNewMemoryLayer', 0, 2],
-                    ['mActionNewVectorLayer', 1, 1],
+                    ['mActionNewVectorLayer', 0, 1],
                     ['mActionNewSpatiaLiteLayer', 1, 2],
                     ['mActionNewVirtualLayer', 0, 3]
                 ],
@@ -597,7 +597,7 @@ STANDARD_TOOLS = [
                    ['mActionSplitParts', 1, 7],
                    ['mActionMergeFeatures', 1, 8],
                    ['mActionMergeFeatureAttributes', 1, 9],
-                   ['ActionPointSymbolTools', 1, 10]
+                   ['mActionRotatePointSymbols', 1, 10]
                ],
            },
 
