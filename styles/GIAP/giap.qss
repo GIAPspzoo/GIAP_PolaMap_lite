@@ -644,7 +644,7 @@ QPlainTextEdit
 }
 
 QProgressBar::chunk:horizontal {
-	background-color: qlineargradient(spread:reflect, x1:1, y1:0.545, x2:1, y2:0, stop:0 rgba(28, 66, 111, 255), stop:1 rgba(37, 87, 146, 255));
+	background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(86, 137, 176, 1), stop:1 rgba(86, 137, 176, 1));
 }
 
 QToolBar QLabel
