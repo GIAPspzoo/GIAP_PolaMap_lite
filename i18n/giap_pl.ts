@@ -620,7 +620,7 @@ Proszę czekać...</translation>
     </message>
     <message>
         <location filename="../Searcher/searchAddress.py" line="116"/>
-        <source>Service unavailable. Enter correct value.</source>
+        <source>No objects found. Please enter valid value.</source>
         <translation>Nie znaleziono obiektów. Wpisz poprawną wartość.</translation>
     </message>
     <message>
