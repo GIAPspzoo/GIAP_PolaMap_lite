@@ -13,7 +13,7 @@
     <x>0</x>
     <y>0</y>
     <width>984</width>
-    <height>518</height>
+    <height>486</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -137,18 +137,18 @@ border: 1px solid #5689b0;
 
 QToolButton {
    border: 0px solid transparent;
-   color: black;
+   color: white;
 
 }
 
 QToolButton:hover {
-   background-color: #5689b0;
-   border: 1px solid #6fb1e3;
+   background-color: #b7d3e8;
+   border: 1px solid black;
 }
 
 QToolButton:pressed {
-   background-color: #5689b0;
-   border: 1px solid #6fb1e3;
+   background-color: #b7d3e8;
+   border: 1px solid black;
 }
 
 QTableView:item:selected {
@@ -194,8 +194,8 @@ QTableView:item:hover {
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">*  {
-color: black;
+      <string notr="true">* {
+	color:black;
 }</string>
      </property>
      <property name="frameShape">
@@ -303,6 +303,22 @@ color: black;
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout_44">
+          <item row="2" column="0">
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>15</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
           <item row="0" column="0">
            <widget class="QFrame" name="frame_6">
             <property name="frameShape">
@@ -327,6 +343,47 @@ color: black;
              <property name="spacing">
               <number>5</number>
              </property>
+             <item row="1" column="2" colspan="2">
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <item>
+                <widget class="QPushButton" name="dodaj_kompozycje">
+                 <property name="text">
+                  <string>Add</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="edytuj_kompozycje">
+                 <property name="text">
+                  <string>Edit</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="usun_kompozycje">
+                 <property name="text">
+                  <string>Delete</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item row="2" column="2">
+              <spacer name="verticalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>15</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
              <item row="0" column="0" colspan="4">
               <widget class="QGroupBox" name="groupBox_35">
                <property name="sizePolicy">
@@ -343,6 +400,11 @@ color: black;
                  <italic>false</italic>
                  <bold>false</bold>
                 </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QGroupBox{
+	border:none;
+}</string>
                </property>
                <property name="title">
                 <string/>
@@ -450,6 +512,19 @@ color: black;
                       <height>25</height>
                      </size>
                     </property>
+                    <property name="styleSheet">
+                     <string notr="true">QToolButton{
+	color: white;
+}
+
+QToolButton:hover{
+	color: black;
+}
+
+QToolButton:pressed{
+	color: black;
+}</string>
+                    </property>
                     <property name="text">
                      <string>...</string>
                     </property>
@@ -465,6 +540,19 @@ color: black;
                       <width>150</width>
                       <height>25</height>
                      </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QToolButton{
+	color: white;
+}
+
+QToolButton:hover{
+	color: black;
+}
+
+QToolButton:pressed{
+	color: black;
+}</string>
                     </property>
                     <property name="text">
                      <string>...</string>
@@ -492,33 +580,113 @@ color: black;
                </layout>
               </widget>
              </item>
-             <item row="1" column="3">
-              <layout class="QHBoxLayout" name="horizontalLayout_3">
-               <item>
-                <widget class="QPushButton" name="dodaj_kompozycje">
-                 <property name="text">
-                  <string>Add</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="edytuj_kompozycje">
-                 <property name="text">
-                  <string>Edit</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="usun_kompozycje">
-                 <property name="text">
-                  <string>Delete</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
+             <item row="1" column="0" colspan="2">
+              <spacer name="horizontalSpacer_5">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>450</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
              </item>
             </layout>
            </widget>
+          </item>
+          <item row="1" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="leftMargin">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>5</number>
+            </property>
+            <property name="rightMargin">
+             <number>5</number>
+            </property>
+            <property name="bottomMargin">
+             <number>5</number>
+            </property>
+            <item>
+             <spacer name="horizontalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>10</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Save</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_3">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>10</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Cancel</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>
@@ -526,95 +694,6 @@ color: black;
       </layout>
      </widget>
     </widget>
-   </item>
-   <item row="2" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <property name="spacing">
-      <number>5</number>
-     </property>
-     <property name="leftMargin">
-      <number>5</number>
-     </property>
-     <property name="topMargin">
-      <number>5</number>
-     </property>
-     <property name="rightMargin">
-      <number>5</number>
-     </property>
-     <property name="bottomMargin">
-      <number>5</number>
-     </property>
-     <item>
-      <spacer name="horizontalSpacer_4">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="font">
-        <font>
-         <family>Segoe UI</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <italic>false</italic>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Save</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_3">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="font">
-        <font>
-         <family>Segoe UI</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <italic>false</italic>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Cancel</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
    </item>
    <item row="0" column="0" rowspan="3">
     <widget class="QFrame" name="frame">
@@ -686,20 +765,32 @@ QPushButton:disabled
        <number>5</number>
       </property>
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QPushButton" name="pushButton_2">
         <property name="styleSheet">
-         <string notr="true">   background-color: #b7d3e8;
-   color: black;
-   font: 10pt &quot;Segoe UI&quot;; 
-   font-weight: bold;
-   padding-left: 5px;
-   padding-right: 5px;</string>
+         <string notr="true">QPushButton{
+	background-color: transparent;
+    font: 8pt &quot;Segoe UI&quot;; 
+    padding-left: 5px;
+    padding-right: 5px;
+	border: None;
+	color: white;
+}
+QPushButton:hover{
+	background-color: #b7d3e8;
+	border-radius:0 ;
+	font-weight: bold;
+	color: black;
+}
+
+QPushButton:pressed{
+	background-color: #b7d3e8;
+	border-radius:0 ;
+	font-weight: bold;
+	color: black;
+}</string>
         </property>
         <property name="text">
          <string>User compositions</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
@@ -740,7 +831,7 @@ QPushButton:disabled
      <zorder>verticalSpacer_3</zorder>
      <zorder>zapisz</zorder>
      <zorder>wczytaj</zorder>
-     <zorder>label_2</zorder>
+     <zorder>pushButton_2</zorder>
     </widget>
    </item>
   </layout>
