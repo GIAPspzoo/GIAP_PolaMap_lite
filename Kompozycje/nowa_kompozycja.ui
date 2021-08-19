@@ -13,7 +13,7 @@
     <x>0</x>
     <y>0</y>
     <width>1210</width>
-    <height>597</height>
+    <height>615</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -143,18 +143,20 @@ border: 1px solid #5689b0;
 
 QToolButton {
    border: 0px solid transparent;
-   color: black;
-
+   color: white;
+   border-radius: 3px;
 }
 
 QToolButton:hover {
-   background-color: #5689b0;
-   border: 1px solid #6fb1e3;
+   background-color: #b7d3e8;
+   border: 1px solid black;
+   color: black;
 }
 
 QToolButton:pressed {
-   background-color: #5689b0;
-   border: 1px solid #6fb1e3;
+   background-color: #b7d3e8;
+   border: 1px solid black;
+   color: black;
 }
 
 QListView:item:selected {
@@ -207,10 +209,29 @@ QListView:item:hover {
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
        <property name="sizeHint" stdset="0">
         <size>
-         <width>40</width>
-         <height>20</height>
+         <width>500</width>
+         <height>60</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>60</height>
         </size>
        </property>
       </spacer>
@@ -219,7 +240,7 @@ QListView:item:hover {
       <widget class="QPushButton" name="pushButton_2">
        <property name="minimumSize">
         <size>
-         <width>70</width>
+         <width>120</width>
          <height>0</height>
         </size>
        </property>
@@ -229,10 +250,26 @@ QListView:item:hover {
       </widget>
      </item>
      <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>50</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
       <widget class="QPushButton" name="pushButton">
        <property name="minimumSize">
         <size>
-         <width>70</width>
+         <width>120</width>
          <height>0</height>
         </size>
        </property>
@@ -240,6 +277,22 @@ QListView:item:hover {
         <string>Cancel</string>
        </property>
       </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>400</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
     </layout>
    </item>
@@ -261,7 +314,19 @@ QListView:item:hover {
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true"/>
+      <string notr="true">QScrollBar::handle:horizontal{
+	background-color: #B7D3E8;
+	border-radius: 4px;
+}
+
+QScrollBar::handle:vertical{
+	background-color: #B7D3E8;
+	border-radius: 4px;
+}
+
+QAbstractScrollArea::corner{
+	background-color: #375871;
+}</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
@@ -270,6 +335,178 @@ QListView:item:hover {
       <enum>QFrame::Plain</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
+      <item row="1" column="1" rowspan="5">
+       <widget class="QFrame" name="frame_4">
+        <property name="styleSheet">
+         <string notr="true">border: 1px solid black;
+border-radius: 10px;
+background-color: white;</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_5">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border-width: 0px;
+border-radius: 0px;
+border-bottom: 1px solid black;
+color: black;</string>
+           </property>
+           <property name="text">
+            <string>Layers in Groups</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QListView" name="warstwy_w_grupie_table">
+           <property name="styleSheet">
+            <string notr="true">QListView {
+	border: 0px;
+	color: black;
+}
+
+QScrollBar:horizontal {
+    background-color: #375871;
+	border: None;
+}
+
+QScrollBar:vertical{
+	background-color: #375871;
+	border: None;
+}</string>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="dragEnabled">
+            <bool>false</bool>
+           </property>
+           <property name="dragDropOverwriteMode">
+            <bool>false</bool>
+           </property>
+           <property name="dragDropMode">
+            <enum>QAbstractItemView::NoDragDrop</enum>
+           </property>
+           <property name="defaultDropAction">
+            <enum>Qt::MoveAction</enum>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::MultiSelection</enum>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="3" column="3">
+       <widget class="QFrame" name="frame_5">
+        <property name="styleSheet">
+         <string notr="true">border: 1px solid black;
+border-radius: 10px;
+background-color: white;</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_8">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_8">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border-width: 0px;
+border-radius: 0px;
+border-bottom: 1px solid black;
+color: black;</string>
+           </property>
+           <property name="text">
+            <string>Selected Layers</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QListView" name="warstwy_table">
+           <property name="styleSheet">
+            <string notr="true">QListView {
+	border: 0px;
+	color: black;
+}
+
+QScrollBar:horizontal {
+    background-color: #375871;
+	border: None;
+}
+
+QScrollBar:vertical{
+	background-color: #375871;
+	border: None;
+}</string>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="dragEnabled">
+            <bool>false</bool>
+           </property>
+           <property name="dragDropOverwriteMode">
+            <bool>false</bool>
+           </property>
+           <property name="dragDropMode">
+            <enum>QAbstractItemView::NoDragDrop</enum>
+           </property>
+           <property name="defaultDropAction">
+            <enum>Qt::MoveAction</enum>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::MultiSelection</enum>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
       <item row="2" column="3">
        <widget class="QWidget" name="widget_2" native="true">
         <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -359,8 +596,18 @@ color: black;</string>
           <widget class="QListView" name="grupy_table">
            <property name="styleSheet">
             <string notr="true">QListView {
-border: 0px;
-color: black;
+	border: 0px;
+	color: black;
+}
+
+QScrollBar:horizontal {
+    background-color: #375871;
+	border: None;
+}
+
+QScrollBar:vertical{
+	background-color: #375871;
+	border: None;
 }</string>
            </property>
            <property name="editTriggers">
@@ -391,6 +638,60 @@ color: black;
          </item>
         </layout>
        </widget>
+      </item>
+      <item row="0" column="0" colspan="4">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Composition name:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="nazwa_lineEdit">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="2" column="2" rowspan="4">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QToolButton" name="dodaj_warstwe">
+          <property name="minimumSize">
+           <size>
+            <width>30</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>...</string>
+          </property>
+          <property name="arrowType">
+           <enum>Qt::RightArrow</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="usun_warstwe">
+          <property name="minimumSize">
+           <size>
+            <width>30</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>...</string>
+          </property>
+          <property name="arrowType">
+           <enum>Qt::LeftArrow</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item row="5" column="3">
        <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -427,212 +728,6 @@ color: black;
          </widget>
         </item>
        </layout>
-      </item>
-      <item row="0" column="0" colspan="4">
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Composition name:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="nazwa_lineEdit">
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="2" column="2" rowspan="4">
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <item>
-         <widget class="QToolButton" name="dodaj_warstwe">
-          <property name="minimumSize">
-           <size>
-            <width>30</width>
-            <height>40</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>...</string>
-          </property>
-          <property name="arrowType">
-           <enum>Qt::RightArrow</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="usun_warstwe">
-          <property name="minimumSize">
-           <size>
-            <width>30</width>
-            <height>40</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>...</string>
-          </property>
-          <property name="arrowType">
-           <enum>Qt::LeftArrow</enum>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="1" column="1" rowspan="5">
-       <widget class="QFrame" name="frame_4">
-        <property name="styleSheet">
-         <string notr="true">border: 1px solid black;
-border-radius: 10px;
-background-color: white;</string>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_5">
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QLabel" name="label_5">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border-width: 0px;
-border-radius: 0px;
-border-bottom: 1px solid black;
-color: black;</string>
-           </property>
-           <property name="text">
-            <string>Layers in Groups</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QListView" name="warstwy_w_grupie_table">
-           <property name="styleSheet">
-            <string notr="true">QListView {
-border: 0px;
-color: black;
-}</string>
-           </property>
-           <property name="editTriggers">
-            <set>QAbstractItemView::NoEditTriggers</set>
-           </property>
-           <property name="dragEnabled">
-            <bool>false</bool>
-           </property>
-           <property name="dragDropOverwriteMode">
-            <bool>false</bool>
-           </property>
-           <property name="dragDropMode">
-            <enum>QAbstractItemView::NoDragDrop</enum>
-           </property>
-           <property name="defaultDropAction">
-            <enum>Qt::MoveAction</enum>
-           </property>
-           <property name="alternatingRowColors">
-            <bool>true</bool>
-           </property>
-           <property name="selectionMode">
-            <enum>QAbstractItemView::MultiSelection</enum>
-           </property>
-           <property name="selectionBehavior">
-            <enum>QAbstractItemView::SelectRows</enum>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="3" column="3">
-       <widget class="QFrame" name="frame_5">
-        <property name="styleSheet">
-         <string notr="true">border: 1px solid black;
-border-radius: 10px;
-background-color: white;</string>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_8">
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QLabel" name="label_8">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border-width: 0px;
-border-radius: 0px;
-border-bottom: 1px solid black;
-color: black;</string>
-           </property>
-           <property name="text">
-            <string>Selected Layers</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QListView" name="warstwy_table">
-           <property name="styleSheet">
-            <string notr="true">QListView {
-border: 0px;
-color: black;
-}</string>
-           </property>
-           <property name="editTriggers">
-            <set>QAbstractItemView::NoEditTriggers</set>
-           </property>
-           <property name="dragEnabled">
-            <bool>false</bool>
-           </property>
-           <property name="dragDropOverwriteMode">
-            <bool>false</bool>
-           </property>
-           <property name="dragDropMode">
-            <enum>QAbstractItemView::NoDragDrop</enum>
-           </property>
-           <property name="defaultDropAction">
-            <enum>Qt::MoveAction</enum>
-           </property>
-           <property name="alternatingRowColors">
-            <bool>true</bool>
-           </property>
-           <property name="selectionMode">
-            <enum>QAbstractItemView::MultiSelection</enum>
-           </property>
-           <property name="selectionBehavior">
-            <enum>QAbstractItemView::SelectRows</enum>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
       </item>
      </layout>
     </widget>

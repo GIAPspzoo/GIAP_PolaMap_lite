@@ -8,8 +8,8 @@ import uuid
 
 from PyQt5.QtCore import QObject, pyqtSignal, QItemSelectionModel, \
     Qt
-from PyQt5.QtWidgets import QMessageBox, QApplication, QItemDelegate, \
-    QCheckBox, QFileDialog, QProgressDialog, QToolButton
+from qgis.PyQt.QtWidgets import QMessageBox, QApplication, QItemDelegate, \
+    QCheckBox, QFileDialog, QProgressDialog, QToolButton, QGraphicsBlurEffect
 from qgis.PyQt import QtCore
 
 from qgis.PyQt.QtGui import QStandardItemModel, QStandardItem, QIcon
@@ -218,10 +218,15 @@ class CompositionsConfig(QObject):
                 self.save()
 
     def write_file(self):
+        blur = QGraphicsBlurEffect()
+        blur.setBlurRadius(3)
+        blur.setBlurHints(QGraphicsBlurEffect.QualityHint)
+        self.dlg.window().setGraphicsEffect(blur)
         saver = CompositionsSaver(self.kompozycje.stworzone_kompozycje)
         saver.run()
         self.dlg.activateWindow()
         self.dlg.showNormal()
+        blur.setEnabled(False)
 
     def read_file(self):
         suffix = '_wczytana'

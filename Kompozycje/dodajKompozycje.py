@@ -16,7 +16,6 @@ class DodajKompozycjeDialog(QDialog, FORM_CLASS):
         super(DodajKompozycjeDialog, self).__init__(parent)
         self.setupUi(self)
 
-        self.groupBox_35.setTitle(tr("User Compositions"))
         self.dodaj_kompozycje.show()
         self.usun_kompozycje.show()
         self.wczytaj.show()

@@ -122,6 +122,7 @@ QPushButton:hover {
 QPushButton:pressed {
    background-color: #5689b0;
    border: 1px solid #6fb1e3;
+   font-weight: bold;
 }
 
 QPushButton:disabled
@@ -266,6 +267,14 @@ border: 1px solid #5689b0;
          <layout class="QGridLayout" name="gridLayout_17">
           <item row="0" column="1">
            <widget class="QGroupBox" name="groupBox_11">
+            <property name="styleSheet">
+             <string notr="true">QGroupBox{
+	border: None;
+}
+QPushButton:pressed{
+	font-weight: bold;
+}</string>
+            </property>
             <property name="title">
              <string/>
             </property>
