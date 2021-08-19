@@ -13,7 +13,7 @@
     <x>0</x>
     <y>0</y>
     <width>707</width>
-    <height>460</height>
+    <height>487</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -276,17 +276,24 @@ QRadioButton:selected{
              <property name="topMargin">
               <number>20</number>
              </property>
-             <item row="1" column="0">
+             <item row="2" column="0">
               <widget class="QRadioButton" name="radioButton_pl">
                <property name="text">
                 <string>Polski</string>
                </property>
               </widget>
              </item>
-             <item row="2" column="0">
+             <item row="3" column="0">
               <widget class="QRadioButton" name="radioButton_en">
                <property name="text">
                 <string>English</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QRadioButton" name="radioButton_sys">
+               <property name="text">
+                <string>System settings</string>
                </property>
               </widget>
              </item>
@@ -312,20 +319,19 @@ QRadioButton:selected{
               <number>9</number>
              </property>
              <item row="0" column="0">
-              <spacer name="horizontalSpacer">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
+              <widget class="QPushButton" name="pushButton_restore">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
                </property>
-               <property name="sizeHint" stdset="0">
+               <property name="minimumSize">
                 <size>
-                 <width>40</width>
-                 <height>20</height>
+                 <width>350</width>
+                 <height>0</height>
                 </size>
                </property>
-              </spacer>
-             </item>
-             <item row="0" column="1">
-              <widget class="QPushButton" name="pushButton_restore">
                <property name="text">
                 <string>Restore the toolbars to the default settings</string>
                </property>

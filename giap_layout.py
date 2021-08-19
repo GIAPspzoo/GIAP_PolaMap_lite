@@ -504,9 +504,11 @@ class MainTabQgsWidget:
         self.set_dlg.pushButton_restore.clicked.connect(self.restore_default_ribbon_settings)
         self.set_dlg.radioButton_pl.toggled.connect(self.set_polish)
         self.set_dlg.radioButton_en.toggled.connect(self.set_english)
+        self.set_dlg.radioButton_sys.toggled.connect(self.restore_overrideFlag)
         self.set_dlg.exec_()
 
     def set_polish(self):
+        self.check_lang_win_flag()
         QSettings().setValue('locale/userLocale', 'pl_PL')
         self.iface.messageBar().pushMessage(
             'GIAP Layout',
@@ -516,6 +518,7 @@ class MainTabQgsWidget:
         )
 
     def set_english(self):
+        self.check_lang_win_flag()
         QSettings().setValue('locale/userLocale', 'en')
         self.iface.messageBar().pushMessage(
             'GIAP Layout',
@@ -523,6 +526,16 @@ class MainTabQgsWidget:
             Qgis.Info,
             0
         )
+
+    def restore_overrideFlag(self):
+        if str(QSettings().value('locale/overrideFlag')) == "true":
+            QSettings().setValue('locale/overrideFlag', "false")
+            self.iface.messageBar().pushMessage(
+                'GIAP Layout',
+                tr('Please, restart QGIS!'),
+                Qgis.Info,
+                0
+            )
 
     def restore_default_ribbon_settings(self):
         self.set_dlg.pushButton_restore.clicked.disconnect()
@@ -540,7 +553,6 @@ class MainTabQgsWidget:
             QgsSettings().setValue('locale/overrideFlag', 'true')
 
     def install_translator(self):
-        self.check_lang_win_flag()
         locale = 'en'
         try:
             # not always locale can be converted to str, apparently

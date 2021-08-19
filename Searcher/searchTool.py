@@ -130,7 +130,12 @@ class SearcherTool:
     def search_address(self):
         validate_address = self.validate_lineedit()
         if validate_address:
-            self.searchaddress_call.fetch_address(self.dock.lineEdit_address.text())
+            lineedit = self.dock.lineEdit_address.text().split(',')
+            if len(lineedit) == 3:
+                correct_lineedit = f"{lineedit[0].strip()}, {lineedit[1].strip()}, {lineedit[2].strip()}"
+            else:
+                correct_lineedit = f"{lineedit[0].strip()}, {lineedit[1].strip()}"
+            self.searchaddress_call.fetch_address(correct_lineedit)
             ok, res = self.searchaddress_call.process_results()
             if not ok:
                 CustomMessageBox(None, f'{tr("Warning!")} {res}').button_ok()

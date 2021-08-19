@@ -620,7 +620,7 @@ Proszę czekać...</translation>
     </message>
     <message>
         <location filename="../Searcher/searchAddress.py" line="116"/>
-        <source>Service unavailable. Enter correct value.</source>
+        <source>No objects found. Please enter valid value.</source>
         <translation>Nie znaleziono obiektów. Wpisz poprawną wartość.</translation>
     </message>
     <message>
@@ -1213,6 +1213,11 @@ dla ulicy: Warszawa, Pasaż Ursynowski</translation>
         <location filename="../Settings/ui_settings_layout.ui" line="270"/>
         <source>Choose language</source>
         <translation>Wybór wersji językowej</translation>
+    </message>
+    <message>
+        <location filename="../Settings/ui_settings_layout.ui" line="296"/>
+        <source>System settings</source>
+        <translation>Ustawienia systemowe</translation>
     </message>
     <message>
         <location filename="../Settings/ui_settings_layout.ui" line="299"/>
