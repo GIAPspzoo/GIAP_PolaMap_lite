@@ -217,7 +217,9 @@ border-radius: 4px;
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true"/>
+         <string notr="true">QComboBox{
+	border: 1px solid  #5689b0;
+}</string>
         </property>
         <property name="editable">
          <bool>false</bool>

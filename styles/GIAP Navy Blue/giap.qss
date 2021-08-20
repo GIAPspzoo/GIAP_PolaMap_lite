@@ -97,9 +97,12 @@ QTabWidget:focus, QCheckBox:focus
 
 QLineEdit
 {
-	border: 1px solid #5689b0;
     border-radius: 3px;
     background-color: #4f5a63;
+}
+
+QLineEdit:focus{
+    border:none;
 }
 
 QLineEdit:disabled
@@ -256,11 +259,14 @@ QComboBox
 	selection-background-color: #b7d3e8;
     background-color: #4f5a63;
 	border-style: solid;
-	border: 1px solid  #5689b0;
 	border-radius: 3px;
 	padding: 2px;
 	font: 10pt "Segoe UI";
     height: 20px;
+}
+
+QComboBox:focus{
+    border:none;
 }
 
 QComboBox:on
@@ -308,10 +314,13 @@ QComboBox::down-arrow:focus
 QAbstractSpinBox {
 	padding-top: 2px;
 	padding-bottom: 2px;
-	border: 1px solid  #6fb1e3;
 	background-color:  #4f5a63;
 	color:  white;
 	border-radius: 3px;
+}
+
+QAbstractSpinBox:focus{
+    border:none;
 }
 
 QAbstractSpinBox:up-button
@@ -503,13 +512,13 @@ QTreeView::branch:!has-children:!has-siblings:adjoins-item
 QTreeView::branch:has-children:!has-siblings:closed,
 QTreeView::branch:closed:has-children:has-siblings
 {
-	image: url(icons/branch_closed.png);
+	image: url(icons/branch_closed-on.png);
 }
 
 QTreeView::branch:open:has-children:!has-siblings,
 QTreeView::branch:open:has-children:has-siblings
 {
-	image: url(icons/branch_open.png);
+	image: url(icons/branch_open-on.png);
 }
 
 QTreeView::branch:has-children:!has-siblings:closed:hover,
