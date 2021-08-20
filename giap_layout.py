@@ -227,18 +227,77 @@ class MainTabQgsWidget:
         self.layer_view = self.iface.layerTreeView()
         self.layer_view.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self.layer_view.setStyleSheet(style + """
-        QTreeView::item, QTreeView::branch {
-            color: rgb(255, 255, 255);
-        }
-        QTreeView {
-            border: 2px solid;
-            border-top-color: rgb(79, 118, 150);
-            border-left: none;
-            border-bottom-color: rgb(79, 118, 150);
-            border-right: none;
-            padding-top: 5px;
-        }
-        """)
+                QTreeView::item, QTreeView::branch {
+                    color: rgb(255, 255, 255);
+                }
+                QTreeView {
+                    border: 2px solid;
+                    border-top-color: rgb(79, 118, 150);
+                    border-left: none;
+                    border-bottom-color: rgb(79, 118, 150);
+                    border-right: none;
+                    padding-top: 5px;
+                	background-color:  #5689B0;
+                }
+                    QTreeView:item:selected
+                {
+                    color: white;
+                	background-color: #375871;
+                }
+                QTreeView::indicator:checked
+                {
+                    border: 0.11em solid white;
+                    background: #4F5A63;
+                }
+
+                QTreeView::indicator:unchecked
+                {
+                    background: #4F5A63;
+                    border:None; 
+                }
+
+                QTreeView:item:hover
+                {
+                    background-color: #375871;
+                }
+
+                QTreeView:branch:selected,
+                QTreeView:branch:hover
+                {
+                	background: url(icons/transparent.png);
+                	background-color: #375871;
+                }
+                QScrollBar:vertical {
+                    background-color: #5689B0;
+                    width: 0.5em;
+                    margin: 0;
+                }
+
+                QScrollBar::handle:vertical {
+                    background: #B7D3E8;
+                    min-height: 0.8em;
+                    border-radius: 3px;
+                    border:None;
+                }
+                
+                QScrollBar:horizontal {
+                    background-color: #5689B0;
+                    height: 0.5em;
+                    margin: 0;
+                    padding: 0;
+                }
+                
+                QScrollBar::handle:horizontal {
+                    background: #B7D3E8;
+                    min-width: 0.8em;
+                    border-radius: 3px;
+                    border:None;
+                
+                }
+                QAbstractScrollArea:corner{
+                background-color: #5689B0;
+                }
+                """)
         layer_toolbar = self.layer_view.parent().children()[1]
 
         #QMenu associated QToolButton "Manage Map Themes"
