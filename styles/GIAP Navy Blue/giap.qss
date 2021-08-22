@@ -667,3 +667,23 @@ QStatusBar QComboBox
 {
     width: 70px;
 }
+
+QDockWidget QToolBar {
+    spacing: 9.4px;
+    margin: 4px 7px 0 7px;
+    border: none;
+}
+
+QDockWidget QToolButton  {
+    padding: 3px;
+}
+
+QDockWidget QMenu {
+    background-color: rgb(53, 85, 109);
+    color: rgb(255, 255, 255);
+    font: 10pt "Segoe UI";
+}
+
+QDockWidget QMenu::item:disabled {
+    color: rgb(200, 200, 200);
+}

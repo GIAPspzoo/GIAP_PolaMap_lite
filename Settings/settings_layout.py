@@ -12,14 +12,3 @@ class SettingsDialog(QDialog, FORM_CLASS):
     def __init__(self, parent=None):
         super(SettingsDialog, self).__init__(parent)
         self.setupUi(self)
-
-        if str(QSettings().value('locale/overrideFlag')) == "false":
-            self.radioButton_sys.setChecked(True)
-        else:
-            if str(QSettings().value('locale/userLocale')) == "en":
-                self.radioButton_en.setChecked(True)
-            elif str(QSettings().value('locale/userLocale')) == "pl_PL":
-                self.radioButton_pl.setChecked(True)
-
-
-
