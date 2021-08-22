@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os.path
+import subprocess
 import webbrowser
 from qgis.utils import iface
 import qgis
@@ -13,7 +14,7 @@ from qgis.PyQt.QtWidgets import QAction, QToolBar, QToolButton, QWidget, \
     QHBoxLayout, QMenu, QMessageBox
 
 # Initialize Qt resources from file resources.py
-from qgis._core import QgsProject, Qgis, QgsSettings
+from qgis._core import QgsProject, Qgis, QgsSettings, QgsApplication
 
 from .Settings.settings_layout import SettingsDialog
 from .OrtoTools import OrtoAddingTool
@@ -201,28 +202,7 @@ class MainTabQgsWidget:
 
     def ustaw_legende(self, style):
 
-        qt_style = QStyleFactory.create('Cleanlooks')
         self.layer_panel = self.iface.mainWindow().findChildren(QDockWidget, 'Layers')[0]
-        self.layer_panel.setStyle(qt_style)
-        self.layer_panel.setStyleSheet(style + """
-        QToolBar {
-            spacing: 9.4px;
-            margin: 4px 7px 0 7px;
-            border: none;
-            
-        }
-        QToolButton  {
-            padding: 3px;
-        }
-        QMenu {
-            background-color: rgb(53, 85, 109);
-            color: rgb(255, 255, 255);
-            font: 10pt "Segoe UI";
-        }
-        QMenu::item:disabled {
-            color: rgb(200, 200, 200);
-        }
-        """)
 
         self.layer_view = self.iface.layerTreeView()
         self.layer_view.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
@@ -561,40 +541,48 @@ class MainTabQgsWidget:
     def show_settings_dialog(self):
         self.set_dlg = SettingsDialog()
         self.set_dlg.pushButton_restore.clicked.connect(self.restore_default_ribbon_settings)
-        self.set_dlg.radioButton_pl.toggled.connect(self.set_polish)
-        self.set_dlg.radioButton_en.toggled.connect(self.set_english)
-        # self.set_dlg.radioButton_sys.toggled.connect(self.restore_overrideFlag)
+        self.set_dlg.radioButton_pl.clicked.connect(self.set_polish)
+        self.set_dlg.radioButton_en.clicked.connect(self.set_english)
+        self.set_dlg.radioButton_sys.clicked.connect(self.restore_overrideFlag)
+        if str(QSettings().value('locale/overrideFlag')) == "false":
+            self.set_dlg.radioButton_sys.setChecked(True)
+        elif str(QSettings().value('locale/userLocale')) == "en":
+            self.set_dlg.radioButton_en.setChecked(True)
+        elif str(QSettings().value('locale/userLocale')) == "pl_PL":
+            self.set_dlg.radioButton_pl.setChecked(True)
         self.set_dlg.exec_()
 
     def set_polish(self):
-        # self.check_lang_win_flag()
-        # QSettings().setValue('locale/userLocale', 'pl_PL')
+        self.check_lang_win_flag()
+        str(QSettings().setValue('locale/userLocale', 'pl_PL'))
         self.iface.messageBar().pushMessage(
             'GIAP Layout',
             tr('Please, restart QGIS!'),
             Qgis.Info,
             0
         )
+        self.restart_qgis()
 
     def set_english(self):
-        # self.check_lang_win_flag()
-        # QSettings().setValue('locale/userLocale', 'en')
+        self.check_lang_win_flag()
+        str(QSettings().setValue('locale/userLocale', 'en'))
         self.iface.messageBar().pushMessage(
             'GIAP Layout',
             tr('Please, restart QGIS!'),
             Qgis.Info,
             0
         )
+        self.restart_qgis()
 
     def restore_overrideFlag(self):
-        if str(QSettings().value('locale/overrideFlag')) == "true":
-            QSettings().setValue('locale/overrideFlag', "false")
-            self.iface.messageBar().pushMessage(
-                'GIAP Layout',
-                tr('Please, restart QGIS!'),
-                Qgis.Info,
-                0
-            )
+        str(QSettings().setValue('locale/overrideFlag', "false"))
+        self.iface.messageBar().pushMessage(
+            'GIAP Layout',
+            tr('Please, restart QGIS!'),
+            Qgis.Info,
+            0
+        )
+        self.restart_qgis()
 
     def restore_default_ribbon_settings(self):
         self.set_dlg.pushButton_restore.clicked.disconnect()
@@ -608,8 +596,15 @@ class MainTabQgsWidget:
         self.set_dlg.pushButton_restore.clicked.connect(self.restore_default_ribbon_settings)
 
     def check_lang_win_flag(self):
-        if QgsSettings().value('locale/overrideFlag') != 'true':
-            QgsSettings().setValue('locale/overrideFlag', 'true')
+        QgsSettings().setValue('locale/overrideFlag', 'true')
+
+    def restart_qgis(self):
+        if project.write():
+            res = CustomMessageBox(None, "The program must be restarted for the changes to take effect. Restart now?").button_yes_no()
+            if res == QMessageBox.Yes:
+                project.setDirty(False)  # workaround - mimo poprawnego zapisu nadal pyta o zapis
+                subprocess.Popen(f'{QgsApplication.arguments()[0]} {project.fileName()}')
+                self.iface.actionExit().trigger()
 
     def install_translator(self):
         locale = 'en'
