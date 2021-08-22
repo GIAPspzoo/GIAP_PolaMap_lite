@@ -41,7 +41,7 @@ class SearcherTool:
         self.completer = QCompleter(self.names)
         self.completer.setModel(self.names)
         self.dock.lineEdit_address.setCompleter(self.completer)
-        self.dock.lineEdit_address.textEdited.connect(self.adress_changed)
+        self.dock.lineEdit_address.textEdited.connect(self.tips)
         self.completer.setFilterMode(Qt.MatchContains)
         self.completer.setCaseSensitivity(False)
         self.completer.setMaxVisibleItems(15)
@@ -53,79 +53,49 @@ class SearcherTool:
         self.font = QFont('Agency FB')
         self.fontm = QFontMetrics(self.font)
 
-    def adress_changed(self):
-        # data storage for list of strings adresses defined by input in search bracket
-        score = self.tips(self.dock.lineEdit_address)
-        if score:
-            self.names.setStringList(score)
-
-    def getstreets(self, simc, city):
-        try:
-            url_pref = 'https://services.gugik.gov.pl/uug/?request=GetStreet&simc='
-            data = json.loads(urlopen(url_pref + simc).read().decode())
-            obj, score = data['results'], []
-            elemscount = obj.keys()
-            limit = len(elemscount)
-            for i in range(1, limit + 1):
-                score.append(f'{city}, {obj[str(i)]["street"]}')
-            return score
-        except Exception:
-            return ['']
-
-    def validatecity(self, obj, limit):
-        city = obj['1']['city']
-        if limit == 1:
-            return self.getstreets(obj['1']['simc'], city)
-        else:
-            self.names.setStringList(self.pickacity(obj, limit))
-            self.completer.popup().pressed.connect(lambda: self.userpick())
-
-    def userpick(self):
-        if len(self.dock.lineEdit_address.text().split(',')) == 3:
-            simc = self.dock.lineEdit_address.text().split(',')[2].strip()
-            city = self.dock.lineEdit_address.text().split(',')[0].strip()
-            self.names.setStringList(self.getstreets(simc, city))
-            self.dock.lineEdit_address.setText(city)
-            self.completer.popup().setFixedHeight(200)
-
-    def pickacity(self, obj, limit):
-        city = obj['1']['city']
-        same_names = []
-        for i in range(1, limit):
-            same_names.append(f'{city}, {obj[str(i)]["county"]}, {obj[str(i)]["simc"]}')
-        return same_names
-
-    def tips(self, user_input):
-        address = user_input.displayText()
-        url_pref = 'http://services.gugik.gov.pl/uug/?request=GetAddress&location='
+    def tips(self):
+        address = self.dock.lineEdit_address.displayText()
+        url_pref = 'http://services.gugik.gov.pl/uug/?request=GetAddress&address='
         quo_adr = quote(address)
-        # trying to open link which script made above by prefix and quoting the search bracket input
         try:
-            # loading json type of data from link
             data = json.loads(requests.get(url_pref + quo_adr).text)
             obj_type, limit = data['type'], data['found objects']
-            # if finds nothing completion field is empty
+            obj = data['results']
+            if obj_type == 'street':
+                self.getStreets(obj['1']['simc'], obj['1']['city'])
+            if obj_type == 'city':
+                if data["found objects"] > 1:
+                    self.validateCity(data['results'])
+                else:
+                    self.getStreets(obj['1']['simc'], obj['1']['city'])
+            if obj_type == 'address':
+                self.names.setStringList([f"{obj['1']['city']}, {obj['1']['street']} {obj['1']['number']}"])
             if limit == 0:
                 return
-            # dictionary with objects found on json_file
-            obj = data['results']
-            # if this particular address found, displays this address
-            if 'only exact numbers' in data:
-                return [f"{obj['1']['city']}, {obj['1']['street']} {obj['1']['number']}"]
-            # there is only 1 object when obj_type == 'address' thats why variable in first bracket in obj is '1'
-            # displays only one city in completer
-            # TODO: when limit > 1 and obj_type == 'city' it has to display all city names in each voivodeship
-            # TODO: and search for this particular but feature wont add voivodeship to search bracket
-            if obj_type == 'city':
-                return self.validatecity(obj, limit)
-        # if any error occurred displays nothing TODO: expand errors with popups
         except Exception:
             return
 
-    def identify_layer(self, layer_to_find):
-        for layer in self.iface.mapCanvas().layers():
-            if layer.name() == layer_to_find:
-                return layer
+    def getStreets(self, simc, city):
+        try:
+            data = json.loads(urlopen('https://services.gugik.gov.pl/uug/?request=GetStreet&simc=' + simc).read().decode())
+            obj = data['results']
+            self.names.setStringList([f"{city}, {obj[e]['street']}" for e in obj])
+        except Exception:
+            self.names.setStringList([])
+
+    def validateCity(self, obj):
+        city = obj['1']['city']
+        self.names.setStringList([f"{city}, {obj[e]['simc']} {obj[e]['county']}" for e in obj])
+        self.completer.popup().pressed.connect(lambda: self.userPick())
+
+    def userPick(self):
+        line = self.dock.lineEdit_address.text().split()
+        if len(line) == 3:
+            simc = self.dock.lineEdit_address.text().split()[1].strip()
+            city = self.dock.lineEdit_address.text().split(',')[0].strip()
+            self.dock.lineEdit_address.setText(city)
+            self.getStreets(simc, city)
+            self.completer.popup().setFixedHeight(200)
 
     def search_address(self):
         validate_address = self.validate_lineedit()
@@ -143,7 +113,6 @@ class SearcherTool:
             def change_scale():
                 if iface.mapCanvas().scale() < 500:
                     iface.mapCanvas().zoomScale(500)
-
             self.timer = QTimer()
             self.timer.setSingleShot(True)
             self.timer.timeout.connect(change_scale)
