@@ -82,13 +82,6 @@ class ConfigSaveProgressDialog(QProgressDialog):
         self.setLabelText('Proszę czekać...')
         self.setMaximum(0)
         self.setCancelButton(None)
-        self.children()[0].setStyleSheet('''
-            QLabel {
-            background-color: rgb(53, 85, 109);
-            color: rgb(255, 255, 255);
-            font: 10pt "Segoe UI";
-            }
-        ''')
 
         QApplication.processEvents()
 

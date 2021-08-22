@@ -99,8 +99,7 @@ class MainTabQgsWidget:
         self.toolbar.setMovable(False)
         self.toolbar.setFloatable(False)
         self.toolbar.addWidget(self.main_widget)
-        style = self.main_widget.styleSheet()
-        self.ustaw_legende(style)
+        self.ustaw_legende()
 
         self.menuButton = QToolButton()
         self.menuButton.setText(tr("Show menu"))
@@ -188,7 +187,7 @@ class MainTabQgsWidget:
 
         self.visibility_search_tool = False
         self.main_widget.offOnSearchButton.clicked.connect(lambda: self.off_on_search_tool(self.visibility_search_tool))
-        self.main_widget.offOnSearchButton.setIcon(QIcon(f'{self.plugin_dir}/styles/giap/icons/close.png'))
+        self.main_widget.offOnSearchButton.setIcon(QIcon(f'{self.plugin_dir}/styles/GIAP Navy Blue/icons/close.png'))
 
         #self.searcher.run()
         # set strong focus to get keypressevent
@@ -200,97 +199,13 @@ class MainTabQgsWidget:
             process.initProcessing()
             self.load_ribbons()
 
-    def ustaw_legende(self, style):
+    def ustaw_legende(self):
 
         self.layer_panel = self.iface.mainWindow().findChildren(QDockWidget, 'Layers')[0]
 
         self.layer_view = self.iface.layerTreeView()
         self.layer_view.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        self.layer_view.setStyleSheet(style + """
-                QTreeView::item, QTreeView::branch {
-                    color: rgb(255, 255, 255);
-                }
-                QTreeView {
-                    border: 2px solid;
-                    border-top-color: rgb(79, 118, 150);
-                    border-left: none;
-                    border-bottom-color: rgb(79, 118, 150);
-                    border-right: none;
-                    padding-top: 5px;
-                	background-color:  #5689B0;
-                }
-                    QTreeView:item:selected
-                {
-                    color: white;
-                	background-color: #375871;
-                }
-                QTreeView::indicator:checked
-                {
-                    border: 0.11em solid white;
-                    background: #4F5A63;
-                }
-
-                QTreeView::indicator:unchecked
-                {
-                    background: #4F5A63;
-                    border:None; 
-                }
-
-                QTreeView:item:hover
-                {
-                    background-color: #375871;
-                }
-
-                QTreeView:branch:selected,
-                QTreeView:branch:hover
-                {
-                	background: url(icons/transparent.png);
-                	background-color: #375871;
-                }
-                QScrollBar:vertical {
-                    background-color: #5689B0;
-                    width: 0.5em;
-                    margin: 0;
-                }
-
-                QScrollBar::handle:vertical {
-                    background: #B7D3E8;
-                    min-height: 0.8em;
-                    border-radius: 3px;
-                    border:None;
-                }
-                
-                QScrollBar:horizontal {
-                    background-color: #5689B0;
-                    height: 0.5em;
-                    margin: 0;
-                    padding: 0;
-                }
-                
-                QScrollBar::handle:horizontal {
-                    background: #B7D3E8;
-                    min-width: 0.8em;
-                    border-radius: 3px;
-                    border:None;
-                
-                }
-                QAbstractScrollArea:corner{
-                background-color: #5689B0;
-                }
-                """)
         layer_toolbar = self.layer_view.parent().children()[1]
-
-        #QMenu associated QToolButton "Manage Map Themes"
-        layer_toolbar.children()[6].menu().setStyleSheet(style + """
-        QMenu {
-            background-color: rgb(53, 85, 109);
-            color: rgb(255, 255, 255);
-            font: 10pt "Segoe UI";
-        }
-        QMenu::item:disabled {
-            color: rgb(200, 200, 200);
-        }
-        """)
         widget_w_warstwach = QWidget()
         layout_widgetu = QVBoxLayout()
         layout_widgetu.addWidget(layer_toolbar)
