@@ -2,7 +2,7 @@ import os.path
 import re
 from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
-
+import socket
 from http.client import IncompleteRead
 from qgis.core import QgsGeometry, QgsFeature, \
     QgsProject, QgsVectorLayer, Qgis
@@ -41,6 +41,9 @@ class FetchULDK:
         pass
 
     def fetch(self):
+        if '- gmina' in self.params or '- miasto' in self.params:
+            flag = self.params.find('-')
+            self.params = self.params[0:flag]
         url = f'https://uldk.gugik.gov.pl/?{self.params}'
         self.responce = []
         try:
@@ -54,6 +57,9 @@ class FetchULDK:
             return False
         except URLError:
             CustomMessageBox(None, f"{tr('Error')} {tr('Service not responding')}").button_ok()
+            return False
+        except socket.timeout:
+            CustomMessageBox(None, f"{tr('Error')} {tr('Service temporary unvailiable on the ULDK side')}").button_ok()
             return False
 
         content = content.decode()
