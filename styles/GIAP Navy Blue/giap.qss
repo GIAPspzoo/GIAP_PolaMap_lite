@@ -131,9 +131,10 @@ QScrollBar:horizontal {
 }
 
 QScrollBar::handle:horizontal {
-    border: 1px solid rgb(38, 60, 78);
-    background: rgb(53, 85, 109);
+    background: #B7D3E8;
     min-width: 0.8em;
+    border-radius: 3px;
+    border:None;
 }
 
 QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal,
@@ -149,9 +150,15 @@ QScrollBar:vertical {
 }
 
 QScrollBar::handle:vertical {
-    border: 1px solid rgb(38, 60, 78);
-    background: rgb(53, 85, 109);
+    background: #B7D3E8;
     min-height: 0.8em;
+    border-radius: 3px;
+    border:None;
+}
+
+QAbstractScrollArea:corner{
+    background-color: #375871;
+    border:None;
 }
 
 QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical,
@@ -162,7 +169,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
 
 QTabBar {
     qproperty-drawBase: 0;
-	font-weight: bold;
+	font-weight: 900;
 }
 
 QDialog QTabBar::tab {
@@ -543,7 +550,7 @@ QSlider::groove:horizontal
 
 QSlider::handle:horizontal
 {
-	background: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0.0  #1a2936, stop: 1  rgb(53, 85, 109));
+	background: #B7D3E8;
 	border: 1px solid  #1a2936;
 	width: 14px;
 	height: 14px;
@@ -562,7 +569,7 @@ QSlider::groove:vertical
 
 QSlider::handle:vertical
 {
-	background: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0.0  #1a2936, stop: 1  rgb(53, 85, 109));
+	background: #B7D3E8;
 	border: 1px solid  #1a2936;
 	width: 14px;
 	height: 14px;
@@ -698,7 +705,6 @@ QTreeView {
     border-bottom-color: rgb(79, 118, 150);
     border-right: none;
     padding-top: 5px;
-    background-color:  #5689B0;
 }
     QTreeView:item:selected
 {
@@ -728,35 +734,17 @@ QTreeView:branch:hover
     background: url(icons/transparent.png);
     background-color: #375871;
 }
-QScrollBar:vertical {
-    background-color: #5689B0;
+QTreeView QScrollBar:vertical {
+    background-color: #375871;
     width: 0.5em;
     margin: 0;
 }
 
-QScrollBar::handle:vertical {
-    background: #B7D3E8;
-    min-height: 0.8em;
-    border-radius: 3px;
-    border:None;
-}
-
-QScrollBar:horizontal {
-    background-color: #5689B0;
+QTreeView QScrollBar:horizontal {
+    background-color: #375871;
     height: 0.5em;
     margin: 0;
     padding: 0;
-}
-
-QScrollBar::handle:horizontal {
-    background: #B7D3E8;
-    min-width: 0.8em;
-    border-radius: 3px;
-    border:None;
-
-}
-QAbstractScrollArea:corner{
-background-color: #5689B0;
 }
 
 QMenu {
