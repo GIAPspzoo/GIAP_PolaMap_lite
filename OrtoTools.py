@@ -56,7 +56,7 @@ class OrtoAddingTool(object):
                 except Exception:
                     QgsMessageLog.logMessage(
                         tr("Error, detaching signals from "
-                           "groups in layers tree"
+                           "groups in layers tree."
                         ),
                         tag="GIAP Layout"
                     )

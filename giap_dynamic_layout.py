@@ -268,7 +268,7 @@ class Widget(QWidget, FORM_CLASS):
                     alg_ind += 1
                     alg = self.dlg.algorithmTree.algorithmForIndex(ind.child(alg_ind, 0))
             else:
-                CustomMessageBox(self.dlg, tr("Selected item has sub-section")).button_ok()
+                CustomMessageBox(self.dlg, tr("Select item has sub-section")).button_ok()
                 return
 
         for group in tool:
@@ -600,7 +600,7 @@ class CustomSection(QWidget):
         # remove selected buttons
         for col in range(self.gridLayout.columnCount()):
             for row in [0, 1]:
-                it = self.gridLayout.itemAtPosition(row, col)
+                it = self.gridLayout.AtPosition(row, col)
                 if it is None:
                     continue
                 if not it.widget().selected:

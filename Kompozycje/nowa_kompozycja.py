@@ -36,9 +36,9 @@ class NowaKompozycjaDialog(QtWidgets.QDialog, FORM_CLASS):
                 item = model.itemFromIndex(row)
                 item.setCheckState(QtCore.Qt.Checked)
             if not model.rowCount():
-                raise AttributeError("No layers in 'selected layer'")
+                raise AttributeError("No layers in 'select layer'")
         except AttributeError:
-            CustomMessageBox(table, tr('No layers in selected layer')).button_ok()
+            CustomMessageBox(table, tr('No layers in select layers.')).button_ok()
 
     def uncheck(self):
         try:
@@ -52,7 +52,7 @@ class NowaKompozycjaDialog(QtWidgets.QDialog, FORM_CLASS):
             if not model.rowCount():
                 raise AttributeError("No layers in 'selected layer'")
         except AttributeError:
-            CustomMessageBox(None, tr("No layers in selected layer")).button_ok()
+            CustomMessageBox(None, tr("No layers in select layers.")).button_ok()
 
     def check_all(self):
         try:
@@ -64,7 +64,7 @@ class NowaKompozycjaDialog(QtWidgets.QDialog, FORM_CLASS):
             if not model.rowCount():
                 raise AttributeError("No layers in 'selected layer'")
         except AttributeError:
-            CustomMessageBox(None, tr("No layers in selected layer")).button_ok()
+            CustomMessageBox(None, tr("No layers in select layers.")).button_ok()
 
     def uncheck_all(self):
         try:
@@ -76,4 +76,4 @@ class NowaKompozycjaDialog(QtWidgets.QDialog, FORM_CLASS):
             if not model.rowCount():
                 raise AttributeError("No layers in 'selected layer'")
         except AttributeError:
-            CustomMessageBox(None, tr("No layers in selected layer")).button_ok()
+            CustomMessageBox(None, tr("No layers in select layers.")).button_ok()

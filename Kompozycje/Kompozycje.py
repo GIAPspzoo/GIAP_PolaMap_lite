@@ -105,7 +105,7 @@ def get_user_compositions_gui():
             QApplication.processEvents()
             user_comp = get_user_compositions(filename)
         except Exception:
-            CustomMessageBox(None, tr('Loading settings failed')).button_ok()
+            CustomMessageBox(None, tr('Failed to load settings.')).button_ok()
         progress.stop()
     return user_comp
 
@@ -326,8 +326,7 @@ class CompositionsConfig(QObject):
                 if self.update_comps_schema(compositions):
                     CustomMessageBox(
                         self.kompozycje.dock,
-                        tr('Some layers from composition are missing, '
-                           ' check composition') + f' {comp_type}'
+                        tr('The layers from composition are missing. Check composition.') + f' {comp_type}'
                         ).button_ok()
                 self.save_to_project_file()
                 break
@@ -521,7 +520,7 @@ class CompositionsAdder(object):
                 list(self.kompozycje.domyslne_kompozycje.keys()):
             CustomMessageBox(
                 self.dlg,
-                tr('Specified composition name already in use!')).button_ok()
+                tr('A composition unit with name already exists!')).button_ok()
             return
         if comp_name:
             composition_params = dict()
@@ -532,7 +531,7 @@ class CompositionsAdder(object):
             self.dlg.accept()
         else:
             CustomMessageBox(
-                self.dlg, tr('Enter name for composition')).button_ok()
+                self.dlg, tr('Enter composition name')).button_ok()
 
     def get_all_comp_layers(self):
         all_layers_list = []
@@ -624,11 +623,11 @@ class CompositionsAdder(object):
             else:
                 CustomMessageBox(
                     self.dlg,
-                    tr('Choose layer, to add it to selected')
+                    tr('Choose layer to add to tick.')
                 ).button_ok()
         else:
             CustomMessageBox(
-                self.dlg, tr('Select group, to choose layer.')
+                self.dlg, tr('Mark group to choose layer.')
             ).button_ok()
 
     def del_layer(self):
@@ -636,7 +635,7 @@ class CompositionsAdder(object):
         rows = table_sel_model.selectedRows()
         if not rows:
             CustomMessageBox(
-                self.dlg, tr('Select layer, to remove it from selected.')
+                self.dlg, tr('Select layer to remove from the mark layers.')
             ).button_ok()
         else:
             index_list = []
@@ -662,7 +661,7 @@ class CompositionsAdder(object):
                     QItemSelectionModel.Select)
         else:
             CustomMessageBox(
-                self.dlg, tr('Choose composition, to change order')
+                self.dlg, tr('Choose composition to change order.')
             ).button_ok()
 
     def move_up(self):
@@ -678,7 +677,7 @@ class CompositionsAdder(object):
                                                                QItemSelectionModel.Select)
         else:
             CustomMessageBox(
-                self.dlg, tr('Choose composition, to change order')
+                self.dlg, tr('Choose composition to change order.')
             ).button_ok()
 
 
@@ -771,7 +770,7 @@ class CompositionsEditor(CompositionsAdder):
                 or name in list(self.kompozycje.domyslne_kompozycje.keys())
         ) and (not self.czy_domyslna):
             CustomMessageBox(
-                self.dlg, tr('Specified composition name already in use!')
+                self.dlg, tr('A composition unit with name already exists!')
             ).button_ok()
             return
 
@@ -784,7 +783,7 @@ class CompositionsEditor(CompositionsAdder):
                 self.kompozycje.stworzone_kompozycje[name] = self.kompozycje.stworzone_kompozycje.pop(self.old_name)
             self.dlg.accept()
         else:
-            CustomMessageBox(self.dlg, tr('Enter composition name')).button_ok()
+            CustomMessageBox(self.dlg, tr('Enter composition name:')).button_ok()
 
 
 class CompositionsDeleter(object):
@@ -798,7 +797,7 @@ class CompositionsDeleter(object):
         rows = model.selectedRows()
         if not rows:
             CustomMessageBox(
-                table, tr('Select composition to remove it')
+                table, tr('Select composition to remove:')
             ).button_ok()
             return
 
