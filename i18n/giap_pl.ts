@@ -369,8 +369,8 @@ Proszę czekać...</translation>
     </message>
     <message>
         <location filename="../utils.py" line="283"/>
-        <source>Vector tools</source>
-        <translation>Narzędzia wektorowe</translation>
+        <source>Vector digitization</source>
+        <translation>Digitalizacja wektorowa</translation>
     </message>
     <message>
         <location filename="../utils.py" line="294"/>
@@ -587,6 +587,16 @@ Proszę czekać...</translation>
         <location filename="../Searcher/searchParcel.py" line="59"/>
         <source>Error</source>
         <translation>Błąd</translation>
+    </message>
+    <message>
+        <location filename="../Searcher/searchParcel.py" line="62"/>
+        <source>Error</source>
+        <translation>Błąd</translation>
+    </message>
+    <message>
+        <location filename="../Searcher/searchParcel.py" line="62"/>
+        <source>Service temporary unvailiable on the ULDK side</source>
+        <translation>Usługa chwilowo niedostępna po stronie ULDK</translation>
     </message>
     <message>
         <location filename="../Searcher/searchAddress.py" line="47"/>

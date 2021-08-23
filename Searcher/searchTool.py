@@ -36,12 +36,16 @@ class SearcherTool:
         self.dock.lineEdit_parcel.returnPressed.connect(
             self.search_parcel)
         self.fetch_voivodeship()
+        # TIMER
+        self.typing_timer = QTimer()
+        self.typing_timer.setSingleShot(True)
+        self.typing_timer.timeout.connect(self.tips)
         # COMPLETER SETUP
         self.names = QStringListModel()
         self.completer = QCompleter(self.names)
         self.completer.setModel(self.names)
         self.dock.lineEdit_address.setCompleter(self.completer)
-        self.dock.lineEdit_address.textEdited.connect(self.tips)
+        self.dock.lineEdit_address.textEdited.connect(self.textChanged)
         self.completer.setFilterMode(Qt.MatchContains)
         self.completer.setCaseSensitivity(False)
         self.completer.setMaxVisibleItems(15)
@@ -53,6 +57,10 @@ class SearcherTool:
         self.font = QFont('Agency FB')
         self.fontm = QFontMetrics(self.font)
 
+    def textChanged(self):
+        self.typing_timer.start(300)
+
+
     def tips(self):
         address = self.dock.lineEdit_address.displayText()
         url_pref = 'http://services.gugik.gov.pl/uug/?request=GetAddress&address='
@@ -62,7 +70,11 @@ class SearcherTool:
             obj_type, limit = data['type'], data['found objects']
             obj = data['results']
             if obj_type == 'street':
-                self.getStreets(obj['1']['simc'], obj['1']['city'])
+                city = obj['1']['city']
+                if data['found objects'] == 1:
+                    self.names.setStringList([f"{city}, {obj['1']['street']}"])
+                else:
+                    self.names.setStringList([f"{city}, {obj[element]['street']}" for element in obj])
             if obj_type == 'city':
                 if data["found objects"] > 1:
                     self.validateCity(data['results'])
@@ -72,6 +84,8 @@ class SearcherTool:
                 self.names.setStringList([f"{obj['1']['city']}, {obj['1']['street']} {obj['1']['number']}"])
             if limit == 0:
                 return
+            self.completer.setCompletionPrefix(f"{address.split(',')[0]}, ")
+            self.completer.complete()
         except Exception:
             return
 
@@ -79,13 +93,13 @@ class SearcherTool:
         try:
             data = json.loads(urlopen('https://services.gugik.gov.pl/uug/?request=GetStreet&simc=' + simc).read().decode())
             obj = data['results']
-            self.names.setStringList([f"{city}, {obj[e]['street']}" for e in obj])
+            self.names.setStringList([f"{city}, {obj[element]['street']}" for element in obj])
         except Exception:
             self.names.setStringList([])
 
     def validateCity(self, obj):
         city = obj['1']['city']
-        self.names.setStringList([f"{city}, {obj[e]['simc']} {obj[e]['county']}" for e in obj])
+        self.names.setStringList([f"{city}, {obj[element]['simc']} {obj[element]['county']}" for element in obj])
         self.completer.popup().pressed.connect(lambda: self.userPick())
 
     def userPick(self):
@@ -103,8 +117,10 @@ class SearcherTool:
             lineedit = self.dock.lineEdit_address.text().split(',')
             if len(lineedit) == 3:
                 correct_lineedit = f"{lineedit[0].strip()}, {lineedit[1].strip()}, {lineedit[2].strip()}"
-            else:
+            if len(lineedit) == 2:
                 correct_lineedit = f"{lineedit[0].strip()}, {lineedit[1].strip()}"
+            else:
+                correct_lineedit = f"{lineedit[0].strip()}"
             self.searchaddress_call.fetch_address(correct_lineedit)
             ok, res = self.searchaddress_call.process_results()
             if not ok:
@@ -177,9 +193,16 @@ class SearcherTool:
         fe = FetchULDK()
         fe.fetch_list('gmina', dis)
         self.dock.comboBox_gmina.blockSignals(True)
-        result = fe.responce
-        self.dock.comboBox_gmina.addItems(result)
-        self.dock.comboBox_gmina.view().setFixedWidth(self.widthforview(result))
+        result, communities = fe.responce, []
+        for district in result:
+            end = district[-2:]
+            if end == '_1':
+                district += '- miasto'
+            if end == '_2':
+                district += '- gmina'
+            communities.append(district)
+        self.dock.comboBox_gmina.addItems(communities)
+        self.dock.comboBox_gmina.view().setFixedWidth(self.widthforview(communities))
         self.dock.comboBox_gmina.blockSignals(False)
 
     def gmi_changed(self):
