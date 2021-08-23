@@ -335,7 +335,7 @@ border: 1px solid #5689b0;
           <item row="3" column="0">
            <widget class="QGroupBox" name="groupBox_4">
             <property name="title">
-             <string>Page Orientation</string>
+             <string>Page orientation</string>
             </property>
             <layout class="QGridLayout" name="gridLayout_8">
              <item row="0" column="0">

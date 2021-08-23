@@ -39,7 +39,7 @@ class StyleManagerDialog(QDialog, FORM_CLASS):
         if ok:
             if str(text) in ['', 'None', 'False']:
                 msg = QMessageBox()
-                msg.setText(tr('Not valid name, try again'))
+                msg.setText(tr('Not valid name, try again!'))
                 msg.exec_()
                 return
             self.mn.set_style(text, filename)

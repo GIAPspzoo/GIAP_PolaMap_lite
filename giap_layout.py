@@ -119,13 +119,11 @@ class MainTabQgsWidget:
         self.styleButton.setBaseSize(QSize(25, 25))
         self.styleButton.clicked.connect(self.show_style_manager_dialog)
         self.styleButton.setObjectName('ThemeButton')
-
         self.settingsButton = QToolButton()
         self.settingsButton.setText(tr("Settings"))
         self.settingsButton.setBaseSize(QSize(25, 25))
         self.settingsButton.clicked.connect(self.show_settings_dialog)
         self.settingsButton.setObjectName('SettingsButton')
-
         corner_widget = QWidget(self.main_widget.tabWidget)
         corner_layout = QHBoxLayout()
         corner_layout.setContentsMargins(0, 0, 0, 0)
@@ -133,7 +131,9 @@ class MainTabQgsWidget:
         corner_layout.addWidget(self.editButton)
         corner_layout.addWidget(self.styleButton)
         corner_layout.addWidget(self.settingsButton)
-
+        self.main_widget.lineEdit_address.setToolTip(f"""{tr('Enter the data according to the scheme:')}
+{tr('for the address point:')} {'Warszawa, Pasaż Ursynowski 1'}
+{tr('for the street:')} {'Warszawa, Pasaż Ursynowski'}""")
         #logo icon
         plug_dir = os.path.dirname(__file__)
         gbut = QPushButton()

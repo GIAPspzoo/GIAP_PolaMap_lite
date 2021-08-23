@@ -251,7 +251,7 @@ border: 1px solid #5689b0;
            <string notr="true">color : white;	font-weight: bold;</string>
           </property>
           <property name="text">
-           <string>Select compositions</string>
+           <string>Select composition</string>
           </property>
          </widget>
         </widget>

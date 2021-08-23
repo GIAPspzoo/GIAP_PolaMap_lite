@@ -58,7 +58,7 @@ class SearchAddress:
             raise e
         except URLError:
             iface.messageBar().pushCritical(
-                tr('Error'), tr('Check if address is correct'))
+                tr('Error'), tr('Check address'))
             return
         self.res.decode()
 

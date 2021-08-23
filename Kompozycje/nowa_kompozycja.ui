@@ -367,7 +367,7 @@ border-bottom: 1px solid black;
 color: black;</string>
            </property>
            <property name="text">
-            <string>Layers in Groups</string>
+            <string>Layers in groups</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -453,7 +453,7 @@ border-bottom: 1px solid black;
 color: black;</string>
            </property>
            <property name="text">
-            <string>Selected Layers</string>
+            <string>Selected layers</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -539,7 +539,7 @@ QScrollBar:vertical{
          <item>
           <widget class="QPushButton" name="checkAllPushButton">
            <property name="text">
-            <string>Select All</string>
+            <string>Select all</string>
            </property>
           </widget>
          </item>

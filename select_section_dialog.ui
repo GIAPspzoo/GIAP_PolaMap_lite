@@ -29,7 +29,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Sections</string>
+   <string>Section</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -680,7 +680,7 @@ QToolTip
             </font>
            </property>
            <property name="text">
-            <string>Add to ribbon</string>
+            <string>Add tool to ribbon</string>
            </property>
           </widget>
          </item>
