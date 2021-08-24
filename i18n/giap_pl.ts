@@ -912,6 +912,11 @@ lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
         <source>Section</source>
         <translation>Sekcja</translation>
     </message>
+        <message>
+        <location filename="../select_section_dialog.ui" line="508"/>
+        <source>Sections</source>
+        <translation>Sekcje</translation>
+    </message>
     <message>
         <location filename="../select_section_dialog.ui" line="315"/>
         <source>Add section</source>
