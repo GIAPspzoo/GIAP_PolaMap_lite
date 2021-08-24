@@ -629,10 +629,8 @@ QLabel#inTotalLabel, QLabel#outTotalLabel, QLabel#recordCountLabel
 }
 
 QProgressBar:horizontal {
-	border: 1px solid  #1a2936;
 	text-align: center;
-	padding: 1px;
-	background:  #243a4c;
+	background:  #375871;
 }
 
 
