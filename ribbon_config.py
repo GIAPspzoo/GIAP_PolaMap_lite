@@ -100,6 +100,16 @@ RIBBON_DEFAULT = [
                     ['mActionShowLayoutManager', 1, 0],
                 ]
             },
+            {
+                'label': tr('GIAP Tools'),
+                'id': 'GIAP Tools',
+                'btn_size': 60,
+                'btns': [
+                    ['giapCompositions', 0, 0],
+                    ['giapWMS', 0, 1],
+                    ['giapQuickPrint', 0, 2],
+                ]
+            },
 
         ]
     },
