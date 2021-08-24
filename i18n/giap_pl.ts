@@ -248,22 +248,22 @@ Proszę czekać...</translation>
         <translation>Twórz warstwę</translation>
     </message>
     <message>
-        <location filename="../ribbon_config.py" line="108"/>
+        <location filename="../ribbon_config.py" line="118"/>
         <source>Advanced Tools</source>
         <translation>Narzędzia zaawansowane</translation>
     </message>
     <message>
-        <location filename="../ribbon_config.py" line="132"/>
+        <location filename="../ribbon_config.py" line="142"/>
         <source>Labels</source>
         <translation>Etykiety</translation>
     </message>
     <message>
-        <location filename="../ribbon_config.py" line="148"/>
+        <location filename="../ribbon_config.py" line="158"/>
         <source>Vector</source>
         <translation>Wektor</translation>
     </message>
     <message>
-        <location filename="../ribbon_config.py" line="167"/>
+        <location filename="../ribbon_config.py" line="177"/>
         <source>Digitizing</source>
         <translation>Digitalizacja</translation>
     </message>
@@ -271,6 +271,11 @@ Proszę czekać...</translation>
         <location filename="../ribbon_config.py" line="94"/>
         <source>Prints</source>
         <translation>Wydruki</translation>
+    </message>
+     <message>
+        <location filename="../ribbon_config.py" line="104"/>
+        <source>GIAP Tools</source>
+        <translation>Narzędzia GIAP</translation>
     </message>
     <message>
         <location filename="../tools.py" line="101"/>
