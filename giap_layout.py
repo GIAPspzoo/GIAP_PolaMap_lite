@@ -144,10 +144,10 @@ class MainTabQgsWidget:
         gbut.setCursor(QCursor(Qt.PointingHandCursor))
         gbut.setToolTip(tr("GIAP.pl - Website"))
         gbut.setStyleSheet(
-            'QPushButton{border-width: 0px; width: 220px; height:72px;'
+            'QPushButton{border-width: 0; width: 153px; height:50px;'
             'background-color: transparent;}'
         )
-        gbut.setIconSize(QSize(216, 68))
+        gbut.setIconSize(QSize(153, 50))
 
         #toolbar with only logo
         self.logo_toolbar = QToolBar('GiapLogoBar', self.iface.mainWindow())
@@ -156,6 +156,7 @@ class MainTabQgsWidget:
         self.logo_toolbar.setMovable(False)
         self.logo_toolbar.setFloatable(True)
         self.logo_toolbar.addWidget(gbut)
+        self.logo_toolbar.visibilityChanged.connect(self.lock_logo_Toolbar)
         self.toolbar.visibilityChanged.connect(self.visible_logo_giap_toolbar)
         self.logo_toolbar.setLayoutDirection(Qt.RightToLeft)
 
@@ -248,6 +249,10 @@ class MainTabQgsWidget:
 
     def visible_logo_giap_toolbar(self, visible):
         self.logo_toolbar.setVisible(not visible)
+
+    def lock_logo_Toolbar(self):
+        if not self.logo_toolbar.isVisible() and not self.toolbar.isVisible():
+            self.logo_toolbar.setVisible(True)
 
     def off_on_search_tool(self, visibility):
         elements = ['comboBox_woj', 'comboBox_pow', 'comboBox_gmina', 'comboBox_obr',
