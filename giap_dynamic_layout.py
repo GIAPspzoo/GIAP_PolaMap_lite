@@ -642,10 +642,10 @@ class CustomSection(QWidget):
             name_tool = action.objectName()
             name_tool = name_tool.replace(':', '_')
             self.tbut.setObjectName(name_tool)
-            self.tbut.setDefaultAction(action)
             self.tbut.org_state = action.isEnabled()
-            self.set_new_giap_icons(self.tbut, name_tool)
+            self.set_new_giap_icons(self.tbut, name_tool, action)
             self.tbut.setObjectName('gp_' + action.objectName())
+            self.tbut.setDefaultAction(action)
         elif QgsApplication.processingRegistry().algorithmById(action):
             alg = QgsApplication.processingRegistry().algorithmById(action)
             self.tbut.setObjectName(alg.id())
@@ -683,7 +683,7 @@ class CustomSection(QWidget):
 
         return self.tbut
 
-    def set_new_giap_icons(self, button, name_tool):
+    def set_new_giap_icons(self, button, name_tool, action):
         dirnm = os.path.dirname(__file__)
         list_tool = [
             'mProcessingUserMenu_native_buffer','mProcessingUserMenu_native_centroids',
@@ -826,7 +826,7 @@ class CustomSection(QWidget):
         ]
 
         if name_tool in list_tool:
-            button.setIcon(QIcon(os.path.join(dirnm, 'icons', button.objectName())))
+            action.setIcon(QIcon(os.path.join(dirnm, 'icons', button.objectName())))
 
     def set_custom_action(self):
         oname = self.tbut.objectName()
