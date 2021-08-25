@@ -707,7 +707,7 @@ QTreeView {
     QTreeView:item:selected
 {
     color: white;
-    background-color: #375871;
+    background-color: #B7D3E8;
 }
 QTreeView::indicator:checked
 {
@@ -723,14 +723,14 @@ QTreeView::indicator:unchecked
 
 QTreeView:item:hover
 {
-    background-color: #375871;
+    background-color: #B7D3E8;
 }
 
 QTreeView:branch:selected,
 QTreeView:branch:hover
 {
     background: url(icons/transparent.png);
-    background-color: #375871;
+    background-color: #B7D3E8;
 }
 QTreeView QScrollBar:vertical {
     background-color: #375871;
