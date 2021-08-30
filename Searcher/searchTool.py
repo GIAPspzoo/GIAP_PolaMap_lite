@@ -137,8 +137,6 @@ class SearcherTool:
             self.timer.timeout.connect(change_scale)
             self.timer.start(10)
 
-
-
     def validate_lineedit(self):
         if self.dock.lineEdit_address.text():
             return True
@@ -197,13 +195,18 @@ class SearcherTool:
         fe.fetch_list('gmina', dis)
         self.dock.comboBox_gmina.blockSignals(True)
         result, communities = fe.responce, []
+        multiples = [e.split('|')[0] for e in result]
         for district in result:
             end = district[-2:]
-            if end == '_1':
-                district += '- miasto'
-            if end == '_2':
-                district += '- gmina'
-            communities.append(district)
+            if multiples.count(district.split('|')[0]) > 1:
+                if end == '_1':
+                    new_ds = district.replace('|', ' - miasto |')
+                    communities.append(new_ds)
+                if end == '_2':
+                    new_ds = district.replace('|', ' - gmina |')
+                    communities.append(new_ds)
+            else:
+                communities.append(district)
         self.dock.comboBox_gmina.addItems(communities)
         self.dock.comboBox_gmina.view().setFixedWidth(self.widthforview(communities))
         self.dock.comboBox_gmina.blockSignals(False)
