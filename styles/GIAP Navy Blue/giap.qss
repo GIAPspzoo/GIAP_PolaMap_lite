@@ -2,12 +2,9 @@
 QToolTip
 {
     color:#EDF6FC;
-    font: 9pt "Segoe UI";
-    font-weight: normal;
-    border-style: outset;
-    border: none;
-    border-radius: 6px;
-    background-color:qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 #41617c, stop:1 #5a87ac);
+    font: 8pt "Segoe UI";
+    border: 1px solid #3C444B;
+    background-color:#425868
 }
 
 QWidget
@@ -50,7 +47,7 @@ QMenuBar::item:pressed
 
 QMenu
 {
-	border: 1px solid  #1a2936;
+	border: 1px solid  #3C444B;
 	color:  #EDF6FC;
 	font: 8pt "Segoe UI";
 }
@@ -64,6 +61,7 @@ QMenu::item:selected
 {
     background: #6FB1E3;
 	color:  #EDF6FC;
+
 }
 
 QMenu::icon
@@ -103,12 +101,13 @@ QLineEdit
 }
 
 QLineEdit:focus{
-    border: 1px solid #5689B0;
+    border: 2px solid #5689B0;
 }
+
 
 QLineEdit:disabled
 {
-   color: #EDF6FC;
+   color: grey;
    border: 2px solid #4f5a63;
    border-radius: 3px;
    padding: 2px;
@@ -130,6 +129,7 @@ QGroupBox::title {
 	padding-left: 10px;
 	padding-right: 10px;
 }
+
 
 QScrollBar:horizontal {
     background-color: #35556D;
@@ -164,9 +164,9 @@ QScrollBar::handle:vertical {
     border:None;
 }
 
-QAbstractScrollArea:corner{
-    background-color: #375871;
-    border:None;
+QAbstractScrollArea::corner {
+    background: transparent;
+    border: none;
 }
 
 QAbstractScrollArea QToolButton{
@@ -194,6 +194,7 @@ QDialog QTabBar::tab {
     height: 20px;
 }
 
+
 QTabBar::tab {
     padding:2px;
     padding-left: 30px;
@@ -202,18 +203,18 @@ QTabBar::tab {
 }
 
 QTabBar::tab:selected {
-    border: 1px solid transparent;
+    border: 1px solid #5689b0;
     background-color: #5689b0;
 }
 
 QTabBar::tab:!selected {
-border: 1px solid transparent;
-color: rgb(203, 212, 220);
+    border: 1px solid transparent;
+    color: rgb(203, 212, 220);
 }
 
 QTabBar::tab:last:!selected {
-margin-right: 1px;
-border: 1px solid transparent;
+    margin-right: 1px;
+    border: 1px solid transparent;
 }
 
 QTabWidget::pane {
@@ -234,7 +235,7 @@ QPushButton{
 }
 
 QPushButton:hover {
-    border: 1px solid #6fb1e3;
+    border: 2px solid #6fb1e3;
 }
 
 QPushButton:focus {
@@ -260,6 +261,7 @@ QPushButton:checked {
     border: solid;
     border-width: 2px;
     border-color: #6fb1e3;
+
 }
 
 QPushButton:pressed{
@@ -285,7 +287,7 @@ QComboBox
 }
 
 QComboBox:focus{
-    border:none;
+    border: 2px solid #5689b0;
 }
 
 QComboBox:on
@@ -295,6 +297,7 @@ QComboBox:on
 	padding-left: 1px;
 	selection-background-color: #6FB1E3;
 	background-color: #4f5a63;
+	border: 2px solid #5689b0;
 }
 
 
@@ -305,6 +308,8 @@ QComboBox QAbstractItemView
     background-color: #4f5a63;
     border: 1px solid  #6fb1e3;
 }
+
+
 QComboBox::drop-down
 {
 	subcontrol-origin: padding;
@@ -437,7 +442,7 @@ QDateEdit::drop-down
 
 QDockWidget
 {
-	color:  #EDF6FC;
+	color:  white;
 	titlebar-close-icon: url(icons/close.png);
 	titlebar-normal-icon: url(icons/undock.png);
 }
@@ -478,30 +483,54 @@ QDockWidget::float-button:pressed {
 	padding: 1px -1px -1px 1px;
 }
 
+QDockWidget QLineEdit:focus{
+    border: 2px solid #5689B0;
+}
+
+QDockWidget QAbstractSpinBox:focus{
+	border: 2px solid #5689b0
+}
+
+QDockWidget QCombobox:focus{
+	border: 2px solid #5689b0
+}
+
+QDockWidget QCombobox:on{
+	border: 2px solid #5689b0
+}
+
+QDockWidget QTreeView {
+    border:1px solid #5689B0;
+}
+
+QDockWidget QTabBar::tab:!selected, QDockWidget QTabBar::tab:selected, QDockWidget QTabBar::tab:last:!selected  {
+    border-bottom: 1px solid #5689B0;
+}
+
 QTreeView,
 QListView,
 QTableView
 {
-    border: 1px solid #5689B0;
     background-color: #35556d;
     color: #EDF6FC;
 	icon-size: 20px;
 }
+
 
 QTreeView:item
 {
     color: #EDF6FC;
 }
 
-QTreeView:item:selected
+QTreeView:item::selected, QTreeView:item::focus
 {
     color: #EDF6FC;
-	background-color: #b7d3e8;
+	background-color: #6FB1E3;
 }
 QTreeView::indicator:checked
 {
     image: url(icons/checkbox_light.png);
-    border: 0.11em solid #0A0C0D;
+    border: 1px solid  #1a2936;
     background: rgb(53, 85, 109, 200)
 }
 
@@ -602,7 +631,7 @@ QToolBar QToolButton
 {
     font: 8pt "Segoe UI";
 	font-weight: bold;
-	border: no;
+	border: none;
 }
 QToolBar QToolButton::menu-arrow {
     background-image: url(icons/down_arrow_light.png);
@@ -656,7 +685,7 @@ QProgressBar:horizontal {
 
 QTextEdit
 {
-	background-color:  rgb(53, 85, 109);
+	background-color:  #35556D;
 	color:  #EDF6FC;
 	border: 1px solid  #1a2936;
 }
@@ -668,6 +697,7 @@ QDialog QTextEdit
 	selection-color: #EDF6FC;
 	color: #0A0C0D;
 }
+
 
 QPlainTextEdit{
     color:  #EDF6FC;
@@ -789,14 +819,19 @@ QDialog QAbstractSpinBox{
 	margin-bottom:8px;
 	padding:0;
 }
+QDialog QAbstractSpinBox:focus{
+	border: 2px solid #5689b0
+}
+
 QDialog QComboBox,QDialog QLabel,QDialog QSlider,QDialog QAbstractSpinBox{
-    margin-bottom:2px;
-    margin-top:2px;
+    margin: 3px;
   }
 
-QDialog QComboBox:disabled {    border: 2px solid #4F5A63;
-   border-radius: 3px;
-  padding: 2px;
+
+QDialog QComboBox:disabled {
+    border: 2px solid #4F5A63;
+    border-radius: 3px;
+    padding: 2px;
 }
 
 QDialog QToolButton  {
@@ -813,9 +848,22 @@ QAbstractSpinBox:up-button{
    background-color: #4f5a63;
    border-top-right-radius: 3px
    }
+
 QgsFieldComboBox {
-   background-color: qlineargradient(x1:0, y1:1, x2:1, y2:1, stop:0 #4f5a63, stop:0.001 #EDF6FC, stop:0.035 #4f5a63);
-}
+   background-color: qlineargradient(x1:0, y1:1, x2:1, y2:1, stop:0.012 #B7D8F1, stop:0.05 #B7D8F1, stop:0.09 #4F5A63, stop:0.095 #4F5A63);
+   color: #EDF6FC;
+  }
+
+QgsFieldComboBox QListView{
+   background-color: qlineargradient(x1:0, y1:1, x2:1, y2:1, stop:0.012 #B7D8F1, stop:0.05 #B7D8F1, stop:0.09 #4F5A63, stop:0.095 #4F5A63);
+   color: #EDF6FC;
+   }
+
+QgsFieldComboBox:on
+{
+   background-color: qlineargradient(x1:0, y1:1, x2:1, y2:1, stop:0.012 #B7D8F1, stop:0.05 #B7D8F1, stop:0.09 #4F5A63, stop:0.095 #4F5A63);
+   }
+
 QgsFieldComboBox:on
 {
   subcontrol-origin: border;
@@ -844,15 +892,15 @@ QDialog QTreeView{
     border: 1px solid #5689B0;
 }
 QDialog QTreeView:item:hover{
-    background-color: None;
+    background-color: #6FB1E3;
 }
 
 QDialog QTreeView:branch:hover{
-    background-color: None;
+    background-color: #6FB1E3;
 }
 
-QListView{
-    selection-background-color:#6FB1E3;
+QListView:item:selected{
+    background-color: #6FB1E3;
 }
 
 QToolButton:menu-button{
