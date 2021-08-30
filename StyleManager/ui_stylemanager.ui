@@ -46,13 +46,13 @@ QListWidget {
 }
 QListWidget:item:selected {
 	background: rgb(38, 60, 78);
-	color: white;
+	color: #EDF6FC;
 }
 
 QAbstractItemView
 {
 	alternate-background-color:  #e7e7e7;
-	color:  black;
+	color:  #0A0C0D;
 	border: 1px solid  #1a2936;
 	border-radius: 3px;
 	padding: 1px;
@@ -60,13 +60,13 @@ QAbstractItemView
 
 QAbstractItemView:selected
 {
-	color:  white;
+	color:  #EDF6FC;
 	background-color: rgb(38, 60, 78);
 }
 
 QPushButton {
-	color: black;
-	border: 1px solid black;
+	color: #0A0C0D;
+	border: 1px solid #0A0C0D;
 	background-color: #b7d3e8;
 	border-radius: 3px;
 	padding: 4px;
@@ -87,7 +87,7 @@ QPushButton:disabled
 }
 
 QToolButton {
-	color:  black;
+	color:  #0A0C0D;
 }
 
 QPushButton:disabled
@@ -98,7 +98,7 @@ QPushButton:disabled
 QHeaderView::section
 {
 	background-color:  #cfcfcf;
-	color:  black;
+	color:  #0A0C0D;
 	padding-left: 4px;
 }</string>
   </property>
@@ -206,7 +206,7 @@ QHeaderView::section
            </font>
           </property>
           <property name="styleSheet">
-           <string notr="true">color : white;	font-weight: bold;</string>
+           <string notr="true">color : #EDF6FC;	font-weight: bold;</string>
           </property>
           <property name="text">
            <string>Change style</string>
@@ -232,9 +232,9 @@ QHeaderView::section
              <item>
               <widget class="QFrame" name="frame_2">
                <property name="styleSheet">
-                <string notr="true">border: 1px solid black;
+                <string notr="true">border: 1px solid #0A0C0D;
 border-radius: 10px;
-background-color: white;</string>
+background-color: #EDF6FC;</string>
                </property>
                <property name="frameShape">
                 <enum>QFrame::StyledPanel</enum>
@@ -255,10 +255,10 @@ background-color: white;</string>
                    </size>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">border-width: 0px;
-border-radius: 0px;
-border-bottom: 1px solid black;
-color: black;</string>
+                   <string notr="true">border-width: 0;
+border-radius: 0;
+border-bottom: 1px solid #0A0C0D;
+color: #0A0C0D;</string>
                   </property>
                   <property name="text">
                    <string>Style</string>
@@ -272,7 +272,7 @@ color: black;</string>
                  <widget class="QListWidget" name="listWidget">
                   <property name="styleSheet">
                    <string notr="true">QListWidget {
-	border: 0px solid white;
+	border: None;
 }</string>
                   </property>
                   <property name="showDropIndicator" stdset="0">
@@ -437,7 +437,7 @@ padding: 2px;</string>
        <widget class="QLabel" name="label_3">
         <property name="styleSheet">
          <string notr="true">   background-color: #b7d3e8;
-   color: black;
+   color: #0A0C0D;
    font: 10pt &quot;Segoe UI&quot;; 
    font-weight: bold;
 </string>

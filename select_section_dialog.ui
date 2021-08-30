@@ -45,14 +45,14 @@ QListWidget {
 	alternate-background-color:  #e6e6e6;
 }
 QListWidget:item:selected {
-	background: rgb(38, 60, 78);
-	color: white;
+	background: #6fb1e3;
+	color: #EDF6FC;
 }
 
 QAbstractItemView
 {
 	alternate-background-color:  #e7e7e7;
-	color:  black;
+	color:  #0A0C0D;
 	border: 1px solid  #1a2936;
 	border-radius: 3px;
 	padding: 1px;
@@ -60,13 +60,13 @@ QAbstractItemView
 
 QAbstractItemView:selected
 {
-	color:  white;
+	color:  #EDF6FC;
 	background-color: rgb(38, 60, 78);
 }
 
 QPushButton {
-	color: black;
-	border: 1px solid black;
+	color: #0A0C0D;
+	border: 1px solid  #0A0C0D;
 	background-color: #b7d3e8;
 	border-radius: 3px;
 	padding: 4px;
@@ -87,7 +87,7 @@ QPushButton:disabled
 }
 
 QToolButton {
-	color:  black;
+	color:  #0A0C0D;
 }
 
 QPushButton:disabled
@@ -98,20 +98,24 @@ QPushButton:disabled
 QHeaderView::section
 {
 	background-color:  #cfcfcf;
-	color:  black;
+	color:  #0A0C0D;
 	padding-left: 4px;
 }
 
 QLineEdit
 {
-	border: 1px solid #5689b0;
+	border: None;
     border-radius: 3px;
     background-color: #4f5a63;
 }
 
 QLineEdit:disabled
 {
-    color: white;
+    color: #EDF6FC;
+}
+
+QLineEdit:focus{
+    border: 1px solid #5689B0;
 }</string>
   </property>
   <property name="locale">
@@ -212,12 +216,12 @@ QLineEdit:disabled
 font: 75 8pt &quot;Segoe UI Light&quot;;
 
 QWidget {
-border-right: 2px solid black;
+border-right: 2px solid  #0A0C0D;
 }
 
 QPushButton {
-	color: black;
-	border: 1px solid black;
+	color: #0A0C0D;
+	border: 1px solid  #0A0C0D;
 	background-color: #b7d3e8;
 	border-radius: 3px;
 	padding: 4px;
@@ -238,7 +242,7 @@ QPushButton:disabled
 }
 
 QToolButton {
-	color:  black;
+	color:  #0A0C0D;
 }
 
 QPushButton:disabled
@@ -287,7 +291,7 @@ padding: 2px;
            <property name="styleSheet">
             <string notr="true">QPushButton{   
    background-color: #b7d3e8;
-   color: black;
+   color: #0A0C0D;
    font: 10pt &quot;Segoe UI&quot;; 
    border: none;
    border-radius:none;
@@ -321,7 +325,7 @@ QPushButton:disabled
            <property name="styleSheet">
             <string notr="true">QPushButton{   
    background-color: #b7d3e8;
-   color: black;
+   color: #0A0C0D;
    font: 10pt &quot;Segoe UI&quot;; 
    border: none;
    border-radius:none;
@@ -453,7 +457,7 @@ QPushButton:disabled
            </font>
           </property>
           <property name="styleSheet">
-           <string notr="true">color : white;	font-weight: bold;</string>
+           <string notr="true">color : #EDF6FC;	font-weight: bold;</string>
           </property>
           <property name="text">
            <string>Add section</string>
@@ -476,9 +480,9 @@ QPushButton:disabled
           <item row="0" column="1">
            <widget class="QFrame" name="frame">
             <property name="styleSheet">
-             <string notr="true">border: 1px solid black;
+             <string notr="true">border: 1px solid  #0A0C0D;
 border-radius: 10px;
-background-color: white;</string>
+background-color: #EDF6FC;</string>
             </property>
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>
@@ -501,8 +505,8 @@ background-color: white;</string>
                <property name="styleSheet">
                 <string notr="true">border-width: 0px;
 border-radius: 0px;
-border-bottom: 1px solid black;
-color: black;</string>
+border-bottom: 1px solid  #0A0C0D;
+color: #0A0C0D;</string>
                </property>
                <property name="text">
                 <string>Sections</string>
@@ -517,7 +521,7 @@ color: black;</string>
                <property name="styleSheet">
                 <string notr="true">QListWidget {
     alternate-background-color:  rgb(87, 131, 167);
-	background-color: white;
+	background-color: #EDF6FC;
 	border-width: 0px;
 }
 </string>
@@ -566,9 +570,9 @@ color: black;</string>
        <item>
         <widget class="QFrame" name="frame_3">
          <property name="styleSheet">
-          <string notr="true">border: 1px solid black;
+          <string notr="true">border: 1px solid  #0A0C0D;
 border-radius: 10px;
-background-color: white;</string>
+background-color: #EDF6FC;</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
@@ -610,8 +614,13 @@ background-color: white;</string>
             <property name="styleSheet">
              <string notr="true">QTreeView:item
 {
-    color: black;
+    color: #0A0C0D;
 	border: none;
+}
+
+QTreeView:item:hover
+{
+   background-color:red;
 }
 
 QTreeView
@@ -621,7 +630,7 @@ QTreeView
 
 QToolTip
 {
-    color:white;
+    color:#EDF6FC;
     font: 9pt &quot;Segoe UI&quot;;
     font-weight: normal;
     border-style: outset;

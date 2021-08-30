@@ -835,7 +835,7 @@ lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
         <translation>Kompozycje</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="529"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="670"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -870,42 +870,42 @@ lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
         <translation>Warstwy w grupach</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="456"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="454"/>
         <source>Selected layers</source>
         <translation>Wybrane warstwy</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="647"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="641"/>
         <source>Composition name:</source>
         <translation>Nazwa kompozycji:</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="528"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="524"/>
         <source>Select</source>
         <translation>Zaznacz</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="535"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="531"/>
         <source>Unselect</source>
         <translation>Odznacz</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="542"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="538"/>
         <source>Select all</source>
         <translation>Zaznacz wszystkie</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="549"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="545"/>
         <source>Unselect all</source>
         <translation>Odznacz wszystkie</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="838"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="837"/>
         <source>Settings</source>
         <translation>Ustawienia</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="780"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="779"/>
         <source>Add new composition</source>
         <translation>Dodaj nową kompozycję</translation>
     </message>
@@ -918,37 +918,37 @@ lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
         <translation>Sekcja</translation>
     </message>
         <message>
-        <location filename="../select_section_dialog.ui" line="508"/>
+        <location filename="../select_section_dialog.ui" line="512"/>
         <source>Sections</source>
         <translation>Sekcje</translation>
     </message>
     <message>
-        <location filename="../select_section_dialog.ui" line="315"/>
+        <location filename="../select_section_dialog.ui" line="319"/>
         <source>Add section</source>
         <translation>Dodaj sekcję</translation>
     </message>
     <message>
-        <location filename="../select_section_dialog.ui" line="539"/>
+        <location filename="../select_section_dialog.ui" line="543"/>
         <source>Add selection</source>
         <translation>Dodaj zaznaczone</translation>
     </message>
     <message>
-        <location filename="../select_section_dialog.ui" line="187"/>
+        <location filename="../select_section_dialog.ui" line="191"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
     <message>
-        <location filename="../select_section_dialog.ui" line="338"/>
+        <location filename="../select_section_dialog.ui" line="354"/>
         <source>Search tool</source>
         <translation>Wyszukaj narzędzie</translation>
     </message>
     <message>
-        <location filename="../select_section_dialog.ui" line="559"/>
+        <location filename="../select_section_dialog.ui" line="563"/>
         <source>Search...</source>
         <translation>Szukaj...</translation>
     </message>
     <message>
-        <location filename="../select_section_dialog.ui" line="683"/>
+        <location filename="../select_section_dialog.ui" line="697"/>
         <source>Add tool to ribbon</source>
         <translation>Dodaj narzędzie do wstęgi</translation>
     </message>
@@ -1022,97 +1022,97 @@ lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
         <translation>Wydruk widoku mapy</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="243"/>
+        <location filename="../wydruk_dialog.ui" line="234"/>
         <source>Prints</source>
         <translation>Wydruk</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="266"/>
+        <location filename="../wydruk_dialog.ui" line="257"/>
         <source>Format</source>
         <translation>Format zapisu</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="272"/>
+        <location filename="../wydruk_dialog.ui" line="263"/>
         <source>PDF</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="282"/>
+        <location filename="../wydruk_dialog.ui" line="273"/>
         <source>PNG</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="289"/>
+        <location filename="../wydruk_dialog.ui" line="280"/>
         <source>JPG</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="299"/>
+        <location filename="../wydruk_dialog.ui" line="290"/>
         <source>Print title</source>
         <translation>Tytuł wydruku</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="315"/>
+        <location filename="../wydruk_dialog.ui" line="306"/>
         <source>Additional options</source>
         <translation>Opcje dodatkowe</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="321"/>
+        <location filename="../wydruk_dialog.ui" line="312"/>
         <source>Add scale</source>
         <translation>Dodaj skalę</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="328"/>
+        <location filename="../wydruk_dialog.ui" line="319"/>
         <source>Add legend</source>
         <translation>Dodaj legendę</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="344"/>
+        <location filename="../wydruk_dialog.ui" line="335"/>
         <source>horizontal</source>
         <translation>pozioma</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="351"/>
+        <location filename="../wydruk_dialog.ui" line="342"/>
         <source>vertical</source>
         <translation>pionowa</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="368"/>
+        <location filename="../wydruk_dialog.ui" line="359"/>
         <source>Annotations</source>
         <translation>Adnotacje</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="384"/>
+        <location filename="../wydruk_dialog.ui" line="375"/>
         <source>Paper size</source>
         <translation>Format Arkusza</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="540"/>
+        <location filename="../wydruk_dialog.ui" line="531"/>
         <source>Preview</source>
         <translation>Podgląd</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="553"/>
+        <location filename="../wydruk_dialog.ui" line="544"/>
         <source>Save</source>
         <translation>Zapisz</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="575"/>
+        <location filename="../wydruk_dialog.ui" line="566"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="461"/>
+        <location filename="../wydruk_dialog.ui" line="452"/>
         <source>Finish</source>
         <translation>Zakończ</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="487"/>
+        <location filename="../wydruk_dialog.ui" line="478"/>
         <source>Register</source>
         <translation>Zarejestruj</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="338"/>
+        <location filename="../wydruk_dialog.ui" line="329"/>
         <source>Page orientation</source>
         <translation>Orientacja wydruku</translation>
     </message>

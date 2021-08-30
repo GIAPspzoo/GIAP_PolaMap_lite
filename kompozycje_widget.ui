@@ -86,7 +86,7 @@ border-color: rgb(65, 97, 124);
 
 
 QToolTip {
-color:black;
+color:#0A0C0D;
 background-color: rgb(255, 255, 185);
 border-color: rgb(215, 215, 215);
 font: 9pt &quot;Segoe UI&quot;;
@@ -218,8 +218,9 @@ border-radius: 4px;
         </property>
         <property name="styleSheet">
          <string notr="true">QComboBox{
-	border: 1px solid  #5689b0;
-}</string>
+	border: None;
+}
+</string>
         </property>
         <property name="editable">
          <bool>false</bool>
