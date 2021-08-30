@@ -263,7 +263,7 @@ for the street: Warszawa, Pasaż Ursynowski</string>
      <item>
       <widget class="QLabel" name="labelGiapTools">
        <property name="styleSheet">
-        <string notr="true">color: rgb(255, 255, 255);</string>
+        <string notr="true">color: #EDF6FC;</string>
        </property>
        <property name="text">
         <string>GIAP Tools</string>

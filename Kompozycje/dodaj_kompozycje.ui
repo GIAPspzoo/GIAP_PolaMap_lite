@@ -42,7 +42,7 @@
    <string notr="true">* {
 	background-color: rgb(53, 85, 109);
     font: 10pt &quot;Segoe UI&quot;; 
-	color: white;
+	color: #EDF6FC;
 }
 QAbstractItemView
 {
@@ -84,7 +84,7 @@ QComboBox::drop-down
 	subcontrol-position: top right;
 	width: 15px;
     background-color: #5689b0;
-	border-left-width: 0px;
+	border-left-width: 0;
 	border-left-color:  #1a2936;
 	border-left-style: solid;
 	border-top-right-radius: 3px; 
@@ -111,8 +111,8 @@ QLineEdit
 }
 
 QPushButton {
-	color: black;
-	border: 1px solid black;
+	color: #0A0C0D;
+	border: 1px solid #0A0C0D;
 	background-color: #b7d3e8;
 	border-radius: 3px;
 	padding: 4px;
@@ -137,26 +137,26 @@ border: 1px solid #5689b0;
 
 QToolButton {
    border: 0px solid transparent;
-   color: white;
+   color: #EDF6FC;
 
 }
 
 QToolButton:hover {
    background-color: #b7d3e8;
-   border: 1px solid black;
+   border: 1px solid #0A0C0D;
 }
 
 QToolButton:pressed {
    background-color: #b7d3e8;
-   border: 1px solid black;
+   border: 1px solid #0A0C0D;
 }
 
 QTableView:item:selected {
-   background-color: #5689b0;
+   background-color: #6fb1e3;
 }
 
 QTableView:item:hover {
-   background-color: #b7d3e8;
+   background-color: #6fb1e3;
 }
    </string>
   </property>
@@ -195,7 +195,7 @@ QTableView:item:hover {
      </property>
      <property name="styleSheet">
       <string notr="true">* {
-	color:black;
+	color:#0A0C0D;
 }</string>
      </property>
      <property name="frameShape">
@@ -284,7 +284,7 @@ QTableView:item:hover {
              </font>
             </property>
             <property name="styleSheet">
-             <string notr="true">color : white;	font-weight: bold;</string>
+             <string notr="true">color : #EDF6FC;	font-weight: bold;</string>
             </property>
             <property name="text">
              <string>Composition settings</string>
@@ -419,9 +419,9 @@ QTableView:item:hover {
                 <item row="0" column="0">
                  <widget class="QFrame" name="frame_2">
                   <property name="styleSheet">
-                   <string notr="true">border: 1px solid black;
+                   <string notr="true">border: 1px solid #0A0C0D;
 border-radius: 10px;
-background-color: white;</string>
+background-color: #EDF6FC;</string>
                   </property>
                   <property name="frameShape">
                    <enum>QFrame::StyledPanel</enum>
@@ -444,8 +444,8 @@ background-color: white;</string>
                      <property name="styleSheet">
                       <string notr="true">border-width: 0px;
 border-radius: 0px;
-border-bottom: 1px solid black;
-color: black;</string>
+border-bottom: 1px solid #0A0C0D;
+color: #0A0C0D;</string>
                      </property>
                      <property name="text">
                       <string>Compositions</string>
@@ -460,7 +460,7 @@ color: black;</string>
                      <property name="styleSheet">
                       <string notr="true">QTableView {
 border: 0px;
-color: black;
+color: #0A0C0D;
 }</string>
                      </property>
                      <property name="editTriggers">
@@ -514,15 +514,15 @@ color: black;
                     </property>
                     <property name="styleSheet">
                      <string notr="true">QToolButton{
-	color: white;
+	color: #EDF6FC;
 }
 
 QToolButton:hover{
-	color: black;
+	color: #0A0C0D;
 }
 
 QToolButton:pressed{
-	color: black;
+	color: #0A0C0D;
 }</string>
                     </property>
                     <property name="text">
@@ -543,15 +543,15 @@ QToolButton:pressed{
                     </property>
                     <property name="styleSheet">
                      <string notr="true">QToolButton{
-	color: white;
+	color: #EDF6FC;
 }
 
 QToolButton:hover{
-	color: black;
+	color: #0A0C0D;
 }
 
 QToolButton:pressed{
-	color: black;
+	color: #0A0C0D;
 }</string>
                     </property>
                     <property name="text">
@@ -716,7 +716,7 @@ QToolButton:pressed{
       <string notr="true">
 * {
 	font: 75 8pt &quot;Segoe UI Light&quot;;
-	color: black;
+	color: #EDF6FC;
 }
 
 QFrame {
@@ -725,7 +725,7 @@ QFrame {
 
 QPushButton {
 	font: 8pt &quot;Segoe UI&quot;;
-    color: white; 
+    color: #EDF6FC; 
 	border: 1px solid #5689b0;
     background-color: #4f5a63;
 	border-radius: 3px;
@@ -773,20 +773,20 @@ QPushButton:disabled
     padding-left: 5px;
     padding-right: 5px;
 	border: None;
-	color: white;
+	color: #EDF6FC;
 }
 QPushButton:hover{
 	background-color: #b7d3e8;
 	border-radius:0 ;
 	font-weight: bold;
-	color: black;
+	color: #0A0C0D;
 }
 
 QPushButton:pressed{
 	background-color: #b7d3e8;
 	border-radius:0 ;
 	font-weight: bold;
-	color: black;
+	color: #0A0C0D;
 }</string>
         </property>
         <property name="text">
@@ -820,7 +820,7 @@ QPushButton:pressed{
       <item>
        <widget class="QPushButton" name="wczytaj">
         <property name="styleSheet">
-         <string notr="true">color: white</string>
+         <string notr="true">color: #EDF6FC;</string>
         </property>
         <property name="text">
          <string>Load from file</string>

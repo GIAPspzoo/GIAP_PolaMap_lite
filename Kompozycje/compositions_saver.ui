@@ -39,7 +39,7 @@
    <string notr="true">* {
 	background-color: rgb(53, 85, 109);
     font: 10pt &quot;Segoe UI&quot;; 
-	color: white;
+	color: #EDF6FC;
 }
 QAbstractItemView
 {
@@ -81,7 +81,7 @@ QComboBox::drop-down
 	subcontrol-position: top right;
 	width: 15px;
     background-color: #5689b0;
-	border-left-width: 0px;
+	border-left-width: 0;
 	border-left-color:  #1a2936;
 	border-left-style: solid;
 	border-top-right-radius: 3px;
@@ -108,8 +108,8 @@ QLineEdit
 }
 
 QPushButton {
-	color: black;
-	border: 1px solid black;
+	color: #0A0C0D;
+	border: 1px solid #0A0C0D;
 	background-color: #b7d3e8;
 	border-radius: 3px;
 	padding: 4px;
@@ -131,11 +131,11 @@ QPushButton:disabled
 }
 
 QTableView:item:selected {
-   background-color: #5689b0;
+   background-color: #6fb1e3;
 }
 
 QTableView:item:hover {
-   background-color: #b7d3e8;
+   background-color: #6fb1e3;
 }
 
 QGroupBox {
@@ -248,7 +248,7 @@ border: 1px solid #5689b0;
            </font>
           </property>
           <property name="styleSheet">
-           <string notr="true">color : white;	font-weight: bold;</string>
+           <string notr="true">color : #EDF6FC;	font-weight: bold;</string>
           </property>
           <property name="text">
            <string>Select composition</string>
@@ -282,9 +282,9 @@ QPushButton:pressed{
              <item row="1" column="0">
               <widget class="QFrame" name="frame_2">
                <property name="styleSheet">
-                <string notr="true">border: 1px solid black;
+                <string notr="true">border: 1px solid #0A0C0D;
 border-radius: 10px;
-background-color: white;</string>
+background-color: #EDF6FC;</string>
                </property>
                <property name="frameShape">
                 <enum>QFrame::StyledPanel</enum>
@@ -305,10 +305,10 @@ background-color: white;</string>
                    </size>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">border-width: 0px;
-border-radius: 0px;
-border-bottom: 1px solid black;
-color: black;</string>
+                   <string notr="true">border-width: 0;
+border-radius: 0;
+border-bottom: 1px solid #0A0C0D;
+color: #0A0C0D;</string>
                   </property>
                   <property name="text">
                    <string>Compositions</string>
@@ -322,8 +322,8 @@ color: black;</string>
                  <widget class="QTableView" name="tabela">
                   <property name="styleSheet">
                    <string notr="true">QTableView {
-border-width: 0px;
-color: black;
+border-width: 0;
+color: #0A0C0D;
 }</string>
                   </property>
                   <property name="selectionMode">
@@ -533,7 +533,7 @@ border-right: 2px solid #b7d3e8;
        <widget class="QLabel" name="label_2">
         <property name="styleSheet">
          <string notr="true">   background-color: #b7d3e8;
-   color: black;
+   color: #0A0C0D;
    font: 10pt &quot;Segoe UI&quot;; 
    font-weight: bold;
 </string>
