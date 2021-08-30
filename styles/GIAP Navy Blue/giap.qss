@@ -14,9 +14,9 @@ QWidget
 {
 	color: #EDF6FC;
 	background-color:  rgb(53, 85, 109);
-	selection-background-color: white;
-	selection-color:  black;
-    font: 9pt "Segoe UI";
+	selection-background-color: #6FB1E3;
+	selection-color:  #EDF6FC;
+    font: 10pt "Segoe UI";
 }
 
 QMenuBar
@@ -42,7 +42,8 @@ QMenuBar::item:selected
 QMenuBar::item:pressed
 {
 	/* border: 1px solid  #1a2936; */
-	background-color:  white; color:  black;
+	background-color:  #EDF6FC;
+	color:  #1a2936;
 	margin-bottom:-1px;
 	padding-bottom:1px;
 }
@@ -80,7 +81,7 @@ QWidget:disabled
 QAbstractItemView
 {
 	alternate-background-color:  #4f5a63;
-	color:  white;
+	color:  #EDF6FC;
 	border-radius: 3px;
 	font: 9pt "Segoe UI";
 }
@@ -292,9 +293,10 @@ QComboBox:on
 	background-color: #4f5a63;
 	padding-top: 3px;
 	padding-left: 1px;
-	selection-background-color: rgb(53, 85, 109);
-	selection-color: #EDF6FC;
+	selection-background-color: #6FB1E3;
+	background-color: #4f5a63;
 }
+
 
 QComboBox QAbstractItemView
 {
@@ -429,7 +431,7 @@ QAbstractSpinBox::down-arrow:hover
 QLabel,
 QDateEdit::drop-down
 {
-	border: 0px solid  black;
+	border: 0px solid  #0A0C0D;
 }
 
 
@@ -499,13 +501,13 @@ QTreeView:item:selected
 QTreeView::indicator:checked
 {
     image: url(icons/checkbox_light.png);
-    border: 0.11em solid black;
+    border: 0.11em solid #0A0C0D;
     background: rgb(53, 85, 109, 200)
 }
 
 QTreeView::indicator:unchecked
 {
-    border: 0.11em solid black;
+    border: 0.11em solid #0A0C0D;
     background: rgb(53, 85, 109, 200)
 }
 
@@ -661,7 +663,7 @@ QTextEdit
 
 QDialog QTextEdit
 {
-	background-color: white;
+	background-color: #EDF6FC;
 	selection-background-color: rgb(53, 85, 109);
 	selection-color: #EDF6FC;
 	color: #0A0C0D;
@@ -727,22 +729,25 @@ QTreeView {
     color: #EDF6FC;
     background-color: #6FB1E3;
 }
+
 QTreeView::indicator:checked
 {
-    border: 0.11em solid white;
+    border: 0.11em solid #3E474E;
     background: #4F5A63;
 }
 
 QTreeView::indicator:unchecked
 {
     background: #4F5A63;
-    border:None;
+    border: 0.11em, #4F5A63;
+
 }
 
 QTreeView:item:hover
 {
-    background-color: #6FB1E3;
+    background-color: #6fb1e3;
 }
+
 
 QTreeView:branch:selected,
 QTreeView:branch:hover
@@ -779,7 +784,7 @@ font: 10pt "Segoe UI";
 
 QDialog QAbstractSpinBox{
     alternate-background-color:  #4f5a63;
-	color:  white;
+	color:  #EDF6FC;
 	border-radius: 3px;
 	margin-bottom:8px;
 	padding:0;
