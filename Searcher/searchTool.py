@@ -104,12 +104,15 @@ class SearcherTool:
 
     def userPick(self):
         line = self.dock.lineEdit_address.text().split()
+        self.completer.popup().pressed.disconnect()
         if len(line) == 3:
-            simc = self.dock.lineEdit_address.text().split()[1].strip()
+            simc = line[1].strip()
             city = self.dock.lineEdit_address.text().split(',')[0].strip()
             self.dock.lineEdit_address.setText(city)
             self.getStreets(simc, city)
             self.completer.popup().setFixedHeight(200)
+        else:
+            return
 
     def search_address(self):
         validate_address = self.validate_lineedit()
@@ -133,8 +136,6 @@ class SearcherTool:
             self.timer.setSingleShot(True)
             self.timer.timeout.connect(change_scale)
             self.timer.start(10)
-
-
 
     def validate_lineedit(self):
         if self.dock.lineEdit_address.text():
@@ -194,13 +195,18 @@ class SearcherTool:
         fe.fetch_list('gmina', dis)
         self.dock.comboBox_gmina.blockSignals(True)
         result, communities = fe.responce, []
+        multiples = [e.split('|')[0] for e in result]
         for district in result:
             end = district[-2:]
-            if end == '_1':
-                district += '- miasto'
-            if end == '_2':
-                district += '- gmina'
-            communities.append(district)
+            if multiples.count(district.split('|')[0]) > 1:
+                if end == '_1':
+                    new_ds = district.replace('|', ' - miasto |')
+                    communities.append(new_ds)
+                if end == '_2':
+                    new_ds = district.replace('|', ' - gmina |')
+                    communities.append(new_ds)
+            else:
+                communities.append(district)
         self.dock.comboBox_gmina.addItems(communities)
         self.dock.comboBox_gmina.view().setFixedWidth(self.widthforview(communities))
         self.dock.comboBox_gmina.blockSignals(False)
