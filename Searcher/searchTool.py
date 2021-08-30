@@ -104,12 +104,15 @@ class SearcherTool:
 
     def userPick(self):
         line = self.dock.lineEdit_address.text().split()
+        self.completer.popup().pressed.disconnect()
         if len(line) == 3:
-            simc = self.dock.lineEdit_address.text().split()[1].strip()
+            simc = line[1].strip()
             city = self.dock.lineEdit_address.text().split(',')[0].strip()
             self.dock.lineEdit_address.setText(city)
             self.getStreets(simc, city)
             self.completer.popup().setFixedHeight(200)
+        else:
+            return
 
     def search_address(self):
         validate_address = self.validate_lineedit()
