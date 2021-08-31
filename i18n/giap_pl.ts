@@ -532,17 +532,34 @@ Proszę czekać...</translation>
         <translation>Czy chcesz zapisać zmiany?</translation>
     </message>
     <message>
-        <location filename="../giap_dynamic_layout.py" line="271"/>
+    <location filename="../giap_dynamic_layout.py" line="173"/>
+    <source>Editing tools within a section:
+
+moving tools - clicking and holding the left mouse button
+on the icon and moving it to the desired location
+
+tool removal - double click
+tool icon and click delete button</source>
+    <translation>Edycja narzędzi w obrębie skecji:
+
+przesuwanie narzędzi - kliknięcie oraz przytrzymanie lewym
+przyciskiem myszy ikony i przesunięcie w wybrane miejsce
+
+usuwanie narzędzia - dwukrotne kliknięcie
+ikony narzędzia i przycisk Delete</translation>
+    </message>
+    <message>
+        <location filename="../giap_dynamic_layout.py" line="288"/>
         <source>Select item has sub-section</source>
         <translation>Wybrany element ma podsekcję</translation>
     </message>
     <message>
-        <location filename="../giap_dynamic_layout.py" line="850"/>
+        <location filename="../giap_dynamic_layout.py" line="867"/>
         <source>Composition settings</source>
         <translation>Ustawienia kompozycji</translation>
     </message>
     <message>
-        <location filename="../giap_dynamic_layout.py" line="203"/>
+        <location filename="../giap_dynamic_layout.py" line="220"/>
         <source>GIAP.pl - Website</source>
         <translation>GIAP.pl - Strona WWW</translation>
     </message>
@@ -676,8 +693,8 @@ Proszę czekać...</translation>
     <name>CompositionsSaverDialog</name>
     <message>
         <location filename="../Kompozycje/compositions_saver.ui" line="32"/>
-        <source>COMPOSITIONS</source>
-        <translation>KOMPOZYCJE</translation>
+        <source>GIAP-PolaMap(lite) - COMPOSITIONS</source>
+        <translation>GIAP-PolaMap(lite) - KOMPOZYCJE</translation>
     </message>
     <message>
         <location filename="../Kompozycje/compositions_saver.ui" line="542"/>
@@ -734,8 +751,8 @@ Proszę czekać...</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.ui" line="26"/>
-        <source>Form</source>
-        <translation>Form</translation>
+        <source>GIAP-PolaMap(lite) - Form</source>
+        <translation>GIAP-PolaMap(lite) - Form</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.ui" line="106"/>
@@ -749,8 +766,8 @@ Proszę czekać...</translation>
     </message>
     <message>
         <location filename="../kompozycje_widget.ui" line="14"/>
-        <source>Form composition</source>
-        <translation>formularz kompozycji</translation>
+        <source>GIAP-PolaMap(lite) - Form_composition</source>
+        <translation>GIAP-PolaMap(lite) - formularz kompozycji</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.ui" line="139"/>
@@ -801,8 +818,8 @@ lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
     <name>KompozycjeDialog</name>
     <message>
         <location filename="../Kompozycje/nowa_kompozycja.ui" line="41"/>
-        <source>COMPOSITIONS</source>
-        <translation>KOMPOZYCJE</translation>
+        <source>GIAP-PolaMap(lite) - COMPOSITIONS</source>
+        <translation>GIAP-PolaMap(lite) - KOMPOZYCJE</translation>
     </message>
     <message>
         <location filename="../Kompozycje/dodaj_kompozycje.ui" line="793"/>
@@ -914,8 +931,8 @@ lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
     <name>SectionSelecterDialog</name>
     <message>
         <location filename="../select_section_dialog.ui" line="32"/>
-        <source>Section</source>
-        <translation>Sekcja</translation>
+        <source>GIAP-PolaMap(lite) - Section</source>
+        <translation>GIAP-PolaMap(lite) - Sekcja</translation>
     </message>
         <message>
         <location filename="../select_section_dialog.ui" line="512"/>
@@ -957,8 +974,8 @@ lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
     <name>StyleSelectionDialog</name>
     <message>
         <location filename="../StyleManager/ui_stylemanager.ui" line="32"/>
-        <source>Style</source>
-        <translation>Styl</translation>
+        <source>GIAP-PolaMap(lite) - Style</source>
+        <translation>GIAP-PolaMap(lite) - Styl</translation>
     </message>
     <message>
         <location filename="../StyleManager/ui_stylemanager.ui" line="212"/>
@@ -983,6 +1000,11 @@ lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
 </context>
 <context>
     <name>SettingsDialog</name>
+    <message>
+        <location filename="../Settings/ui_settings_layout.ui" line="35"/>
+        <source>GIAP-PolaMap(lite) - Settings</source>
+        <translation>GIAP-PolaMap(lite) - Ustawienia</translation>
+    </message>
     <message>
         <location filename="../Settings/ui_settings_layout.ui" line="270"/>
         <source>Choose language</source>
@@ -1018,8 +1040,8 @@ lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
     <name>WydrukDialog</name>
     <message>
         <location filename="../wydruk_dialog.ui" line="35"/>
-        <source>Map view printout</source>
-        <translation>Wydruk widoku mapy</translation>
+        <source>GIAP-PolaMap(lite) - Map view printout</source>
+        <translation>GIAP-PolaMap(lite) - Wydruk widoku mapy</translation>
     </message>
     <message>
         <location filename="../wydruk_dialog.ui" line="234"/>

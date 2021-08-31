@@ -882,7 +882,7 @@ class ProgressDialog(QProgressDialog, SingletonModel):
             }
             """
 
-    def __init__(self, parent=None, title='GIAP-Layout'):
+    def __init__(self, parent=None, title='GIAP-PolaMap(lite)'):
         super(ProgressDialog, self).__init__(parent)
         self.setWindowTitle(title)
         self.setWindowIcon(QIcon(':/plugins/giap_layout/icons/giap_logo.png'))

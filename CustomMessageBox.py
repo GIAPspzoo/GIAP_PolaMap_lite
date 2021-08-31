@@ -87,7 +87,7 @@ class CustomMessageBox(QMessageBox):
         grd.addWidget(scrll, 0, 1)
         self.layout().removeItem(self.layout().itemAt(0))
         self.layout().removeItem(self.layout().itemAt(0))
-        self.setWindowTitle('GIAP-Layout')
+        self.setWindowTitle('GIAP-PolaMap(lite)')
         self.setWindowIcon(QIcon(':/plugins/giap_layout/icons/giap_logo.png'))
 
     def button_ok(self):

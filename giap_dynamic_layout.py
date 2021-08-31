@@ -169,14 +169,32 @@ class Widget(QWidget, FORM_CLASS):
                 QApplication.processEvents()
 
         if self.edit_session:
+            self.instr = QLabel()
+            self.instr.setText(tr("""Editing tools within a section:
+
+moving tools - clicking and holding the left mouse button
+on the icon and moving it to the desired location
+
+tool removal - double click
+tool icon and click delete button"""))
+
+            self.instr.setStyleSheet(
+                """QFrame, QLabel, QToolTip, QTextEdit{
+            font:7pt}"""
+            )
+
+            self.instr.setTextFormat(Qt.PlainText)
             self.frm = QFrame()
             self.frm.setObjectName('giapSectionAdd')
-            self.frmlay = QVBoxLayout(self.frm)
+            self.frmlay = QHBoxLayout(self.frm)
 
             self.secadd = CustomSectionAdd()
 
             self.secadd.clicked.connect(self.add_user_selected_section)
             self.frmlay.addWidget(self.secadd)
+            self.frmlay.addStretch()
+            self.frmlay.addStretch()
+            self.frmlay.addWidget(self.instr)
 
             lay = self.tabWidget.widget(tabind).lay
             cnt = lay.count()
@@ -187,7 +205,6 @@ class Widget(QWidget, FORM_CLASS):
                     lay.removeItem(lay.itemAt(i))
 
             self.tabWidget.widget(tabind).lay.addWidget(self.frm)
-            self.tabWidget.widget(tabind).lay.addStretch()
 
         else:
             self.tabWidget.widget(tabind).setUpdatesEnabled(False)

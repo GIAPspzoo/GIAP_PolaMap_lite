@@ -376,7 +376,7 @@ class MainTabQgsWidget:
         self.load_default_user_layout()
 
         self.iface.messageBar().pushMessage(
-            'GIAP Layout',
+            'GIAP-PolaMap(lite)',
             tr('Please, restart QGIS!'),
             Qgis.Info,
             0
@@ -476,7 +476,7 @@ class MainTabQgsWidget:
         self.check_lang_win_flag()
         str(QSettings().setValue('locale/userLocale', 'pl_PL'))
         self.iface.messageBar().pushMessage(
-            'GIAP Layout',
+            'GIAP-PolaMap(lite)',
             tr('Please, restart QGIS!'),
             Qgis.Info,
             0
@@ -487,7 +487,7 @@ class MainTabQgsWidget:
         self.check_lang_win_flag()
         str(QSettings().setValue('locale/userLocale', 'en'))
         self.iface.messageBar().pushMessage(
-            'GIAP Layout',
+            'GIAP-PolaMap(lite)',
             tr('Please, restart QGIS!'),
             Qgis.Info,
             0
@@ -497,7 +497,7 @@ class MainTabQgsWidget:
     def restore_overrideFlag(self):
         str(QSettings().setValue('locale/overrideFlag', "false"))
         self.iface.messageBar().pushMessage(
-            'GIAP Layout',
+            'GIAP-PolaMap(lite)',
             tr('Please, restart QGIS!'),
             Qgis.Info,
             0

@@ -29,7 +29,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Section</string>
+   <string>GIAP-PolaMap(lite) - Section</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -620,7 +620,12 @@ background-color: #EDF6FC;</string>
 
 QTreeView:item:hover
 {
-   background-color:red;
+   background-color: #6FB1E3;
+}
+
+QTreeView:branch:hover
+{
+   background-color: #6FB1E3;
 }
 
 QTreeView

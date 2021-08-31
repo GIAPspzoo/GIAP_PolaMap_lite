@@ -32,7 +32,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Map view printout</string>
+   <string>GIAP-PolaMap(lite) - Map view printout</string>
   </property>
   <property name="windowIcon">
    <iconset>
