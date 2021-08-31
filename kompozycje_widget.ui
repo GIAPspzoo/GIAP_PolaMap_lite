@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form_composition</string>
+   <string>GIAP-PolaMap(lite) - Form_composition</string>
   </property>
   <property name="styleSheet">
    <string notr="true">* {

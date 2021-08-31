@@ -58,7 +58,7 @@ class OrtoAddingTool(object):
                         tr("Error, detaching signals from "
                            "groups in layers tree."
                         ),
-                        tag="GIAP Layout"
+                        tag="GIAP-PolaMap(lite)"
                     )
 
     def action_clicked(self, item):
