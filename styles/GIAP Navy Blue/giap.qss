@@ -72,7 +72,7 @@ QMenu::icon
 
 QWidget:disabled
 {
-	color:  #8b8b8b;
+	color:  gray;
 	background-color:  rgb(53, 85, 109);
 }
 
@@ -88,6 +88,7 @@ QWidget:focus, QMenuBar:focus
 {
 	border: 1px solid #5689b0;
 }
+QScrollArea { border: none;}
 
 QTabWidget:focus, QCheckBox:focus
 {
@@ -99,6 +100,7 @@ QLineEdit
     border-radius: 3px;
     background-color: #4f5a63;
 }
+
 
 QLineEdit:focus{
     border: 2px solid #5689B0;
@@ -129,7 +131,6 @@ QGroupBox::title {
 	padding-left: 10px;
 	padding-right: 10px;
 }
-
 
 QScrollBar:horizontal {
     background-color: #35556D;
@@ -270,7 +271,7 @@ QPushButton:pressed{
 
 QWidget QPushButton:disabled
 {
-    color: #878787;
+    color: gray;
 }
 
 QComboBox
@@ -390,12 +391,12 @@ QHeaderView::section
 
 QCheckBox:disabled
 {
-	color:  #878787;
+	color:  gray;
 }
 
 QWidget QCheckBox:disabled
 {
-    color: #878787;
+    color: gray;
 }
 
 QHeaderView::down-arrow,
@@ -533,7 +534,6 @@ QTreeView::indicator:checked
     background: #4F5A63;
 }
 
-
 QTreeView::indicator:unchecked
 {
     background: #4F5A63;
@@ -626,6 +626,8 @@ QSlider::handle:vertical
     margin: 0 -4px;
     border-radius: 7px;
 }
+QToolButton {
+    color: #EDF6FC;}
 
 QToolBar QToolButton
 {
@@ -656,6 +658,7 @@ QToolButton:pressed
 	background-color: #b7d3e8;
     border-radius: 2px;
 }
+
 QToolButton:hover
 {
 	background-color:  #5689b0;
@@ -668,7 +671,6 @@ QToolButton:checked {
     border: none;
     border-width: 2px;
 }
-
 
 QLabel#inTotalLabel, QLabel#outTotalLabel, QLabel#recordCountLabel
 {
@@ -735,12 +737,12 @@ QDockWidget QToolButton  {
 
 QDockWidget QMenu {
     background-color: rgb(53, 85, 109);
-    color: rgb(255, 255, 255);
+    color: #EDF6FC;
     font: 10pt "Segoe UI";
 }
 
 QDockWidget QMenu::item:disabled {
-    color: rgb(200, 200, 200);
+    color: gray;
 }
 
 QTreeView::item, QTreeView::branch {
@@ -793,7 +795,7 @@ QMenu {
     font: 10pt "Segoe UI";
 }
 QMenu::item:disabled {
-    color: rgb(200, 200, 200);
+    color: gray;
 }
 QLabel {
 background-color: rgb(53, 85, 109);
@@ -846,30 +848,6 @@ QAbstractSpinBox:up-button{
    background-color: #4f5a63;
    border-top-right-radius: 3px
    }
-
-QgsFieldComboBox {
-   background-color: qlineargradient(x1:0, y1:1, x2:1, y2:1, stop:0.012 #B7D8F1, stop:0.05 #B7D8F1, stop:0.09 #4F5A63, stop:0.095 #4F5A63);
-   color: #EDF6FC;
-  }
-
-QgsFieldComboBox QListView{
-   background-color: qlineargradient(x1:0, y1:1, x2:1, y2:1, stop:0.012 #B7D8F1, stop:0.05 #B7D8F1, stop:0.09 #4F5A63, stop:0.095 #4F5A63);
-   color: #EDF6FC;
-   }
-
-QgsFieldComboBox:on
-{
-   background-color: qlineargradient(x1:0, y1:1, x2:1, y2:1, stop:0.012 #B7D8F1, stop:0.05 #B7D8F1, stop:0.09 #4F5A63, stop:0.095 #4F5A63);
-   }
-
-QgsFieldComboBox:on
-{
-  subcontrol-origin: border;
-  subcontrol-position: bottom right;
-   width: 16px;
-   background-color: #4f5a63;
-   border-bottom-right-radius: 3px;
-}
 
 
 QComboBox::drop-down{
