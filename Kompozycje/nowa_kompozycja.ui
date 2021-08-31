@@ -451,7 +451,7 @@ border-bottom: 1px solid #0A0C0D;
 color: #0A0C0D;</string>
            </property>
            <property name="text">
-            <string>Selected layers</string>
+            <string>Select layers</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>

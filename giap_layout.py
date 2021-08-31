@@ -520,7 +520,8 @@ class MainTabQgsWidget:
 
     def restart_qgis(self):
         if project.write():
-            res = CustomMessageBox(None, "The program must be restarted for the changes to take effect. Restart now?").button_yes_no()
+            res = CustomMessageBox(None, "The program must be restarted for the changes to take effect. Restart now?\n"
+                                         "Aby zachować zmiany, program musi zostać uruchomiony ponownie. Czy uruchomić ponownie?").button_yes_no()
             if res == QMessageBox.Yes:
                 project.setDirty(False)  # workaround - mimo poprawnego zapisu nadal pyta o zapis
                 subprocess.Popen(f'{QgsApplication.arguments()[0]} {project.fileName()}')

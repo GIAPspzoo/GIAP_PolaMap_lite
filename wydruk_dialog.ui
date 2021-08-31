@@ -316,7 +316,7 @@ border: 1px solid #5689b0;
              <item row="0" column="1">
               <widget class="QCheckBox" name="legendCheckBox">
                <property name="text">
-                <string>add legend</string>
+                <string>Add legend</string>
                </property>
               </widget>
              </item>

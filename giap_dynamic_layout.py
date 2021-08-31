@@ -170,10 +170,10 @@ class Widget(QWidget, FORM_CLASS):
 
         if self.edit_session:
             self.instr = QLabel()
-            self.instr.setText(tr("""Editing tools within a section:
+            self.instr.setText(tr("""Edit tools within a section:
 
-moving tools - clicking and holding the left mouse button
-on the icon and moving it to the desired location
+moving tools - click and hold the left mouse button
+on the icon and move it to the desired location
 
 tool removal - double click
 tool icon and click delete button"""))

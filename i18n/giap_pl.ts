@@ -29,17 +29,12 @@
         <translation>Zapis pliku</translation>
     </message>
     <message>
-        <location filename="../QuickPrint.py" line="174"/>
-        <source>Quick print</source>
-        <translation>Szybki wydruk</translation>
-    </message>
-    <message>
         <location filename="../QuickPrint.py" line="270"/>
         <source>SCALE: </source>
         <translation>SKALA: </translation>
     </message>
     <message>
-        <location filename="../Kompozycje/Kompozycje.py" line="835"/>
+        <location filename="../Kompozycje/Kompozycje.py" line="410"/>
         <source>All layers</source>
         <translation>Wszystkie warstwy</translation>
     </message>
@@ -81,7 +76,7 @@ Compositions will be updated.</source>
 Kompozycje zostaną uaktualnione.</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/Kompozycje.py" line="455"/>
+        <location filename="../Kompozycje/Kompozycje.py" line="454"/>
         <source>Compositions</source>
         <translation>Kompozycje</translation>
     </message>
@@ -101,7 +96,7 @@ Kompozycje zostaną uaktualnione.</translation>
         <translation>Brak warstw w projekcie!</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/Kompozycje.py" line="773"/>
+        <location filename="../Kompozycje/Kompozycje.py" line="523"/>
         <source>A composition unit with name already exists!</source>
         <translation>Wskazana nazwa już istnieje!</translation>
     </message>
@@ -454,17 +449,17 @@ Proszę czekać...</translation>
         <translation>GIAP.pl - Strona WWW</translation>
     </message>
     <message>
-        <location filename="../giap_layout.py" line="177"/>
+        <location filename="../giap_layout.py" line="178"/>
         <source>Map quick print</source>
         <translation>Szybki wydruk mapy</translation>
     </message>
     <message>
-        <location filename="../giap_layout.py" line="327"/>
+        <location filename="../giap_layout.py" line="332"/>
         <source>My Prints</source>
         <translation>Moje wydruki</translation>
     </message>
     <message>
-        <location filename="../giap_layout.py" line="375"/>
+        <location filename="../giap_layout.py" line="380"/>
         <source>Please, restart QGIS!</source>
         <translation>Proszę uruchomić QGISa ponownie!</translation>
     </message>
@@ -485,7 +480,6 @@ Proszę czekać...</translation>
         <source>for the street:</source>
         <translation>dla ulicy:</translation>
     </message>
-
     <message>
         <location filename="../OrtoTools.py" line="58"/>
         <source>Error, detaching signals from groups in layers tree.</source>
@@ -517,12 +511,12 @@ Proszę czekać...</translation>
         <translation>Zmień styl</translation>
     </message>
         <message>
-        <location filename="../giap_layout.py" line="124"/>
+        <location filename="../giap_layout.py" line="123"/>
         <source>Settings</source>
         <translation>Ustawienia</translation>
     </message>
     <message>
-        <location filename="../giap_layout.py" line="394"/>
+        <location filename="../giap_layout.py" line="399"/>
         <source>Finish edition</source>
         <translation>Zakończ edycję</translation>
     </message>
@@ -533,14 +527,14 @@ Proszę czekać...</translation>
     </message>
     <message>
     <location filename="../giap_dynamic_layout.py" line="173"/>
-    <source>Editing tools within a section:
+    <source>Edit tools within a section:
 
-moving tools - clicking and holding the left mouse button
-on the icon and moving it to the desired location
+moving tools - click and hold the left mouse button
+on the icon and move it to the desired location
 
 tool removal - double click
 tool icon and click delete button</source>
-    <translation>Edycja narzędzi w obrębie skecji:
+    <translation>Edycja narzędzi w obrębie sekcji:
 
 przesuwanie narzędzi - kliknięcie oraz przytrzymanie lewym
 przyciskiem myszy ikony i przesunięcie w wybrane miejsce
@@ -569,17 +563,17 @@ ikony narzędzia i przycisk Delete</translation>
         <translation>Usługa nie znalazła dopasowań, zły numer działki.</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchParcel.py" line="56"/>
+        <location filename="../Searcher/searchParcel.py" line="53"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
         <message>
-        <location filename="../Searcher/searchParcel.py" line="59"/>
+        <location filename="../Searcher/searchParcel.py" line="56"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchParcel.py" line="62"/>
+        <location filename="../Searcher/searchParcel.py" line="59"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
@@ -624,7 +618,7 @@ ikony narzędzia i przycisk Delete</translation>
         <translation>Nie znaleziono obiektów. Wpisz poprawną wartość.</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchParcel.py" line="49"/>
+        <location filename="../Searcher/searchParcel.py" line="53"/>
         <source>Service returned incomplete responce.</source>
         <translation>Usługa zwróciła niepełną odpowiedź.</translation>
     </message>
@@ -644,37 +638,37 @@ ikony narzędzia i przycisk Delete</translation>
         <translation>UWAGA</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchTool.py" line="143"/>
+        <location filename="../Searcher/searchTool.py" line="144"/>
         <source>Invalid</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchTool.py" line="143"/>
+        <location filename="../Searcher/searchTool.py" line="144"/>
         <source>Empty address field</source>
         <translation>Puste pole adresu</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchTool.py" line="225"/>
+        <location filename="../Searcher/searchTool.py" line="231"/>
         <source>Cadastral district</source>
         <translation>Obręb ewidencyjny</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchTool.py" line="232"/>
+        <location filename="../Searcher/searchTool.py" line="238"/>
         <source>Municipality</source>
         <translation>Gmina</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchTool.py" line="239"/>
+        <location filename="../Searcher/searchTool.py" line="245"/>
         <source>District</source>
         <translation>Powiat</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchTool.py" line="127"/>
+        <location filename="../Searcher/searchTool.py" line="130"/>
         <source>Warning!</source>
         <translation>Uwaga!</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchTool.py" line="272"/>
+        <location filename="../Searcher/searchTool.py" line="278"/>
         <source>Address of parcel is not valid.</source>
         <translation>Adres działki jest niepoprawny.</translation>
     </message>
@@ -684,7 +678,7 @@ ikony narzędzia i przycisk Delete</translation>
         <translation>Usługa zwróciła {} niepoprawnych obiektów.</translation>
     </message>
     <message>
-        <location filename="../ribbon_config.py" line="112"/>
+        <location filename="../ribbon_config.py" line="122"/>
         <source>Advanced attributes</source>
         <translation>Zaawansowane atrybuty</translation>
     </message>
@@ -867,19 +861,14 @@ lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
         <translation>Dodaj</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="650"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="248"/>
         <source>Save</source>
         <translation>Zapisz</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="672"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="277"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
-    </message>
-    <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="342"/>
-        <source>Layers group</source>
-        <translation>Grupy warstw</translation>
     </message>
     <message>
         <location filename="../Kompozycje/nowa_kompozycja.ui" line="370"/>
@@ -888,7 +877,7 @@ lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
     </message>
     <message>
         <location filename="../Kompozycje/nowa_kompozycja.ui" line="454"/>
-        <source>Selected layers</source>
+        <source>Select layers</source>
         <translation>Wybrane warstwy</translation>
     </message>
     <message>

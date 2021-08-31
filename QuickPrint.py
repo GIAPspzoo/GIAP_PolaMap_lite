@@ -171,7 +171,7 @@ class PrintMapTool:
             QgsProject.instance().removeMapLayers(tmp_layer)
 
     def preview(self):
-        file_handle, filename = tempfile.mkstemp(suffix=tr('quick_print'))
+        file_handle, filename = tempfile.mkstemp(suffix='quick_print')
         os.close(file_handle)
         tmp_layer = self.create_tmp_layer()
         self.create_composer()
