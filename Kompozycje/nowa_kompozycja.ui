@@ -12,8 +12,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1233</width>
-    <height>688</height>
+    <width>1210</width>
+    <height>615</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -38,7 +38,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>KOMPOZYCJA</string>
+   <string>GIAP-PolaMap(lite) - COMPOSITIONS</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -46,10 +46,130 @@
   </property>
   <property name="styleSheet">
    <string notr="true">* {
-background-color: rgb(255, 255, 255);
-font: 10pt &quot;Segoe UI&quot;;
+	background-color: rgb(53, 85, 109);
+    font: 10pt &quot;Segoe UI&quot;; 
+	color: #EDF6FC;
 }
-</string>
+QAbstractItemView
+{
+	alternate-background-color:  #e6e6e6;
+}
+QComboBox
+{
+	selection-background-color: #b7d3e8;
+    background-color: #4f5a63;
+	border-style: solid;
+	border: 1px solid  #5689b0;
+	border-radius: 3px;
+	padding: 2px;
+	font: 9pt &quot;Segoe UI&quot;;
+    height: 20px;
+}
+
+QComboBox:on
+{
+	background-color: #4f5a63;
+	padding-top: 3px;
+	padding-left: 1px;
+	selection-background-color: #4a4a4a;
+}
+
+QComboBox QAbstractItemView
+{
+	background-color: #4f5a63;
+	border-radius: 4px;
+	border: 1px solid  #6fb1e3;
+	selection-background-color: #4f5a63;
+    padding: 4px 10px 4px 10px;
+    width: 1.9em;
+}
+
+QComboBox::drop-down
+{
+	subcontrol-origin: padding;
+	subcontrol-position: top right;
+	width: 15px;
+    background-color: #5689b0;
+	border-left-width: 0;
+	border-left-color:  #1a2936;
+	border-left-style: solid;
+	border-top-right-radius: 3px; 
+	border-bottom-right-radius: 3px;
+}
+
+QComboBox::down-arrow
+{
+	image: url(icons/down_arrow_disabled.png);
+}
+
+QComboBox::down-arrow:on, 
+QComboBox::down-arrow:hover,
+QComboBox::down-arrow:focus
+{
+	image: url(icons/down_arrow.png);
+}
+
+QLineEdit
+{
+	border: None;
+    border-radius: 3px;
+    background-color: #4f5a63;
+}
+
+QPushButton {
+	color: #0A0C0D;
+	border: 1px solid #0A0C0D;
+	background-color: #b7d3e8;
+	border-radius: 3px;
+	padding: 4px;
+}
+
+QPushButton:hover {
+	font-weight: bold;
+}
+QPushButton:pressed {
+   background-color: #5689b0;
+   border: 1px solid #6fb1e3;
+}
+
+QPushButton:disabled
+{
+	color: gray;
+}
+
+QGroupBox {
+border: 1px solid #5689b0;
+}
+
+QToolButton {
+   border: 0 solid transparent;
+   color: #EDF6FC;
+   border-radius: 3px;
+}
+
+QToolButton:hover {
+   background-color: #b7d3e8;
+   border: 1px solid #0A0C0D;
+   color: #0A0C0D;
+}
+
+QToolButton:pressed {
+   background-color: #b7d3e8;
+   border: 1px solid #0A0C0D;
+   color: #0A0C0D;
+}
+
+QListView:item:selected {
+   background-color: #6fb1e3;
+}
+
+QListView:item:hover {
+   background-color: #6fb1e3;
+}
+   </string>
+  </property>
+  <property name="locale">
+   <locale language="English" country="UnitedKingdom"/>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
@@ -89,10 +209,29 @@ font: 10pt &quot;Segoe UI&quot;;
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
        <property name="sizeHint" stdset="0">
         <size>
-         <width>40</width>
-         <height>20</height>
+         <width>500</width>
+         <height>60</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>60</height>
         </size>
        </property>
       </spacer>
@@ -101,27 +240,59 @@ font: 10pt &quot;Segoe UI&quot;;
       <widget class="QPushButton" name="pushButton_2">
        <property name="minimumSize">
         <size>
-         <width>70</width>
+         <width>120</width>
          <height>0</height>
         </size>
        </property>
        <property name="text">
-        <string>Zapisz</string>
+        <string>Save</string>
        </property>
       </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>50</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
      <item>
       <widget class="QPushButton" name="pushButton">
        <property name="minimumSize">
         <size>
-         <width>70</width>
+         <width>120</width>
          <height>0</height>
         </size>
        </property>
        <property name="text">
-        <string>Anuluj</string>
+        <string>Cancel</string>
        </property>
       </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>400</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
     </layout>
    </item>
@@ -143,7 +314,19 @@ font: 10pt &quot;Segoe UI&quot;;
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true"/>
+      <string notr="true">QScrollBar::handle:horizontal{
+	background-color: #B7D3E8;
+	border-radius: 4px;
+}
+
+QScrollBar::handle:vertical{
+	background-color: #B7D3E8;
+	border-radius: 4px;
+}
+
+QAbstractScrollArea:corner{
+    background-color: #EDF6FC;
+}</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
@@ -152,85 +335,172 @@ font: 10pt &quot;Segoe UI&quot;;
       <enum>QFrame::Plain</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="1" column="0">
-       <widget class="QLabel" name="grupy_label">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+      <item row="1" column="1" rowspan="5">
+       <widget class="QFrame" name="frame_4">
+        <property name="styleSheet">
+         <string notr="true">border: 1px solid #0A0C0D;
+border-radius: 10px;
+background-color: #EDF6FC;</string>
         </property>
-        <property name="text">
-         <string>Grupy warstw</string>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
         </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_5">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border-width: 0;
+border-radius: 0;
+border-bottom: 1px solid #0A0C0D;
+color: #0A0C0D;</string>
+           </property>
+           <property name="text">
+            <string>Layers in groups</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QListView" name="warstwy_w_grupie_table">
+           <property name="styleSheet">
+            <string notr="true">QListView {
+	border: 0;
+	color: #0A0C0D;
+}
+
+QScrollBar:horizontal {
+	border: None;
+}
+
+QScrollBar:vertical{
+	border: None;
+}</string>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="dragEnabled">
+            <bool>false</bool>
+           </property>
+           <property name="dragDropOverwriteMode">
+            <bool>false</bool>
+           </property>
+           <property name="dragDropMode">
+            <enum>QAbstractItemView::NoDragDrop</enum>
+           </property>
+           <property name="defaultDropAction">
+            <enum>Qt::MoveAction</enum>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::MultiSelection</enum>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLabel" name="warstwy_w_grupie_label">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Warstwy w grupie</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="3">
-       <widget class="QLabel" name="wybrane_warstwy_label">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Wybrane warstwy</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="4">
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Nazwa kompozycji</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="nazwa_lineEdit"/>
-        </item>
-       </layout>
       </item>
       <item row="3" column="3">
-       <widget class="QListView" name="warstwy_table">
-        <property name="editTriggers">
-         <set>QAbstractItemView::NoEditTriggers</set>
+       <widget class="QFrame" name="frame_5">
+        <property name="styleSheet">
+         <string notr="true">border: 1px solid #0A0C0D;
+border-radius: 10px;
+background-color: #EDF6FC;</string>
         </property>
-        <property name="dragEnabled">
-         <bool>false</bool>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
         </property>
-        <property name="dragDropOverwriteMode">
-         <bool>false</bool>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
         </property>
-        <property name="dragDropMode">
-         <enum>QAbstractItemView::NoDragDrop</enum>
-        </property>
-        <property name="defaultDropAction">
-         <enum>Qt::MoveAction</enum>
-        </property>
-        <property name="alternatingRowColors">
-         <bool>true</bool>
-        </property>
-        <property name="selectionMode">
-         <enum>QAbstractItemView::SingleSelection</enum>
-        </property>
-        <property name="selectionBehavior">
-         <enum>QAbstractItemView::SelectRows</enum>
-        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_8">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_8">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border-width: 0;
+border-radius: 0;
+border-bottom: 1px solid #0A0C0D;
+color: #0A0C0D;</string>
+           </property>
+           <property name="text">
+            <string>Select layers</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QListView" name="warstwy_table">
+           <property name="styleSheet">
+            <string notr="true">QListView {
+	border: 0;
+	color: #0A0C0D;
+}
+
+QScrollBar:horizontal {
+	border: None;
+}
+
+QScrollBar:vertical{
+	border: None;
+}</string>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="dragEnabled">
+            <bool>false</bool>
+           </property>
+           <property name="dragDropOverwriteMode">
+            <bool>false</bool>
+           </property>
+           <property name="dragDropMode">
+            <enum>QAbstractItemView::NoDragDrop</enum>
+           </property>
+           <property name="defaultDropAction">
+            <enum>Qt::MoveAction</enum>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::MultiSelection</enum>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
       <item row="2" column="3">
@@ -251,42 +521,149 @@ font: 10pt &quot;Segoe UI&quot;;
          <item>
           <widget class="QPushButton" name="checkPushButton">
            <property name="text">
-            <string>Zaznacz</string>
+            <string>Select</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="uncheckPushButton">
            <property name="text">
-            <string>Odznacz</string>
+            <string>Unselect</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="checkAllPushButton">
            <property name="text">
-            <string>Zaznacz wszystkie</string>
+            <string>Select all</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="uncheckAllPushButton">
            <property name="text">
-            <string>Odznacz wszystkie</string>
+            <string>Unselect All</string>
            </property>
           </widget>
          </item>
         </layout>
        </widget>
       </item>
-      <item row="2" column="2" rowspan="3">
+      <item row="1" column="0" rowspan="5">
+       <widget class="QFrame" name="frame_2">
+        <property name="styleSheet">
+         <string notr="true">border: 1px solid #0A0C0D;
+border-radius: 10px;
+background-color: #EDF6FC;</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_4">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border-width: 0;
+border-radius: 0;
+border-bottom: 1px solid #0A0C0D;
+color: #0A0C0D;</string>
+           </property>
+           <property name="text">
+            <string>Groups</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QListView" name="grupy_table">
+           <property name="styleSheet">
+            <string notr="true">QListView {
+	border: 0px;
+	color: #0A0C0D;
+}
+
+QScrollBar:horizontal {
+	border: None;
+}
+
+QScrollBar:vertical{
+	border: None;
+}</string>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="dragEnabled">
+            <bool>false</bool>
+           </property>
+           <property name="dragDropOverwriteMode">
+            <bool>false</bool>
+           </property>
+           <property name="dragDropMode">
+            <enum>QAbstractItemView::NoDragDrop</enum>
+           </property>
+           <property name="defaultDropAction">
+            <enum>Qt::MoveAction</enum>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::SingleSelection</enum>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="4">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Composition name:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="nazwa_lineEdit">
+          <property name="styleSheet">
+           <string notr="true">QLineEdit:focus{
+    border: 1px solid #5689B0;
+}</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="2" column="2" rowspan="4">
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <widget class="QToolButton" name="dodaj_warstwe">
           <property name="minimumSize">
            <size>
             <width>30</width>
-            <height>40</height>
+            <height>100</height>
            </size>
           </property>
           <property name="text">
@@ -302,7 +679,7 @@ font: 10pt &quot;Segoe UI&quot;;
           <property name="minimumSize">
            <size>
             <width>30</width>
-            <height>40</height>
+            <height>100</height>
            </size>
           </property>
           <property name="text">
@@ -315,63 +692,7 @@ font: 10pt &quot;Segoe UI&quot;;
         </item>
        </layout>
       </item>
-      <item row="2" column="1" rowspan="3">
-       <widget class="QListView" name="warstwy_w_grupie_table">
-        <property name="editTriggers">
-         <set>QAbstractItemView::NoEditTriggers</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>false</bool>
-        </property>
-        <property name="dragDropOverwriteMode">
-         <bool>false</bool>
-        </property>
-        <property name="dragDropMode">
-         <enum>QAbstractItemView::NoDragDrop</enum>
-        </property>
-        <property name="defaultDropAction">
-         <enum>Qt::MoveAction</enum>
-        </property>
-        <property name="alternatingRowColors">
-         <bool>true</bool>
-        </property>
-        <property name="selectionMode">
-         <enum>QAbstractItemView::MultiSelection</enum>
-        </property>
-        <property name="selectionBehavior">
-         <enum>QAbstractItemView::SelectRows</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0" rowspan="3">
-       <widget class="QListView" name="grupy_table">
-        <property name="editTriggers">
-         <set>QAbstractItemView::NoEditTriggers</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>false</bool>
-        </property>
-        <property name="dragDropOverwriteMode">
-         <bool>false</bool>
-        </property>
-        <property name="dragDropMode">
-         <enum>QAbstractItemView::NoDragDrop</enum>
-        </property>
-        <property name="defaultDropAction">
-         <enum>Qt::MoveAction</enum>
-        </property>
-        <property name="alternatingRowColors">
-         <bool>true</bool>
-        </property>
-        <property name="selectionMode">
-         <enum>QAbstractItemView::SingleSelection</enum>
-        </property>
-        <property name="selectionBehavior">
-         <enum>QAbstractItemView::SelectRows</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="3">
+      <item row="5" column="3">
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
          <widget class="QToolButton" name="wdol_warstwe">
@@ -410,8 +731,58 @@ font: 10pt &quot;Segoe UI&quot;;
      </layout>
     </widget>
    </item>
+   <item row="0" column="1">
+    <widget class="QFrame" name="frame_3">
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: #4f5a63;</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <widget class="QLabel" name="title_label_3">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>0</y>
+        <width>261</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Segoe UI</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <italic>false</italic>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color : #EDF6FC;	font-weight: bold;</string>
+      </property>
+      <property name="text">
+       <string>Add new composition</string>
+      </property>
+     </widget>
+    </widget>
+   </item>
    <item row="0" column="0" rowspan="3">
-    <widget class="QWidget" name="widget" native="true">
+    <widget class="QFrame" name="frame">
      <property name="minimumSize">
       <size>
        <width>120</width>
@@ -428,241 +799,17 @@ font: 10pt &quot;Segoe UI&quot;;
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(53, 85, 109);
-font: 75 8pt &quot;Segoe UI Light&quot;;
-</string>
+      <string notr="true">
+* {
+	font: 75 8pt &quot;Segoe UI Light&quot;;
+	color: #0A0C0D;
+}
+
+QFrame {
+	border-right: 2px solid #b7d3e8;
+}</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="0">
-       <widget class="QRadioButton" name="radioButton_10">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>20</height>
-         </size>
-        </property>
-        <property name="palette">
-         <palette>
-          <active>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>255</red>
-              <green>255</green>
-              <blue>255</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Button">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>53</red>
-              <green>85</green>
-              <blue>109</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Text">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>255</red>
-              <green>255</green>
-              <blue>255</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="ButtonText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>255</red>
-              <green>255</green>
-              <blue>255</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Base">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>53</red>
-              <green>85</green>
-              <blue>109</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Window">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>53</red>
-              <green>85</green>
-              <blue>109</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </active>
-          <inactive>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>255</red>
-              <green>255</green>
-              <blue>255</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Button">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>53</red>
-              <green>85</green>
-              <blue>109</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Text">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>255</red>
-              <green>255</green>
-              <blue>255</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="ButtonText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>255</red>
-              <green>255</green>
-              <blue>255</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Base">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>53</red>
-              <green>85</green>
-              <blue>109</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Window">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>53</red>
-              <green>85</green>
-              <blue>109</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </inactive>
-          <disabled>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>255</red>
-              <green>255</green>
-              <blue>255</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Button">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>53</red>
-              <green>85</green>
-              <blue>109</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Text">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>255</red>
-              <green>255</green>
-              <blue>255</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="ButtonText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>255</red>
-              <green>255</green>
-              <blue>255</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Base">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>53</red>
-              <green>85</green>
-              <blue>109</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Window">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>53</red>
-              <green>85</green>
-              <blue>109</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </disabled>
-         </palette>
-        </property>
-        <property name="font">
-         <font>
-          <family>Segoe UI</family>
-          <pointsize>10</pointsize>
-          <weight>75</weight>
-          <italic>false</italic>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QRadioButton::indicator::checked  {
-	border: 2px solid black;
-	border-radius: 9px;
-	background-color: rgb(252, 67, 73);
-	width: 15px;
-	height: 15px;
-	margin-left: 5px;
-}
-
-QRadioButton::indicator::unchecked  {
-	border: 2px solid black;
-	border-radius: 9px;
-	background-color: rgb(255, 255, 255);
-	width: 15px;
-	height: 15px;
-	margin-left: 5px;
-}
-
-QRadioButton {
-	color : white;
-	font: 10pt &quot;Segoe UI&quot;;
-	font-weight: bold; 
-	margin-left: 5px;
-	margin-top: 5px;
-}</string>
-        </property>
-        <property name="text">
-         <string>Ustawienia</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="0">
        <spacer name="verticalSpacer_2">
         <property name="orientation">
@@ -676,67 +823,32 @@ QRadioButton {
         </property>
        </spacer>
       </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="styleSheet">
+         <string notr="true">   background-color: #b7d3e8;
+   color: #0A0C0D;
+   font: 10pt &quot;Segoe UI&quot;; 
+   font-weight: bold;
+   padding-left: 5px;
+   padding-right: 5px;</string>
+        </property>
+        <property name="text">
+         <string>Settings</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
      </layout>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QFrame" name="frame_3">
-     <property name="minimumSize">
-      <size>
-       <width>200</width>
-       <height>20</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>20</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(252, 67, 73);</string>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
-     </property>
-     <widget class="QLabel" name="title_label_3">
-      <property name="geometry">
-       <rect>
-        <x>1</x>
-        <y>1</y>
-        <width>261</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Segoe UI</family>
-        <pointsize>10</pointsize>
-        <weight>75</weight>
-        <italic>false</italic>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color : white;	font-weight: bold;</string>
-      </property>
-      <property name="text">
-       <string>Dodawanie nowej kompozycji</string>
-      </property>
-     </widget>
     </widget>
    </item>
   </layout>
  </widget>
  <tabstops>
   <tabstop>nazwa_lineEdit</tabstop>
-  <tabstop>grupy_table</tabstop>
-  <tabstop>warstwy_w_grupie_table</tabstop>
   <tabstop>dodaj_warstwe</tabstop>
-  <tabstop>warstwy_table</tabstop>
   <tabstop>checkPushButton</tabstop>
   <tabstop>uncheckPushButton</tabstop>
   <tabstop>checkAllPushButton</tabstop>
@@ -746,7 +858,6 @@ QRadioButton {
   <tabstop>wgore_warstwe</tabstop>
   <tabstop>pushButton_2</tabstop>
   <tabstop>pushButton</tabstop>
-  <tabstop>radioButton_10</tabstop>
  </tabstops>
  <resources/>
  <connections>

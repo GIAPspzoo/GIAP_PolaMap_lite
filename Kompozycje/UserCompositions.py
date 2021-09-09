@@ -5,7 +5,7 @@ from .CompositionsLib import (
     get_layers_ids_from_composition,
     get_checked_layers_ids_from_composition,
 )
-from GIAP_funkcje import get_project_config
+from ..utils import get_project_config
 
 """
 Kompozycje użytkownika.
@@ -54,5 +54,3 @@ def set_composition(name):
     LayersPanel().uncheckAllGroup()
     LayersPanel().checkGroupsByName(groups)
     LayersPanel().checkLayersByIds(checked_layers_ids)
-
-

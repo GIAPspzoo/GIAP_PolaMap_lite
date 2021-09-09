@@ -3,13 +3,13 @@
 # This file should be included when you package your plugin.# Mandatory items:
 
 [general]
-name=GIAP Layout
+name=GIAP-PolaMap(lite)
 qgisMinimumVersion=3.10
 description=Changing the standard QGIS layout.
 
 version=0.1
-author=
-email=
+author=GIAP Team
+email= biuro@giap.pl
 
 about=Changing the standard QGIS layout.
 
@@ -28,7 +28,7 @@ tags=
 
 homepage=
 category=Plugins
-icon=icon.png
+icon=giap.ico
 # experimental flag
 experimental=True
 
