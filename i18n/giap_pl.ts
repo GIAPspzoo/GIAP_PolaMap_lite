@@ -902,8 +902,13 @@ lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
     </message>
     <message>
         <location filename="../Kompozycje/nowa_kompozycja.ui" line="545"/>
-        <source>Unselect all</source>
+        <source>Unselect All</source>
         <translation>Odznacz wszystkie</translation>
+    </message>
+    <message>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="584"/>
+        <source>Groups</source>
+        <translation>Grupy</translation>
     </message>
     <message>
         <location filename="../Kompozycje/nowa_kompozycja.ui" line="837"/>
