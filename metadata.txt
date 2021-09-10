@@ -5,32 +5,33 @@
 [general]
 name=GIAP-PolaMap(lite)
 qgisMinimumVersion=3.10
-description=Changing the standard QGIS layout.
+description=GIAP-PolaMap(lite) is an open-source plugin, which allows customization of toolbar and adds proprietary tools to QGIS.
+about=The plugin consists of several elements, which include proprietary tools of one of polish firm producing GIS software - GIAP SP. z o.o.
+The proprietary GIAP tools include quick print of map, creating own map compositions, ability to quickly add WMS/WMTS services, 
+search engine for data from the ULDK service and customization of toolbar.
 
 version=0.1
-author=GIAP Team
-email= biuro@giap.pl
+author=GIAP
+email= qgis@giap.pl
 
-about=Changing the standard QGIS layout.
-
-tracker=http://bugs
-repository=http://repo
+tracker=https://github.com/GIAPspzoo/GIAP_PolaMap_lite/issues
+repository=https://github.com/GIAPspzoo/GIAP_PolaMap_lite
 # End of mandatory metadata
 
 # Recommended items:
 
 hasProcessingProvider=no
 # Uncomment the following line and add your changelog:
-# changelog=
+changelog= 0.1 - First stable release for QGIS 3
 
 # Tags are comma separated with spaces allowed
-tags=
+tags=python, giap, toolbar, personalization
 
-homepage=
+homepage=https://github.com/GIAPspzoo/GIAP_PolaMap_lite
 category=Plugins
-icon=giap.ico
+icon=icons/giap.png
 # experimental flag
-experimental=True
+experimental=False
 
 # deprecated flag (applies to the whole plugin, not just a single version)
 deprecated=False
