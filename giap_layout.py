@@ -238,7 +238,7 @@ class MainTabQgsWidget:
                         sec.add_action(*btn)
                     else:
                         if btn[0] == 'mActionShowAlignRasterTool':
-                            child.setIcon(QIcon(f'{self.plugin_dir}/icons/orto_icon2.png'))
+                            child.setIcon(QIcon(f'{self.plugin_dir}/icons/mActionShowAlignRasterTool.png'))
                         sec.add_action(child, *btn[1:])
                 if dsec['label'] == 'Prints':
                     self.custom_prints()
@@ -268,7 +268,6 @@ class MainTabQgsWidget:
         b_mprints = self.main_widget.findChildren(QToolButton, 'giapMyPrints')
         for b_mprint in b_mprints:
             b_mprint.setIcon(QIcon(f'{self.plugin_dir}/icons/my_prints.png'))
-
         self.my_prints_setup()
 
     def save_default_user_layout(self):
