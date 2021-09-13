@@ -5,10 +5,10 @@ from plugins.processing.tools.general import execAlgorithmDialog
 from qgis.PyQt.QtCore import Qt, QSize, QEvent, pyqtSignal, QMimeData, QRect
 from qgis.PyQt import uic
 from qgis.PyQt.QtGui import QDrag, QPainter, QPixmap, QCursor, QIcon, QFont, QFontMetrics
-from qgis.PyQt.QtWidgets import QWidget, QApplication, QHBoxLayout,\
+from qgis.PyQt.QtWidgets import QWidget, QApplication, QHBoxLayout, \
     QFrame, QLabel, QPushButton, QTabBar, QToolButton, QVBoxLayout, \
     QGridLayout, QSpacerItem, QLineEdit, QWidgetItem, QAction, \
-    QBoxLayout, QMessageBox, QWidgetAction
+    QBoxLayout, QMessageBox, QWidgetAction, QSizePolicy, QScrollArea
 from qgis._core import QgsApplication
 from qgis.utils import iface
 
@@ -170,31 +170,32 @@ class Widget(QWidget, FORM_CLASS):
 
         if self.edit_session:
             self.instr = QLabel()
-            self.instr.setText(tr("""Edit tools within a section:
+            self.instr.setText(f"""<html><head/><body><b>{tr('Edit tools within a section:')}</b><br>
+<b>{tr('Moving tools')}</b> - {tr('click and hold the left mouse button')}<br>
+{tr('on the icon and move it to the desired location')}<br><br>
 
-moving tools - click and hold the left mouse button
-on the icon and move it to the desired location
+<b>{tr('Tool removal')}</b> - {tr('double click')}<br>
+{tr('tool icon and click delete button')}</body></html>""")
 
-tool removal - double click
-tool icon and click delete button"""))
-
+            scrll = QScrollArea(self)
+            scrll.setWidgetResizable(True)
+            scrll.setWidget(self.instr)
             self.instr.setStyleSheet(
                 """QFrame, QLabel, QToolTip, QTextEdit{
-            font:7pt}"""
+            font:9pt}"""
             )
-
-            self.instr.setTextFormat(Qt.PlainText)
+            self.instr.setTextFormat(Qt.AutoText)
+            self.instr.setScaledContents(True)
             self.frm = QFrame()
             self.frm.setObjectName('giapSectionAdd')
             self.frmlay = QHBoxLayout(self.frm)
-
             self.secadd = CustomSectionAdd()
 
             self.secadd.clicked.connect(self.add_user_selected_section)
             self.frmlay.addWidget(self.secadd)
             self.frmlay.addStretch()
             self.frmlay.addStretch()
-            self.frmlay.addWidget(self.instr)
+            self.frmlay.addWidget(scrll)
 
             lay = self.tabWidget.widget(tabind).lay
             cnt = lay.count()
@@ -205,7 +206,6 @@ tool icon and click delete button"""))
                     lay.removeItem(lay.itemAt(i))
 
             self.tabWidget.widget(tabind).lay.addWidget(self.frm)
-
         else:
             self.tabWidget.widget(tabind).setUpdatesEnabled(False)
             self._section_control_remove(tabind)
@@ -617,7 +617,7 @@ class CustomSection(QWidget):
         # remove selected buttons
         for col in range(self.gridLayout.columnCount()):
             for row in [0, 1]:
-                it = self.gridLayout.AtPosition(row, col)
+                it = self.gridLayout.itemAtPosition(row, col)
                 if it is None:
                     continue
                 if not it.widget().selected:
@@ -720,7 +720,14 @@ class CustomSection(QWidget):
             'mProcessingUserMenu_qgis_listuniquevalues', 'mProcessingUserMenu_qgis_randompointsinsidepolygons',
             'mProcessingUserMenu_qgis_regularpoints', 'mProcessingUserMenu_qgis_voronoipolygons',
             'mProcessingUserMenu_native_dissolve', 'mProcessingUserMenu_qgis_randompointsinlayerbounds',
-
+            'mProcessingUserMenu_native_densifygeometries','mProcessingUserMenu_gdal_aspect',
+            'mProcessingUserMenu_gdal_fillnodata', 'mProcessingUserMenu_gdal_gridaverage',
+            'mProcessingUserMenu_gdal_griddatametrics', 'mProcessingUserMenu_gdal_gridinversedistance',
+            'mProcessingUserMenu_gdal_gridnearestneighbor', 'mProcessingUserMenu_gdal_hillshade',
+            'mProcessingUserMenu_gdal_roughness', 'mProcessingUserMenu_gdal_slope',
+            'mProcessingUserMenu_gdal_tpitopographicpositionindex', 'mProcessingUserMenu_gdal_triterrainruggednessindex',
+            'mProcessingUserMenu_native_createspatialindex', 'mProcessingUserMenu_native_joinattributesbylocation',
+            'mProcessingUserMenu_native_reprojectlayer',
 
             'mActionZoomTo', 'mActionZoomOut', 'mActionZoomToSelected', 'mActionZoomToLayer', 'mActionZoomToBookmark',
             'mActionZoomToArea', 'mActionZoomNext', 'mActionZoomLast', 'mActionZoomIn', 'mActionZoomFullExtent',
@@ -778,7 +785,6 @@ class CustomSection(QWidget):
             'mActionFolder', 'mActionFirst', 'mActionFindReplace', 'mActionFilterTableFields', 'mActionFilter2',
             'mActionFilter', 'mActionFillRing', 'mActionFileSaveAs', 'mActionFileSave', 'mActionFilePrint',
             'mActionFileNew', 'mActionFileExit', 'mActionExport', 'mActionExpandTree', 'mActionExpandNewTree',
-            'mActionEllipseFoci',
             'mActionEllipseExtent', 'mActionEllipseCenterPoint', 'mActionEllipseCenter2Points',
             'mActionEditTable', 'mActionEditPaste', 'mActionEditNodesItem', 'mActionEditModelComponent',
             'mActionEditHtml', 'mActionEditHelpContent', 'mActionEditCut', 'mActionEditCopy', 'mActionDuplicateLayout',
@@ -796,7 +802,6 @@ class CustomSection(QWidget):
             'mActionCollapseTree', 'mActionCircularStringRadius', 'mActionCircularStringCurvePoint',
             'mActionCircleExtent', 'mActionCircleCenterPoint', 'mActionCircle3Tangents', 'mActionCircle3Points',
             'mActionCircle2TangentsPoint', 'mActionCircle2Points', 'mActionChangeLabelProperties',
-            'mActionCapturePolygon',
             'mActionCapturePoint', 'mActionCaptureLine', 'mActionCancelEdits', 'mActionCancelAllEdits',
             'mActionCalculateField', 'mActionAvoidIntersetionsLayers', 'mActionAvoidIntersectionsCurrentLayer',
             'mActionAtlasSettings', 'mActionAtlasPrev', 'mActionAtlasNext', 'mActionAtlasLast', 'mActionAtlasFirst',
@@ -836,14 +841,20 @@ class CustomSection(QWidget):
             'qgis_heatmapkerneldensityestimation',
             'mActionToggleAdvancedDigitizeToolBar',
             'dbManager',
+            'mActionEllipseFoci', 'mActionOpenProject', 'mActionNewProject', 'mActionSaveProject',
+            'mActionSaveProjectAs', 'mActionCapturePolygon','mActionSelectFeatures','mActionAddPgLayer',
+            'mActionAddDelimitedText','mActionNewMemoryLayer'
 
 
 
 
         ]
-
         if name_tool in list_tool:
             action.setIcon(QIcon(os.path.join(dirnm, 'icons', button.objectName())))
+        if name_tool =='mActionNewMemoryLayer':
+            action.setIcon(QIcon(os.path.join(dirnm, 'icons', 'mActionNewMemoryLayer')))
+        if name_tool =='mActionSaveProjectAs':
+            action.setIcon(QIcon(os.path.join(dirnm, 'icons', 'mActionSaveProjectAs')))
 
     def set_custom_action(self):
         oname = self.tbut.objectName()
@@ -867,11 +878,15 @@ class CustomSection(QWidget):
             self.tbut.setToolTip(tr("Composition settings"))
 
         if oname == "giapQuickPrint":
-            plugin_dir = os.path.dirname(__file__)
             self.quick_print = PrintMapTool(iface, self)
             self.tbut.clicked.connect(self.quick_print.run)
             self.tbut.setToolTip(tr("Map quick print"))
-            self.tbut.setIcon(QIcon(f'{plugin_dir}/icons/quick_print.png'))
+            self.tbut.setIcon(QIcon(f'{dirnm}/icons/quick_print.png'))
+
+        if oname == "giapMyPrints":
+            self.tbut.setToolTip(tr("My Prints"))
+            self.tbut.setIcon(QIcon(f'{dirnm}/icons/my_prints.png'))
+
     def unload_custom_actions(self):
         if self.orto_add:
             self.orto_add.disconnect_ortofotomapa_group()

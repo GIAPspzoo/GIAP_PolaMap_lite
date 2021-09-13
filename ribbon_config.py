@@ -82,9 +82,9 @@ RIBBON_DEFAULT = [
                     'id': 'Create Layer',
                     'btn_size': 30,
                     'btns': [
-                        ['mActionNewGeoPackageLayer', 0, 1],
+                        ['mActionNewGeoPackageLayer', 1, 1],
                         ['mActionNewMemoryLayer', 0, 2],
-                        ['mActionNewVectorLayer', 1, 1],
+                        ['mActionNewVectorLayer', 0, 1],
                         ['mActionNewSpatiaLiteLayer', 1, 2],
                         ['mActionNewVirtualLayer', 0, 3]
                     ],
@@ -98,6 +98,7 @@ RIBBON_DEFAULT = [
                     ['mActionNewPrintLayout', 0, 0],
                     ['giapMyPrints', 0, 1],
                     ['mActionShowLayoutManager', 1, 0],
+                    ['giapQuickPrint', 1, 1],
                 ]
             },
             {
@@ -163,7 +164,7 @@ RIBBON_DEFAULT = [
                     ['mActionVertexTool', 0, 2],
                     ['mActionUndo', 0, 3],
                     ['mActionRedo', 0, 4],
-
+                    ['mQActionPointer', 0, 5],
                     ['mActionAddFeature', 1, 0],
                     ['mActionMoveFeature', 1, 1],
                     ['mActionDeleteSelected', 1, 2],
@@ -198,6 +199,24 @@ RIBBON_DEFAULT = [
                     ['mActionTrimExtendFeature', 1, 8],
                 ]
             },
+{
+               'label': tr('Selection'),
+               'id': 'Selection',
+               'btn_size': 30,
+               'btns': [
+                   ['mActionSelectFeatures', 0, 0],
+                   ['mActionSelectFreehand', 0, 1],
+                   ['mActionSelectPolygon', 1, 0],
+                   ['mActionSelectRadius', 1, 1],
+                   ['qgis:selectbyattribute', 0, 2],
+                   ['qgis:selectbyexpression', 0, 3],
+                   ['mActionSelectAll', 1, 2],
+                   ['mActionInvertSelection', 1, 3],
+                   ['mActionDeselectAll', 0, 4],
+                   ['mActionDeselectActiveLayer', 1, 4],
+                   ['mProcessingAlg_native:selectbylocation', 1, 5],
+               ],
+           },
         ]
     },
 
