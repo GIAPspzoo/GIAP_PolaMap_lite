@@ -108,9 +108,9 @@ class ParseResponce:
                 self.not_valid += 1
 
         self.lyr.dataProvider().addFeatures(feats)
-        self.lyr.updateExtents()
-        iface.mapCanvas().setExtent(self.lyr.extent())
-        iface.mapCanvas().refresh()
+
+        self.zoom_to_feature(self.lyr.name())
+
         if self.not_valid > 0:
             iface.messageBar().pushMessage(
                 tr('Warning'),
@@ -118,6 +118,13 @@ class ParseResponce:
                    ).format(self.not_valid),
                 Qgis.Warning
             )
+
+    def zoom_to_feature(self, layer):
+        layer = QgsProject.instance().mapLayersByName(layer)[0]
+        iface.mapCanvas().zoomScale(500)
+        layer.selectByIds([len(layer)])
+        iface.mapCanvas().zoomToSelected(layer)
+        layer.removeSelection()
 
     def _create_feature(self, row):
         if row[:4].upper() == 'SRID':

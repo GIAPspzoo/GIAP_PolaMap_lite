@@ -527,20 +527,43 @@ Proszę czekać...</translation>
     </message>
     <message>
     <location filename="../giap_dynamic_layout.py" line="173"/>
-    <source>Edit tools within a section:
-
-moving tools - click and hold the left mouse button
-on the icon and move it to the desired location
-
-tool removal - double click
-tool icon and click delete button</source>
-    <translation>Edycja narzędzi w obrębie sekcji:
-
-przesuwanie narzędzi - kliknięcie oraz przytrzymanie lewym
-przyciskiem myszy ikony i przesunięcie w wybrane miejsce
-
-usuwanie narzędzia - dwukrotne kliknięcie
-ikony narzędzia i przycisk Delete</translation>
+    <source>Edit tools within a section:</source>
+    <translation>Edycja narzędzi w obrębie sekcji:</translation>
+    </message>
+    <message>
+    <location filename="../giap_dynamic_layout.py" line="173"/>
+    <source>Edit tools within a section:</source>
+    <translation>Edycja narzędzi w obrębie sekcji:</translation>
+    </message>
+    <message>
+        <location filename="../giap_dynamic_layout.py" line="173"/>
+    <source>Moving tools</source>
+    <translation>Przesuwanie narzędzi</translation>
+    </message>
+    <message>
+            <location filename="../giap_dynamic_layout.py" line="173"/>
+    <source>click and hold the left mouse button</source>
+    <translation>kliknięcie oraz przytrzymanie lewym</translation>
+    </message>
+    <message>
+    <location filename="../giap_dynamic_layout.py" line="173"/>
+    <source>on the icon and move it to the desired location</source>
+    <translation>przyciskiem myszy ikony i przesunięcie w wybrane miejsce</translation>
+    </message>
+    <message>
+    <location filename="../giap_dynamic_layout.py" line="173"/>
+    <source>Tool removal</source>
+    <translation>Usuwanie narzędzia</translation>
+    </message>
+    <message>
+    <location filename="../giap_dynamic_layout.py" line="173"/>
+    <source>double click</source>
+    <translation>dwukrotne kliknięcie</translation>
+    </message>
+    <message>
+    <location filename="../giap_dynamic_layout.py" line="173"/>
+    <source>tool icon and click delete button</source>
+    <translation>ikony narzędzia i przycisk Delete</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.py" line="288"/>
@@ -838,7 +861,7 @@ lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
     <message>
         <location filename="../Kompozycje/dodaj_kompozycje.ui" line="365"/>
         <source>Delete</source>
-        <translation>Skasuj</translation>
+        <translation>Usuń</translation>
     </message>
     <message>
         <location filename="../Kompozycje/dodaj_kompozycje.ui" line="451"/>
@@ -975,6 +998,11 @@ lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
         <location filename="../StyleManager/ui_stylemanager.ui" line="212"/>
         <source>Change style</source>
         <translation>Wybierz styl</translation>
+    </message>
+    <message>
+        <location filename="../StyleManager/ui_stylemanager.ui" line="264"/>
+        <source>Style</source>
+        <translation>Styl</translation>
     </message>
     <message>
         <location filename="../StyleManager/ui_stylemanager.ui" line="309"/>
