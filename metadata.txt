@@ -27,7 +27,7 @@ tags=python, giap, toolbar, personalization
 
 homepage=https://github.com/GIAPspzoo/GIAP_PolaMap_lite
 category=Plugins
-icon=icons/GIAP_grafit.png
+icon=icons/PolaMap_Lite2.png
 # experimental flag
 experimental=False
 
