@@ -952,42 +952,62 @@ lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
 <context>
     <name>SectionSelecterDialog</name>
     <message>
-        <location filename="../select_section_dialog.ui" line="32"/>
+        <location filename="../SectionManager/UI/select_section_dialog.ui" line="32"/>
         <source>GIAP-PolaMap(lite) - Section</source>
         <translation>GIAP-PolaMap(lite) - Sekcja</translation>
     </message>
         <message>
-        <location filename="../select_section_dialog.ui" line="512"/>
+        <location filename="../SectionManager/UI/select_section_dialog.ui" line="512"/>
         <source>Sections</source>
         <translation>Sekcje</translation>
     </message>
     <message>
-        <location filename="../select_section_dialog.ui" line="319"/>
+        <location filename="../SectionManager/UI/select_section_dialog.ui" line="319"/>
         <source>Add section</source>
         <translation>Dodaj sekcję</translation>
     </message>
     <message>
-        <location filename="../select_section_dialog.ui" line="543"/>
+        <location filename="../SectionManager/UI/select_section_dialog.ui" line="321"/>
+        <source>Add</source>
+        <translation>Dodaj</translation>
+    </message>
+        <message>
+        <location filename="../SectionManager/UI/select_section_dialog.ui" line="322"/>
+        <source>Edit</source>
+        <translation>Edytuj</translation>
+    </message>
+        <message>
+        <location filename="../SectionManager/UI/select_section_dialog.ui" line="323"/>
+        <source>Remove</source>
+        <translation>Usuń</translation>
+    </message>
+        <message>
+        <location filename="../SectionManager/UI/select_section_dialog.ui" line="320"/>
+        <source>Create custom section</source>
+        <translation>Stwórz własną sekcję</translation>
+    </message>
+    <message>
+        <location filename="../SectionManager/UI/select_section_dialog.ui" line="543"/>
         <source>Add selection</source>
         <translation>Dodaj zaznaczone</translation>
     </message>
     <message>
-        <location filename="../select_section_dialog.ui" line="191"/>
+        <location filename="../SectionManager/UI/select_section_dialog.ui" line="191"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
     <message>
-        <location filename="../select_section_dialog.ui" line="354"/>
+        <location filename="../SectionManager/UI/select_section_dialog.ui" line="354"/>
         <source>Search tool</source>
         <translation>Wyszukaj narzędzie</translation>
     </message>
     <message>
-        <location filename="../select_section_dialog.ui" line="563"/>
+        <location filename="../SectionManager/UI/select_section_dialog.ui" line="563"/>
         <source>Search...</source>
         <translation>Szukaj...</translation>
     </message>
     <message>
-        <location filename="../select_section_dialog.ui" line="697"/>
+        <location filename="../SectionManager/UI/select_section_dialog.ui" line="697"/>
         <source>Add tool to ribbon</source>
         <translation>Dodaj narzędzie do wstęgi</translation>
     </message>

@@ -8,17 +8,18 @@ from qgis.PyQt.QtGui import QDrag, QPainter, QPixmap, QCursor, QIcon, QFont, QFo
 from qgis.PyQt.QtWidgets import QWidget, QApplication, QHBoxLayout, \
     QFrame, QLabel, QPushButton, QTabBar, QToolButton, QVBoxLayout, \
     QGridLayout, QSpacerItem, QLineEdit, QWidgetItem, QAction, \
-    QBoxLayout, QMessageBox, QWidgetAction, QSizePolicy, QScrollArea
-from qgis._core import QgsApplication
+    QBoxLayout, QMessageBox, QScrollArea
+from qgis.core import QgsApplication
 from qgis.utils import iface
 
+from .SectionManager.CustomSectionManager import CustomSectionManager
 from .QuickPrint import PrintMapTool
 from .config import Config
 from .CustomMessageBox import CustomMessageBox
 from .OrtoTools import OrtoAddingTool
 from .utils import STANDARD_TOOLS, DEFAULT_TABS, tr
 
-from .select_section import SelectSection
+from .SectionManager.select_section import SelectSection
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'giap_dynamic_layout.ui'))
 
@@ -232,18 +233,19 @@ class Widget(QWidget, FORM_CLASS):
         """
         self.dlg = SelectSection()
         self.run_select_section()
-        responce = self.dlg.exec_()
-
-        if not responce:
+        response = self.dlg.exec_()
+        if not response:
             return
 
         ind = self.tabWidget.currentIndex()
         # selected tools
-        selected = [x.text() for x in self.dlg.toolList.selectedItems()]
+        selected = [str(item.data(0)) for item in
+                    self.dlg.toolList.selectionModel().selectedRows()]
         self.tabWidget.setUpdatesEnabled(True)
         print_trig = False
         for sel in selected:
-            secdef = [x for x in STANDARD_TOOLS if tr(x['label']) == sel][0]
+            secdef = [tool for tool in STANDARD_TOOLS
+                      if tr(tool['label']) == sel][0]
             sec = self.add_section(ind, sel, secdef['btn_size'])
             for btn in secdef['btns']:
                 child = self.parent.findChild(QAction, btn[0])
@@ -260,10 +262,19 @@ class Widget(QWidget, FORM_CLASS):
         self.tabWidget.setUpdatesEnabled(True)
 
     def run_select_section(self):
-        self.dlg.addSectionTab.clicked.connect(self.next_widget)
-        self.dlg.searchToolTab.clicked.connect(self.previous_widget)
+        self.dlg.addSectionTab.clicked.connect(self.section_tab)
+        self.dlg.searchToolTab.clicked.connect(self.search_tab)
+        self.dlg.userSectionsTab.clicked.connect(self.user_section_tab)
         self.dlg.addAlgButton.clicked.connect(self.add_to_ribbon)
+        self.dlg.pushButton_add_custom.clicked.connect(self.add_custom_toolbar)
+        self.dlg.pushButton_edit_custom.clicked.connect(
+            self.edit_custom_toolbar)
+        self.dlg.pushButton_remove_custom.clicked.connect(
+            self.remove_custom_toolbar)
+
         self.dlg.searchBox.textChanged.connect(self.search_tree)
+        self.dlg.add_searchBox.textChanged.connect(
+            self.search_add_sections_tree)
 
     def add_to_ribbon(self):
         self.tabWidget.setUpdatesEnabled(True)
@@ -308,11 +319,17 @@ class Widget(QWidget, FORM_CLASS):
     def search_tree(self):
         self.dlg.algorithmTree.setFilterString(self.dlg.searchBox.value())
 
-    def next_widget(self):
+    def search_add_sections_tree(self):
+        self.dlg.sort.setFilterFixedString(self.dlg.add_searchBox.value())
+
+    def section_tab(self):
         self.dlg.stackedWidget.setCurrentIndex(0)
 
-    def previous_widget(self):
+    def search_tab(self):
         self.dlg.stackedWidget.setCurrentIndex(1)
+
+    def user_section_tab(self):
+        self.dlg.stackedWidget.setCurrentIndex(2)
 
     def _section_control_remove(self, tabind):
         lay = self.tabWidget.widget(tabind).lay
@@ -353,6 +370,16 @@ class Widget(QWidget, FORM_CLASS):
         if self.edit_session:
             if ind == self.tabWidget.tabBar().count() - 1:
                 self.add_tab()
+
+    def add_custom_toolbar(self):
+        self.add_window = CustomSectionManager(self)
+        self.add_window.exec()
+
+    def edit_custom_toolbar(self):
+        pass
+
+    def remove_custom_toolbar(self):
+        pass
 
     def eventFilter(self, watched, ev):
         # turn off dragging while not in edit session

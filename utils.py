@@ -1,3 +1,5 @@
+from typing import List, Any
+
 from PyQt5.QtCore import QThread, QCoreApplication
 from PyQt5.QtWidgets import QApplication, QProgressDialog
 
@@ -99,6 +101,14 @@ class ConfigSaveProgressDialog(QProgressDialog):
 def get_project_config(parameter, key, default=''):
     value = project.readEntry(parameter, key, default)[0]
     return value
+
+
+def unpack_nested_lists(n_list: List[List[Any]]) -> List[Any]:
+    """
+    Funkcja rozpakowuje listy list, najczęściej zwracane przez zapytajBaze
+    :return: rozpakowana lista z jednym lub większą ilością elementów
+    """
+    return [elem for nested_list in n_list for elem in nested_list]
 
 
 # oba poniższe słowniki powinny być spójne
