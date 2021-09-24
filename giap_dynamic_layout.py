@@ -843,7 +843,10 @@ class CustomSection(QWidget):
             'dbManager',
             'mActionEllipseFoci', 'mActionOpenProject', 'mActionNewProject', 'mActionSaveProject',
             'mActionSaveProjectAs', 'mActionCapturePolygon','mActionSelectFeatures','mActionAddPgLayer',
-            'mActionAddDelimitedText','mActionNewMemoryLayer'
+            'mActionAddDelimitedText','mActionNewMemoryLayer', 'mActionShowUnplacedLabels', 'mActionCutFeatures',
+            'mActionPasteFeatures', 'mActionCopyFeatures', 'EnableSnappingAction',
+            'EnableTracingAction', 'mActionSimplifyFeature', 'mActionReshapeFeatures',
+            'mActionSelectByExpression', 'mProcessingAlg_native_selectbylocation'
 
 
 

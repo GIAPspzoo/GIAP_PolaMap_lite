@@ -50,16 +50,16 @@ class FetchULDK:
             with urlopen(url, timeout=19) as r:
                 content = r.read()
         except IncompleteRead:
-            CustomMessageBox(None, f"{tr('Error')} {tr('Service returned incomplete responce')}").button_ok()
+            CustomMessageBox(None, f"{tr('Error!')} {tr('Service returned incomplete responce.')}").button_ok()
             return False
         except HTTPError:
             CustomMessageBox(None, f"{tr('Error')} {tr('Service error')}").button_ok()
             return False
         except URLError:
-            CustomMessageBox(None, f"{tr('Error')} {tr('Service is not responding.')}").button_ok()
+            CustomMessageBox(None, f"{tr('Error!')} {tr('Service is not responding.')}").button_ok()
             return False
         except socket.timeout:
-            CustomMessageBox(None, f"{tr('Error')} {tr('Service temporary unvailiable on the ULDK side')}").button_ok()
+            CustomMessageBox(None, f"{tr('Error!')} {tr('Service temporary unvailiable on the ULDK side.')}").button_ok()
             return False
 
         content = content.decode()
