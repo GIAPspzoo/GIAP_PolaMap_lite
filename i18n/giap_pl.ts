@@ -583,12 +583,12 @@ Proszę czekać...</translation>
     <message>
         <location filename="../Searcher/searchParcel.py" line="68"/>
         <source>Service did not find any matches, wrong plot number.</source>
-        <translation>Usługa nie znalazła dopasowań, zły numer działki.</translation>
+        <translation>Usługa nie znalazła żadnych dopasowań. Podano zły numer działki.</translation>
     </message>
     <message>
         <location filename="../Searcher/searchParcel.py" line="53"/>
-        <source>Error</source>
-        <translation>Błąd</translation>
+        <source>Error!</source>
+        <translation>Błąd!</translation>
     </message>
         <message>
         <location filename="../Searcher/searchParcel.py" line="56"/>
@@ -597,13 +597,18 @@ Proszę czekać...</translation>
     </message>
     <message>
         <location filename="../Searcher/searchParcel.py" line="59"/>
-        <source>Error</source>
-        <translation>Błąd</translation>
+        <source>Error!</source>
+        <translation>Błąd!</translation>
     </message>
     <message>
         <location filename="../Searcher/searchParcel.py" line="62"/>
-        <source>Service temporary unvailiable on the ULDK side</source>
-        <translation>Usługa chwilowo niedostępna po stronie ULDK</translation>
+        <source>Error!</source>
+        <translation>Błąd!</translation>
+    </message>
+    <message>
+        <location filename="../Searcher/searchParcel.py" line="62"/>
+        <source>Service temporary unvailiable on the ULDK side.</source>
+        <translation>Usługa chwilowo niedostępna po stronie ULDK.</translation>
     </message>
     <message>
         <location filename="../Searcher/searchAddress.py" line="55"/>
