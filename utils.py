@@ -532,7 +532,7 @@ STANDARD_TOOLS = [
                    ['mActionInvertSelection', 1, 3],
                    ['mActionDeselectAll', 0, 4],
                    ['mActionDeselectActiveLayer', 1, 4],
-                   ['mProcessingAlg_native_selectbylocation', 1, 5],
+                   ['mProcessingAlg_native:selectbylocation', 1, 5],
                ],
            },
            {
