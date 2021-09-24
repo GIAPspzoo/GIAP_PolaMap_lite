@@ -847,7 +847,8 @@ class CustomSection(QWidget):
             'mActionPasteFeatures', 'mActionCopyFeatures', 'EnableSnappingAction',
             'EnableTracingAction', 'mActionSimplifyFeature', 'mActionReshapeFeatures',
             'mActionSelectByExpression', 'mProcessingAlg_native_selectbylocation', 'mActionOpenFieldCalc',
-            'mActionAddFeature', 'mActionSaveLayerEdits','mActionShowLayoutManager'
+            'mActionAddFeature', 'mActionSaveLayerEdits','mActionShowLayoutManager', 'mActionAddOracleLayer',
+            'mActionNewPrintLayout'
 
 
 
