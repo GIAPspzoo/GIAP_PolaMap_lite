@@ -2,7 +2,7 @@ import os
 import webbrowser
 
 from plugins.processing.tools.general import execAlgorithmDialog
-from qgis.PyQt.QtCore import Qt, QSize, QEvent, pyqtSignal, QMimeData, QRect
+from qgis.PyQt.QtCore import Qt, QSize, QEvent, pyqtSignal, QMimeData, QRect, QTimer
 from qgis.PyQt import uic
 from qgis.PyQt.QtGui import QDrag, QPainter, QPixmap, QCursor, QIcon, QFont, QFontMetrics
 from qgis.PyQt.QtWidgets import QWidget, QApplication, QHBoxLayout, \
@@ -46,6 +46,19 @@ class Widget(QWidget, FORM_CLASS):
         self.tabWidget.tabBar().tabBarClicked.connect(self.tab_clicked)
         self.tabWidget.tabBar().tabBarDoubleClicked.connect(
             self.tab_doubleclicked)
+        self.icon_timer = QTimer()
+        self.icon_timer.setSingleShot(True)
+        self.icon_timer.timeout.connect(self.reload_add_icons)
+        self.icon_timer.setInterval(1)
+        iface.currentLayerChanged.connect(self.icon_timer.start)
+
+    def reload_add_icons(self):
+        # stupid but works
+        dirnm = os.path.dirname(__file__)
+        if hasattr(self, 'add_action'):
+            self.add_action.setIcon(QIcon(os.path.join(dirnm, 'icons', 'mActionAddFeature')))
+        if hasattr(self, 'move_action'):
+            self.move_action.setIcon(QIcon(os.path.join(dirnm, 'icons', 'mActionMoveFeature')))
 
     def add_tab(self, label=None):
         """Adds new tab at the end
@@ -860,6 +873,10 @@ class CustomSection(QWidget):
             action.setIcon(QIcon(os.path.join(dirnm, 'icons', 'mActionNewMemoryLayer')))
         if name_tool =='mActionSaveProjectAs':
             action.setIcon(QIcon(os.path.join(dirnm, 'icons', 'mActionSaveProjectAs')))
+        if name_tool == 'mActionAddFeature':
+            self.parent().parent().parent().parent().add_action = action
+        if name_tool == 'mActionMoveFeature':
+            self.parent().parent().parent().parent().move_action = action
 
     def set_custom_action(self):
         oname = self.tbut.objectName()
