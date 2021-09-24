@@ -861,7 +861,7 @@ class CustomSection(QWidget):
             'EnableTracingAction', 'mActionSimplifyFeature', 'mActionReshapeFeatures',
             'mActionSelectByExpression', 'mProcessingAlg_native_selectbylocation', 'mActionOpenFieldCalc',
             'mActionAddFeature', 'mActionSaveLayerEdits','mActionShowLayoutManager', 'mActionAddOracleLayer',
-            'mActionNewPrintLayout'
+            'mActionNewPrintLayout', 'qgis_selectbyattribute','qgis_selectbyexpression'
 
 
 
