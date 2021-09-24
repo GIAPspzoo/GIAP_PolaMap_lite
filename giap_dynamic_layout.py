@@ -846,7 +846,8 @@ class CustomSection(QWidget):
             'mActionAddDelimitedText','mActionNewMemoryLayer', 'mActionShowUnplacedLabels', 'mActionCutFeatures',
             'mActionPasteFeatures', 'mActionCopyFeatures', 'EnableSnappingAction',
             'EnableTracingAction', 'mActionSimplifyFeature', 'mActionReshapeFeatures',
-            'mActionSelectByExpression', 'mProcessingAlg_native_selectbylocation'
+            'mActionSelectByExpression', 'mProcessingAlg_native_selectbylocation', 'mActionOpenFieldCalc',
+            'mActionAddFeature', 'mActionSaveLayerEdits','mActionShowLayoutManager'
 
 
 
