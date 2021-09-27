@@ -1,8 +1,11 @@
 from typing import List, Any
 
-from PyQt5.QtCore import QThread, QCoreApplication
-from PyQt5.QtWidgets import QApplication, QProgressDialog
-
+from PyQt5.QtCore import Qt
+from qgis.PyQt import QtCore, QtGui
+from qgis.PyQt.QtCore import QThread, QCoreApplication
+from qgis.PyQt.QtGui import QPen, QBrush
+from qgis.PyQt.QtWidgets import QApplication, QProgressDialog, \
+    QStyledItemDelegate
 from qgis.core import QgsProject, QgsMessageLog, Qgis
 
 project = QgsProject.instance()
@@ -109,6 +112,30 @@ def unpack_nested_lists(n_list: List[List[Any]]) -> List[Any]:
     :return: rozpakowana lista z jednym lub większą ilością elementów
     """
     return [elem for nested_list in n_list for elem in nested_list]
+
+
+class SectionHeaderDelegate(QStyledItemDelegate):
+    def __init__(self, parent):
+        super(SectionHeaderDelegate, self).__init__(parent)
+
+    def sizeHint(self, option, index):
+        return QtCore.QSize(
+            QtGui.QTextDocument(index.model().data(index)).idealWidth(), 30)
+
+    def paint(self, painter, option, index):
+        painter.save()
+        painter.setPen(
+            QPen(QBrush(Qt.black), 1, Qt.SolidLine, Qt.SquareCap,
+                 Qt.BevelJoin))
+        painter.setClipRect(option.rect)
+        painter.drawLine(option.rect.bottomLeft(), option.rect.bottomRight())
+        painter.setPen(QPen(Qt.black))
+        font = painter.font()
+        font.setPointSize(10)
+        painter.setFont(font)
+        painter.drawText(option.rect, Qt.AlignCenter,
+                         index.data(Qt.DisplayRole))
+        painter.restore()
 
 
 # oba poniższe słowniki powinny być spójne
@@ -611,3 +638,9 @@ STANDARD_TOOLS = [
 
 DEFAULT_STYLE = "GIAP Navy Blue"
 DEFAULT_TABS = ['Main tools', 'Advanced tools', 'Vector', 'Raster']
+GIAP_CUSTOM_TOOLS = ['GIAP Tools', 'Vector digitization']
+TOOLS_HEADERS = [
+    'Sections',
+    'GIAP sections',
+    'User sections'
+]

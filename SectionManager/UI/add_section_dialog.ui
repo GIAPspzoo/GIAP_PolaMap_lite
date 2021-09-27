@@ -293,12 +293,18 @@ color: #0A0C0D;</string>
              <item>
               <widget class="QListView" name="availableToolList">
                <property name="styleSheet">
-                <string notr="true">QListWidget {
+                <string notr="true">QListView {
     alternate-background-color:  rgb(87, 131, 167);
 	background-color: #EDF6FC;
 	border-width: 0px;
 }
 </string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
+               </property>
+               <property name="lineWidth">
+                <number>0</number>
                </property>
                <property name="selectionMode">
                 <enum>QAbstractItemView::MultiSelection</enum>
@@ -314,18 +320,28 @@ color: #0A0C0D;</string>
           <item row="1" column="2">
            <layout class="QVBoxLayout" name="verticalLayout_9">
             <item>
-             <widget class="QToolButton" name="pushButton_add_tool">
+             <widget class="QToolButton" name="toolButton_add_tool">
               <property name="minimumSize">
                <size>
                 <width>30</width>
                 <height>100</height>
                </size>
               </property>
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>10</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
+               </font>
+              </property>
               <property name="styleSheet">
                <string notr="true">* {
 	background-color: rgb(53, 85, 109);
     font: 10pt &quot;Segoe UI&quot;; 
 	color: #EDF6FC;
+
 }
 QAbstractItemView
 {
@@ -419,9 +435,9 @@ border: 1px solid #5689b0;
 }
 
 QToolButton {
-   border: 0 solid transparent;
-   color: #EDF6FC;
-   border-radius: 3px;
+	color: #EDF6FC;
+	border-radius: 6px;
+	border: 1px solid white;
 }
 
 QToolButton:hover {
@@ -454,7 +470,7 @@ QListView:item:hover {
              </widget>
             </item>
             <item>
-             <widget class="QToolButton" name="pushButton_remove_tool">
+             <widget class="QToolButton" name="toolButton_remove_tool">
               <property name="minimumSize">
                <size>
                 <width>30</width>
@@ -559,9 +575,10 @@ border: 1px solid #5689b0;
 }
 
 QToolButton {
-   border: 0 solid transparent;
-   color: #EDF6FC;
-   border-radius: 3px;
+	color: #EDF6FC;
+	border-radius: 6px;
+	border: 1px solid white;
+
 }
 
 QToolButton:hover {
@@ -635,7 +652,7 @@ color: #0A0C0D;</string>
               </widget>
              </item>
              <item>
-              <widget class="QListView" name="selectedToolList">
+              <widget class="QListWidget" name="selectedToolList">
                <property name="minimumSize">
                 <size>
                  <width>0</width>
@@ -643,7 +660,7 @@ color: #0A0C0D;</string>
                 </size>
                </property>
                <property name="styleSheet">
-                <string notr="true">QListWidget {
+                <string notr="true">QListView {
     alternate-background-color:  rgb(87, 131, 167);
 	background-color: #EDF6FC;
 	border-width: 0px;

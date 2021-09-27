@@ -136,22 +136,7 @@ Kompozycje zostaną uaktualnione.</translation>
         <translation>Wybierz kompozycję do edycji.</translation>
     </message>
     <message>
-    <location filename="../Kompozycje/nowa_kompozycja.py" line="41"/>
-        <source>No layers in select layers.</source>
-        <translation>Brak warstw w wybrane warstwy.</translation>
-    </message>
-    <message>
-    <location filename="../Kompozycje/nowa_kompozycja.py" line="55"/>
-        <source>No layers in select layers.</source>
-        <translation>Brak warstw w wybrane warstwy.</translation>
-    </message>
-    <message>
-    <location filename="../Kompozycje/nowa_kompozycja.py" line="67"/>
-        <source>No layers in select layers.</source>
-        <translation>Brak warstw w wybrane warstwy.</translation>
-    </message>
-    <message>
-    <location filename="../Kompozycje/nowa_kompozycja.py" line="79"/>
+        <location filename="../Kompozycje/nowa_kompozycja.py" line="41"/>
         <source>No layers in select layers.</source>
         <translation>Brak warstw w wybrane warstwy.</translation>
     </message>
@@ -267,7 +252,7 @@ Proszę czekać...</translation>
         <source>Prints</source>
         <translation>Wydruki</translation>
     </message>
-     <message>
+    <message>
         <location filename="../ribbon_config.py" line="104"/>
         <source>GIAP Tools</source>
         <translation>Narzędzia GIAP</translation>
@@ -288,64 +273,14 @@ Proszę czekać...</translation>
         <translation>Styl aktywowano!</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="130"/>
-        <source>Project</source>
-        <translation>Projekt</translation>
-    </message>
-    <message>
-        <location filename="../utils.py" line="142"/>
-        <source>Navigation</source>
-        <translation>Nawigacja</translation>
-    </message>
-    <message>
-        <location filename="../utils.py" line="159"/>
-        <source>Attributes</source>
-        <translation>Atrybuty</translation>
-    </message>
-    <message>
-        <location filename="../utils.py" line="171"/>
-        <source>Measurement</source>
-        <translation>Pomiary</translation>
-    </message>
-    <message>
-        <location filename="../utils.py" line="182"/>
-        <source>Add Layer</source>
-        <translation>Dodaj warstwę</translation>
-    </message>
-    <message>
-        <location filename="../utils.py" line="205"/>
-        <source>Create Layer</source>
-        <translation>Twórz warstwę</translation>
-    </message>
-    <message>
         <location filename="../utils.py" line="218"/>
         <source>Advanced attributes</source>
         <translation>Zaawansowane atrybuty</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="239"/>
-        <source>Labels</source>
-        <translation>Etykiety</translation>
-    </message>
-    <message>
-        <location filename="../utils.py" line="256"/>
-        <source>Vector</source>
-        <translation>Wektor</translation>
-    </message>
-    <message>
         <location filename="../utils.py" line="276"/>
         <source>Vector digitization</source>
         <translation>Digitalizacja wektorowa</translation>
-    </message>
-    <message>
-        <location filename="../utils.py" line="303"/>
-        <source>Prints</source>
-        <translation>Wydruki</translation>
-    </message>
-    <message>
-        <location filename="../utils.py" line="315"/>
-        <source>GIAP Tools</source>
-        <translation>Narzędzia GIAP</translation>
     </message>
     <message>
         <location filename="../utils.py" line="326"/>
@@ -403,14 +338,24 @@ Proszę czekać...</translation>
         <translation>Konwersja</translation>
     </message>
     <message>
+        <location filename="../utils.py" line="643"/>
+        <source>Sections</source>
+        <translation>Sekcje</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="644"/>
+        <source>GIAP sections</source>
+        <translation>Sekcje GIAP</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="645"/>
+        <source>User sections</source>
+        <translation>Sekcje użytkownika</translation>
+    </message>
+    <message>
         <location filename="../utils.py" line="492"/>
         <source>Data base</source>
         <translation>Baza danych</translation>
-    </message>
-    <message>
-        <location filename="../utils.py" line="500"/>
-        <source>Digitizing</source>
-        <translation>Digitalizacja</translation>
     </message>
     <message>
         <location filename="../utils.py" line="521"/>
@@ -437,7 +382,6 @@ Proszę czekać...</translation>
         <source>Advanced digitizing tools</source>
         <translation>Zaawansowane narzędzia digitalizacji</translation>
     </message>
-
     <message>
         <location filename="../giap_layout.py" line="78"/>
         <source>Switch on manually missing core plugin: Topology Checker</source>
@@ -468,13 +412,11 @@ Proszę czekać...</translation>
         <source>Enter the data according to the scheme:</source>
         <translation>Wpisz dane według schematu:</translation>
     </message>
-
     <message>
         <location filename="../giap_layout.py" line="135"/>
         <source>for the address point:</source>
         <translation>dla punktu adresowego:</translation>
     </message>
-
     <message>
         <location filename="../giap_layout.py" line="136"/>
         <source>for the street:</source>
@@ -510,7 +452,7 @@ Proszę czekać...</translation>
         <source>Change Theme</source>
         <translation>Zmień styl</translation>
     </message>
-        <message>
+    <message>
         <location filename="../giap_layout.py" line="123"/>
         <source>Settings</source>
         <translation>Ustawienia</translation>
@@ -526,44 +468,39 @@ Proszę czekać...</translation>
         <translation>Czy chcesz zapisać zmiany?</translation>
     </message>
     <message>
-    <location filename="../giap_dynamic_layout.py" line="173"/>
-    <source>Edit tools within a section:</source>
-    <translation>Edycja narzędzi w obrębie sekcji:</translation>
-    </message>
-    <message>
-    <location filename="../giap_dynamic_layout.py" line="173"/>
-    <source>Edit tools within a section:</source>
-    <translation>Edycja narzędzi w obrębie sekcji:</translation>
+        <location filename="../giap_dynamic_layout.py" line="173"/>
+        <source>Edit tools within a section:</source>
+        <translation>Edycja narzędzi w obrębie sekcji:</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.py" line="173"/>
-    <source>Moving tools</source>
-    <translation>Przesuwanie narzędzi</translation>
+        <source>Moving tools</source>
+        <translation>Przesuwanie narzędzi</translation>
     </message>
     <message>
-            <location filename="../giap_dynamic_layout.py" line="173"/>
-    <source>click and hold the left mouse button</source>
-    <translation>kliknięcie oraz przytrzymanie lewym</translation>
+        <location filename="../giap_dynamic_layout.py" line="173"/>
+        <source>click and hold the left mouse button</source>
+        <translation>kliknięcie oraz przytrzymanie lewym</translation>
     </message>
     <message>
-    <location filename="../giap_dynamic_layout.py" line="173"/>
-    <source>on the icon and move it to the desired location</source>
-    <translation>przyciskiem myszy ikony i przesunięcie w wybrane miejsce</translation>
+        <location filename="../giap_dynamic_layout.py" line="173"/>
+        <source>on the icon and move it to the desired location</source>
+        <translation>przyciskiem myszy ikony i przesunięcie w wybrane miejsce</translation>
     </message>
     <message>
-    <location filename="../giap_dynamic_layout.py" line="173"/>
-    <source>Tool removal</source>
-    <translation>Usuwanie narzędzia</translation>
+        <location filename="../giap_dynamic_layout.py" line="173"/>
+        <source>Tool removal</source>
+        <translation>Usuwanie narzędzia</translation>
     </message>
     <message>
-    <location filename="../giap_dynamic_layout.py" line="173"/>
-    <source>double click</source>
-    <translation>dwukrotne kliknięcie</translation>
+        <location filename="../giap_dynamic_layout.py" line="173"/>
+        <source>double click</source>
+        <translation>dwukrotne kliknięcie</translation>
     </message>
     <message>
-    <location filename="../giap_dynamic_layout.py" line="173"/>
-    <source>tool icon and click delete button</source>
-    <translation>ikony narzędzia i przycisk Delete</translation>
+        <location filename="../giap_dynamic_layout.py" line="173"/>
+        <source>tool icon and click delete button</source>
+        <translation>ikony narzędzia i przycisk Delete</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.py" line="288"/>
@@ -576,11 +513,6 @@ Proszę czekać...</translation>
         <translation>Ustawienia kompozycji</translation>
     </message>
     <message>
-        <location filename="../giap_dynamic_layout.py" line="220"/>
-        <source>GIAP.pl - Website</source>
-        <translation>GIAP.pl - Strona WWW</translation>
-    </message>
-    <message>
         <location filename="../Searcher/searchParcel.py" line="68"/>
         <source>Service did not find any matches, wrong plot number.</source>
         <translation>Usługa nie znalazła żadnych dopasowań. Podano zły numer działki.</translation>
@@ -590,20 +522,10 @@ Proszę czekać...</translation>
         <source>Error!</source>
         <translation>Błąd!</translation>
     </message>
-        <message>
+    <message>
         <location filename="../Searcher/searchParcel.py" line="56"/>
         <source>Error</source>
         <translation>Błąd</translation>
-    </message>
-    <message>
-        <location filename="../Searcher/searchParcel.py" line="59"/>
-        <source>Error!</source>
-        <translation>Błąd!</translation>
-    </message>
-    <message>
-        <location filename="../Searcher/searchParcel.py" line="62"/>
-        <source>Error!</source>
-        <translation>Błąd!</translation>
     </message>
     <message>
         <location filename="../Searcher/searchParcel.py" line="62"/>
@@ -704,11 +626,6 @@ Proszę czekać...</translation>
         <location filename="../Searcher/searchParcel.py" line="117"/>
         <source>Service return {} not valid features.</source>
         <translation>Usługa zwróciła {} niepoprawnych obiektów.</translation>
-    </message>
-    <message>
-        <location filename="../ribbon_config.py" line="122"/>
-        <source>Advanced attributes</source>
-        <translation>Zaawansowane atrybuty</translation>
     </message>
 </context>
 <context>
@@ -956,7 +873,7 @@ lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
         <source>GIAP-PolaMap(lite) - Section</source>
         <translation>GIAP-PolaMap(lite) - Sekcja</translation>
     </message>
-        <message>
+    <message>
         <location filename="../SectionManager/UI/select_section_dialog.ui" line="512"/>
         <source>Sections</source>
         <translation>Sekcje</translation>
@@ -971,17 +888,17 @@ lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
         <source>Add</source>
         <translation>Dodaj</translation>
     </message>
-        <message>
+    <message>
         <location filename="../SectionManager/UI/select_section_dialog.ui" line="322"/>
         <source>Edit</source>
         <translation>Edytuj</translation>
     </message>
-        <message>
+    <message>
         <location filename="../SectionManager/UI/select_section_dialog.ui" line="323"/>
         <source>Remove</source>
         <translation>Usuń</translation>
     </message>
-        <message>
+    <message>
         <location filename="../SectionManager/UI/select_section_dialog.ui" line="320"/>
         <source>Create custom section</source>
         <translation>Stwórz własną sekcję</translation>

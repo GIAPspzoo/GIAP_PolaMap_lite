@@ -462,12 +462,24 @@ QPushButton:disabled
           <string notr="true"/>
          </property>
          <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
+          <enum>QFrame::NoFrame</enum>
          </property>
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout_17">
+          <property name="leftMargin">
+           <number>10</number>
+          </property>
+          <property name="topMargin">
+           <number>10</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
+           <number>9</number>
+          </property>
           <item row="1" column="1">
            <widget class="QFrame" name="frame">
             <property name="styleSheet">
@@ -476,7 +488,7 @@ border-radius: 10px;
 background-color: #EDF6FC;</string>
             </property>
             <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
+             <enum>QFrame::NoFrame</enum>
             </property>
             <property name="frameShadow">
              <enum>QFrame::Raised</enum>
@@ -486,31 +498,9 @@ background-color: #EDF6FC;</string>
               <number>0</number>
              </property>
              <item>
-              <widget class="QLabel" name="label">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>30</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">border-width: 0px;
-border-radius: 0px;
-border-bottom: 1px solid  #0A0C0D;
-color: #0A0C0D;</string>
-               </property>
-               <property name="text">
-                <string>Sections</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item>
               <widget class="QListView" name="toolList">
                <property name="styleSheet">
-                <string notr="true">QListWidget {
+                <string notr="true">QListView {
     alternate-background-color:  rgb(87, 131, 167);
 	background-color: #EDF6FC;
 	border-width: 0px;
@@ -611,7 +601,7 @@ color: #0A0C0D;</string>
       </layout>
      </widget>
      <widget class="QWidget" name="page">
-      <layout class="QGridLayout" name="gridLayout_4">
+      <layout class="QGridLayout" name="gridLayout_4" rowstretch="0,0,0,0,0" rowminimumheight="0,0,0,0,0">
        <property name="leftMargin">
         <number>0</number>
        </property>
@@ -630,19 +620,28 @@ color: #0A0C0D;</string>
        <item row="1" column="0">
         <widget class="QFrame" name="frame_6">
          <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
+          <enum>QFrame::NoFrame</enum>
          </property>
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout_7">
-          <item row="0" column="0">
+          <property name="leftMargin">
+           <number>10</number>
+          </property>
+          <property name="topMargin">
+           <number>10</number>
+          </property>
+          <property name="bottomMargin">
+           <number>6</number>
+          </property>
+          <item row="1" column="0">
            <widget class="QgsFilterLineEdit" name="searchBox">
             <property name="toolTip">
              <string>Enter algorithm name to filter list</string>
             </property>
             <property name="styleSheet">
-             <string notr="true"/>
+             <string notr="true">color: #fff</string>
             </property>
             <property name="placeholderText">
              <string>Search...</string>
@@ -655,19 +654,6 @@ color: #0A0C0D;</string>
          </layout>
         </widget>
        </item>
-       <item row="2" column="0">
-        <spacer name="horizontalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
        <item row="3" column="0">
         <widget class="QFrame" name="frame_7">
          <property name="frameShape">
@@ -677,8 +663,14 @@ color: #0A0C0D;</string>
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout_8">
+          <property name="leftMargin">
+           <number>10</number>
+          </property>
           <property name="topMargin">
            <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
           </property>
           <property name="bottomMargin">
            <number>0</number>
@@ -703,7 +695,7 @@ background-color: #EDF6FC;</string>
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout_5">
-             <property name="topMargin">
+             <property name="bottomMargin">
               <number>9</number>
              </property>
              <item row="1" column="0">
@@ -793,10 +785,10 @@ QToolTip{
        <item row="4" column="0">
         <layout class="QGridLayout" name="gridLayout_6">
          <property name="leftMargin">
-          <number>9</number>
+          <number>10</number>
          </property>
          <property name="topMargin">
-          <number>9</number>
+          <number>6</number>
          </property>
          <property name="rightMargin">
           <number>9</number>
@@ -1003,7 +995,7 @@ color: #0A0C0D;</string>
              <item>
               <widget class="QListView" name="toolList_2">
                <property name="styleSheet">
-                <string notr="true">QListWidget {
+                <string notr="true">QListView {
     alternate-background-color:  rgb(87, 131, 167);
 	background-color: #EDF6FC;
 	border-width: 0px;
