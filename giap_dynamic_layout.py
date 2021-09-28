@@ -2,23 +2,27 @@ import os
 import webbrowser
 
 from plugins.processing.tools.general import execAlgorithmDialog
-from qgis.PyQt.QtCore import Qt, QSize, QEvent, pyqtSignal, QMimeData, QRect, QTimer
 from qgis.PyQt import uic
-from qgis.PyQt.QtGui import QDrag, QPainter, QPixmap, QCursor, QIcon, QFont, QFontMetrics
+from qgis.PyQt.QtCore import Qt, QSize, QEvent, pyqtSignal, QMimeData, QRect, \
+    QTimer
+from qgis.PyQt.QtGui import QDrag, QPainter, QPixmap, QCursor, QIcon, QFont, \
+    QFontMetrics
 from qgis.PyQt.QtWidgets import QWidget, QApplication, QHBoxLayout, \
     QFrame, QLabel, QPushButton, QTabBar, QToolButton, QVBoxLayout, \
     QGridLayout, QSpacerItem, QLineEdit, QWidgetItem, QAction, \
-    QBoxLayout, QMessageBox, QWidgetAction, QSizePolicy, QScrollArea
-from qgis._core import QgsApplication
+    QBoxLayout, QMessageBox, QScrollArea, QWidgetAction
+from qgis.core import QgsApplication
 from qgis.utils import iface
 
-from .QuickPrint import PrintMapTool
-from .config import Config
 from .CustomMessageBox import CustomMessageBox
 from .OrtoTools import OrtoAddingTool
-from .utils import STANDARD_TOOLS, DEFAULT_TABS, tr
+from .QuickPrint import PrintMapTool
+from .SectionManager.CustomSectionManager import CustomSectionManager
+from .SectionManager.select_section import SelectSection
+from .config import Config
+from .utils import STANDARD_TOOLS, DEFAULT_TABS, tr, TOOLS_HEADERS, \
+    STANDARD_QGIS_TOOLS
 
-from .select_section import SelectSection
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'giap_dynamic_layout.ui'))
 
@@ -75,7 +79,7 @@ class Widget(QWidget, FORM_CLASS):
         self.tabWidget.setUpdatesEnabled(False)
 
         tab_ind = self.tabWidget.insertTab(
-            self.tabWidget.count()-1, tab, label
+            self.tabWidget.count() - 1, tab, label
         )
         if self.edit_session:
             self._section_control(tab_ind)
@@ -101,7 +105,7 @@ class Widget(QWidget, FORM_CLASS):
 
         self.tabWidget.removeTab(tind)
         if tind > 0:
-            self.tabWidget.setCurrentIndex(tind-1)
+            self.tabWidget.setCurrentIndex(tind - 1)
 
     def add_section(self, itab, lab, size=30):
         """Adds new section on tab with label and place for icons
@@ -141,8 +145,10 @@ class Widget(QWidget, FORM_CLASS):
         self.edit_session = not self.edit_session
 
         self.conf = Config()
-        if ask and self.conf.setts['ribbons_config'] != self.generate_ribbon_config():
-            self.save = CustomMessageBox(None, tr("Do you want to save your changes?")).button_yes_no()
+        if ask and self.conf.setts[
+            'ribbons_config'] != self.generate_ribbon_config():
+            self.save = CustomMessageBox(None, tr(
+                "Do you want to save your changes?")).button_yes_no()
             if self.save == QMessageBox.Yes:
                 self.editChanged.emit(False)
             else:
@@ -174,7 +180,7 @@ class Widget(QWidget, FORM_CLASS):
         cnt = lay.count()
 
         # remove button
-        it = lay.itemAt(cnt-1)
+        it = lay.itemAt(cnt - 1)
         if it is not None:
             if isinstance(it.widget(), QPushButton):
                 it.widget().hide()
@@ -223,7 +229,7 @@ class Widget(QWidget, FORM_CLASS):
             self.tabWidget.widget(tabind).setUpdatesEnabled(False)
             self._section_control_remove(tabind)
             self.tabWidget.widget(tabind).lay.addStretch()
-            if not isinstance(lay.itemAt(cnt-1), QPushButton):
+            if not isinstance(lay.itemAt(cnt - 1), QPushButton):
                 gbut = QPushButton()
                 gbut.clicked.connect(lambda x: webbrowser.open('www.giap.pl'))
                 gbut.setIcon(
@@ -235,7 +241,7 @@ class Widget(QWidget, FORM_CLASS):
                     'QPushButton{border-width: 0px; width: 220px; height:72px;'
                     'background-color: transparent;}'
                 )
-                gbut.setIconSize(QSize(220-4, 72-4))
+                gbut.setIconSize(QSize(220 - 4, 72 - 4))
                 self.tabWidget.widget(tabind).lay.addWidget(gbut)
             self.tabWidget.widget(tabind).setUpdatesEnabled(True)
 
@@ -245,18 +251,23 @@ class Widget(QWidget, FORM_CLASS):
         """
         self.dlg = SelectSection()
         self.run_select_section()
-        responce = self.dlg.exec_()
-
-        if not responce:
+        response = self.dlg.exec_()
+        if not response:
             return
 
         ind = self.tabWidget.currentIndex()
         # selected tools
-        selected = [x.text() for x in self.dlg.toolList.selectedItems()]
+        section_names = [tr(name) for name in TOOLS_HEADERS]
+        all_available_tools = [tool for tool in STANDARD_TOOLS]
+        all_available_tools.extend([tool for tool in STANDARD_QGIS_TOOLS])
+        selected = [str(item.data(0)) for item in
+                    self.dlg.toolList.selectionModel().selectedRows()
+                    if str(item.data(0)) not in section_names]
         self.tabWidget.setUpdatesEnabled(True)
         print_trig = False
         for sel in selected:
-            secdef = [x for x in STANDARD_TOOLS if tr(x['label']) == sel][0]
+            secdef = [tool for tool in all_available_tools
+                      if tr(tool['label']) == sel][0]
             sec = self.add_section(ind, sel, secdef['btn_size'])
             for btn in secdef['btns']:
                 child = self.parent.findChild(QAction, btn[0])
@@ -273,10 +284,19 @@ class Widget(QWidget, FORM_CLASS):
         self.tabWidget.setUpdatesEnabled(True)
 
     def run_select_section(self):
-        self.dlg.addSectionTab.clicked.connect(self.next_widget)
-        self.dlg.searchToolTab.clicked.connect(self.previous_widget)
+        self.dlg.addSectionTab.clicked.connect(self.section_tab)
+        self.dlg.searchToolTab.clicked.connect(self.search_tab)
+        self.dlg.userSectionsTab.clicked.connect(self.user_section_tab)
         self.dlg.addAlgButton.clicked.connect(self.add_to_ribbon)
+        self.dlg.pushButton_add_custom.clicked.connect(self.add_custom_toolbar)
+        self.dlg.pushButton_edit_custom.clicked.connect(
+            self.edit_custom_toolbar)
+        self.dlg.pushButton_remove_custom.clicked.connect(
+            self.remove_custom_toolbar)
+
         self.dlg.searchBox.textChanged.connect(self.search_tree)
+        self.dlg.add_searchBox.textChanged.connect(
+            self.search_add_sections_tree)
 
     def add_to_ribbon(self):
         self.tabWidget.setUpdatesEnabled(True)
@@ -290,22 +310,26 @@ class Widget(QWidget, FORM_CLASS):
                     tool[alg.group()] = []
                 tool[alg.group()].append(alg)
             elif self.dlg.algorithmTree.algorithmForIndex(ind.child(0, 0)):
-                alg = self.dlg.algorithmTree.algorithmForIndex(ind.child(alg_ind, 0))
+                alg = self.dlg.algorithmTree.algorithmForIndex(
+                    ind.child(alg_ind, 0))
                 while alg:
                     if not alg.group() in tool:
                         tool[alg.group()] = []
                     tool[alg.group()].append(alg)
                     alg_ind += 1
-                    alg = self.dlg.algorithmTree.algorithmForIndex(ind.child(alg_ind, 0))
+                    alg = self.dlg.algorithmTree.algorithmForIndex(
+                        ind.child(alg_ind, 0))
             else:
-                CustomMessageBox(self.dlg, tr("Select item has sub-section")).button_ok()
+                CustomMessageBox(self.dlg,
+                                 tr("Select item has sub-section")).button_ok()
                 return
 
         for group in tool:
             tool[group] = list(set(tool[group]))
 
         for name_sec in tool:
-            section = self.add_section(self.tabWidget.currentIndex(), name_sec, 30)
+            section = self.add_section(self.tabWidget.currentIndex(), name_sec,
+                                       30)
             row = 0
             col = 0
             for alg in tool[name_sec]:
@@ -321,16 +345,22 @@ class Widget(QWidget, FORM_CLASS):
     def search_tree(self):
         self.dlg.algorithmTree.setFilterString(self.dlg.searchBox.value())
 
-    def next_widget(self):
+    def search_add_sections_tree(self):
+        self.dlg.sort.setFilterFixedString(self.dlg.add_searchBox.value())
+
+    def section_tab(self):
         self.dlg.stackedWidget.setCurrentIndex(0)
 
-    def previous_widget(self):
+    def search_tab(self):
         self.dlg.stackedWidget.setCurrentIndex(1)
+
+    def user_section_tab(self):
+        self.dlg.stackedWidget.setCurrentIndex(2)
 
     def _section_control_remove(self, tabind):
         lay = self.tabWidget.widget(tabind).lay
         self.tabWidget.setUpdatesEnabled(False)
-        for ind in range(lay.count()-1, -1, -1):
+        for ind in range(lay.count() - 1, -1, -1):
             if isinstance(lay.itemAt(ind), QSpacerItem):
                 lay.removeItem(lay.itemAt(ind))
                 continue
@@ -366,6 +396,16 @@ class Widget(QWidget, FORM_CLASS):
         if self.edit_session:
             if ind == self.tabWidget.tabBar().count() - 1:
                 self.add_tab()
+
+    def add_custom_toolbar(self):
+        self.add_window = CustomSectionManager(self)
+        self.add_window.exec()
+
+    def edit_custom_toolbar(self):
+        pass
+
+    def remove_custom_toolbar(self):
+        pass
 
     def eventFilter(self, watched, ev):
         # turn off dragging while not in edit session
@@ -416,8 +456,8 @@ class CustomTabBar(QTabBar):
     def eventFilter(self, widget, event):
         if ((event.type() == QEvent.MouseButtonPress and
              not self._editor.geometry().contains(event.globalPos())) or
-            (event.type() == QEvent.KeyPress and
-             event.key() == Qt.Key_Escape)):
+                (event.type() == QEvent.KeyPress and
+                 event.key() == Qt.Key_Escape)):
             self.handleEditingFinished()
             self._editor.hide()
         return super().eventFilter(widget, event)
@@ -485,8 +525,8 @@ class CustomTab(QWidget):
 
         if source is None:
             return
-        lay.takeAt(lay.count()-1)
-        addsec = lay.takeAt(lay.count()-1)
+        lay.takeAt(lay.count() - 1)
+        addsec = lay.takeAt(lay.count() - 1)
         item = lay.takeAt(i)
         lay.addItem(item)
         lay.addItem(addsec)
@@ -570,7 +610,7 @@ class CustomSection(QWidget):
 
         self.gridLayout = QGridLayout()
         self.gridLayout.setSpacing(10)
-        self.gridLayout.setContentsMargins(0,6,0,8)
+        self.gridLayout.setContentsMargins(0, 6, 0, 8)
         self.gridLayout.setObjectName(u"gridLayout")
 
         self.verticalLayout.addLayout(self.gridLayout)
@@ -690,9 +730,11 @@ class CustomSection(QWidget):
             self.tbut.org_state = True
             self.tbut.setText(alg.id())
             action = action.replace(':', '_')
-            lista = [x.split('.')[0] for x in os.listdir(os.path.join(os.path.dirname(__file__), 'icons'))]
+            lista = [x.split('.')[0] for x in os.listdir(
+                os.path.join(os.path.dirname(__file__), 'icons'))]
             if action in lista:
-                self.tbut.setIcon(QIcon(os.path.join(os.path.dirname(__file__), 'icons', action)))
+                self.tbut.setIcon(QIcon(
+                    os.path.join(os.path.dirname(__file__), 'icons', action)))
         elif isinstance(action, str):
             self.tbut.setObjectName(action)
             self.set_custom_action()
@@ -701,11 +743,11 @@ class CustomSection(QWidget):
         self.tbut.setMinimumSize(QSize(self.button_size, self.button_size))
         if self.button_size == 30:
             self.tbut.setIconSize(
-                QSize(self.button_size-4, self.button_size-4)
+                QSize(self.button_size - 4, self.button_size - 4)
             )
         else:
             self.tbut.setIconSize(
-                QSize(self.button_size-5, self.button_size-5)
+                QSize(self.button_size - 5, self.button_size - 5)
             )
         self.tbut.setEnabled(True)
         self.tbut.installEventFilter(self)
@@ -1057,7 +1099,7 @@ class CustomSection(QWidget):
                 target -= 1
 
             it_list = []
-            for i in range(lay.count()-1, target-1, -1):
+            for i in range(lay.count() - 1, target - 1, -1):
                 it_list.append(lay.takeAt(i))
             it_list.reverse()
             lay.addItem(item)
@@ -1212,8 +1254,8 @@ class CustomLabel(QLabel):
     def eventFilter(self, widget, event):
         if ((event.type() == QEvent.MouseButtonPress and
              not self.cinput.geometry().contains(event.globalPos())) or
-            (event.type() == QEvent.KeyPress and
-             event.key() == Qt.Key_Escape)):
+                (event.type() == QEvent.KeyPress and
+                 event.key() == Qt.Key_Escape)):
             self.handleEditingFinished()
             self.cinput.hide()
         return super().eventFilter(widget, event)
@@ -1222,4 +1264,5 @@ class CustomLabel(QLabel):
         self.cinput.hide()
         self.setText(self.cinput.text())
         charakter = self.cinput.text()
-        self.setMinimumSize(QSize(self.fontm.width(charakter), self.fontm.height()))
+        self.setMinimumSize(
+            QSize(self.fontm.width(charakter), self.fontm.height()))

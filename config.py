@@ -1,6 +1,8 @@
-import os
 import json
-from qgis._core import QgsMessageLog
+import os
+
+from qgis.core import QgsMessageLog
+
 from .utils import DEFAULT_STYLE
 
 
@@ -17,7 +19,8 @@ class Config:
             try:
                 self.setts = json.loads(conf)[0]
             except ValueError:
-                QgsMessageLog.logMessage('Failed to load config from config.json')
+                QgsMessageLog.logMessage(
+                    'Failed to load config from config.json')
 
     def save_config(self):
         """
