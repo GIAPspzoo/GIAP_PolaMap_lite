@@ -353,6 +353,31 @@ Proszę czekać...</translation>
         <translation>Sekcje użytkownika</translation>
     </message>
     <message>
+        <location filename="../utils.py" line="639"/>
+        <source>Project </source>
+        <translation>Projekt </translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="652"/>
+        <source>Attributes </source>
+        <translation>Atrybuty </translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="673"/>
+        <source>Map Navigation </source>
+        <translation>Nawigacja mapy </translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="696"/>
+        <source>Manage Layers </source>
+        <translation>Zarządzanie warstwami </translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="721"/>
+        <source>Selection </source>
+        <translation>Narzędzia zaznaczania </translation>
+    </message>
+    <message>
         <location filename="../utils.py" line="492"/>
         <source>Data base</source>
         <translation>Baza danych</translation>

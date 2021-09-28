@@ -10,7 +10,7 @@ from qgis.PyQt.QtGui import QDrag, QPainter, QPixmap, QCursor, QIcon, QFont, \
 from qgis.PyQt.QtWidgets import QWidget, QApplication, QHBoxLayout, \
     QFrame, QLabel, QPushButton, QTabBar, QToolButton, QVBoxLayout, \
     QGridLayout, QSpacerItem, QLineEdit, QWidgetItem, QAction, \
-    QBoxLayout, QMessageBox, QScrollArea
+    QBoxLayout, QMessageBox, QScrollArea, QWidgetAction
 from qgis.core import QgsApplication
 from qgis.utils import iface
 
@@ -20,7 +20,8 @@ from .QuickPrint import PrintMapTool
 from .SectionManager.CustomSectionManager import CustomSectionManager
 from .SectionManager.select_section import SelectSection
 from .config import Config
-from .utils import STANDARD_TOOLS, DEFAULT_TABS, tr, TOOLS_HEADERS
+from .utils import STANDARD_TOOLS, DEFAULT_TABS, tr, TOOLS_HEADERS, \
+    STANDARD_QGIS_TOOLS
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'giap_dynamic_layout.ui'))
@@ -257,13 +258,15 @@ class Widget(QWidget, FORM_CLASS):
         ind = self.tabWidget.currentIndex()
         # selected tools
         section_names = [tr(name) for name in TOOLS_HEADERS]
+        all_available_tools = [tool for tool in STANDARD_TOOLS]
+        all_available_tools.extend([tool for tool in STANDARD_QGIS_TOOLS])
         selected = [str(item.data(0)) for item in
                     self.dlg.toolList.selectionModel().selectedRows()
                     if str(item.data(0)) not in section_names]
         self.tabWidget.setUpdatesEnabled(True)
         print_trig = False
         for sel in selected:
-            secdef = [tool for tool in STANDARD_TOOLS
+            secdef = [tool for tool in all_available_tools
                       if tr(tool['label']) == sel][0]
             sec = self.add_section(ind, sel, secdef['btn_size'])
             for btn in secdef['btns']:

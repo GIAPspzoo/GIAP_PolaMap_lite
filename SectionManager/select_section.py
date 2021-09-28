@@ -9,7 +9,7 @@ from qgis.PyQt.QtWidgets import QDialog, QListWidget
 from qgis.gui import QgsProcessingToolboxProxyModel
 
 from ..utils import STANDARD_TOOLS, tr, GIAP_CUSTOM_TOOLS, \
-    SectionHeaderDelegate, TOOLS_HEADERS
+    SectionHeaderDelegate, TOOLS_HEADERS, STANDARD_QGIS_TOOLS
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'UI/select_section_dialog.ui'))
@@ -29,9 +29,13 @@ class SelectSection(QDialog, FORM_CLASS):
                 ProcessingConfig.SHOW_ALGORITHMS_KNOWN_ISSUES):
             filters |= QgsProcessingToolboxProxyModel.FilterShowKnownIssues
         self.algorithmTree.setFilters(filters)
-        tools = sorted([tr(tool['label']) for tool in STANDARD_TOOLS
-                        if tool['id'] not in GIAP_CUSTOM_TOOLS])
+        tools = [tr(tool['label']) for tool in STANDARD_TOOLS
+                 if tool['id'] not in GIAP_CUSTOM_TOOLS]
+        standard_qgs_tools = [tr(tool['label'])
+                              for tool in STANDARD_QGIS_TOOLS]
         giap_tools = sorted([tr(tool) for tool in GIAP_CUSTOM_TOOLS])
+        tools.extend(standard_qgs_tools)
+        tools.sort()
         self.add_header_and_delegate(0, tools)
         tools.extend(giap_tools)
         self.add_header_and_delegate(tools.index(giap_tools[0]), tools)
