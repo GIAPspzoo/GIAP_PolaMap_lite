@@ -4,7 +4,7 @@
 
 [general]
 name=GIAP-PolaMap(lite)
-qgisMinimumVersion=3.10
+qgisMinimumVersion=3.16
 description=GIAP-PolaMap(lite) is an open-source plugin, which allows customization of toolbar and adds proprietary tools to QGIS.
 about=The plugin consists of several elements, which include proprietary tools of one of polish firm producing GIS software - GIAP SP. z o.o. The proprietary GIAP tools include quick print of map, creating own map compositions, ability to quickly add WMS/WMTS services, search engine for data from the ULDK service and customization of toolbar.
 
