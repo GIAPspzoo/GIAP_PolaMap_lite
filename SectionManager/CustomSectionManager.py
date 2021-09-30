@@ -1,6 +1,7 @@
 import os
+from typing import List, Union, Set
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QModelIndex
 from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QSortFilterProxyModel
 from qgis.PyQt.QtWidgets import QDialog, QListWidget
@@ -46,11 +47,14 @@ class CustomSectionManager(QDialog, FORM_CLASS):
         self.availableToolList_sort.setFilterFixedString(
             self.find_tool_searchbox.value())
 
-    def add_to_selected(self):
-        selected_tools = [item for item in
-                          self.availableToolList.selectionModel().selectedRows()]
+    def add_to_selected(self, selected_tools: List[str] = None):
+        if not selected_tools:
+            selected_tools = \
+                [item for item in
+                 self.availableToolList.selectionModel().selectedRows()]
         selected_tools_labels = [str(item.data(0)) for item in selected_tools]
         self.selectedToolList.addItems(selected_tools_labels)
+        self.availableToolList.clearSelection()
         # for row_id in selected_tools_ids:
         #     self.availableToolList.model().removeRow(row_id)
         # self.removed_idx.update(set(selected_tools))
@@ -61,3 +65,19 @@ class CustomSectionManager(QDialog, FORM_CLASS):
         selected_tools_ids = [item.row() for item in selected_tools]
         for row_id in sorted(selected_tools_ids, reverse=True):
             self.selectedToolList.model().removeRow(row_id)
+
+    def edit_selected_item(self, tool_id: Set[Union[QModelIndex, str]]):
+        tool_section_id = tool_id[-1]
+        self.get_actual_tools()
+        section_actions = {}
+        if tool_section_id in self.tools_dict.keys():
+            section_actions = [action_list[0] for action_list in
+                               self.tools_dict[tool_section_id][0]
+                               if isinstance(action_list, list)]
+            self.section_name_lineedit.setText(
+                self.tools_dict[tool_section_id][-1])
+            self.selectedToolList.addItems(section_actions)
+
+    def get_actual_tools(self):
+        self.tools_dict = {tool['id']: [tool['btns'], tool['label']]
+                           for tool in STANDARD_TOOLS}

@@ -67,6 +67,29 @@ class Config:
         self.setts['ribbons_config'] = val
         self.save_config()
 
+    def save_custom_sections_setup(self, val):
+        """ Saves custom sections to config qgis file
+        {'ribbons': {
+            'tab_name': 'name',
+            'sections': [
+                {
+                    'label': 'lab_name',
+                    'btn_size': 30,
+                    'btns': [
+                        [action, row, col],
+                    ], ...
+                }
+                ],
+            }, ... },
+         'fast_access': [ action, action, ... ]
+        }
+        """
+        if not isinstance(val, list):
+            return False
+
+        self.setts['custom_sections'] = val
+        self.save_config()
+
     def load_user_ribbon_setup(self):
         if 'ribbons_config' not in self.setts:
             return False
@@ -76,6 +99,14 @@ class Config:
             return False
 
         return self.setts['ribbons_config']
+
+    def load_custom_sections_setup(self):
+        if 'custom_sections' not in self.setts:
+            return False
+        lay = self.setts['custom_sections']
+        if not lay:
+            return False
+        return self.setts['custom_sections']
 
     def get_original_toolbars(self):
         """ Return list of objectnames toolbars originally opened before first

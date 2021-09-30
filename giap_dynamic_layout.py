@@ -249,7 +249,7 @@ class Widget(QWidget, FORM_CLASS):
         """Show dialog to user and adds selected section to current ribbon
             if there should be more cutom tools, here is the place to put them
         """
-        self.dlg = SelectSection()
+        self.dlg = SelectSection(self)
         self.run_select_section()
         response = self.dlg.exec_()
         if not response:
@@ -284,16 +284,16 @@ class Widget(QWidget, FORM_CLASS):
         self.tabWidget.setUpdatesEnabled(True)
 
     def run_select_section(self):
+        self.custom_section_dlg = CustomSectionManager(self)
         self.dlg.addSectionTab.clicked.connect(self.section_tab)
         self.dlg.searchToolTab.clicked.connect(self.search_tab)
         self.dlg.userSectionsTab.clicked.connect(self.user_section_tab)
         self.dlg.addAlgButton.clicked.connect(self.add_to_ribbon)
-        self.dlg.pushButton_add_custom.clicked.connect(self.add_custom_toolbar)
+        self.dlg.pushButton_add_custom.clicked.connect(self.add_custom_section)
         self.dlg.pushButton_edit_custom.clicked.connect(
-            self.edit_custom_toolbar)
+            self.edit_custom_section)
         self.dlg.pushButton_remove_custom.clicked.connect(
-            self.remove_custom_toolbar)
-
+            self.remove_custom_section)
         self.dlg.searchBox.textChanged.connect(self.search_tree)
         self.dlg.add_searchBox.textChanged.connect(
             self.search_add_sections_tree)
@@ -397,14 +397,22 @@ class Widget(QWidget, FORM_CLASS):
             if ind == self.tabWidget.tabBar().count() - 1:
                 self.add_tab()
 
-    def add_custom_toolbar(self):
-        self.add_window = CustomSectionManager(self)
-        self.add_window.exec()
+    def add_custom_section(self) -> None:
+        if self.custom_section_dlg.exec():
+            pass
 
-    def edit_custom_toolbar(self):
-        pass
+    def edit_custom_section(self) -> None:
+        row = self.dlg.get_selected_row()
+        if not row:
+            CustomMessageBox(
+                self.dlg,
+                tr("Error - Unable to edit the object.")).button_ok()
+            return
+        self.custom_section_dlg.edit_selected_item(row)
+        if self.custom_section_dlg.exec():
+            pass
 
-    def remove_custom_toolbar(self):
+    def remove_custom_section(self) -> None:
         pass
 
     def eventFilter(self, watched, ev):
