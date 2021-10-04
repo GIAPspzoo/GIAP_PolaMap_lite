@@ -69,20 +69,14 @@ class Config:
 
     def save_custom_sections_setup(self, val):
         """ Saves custom sections to config qgis file
-        {'ribbons': {
-            'tab_name': 'name',
-            'sections': [
-                {
+           [
+                    [
                     'label': 'lab_name',
                     'btn_size': 30,
                     'btns': [
                         [action, row, col],
                     ], ...
-                }
-                ],
-            }, ... },
-         'fast_access': [ action, action, ... ]
-        }
+            ]
         """
         if not isinstance(val, list):
             return False

@@ -1,12 +1,12 @@
 import os
 from typing import List, Union, Set
 
-from PyQt5.QtCore import Qt, QModelIndex
+from qgis.PyQt.QtCore import QModelIndex
 from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QSortFilterProxyModel
 from qgis.PyQt.QtWidgets import QDialog, QListWidget
 
-from ..utils import STANDARD_TOOLS, unpack_nested_lists
+from ..utils import STANDARD_TOOLS, unpack_nested_lists, Qt
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'UI/add_section_dialog.ui'))
@@ -24,6 +24,7 @@ class CustomSectionManager(QDialog, FORM_CLASS):
             self.search_available_tools)
         self.toolButton_add_tool.clicked.connect(self.add_to_selected)
         self.toolButton_remove_tool.clicked.connect(self.remove_from_selected)
+        self.pushButton_save.clicked.connect(self.save_section)
 
     def add_available_tools_into_list(self):
         self.test_listWidget = QListWidget()
@@ -60,14 +61,18 @@ class CustomSectionManager(QDialog, FORM_CLASS):
         # self.removed_idx.update(set(selected_tools))
 
     def remove_from_selected(self):
-        selected_tools = [item for item in
-                          self.selectedToolList.selectionModel().selectedRows()]
+        selected_tools = \
+            [item for item in
+             self.selectedToolList.selectionModel().selectedRows()]
         selected_tools_ids = [item.row() for item in selected_tools]
         for row_id in sorted(selected_tools_ids, reverse=True):
             self.selectedToolList.model().removeRow(row_id)
 
     def edit_selected_item(self, tool_id: Set[Union[QModelIndex, str]]):
+        self.selectedToolList.model().removeRows(
+            0, self.selectedToolList.model().rowCount())
         tool_section_id = tool_id[-1]
+        tool_section_row_id = tool_id[0].row()
         self.get_actual_tools()
         section_actions = {}
         if tool_section_id in self.tools_dict.keys():
@@ -77,7 +82,18 @@ class CustomSectionManager(QDialog, FORM_CLASS):
             self.section_name_lineedit.setText(
                 self.tools_dict[tool_section_id][-1])
             self.selectedToolList.addItems(section_actions)
+        if not [sec_id for sec_id in
+                sorted(list(self.parent.dlg.reserved_columns.keys()))
+                if sec_id > tool_section_row_id]:
+            self.edit_in_protected_mode()
+
 
     def get_actual_tools(self):
         self.tools_dict = {tool['id']: [tool['btns'], tool['label']]
                            for tool in STANDARD_TOOLS}
+
+    def save_section(self):
+        pass
+
+    def edit_in_protected_mode(self):
+        self.pushButton_save.setEnabled(False)
