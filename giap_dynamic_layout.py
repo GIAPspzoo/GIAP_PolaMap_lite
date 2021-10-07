@@ -10,7 +10,7 @@ from qgis.PyQt.QtGui import QDrag, QPainter, QPixmap, QCursor, QIcon, QFont, \
 from qgis.PyQt.QtWidgets import QWidget, QApplication, QHBoxLayout, \
     QFrame, QLabel, QPushButton, QTabBar, QToolButton, QVBoxLayout, \
     QGridLayout, QSpacerItem, QLineEdit, QWidgetItem, QAction, \
-    QBoxLayout, QMessageBox, QScrollArea, QWidgetAction
+    QBoxLayout, QMessageBox, QScrollArea
 from qgis.core import QgsApplication
 from qgis.utils import iface
 
@@ -60,9 +60,11 @@ class Widget(QWidget, FORM_CLASS):
         # stupid but works
         dirnm = os.path.dirname(__file__)
         if hasattr(self, 'add_action'):
-            self.add_action.setIcon(QIcon(os.path.join(dirnm, 'icons', 'mActionAddFeature')))
+            self.add_action.setIcon(
+                QIcon(os.path.join(dirnm, 'icons', 'mActionAddFeature')))
         if hasattr(self, 'move_action'):
-            self.move_action.setIcon(QIcon(os.path.join(dirnm, 'icons', 'mActionMoveFeature')))
+            self.move_action.setIcon(
+                QIcon(os.path.join(dirnm, 'icons', 'mActionMoveFeature')))
 
     def add_tab(self, label=None):
         """Adds new tab at the end
@@ -189,7 +191,8 @@ class Widget(QWidget, FORM_CLASS):
 
         if self.edit_session:
             self.instr = QLabel()
-            self.instr.setText(f"""<html><head/><body><b>{tr('Edit tools within a section:')}</b><br>
+            self.instr.setText(
+                f"""<html><head/><body><b>{tr('Edit tools within a section:')}</b><br>
 <b>{tr('Moving tools')}</b> - {tr('click and hold the left mouse button')}<br>
 {tr('on the icon and move it to the desired location')}<br><br>
 
@@ -247,7 +250,7 @@ class Widget(QWidget, FORM_CLASS):
 
     def add_user_selected_section(self):
         """Show dialog to user and adds selected section to current ribbon
-            if there should be more cutom tools, here is the place to put them
+            if there should be more custom tools, here is the place to put them
         """
         self.dlg = SelectSection(self)
         self.run_select_section()
@@ -256,10 +259,12 @@ class Widget(QWidget, FORM_CLASS):
             return
 
         ind = self.tabWidget.currentIndex()
-        # selected tools
+        self.custom_sections = self.conf.load_custom_sections_setup()
         section_names = [tr(name) for name in TOOLS_HEADERS]
         all_available_tools = [tool for tool in STANDARD_TOOLS]
         all_available_tools.extend([tool for tool in STANDARD_QGIS_TOOLS])
+        if self.custom_sections:
+            all_available_tools.extend([tool for tool in self.custom_sections])
         selected = [str(item.data(0)) for item in
                     self.dlg.toolList.selectionModel().selectedRows()
                     if str(item.data(0)) not in section_names]
@@ -277,14 +282,11 @@ class Widget(QWidget, FORM_CLASS):
                     sec.add_action(child, *btn[1:])
                     if btn[0] in ['giapMyPrints', 'giapQuickPrint']:
                         print_trig = True
-
             if sel == 'Prints' or print_trig:
                 self.printsAdded.emit()
-
         self.tabWidget.setUpdatesEnabled(True)
 
     def run_select_section(self):
-        self.custom_section_dlg = CustomSectionManager(self)
         self.dlg.addSectionTab.clicked.connect(self.section_tab)
         self.dlg.searchToolTab.clicked.connect(self.search_tab)
         self.dlg.userSectionsTab.clicked.connect(self.user_section_tab)
@@ -398,10 +400,12 @@ class Widget(QWidget, FORM_CLASS):
                 self.add_tab()
 
     def add_custom_section(self) -> None:
+        self.custom_section_dlg = CustomSectionManager(self)
         if self.custom_section_dlg.exec():
-            pass
+            self.dlg.refresh_lists()
 
     def edit_custom_section(self) -> None:
+        self.custom_section_dlg = CustomSectionManager(self)
         row = self.dlg.get_selected_row()
         if not row:
             CustomMessageBox(
@@ -410,10 +414,21 @@ class Widget(QWidget, FORM_CLASS):
             return
         self.custom_section_dlg.edit_selected_item(row)
         if self.custom_section_dlg.exec():
-            pass
+            self.dlg.refresh_lists()
 
     def remove_custom_section(self) -> None:
-        pass
+        self.custom_section_dlg = CustomSectionManager(self)
+        row = self.dlg.get_selected_row()
+        if not row:
+            CustomMessageBox(
+                self.dlg,
+                tr("Error - Unable to edit the object.")).button_ok()
+            return
+        req = CustomMessageBox(self, tr(
+            "Do you want to delete this section?")).button_yes_no()
+        if req == QMessageBox.Yes:
+            self.custom_section_dlg.remove_row(row)
+            self.dlg.refresh_lists()
 
     def eventFilter(self, watched, ev):
         # turn off dragging while not in edit session
@@ -766,130 +781,245 @@ class CustomSection(QWidget):
     def set_new_giap_icons(self, button, name_tool, action):
         dirnm = os.path.dirname(__file__)
         list_tool = [
-            'mProcessingUserMenu_native_buffer','mProcessingUserMenu_native_centroids',
-            'mProcessingUserMenu_native_clip','mProcessingUserMenu_native_collect',
-            'mProcessingUserMenu_native_convexhull','mProcessingUserMenu_native_countpointsinpolygon',
-            'mProcessingUserMenu_native_creategrid','mProcessingUserMenu_native_difference',
-            'mProcessingUserMenu_native_extractvertices','mProcessingUserMenu_native_intersection',
-            'mProcessingUserMenu_native_lineintersections','mProcessingUserMenu_native_meancoordinates',
-            'mProcessingUserMenu_native_multiparttosingleparts','mProcessingUserMenu_native_nearestneighbouranalysis',
-            'mProcessingUserMenu_native_polygonfromlayerextent','mProcessingUserMenu_native_polygonstolines',
-            'mProcessingUserMenu_native_randompointsinextent','mProcessingUserMenu_native_simplifygeometries',
-            'mProcessingUserMenu_native_sumlinelengths','mProcessingUserMenu_native_symmetricaldifference',
-            'mProcessingUserMenu_native_union','mProcessingUserMenu_qgis_basicstatisticsforfields',
-            'mProcessingUserMenu_qgis_checkvalidity','mProcessingUserMenu_qgis_delaunaytriangulation',
-            'mProcessingUserMenu_qgis_distancematrix','mProcessingUserMenu_qgis_eliminateselectedpolygons',
-            'mProcessingUserMenu_qgis_exportaddgeometrycolumns', 'mProcessingUserMenu_qgis_linestopolygons',
-            'mProcessingUserMenu_qgis_listuniquevalues', 'mProcessingUserMenu_qgis_randompointsinsidepolygons',
-            'mProcessingUserMenu_qgis_regularpoints', 'mProcessingUserMenu_qgis_voronoipolygons',
-            'mProcessingUserMenu_native_dissolve', 'mProcessingUserMenu_qgis_randompointsinlayerbounds',
-            'mProcessingUserMenu_native_densifygeometries','mProcessingUserMenu_gdal_aspect',
-            'mProcessingUserMenu_gdal_fillnodata', 'mProcessingUserMenu_gdal_gridaverage',
-            'mProcessingUserMenu_gdal_griddatametrics', 'mProcessingUserMenu_gdal_gridinversedistance',
-            'mProcessingUserMenu_gdal_gridnearestneighbor', 'mProcessingUserMenu_gdal_hillshade',
-            'mProcessingUserMenu_gdal_roughness', 'mProcessingUserMenu_gdal_slope',
-            'mProcessingUserMenu_gdal_tpitopographicpositionindex', 'mProcessingUserMenu_gdal_triterrainruggednessindex',
-            'mProcessingUserMenu_native_createspatialindex', 'mProcessingUserMenu_native_joinattributesbylocation',
+            'mProcessingUserMenu_native_buffer',
+            'mProcessingUserMenu_native_centroids',
+            'mProcessingUserMenu_native_clip',
+            'mProcessingUserMenu_native_collect',
+            'mProcessingUserMenu_native_convexhull',
+            'mProcessingUserMenu_native_countpointsinpolygon',
+            'mProcessingUserMenu_native_creategrid',
+            'mProcessingUserMenu_native_difference',
+            'mProcessingUserMenu_native_extractvertices',
+            'mProcessingUserMenu_native_intersection',
+            'mProcessingUserMenu_native_lineintersections',
+            'mProcessingUserMenu_native_meancoordinates',
+            'mProcessingUserMenu_native_multiparttosingleparts',
+            'mProcessingUserMenu_native_nearestneighbouranalysis',
+            'mProcessingUserMenu_native_polygonfromlayerextent',
+            'mProcessingUserMenu_native_polygonstolines',
+            'mProcessingUserMenu_native_randompointsinextent',
+            'mProcessingUserMenu_native_simplifygeometries',
+            'mProcessingUserMenu_native_sumlinelengths',
+            'mProcessingUserMenu_native_symmetricaldifference',
+            'mProcessingUserMenu_native_union',
+            'mProcessingUserMenu_qgis_basicstatisticsforfields',
+            'mProcessingUserMenu_qgis_checkvalidity',
+            'mProcessingUserMenu_qgis_delaunaytriangulation',
+            'mProcessingUserMenu_qgis_distancematrix',
+            'mProcessingUserMenu_qgis_eliminateselectedpolygons',
+            'mProcessingUserMenu_qgis_exportaddgeometrycolumns',
+            'mProcessingUserMenu_qgis_linestopolygons',
+            'mProcessingUserMenu_qgis_listuniquevalues',
+            'mProcessingUserMenu_qgis_randompointsinsidepolygons',
+            'mProcessingUserMenu_qgis_regularpoints',
+            'mProcessingUserMenu_qgis_voronoipolygons',
+            'mProcessingUserMenu_native_dissolve',
+            'mProcessingUserMenu_qgis_randompointsinlayerbounds',
+            'mProcessingUserMenu_native_densifygeometries',
+            'mProcessingUserMenu_gdal_aspect',
+            'mProcessingUserMenu_gdal_fillnodata',
+            'mProcessingUserMenu_gdal_gridaverage',
+            'mProcessingUserMenu_gdal_griddatametrics',
+            'mProcessingUserMenu_gdal_gridinversedistance',
+            'mProcessingUserMenu_gdal_gridnearestneighbor',
+            'mProcessingUserMenu_gdal_hillshade',
+            'mProcessingUserMenu_gdal_roughness',
+            'mProcessingUserMenu_gdal_slope',
+            'mProcessingUserMenu_gdal_tpitopographicpositionindex',
+            'mProcessingUserMenu_gdal_triterrainruggednessindex',
+            'mProcessingUserMenu_native_createspatialindex',
+            'mProcessingUserMenu_native_joinattributesbylocation',
             'mProcessingUserMenu_native_reprojectlayer',
 
-            'mActionZoomTo', 'mActionZoomOut', 'mActionZoomToSelected', 'mActionZoomToLayer', 'mActionZoomToBookmark',
-            'mActionZoomToArea', 'mActionZoomNext', 'mActionZoomLast', 'mActionZoomIn', 'mActionZoomFullExtent',
-            'mActionZoomActual', 'mActionWhatsThis', 'mActionViewScaleInCanvas', 'mActionViewExtentInCanvas',
-            'mActionVertexToolActiveLayer', 'mActionVertexTool', 'mActionUnlockAll', 'mActionUnlink',
-            'mActionUngroupItems', 'mActionUndo', 'mActionTrimExtendFeature', 'mActionTracing', 'mActionTouch',
-            'mActionToggleSelectedLayers', 'mActionToggleEditing', 'mActionToggleAllLayers', 'mActionTiltUp',
-            'mActionTiltDown', 'mActionTextAnnotation', 'mActionTerminal', 'mActionSvgAnnotation', 'mActionSum',
-            'mActionStyleManager', 'mActionStreamingDigitize', 'mActionStop', 'mActionStart', 'mActionSimplify',
-            'mActionShowUnplacedLabel', 'mActionShowSelectedLayers', 'mActionShowPluginManager',
-            'mActionShowPinnedLabels', 'mActionShowMeshCalculator', 'mActionShowHideLabels', 'mActionShowBookmarks',
-            'mActionShowAllLayersGray', 'mActionSharingImport', 'mActionSharingExport', 'mActionSharing',
-            'mActionSetToCanvasScale', 'mActionSplitParts', 'mActionSetToCanvasEtent', 'mActionSetProjection',
-            'mActionSelectRectangle', 'mActionSelectRadius', 'mActionSelectPolygon', 'mActionSelectPan',
-            'mActionShowAllLayers', 'mACtionSelectFreehand', 'mActionSelectedToTop', 'mActionSelectAllTree',
-            'mActionSelectAll', 'mActionSelect', 'mActionScriptOpen', 'mActionScaleHighlightFeature',
-            'mActionScaleFeature', 'mActionScaleBar', 'mActionSaveMapAsImage', 'mActionSaveEdits', 'mActionSaveAsSVG',
-            'mActionSaveAsPython', 'mActionSaveAsPDF', 'mActionSplitFeatures', 'mActionSaveAllEdits',
-            'mActionRotatePointSymbols', 'mActionRotateFeature', 'mActionRollbackEdits', 'mActionRollbackAllEdits',
-            'mActionReverseLine', 'mActionResizeWidest', 'mActionResizeTallest', 'mActionResizeSquare',
-            'mActionResizeShortest', 'mActionResizeNarrowest', 'mActionReshape', 'mActionRemoveSelectedFeature',
-            'mActionRemoveLayer', 'mActionRemoveAllFromOverview', 'mActionRemove', 'mActionReload',
-            'mActionRegularPolygonCenterPoint', 'mActionRegularPolygonCenterCorner', 'mActionRegularPolygon2Points',
-            'mActionRefresh', 'mActionRedo', 'mActionRectangleExtent', 'mActionRectangleCenter',
-            'mActionRectangle3PointsProjected', 'mActionRectangle3PointsDistance', 'mActionRecord',
-            'mActionRaiseItems', 'mActionPropertyItem', 'mActionPropertiesWidget', 'mActionProjectProperties',
-            'mActionProcessSelected', 'mActionPrevious', 'mActionPlay', 'mActionPinLabels', 'mActionRotateLabel',
-            'mActionPanToSelected', 'mActionPanTo', 'mActionPanHighlightFeature', 'mActionOptions',
-            'mActionOpenTableVisible', 'mActionOpenTableSelected', 'mActionOpenTableEdited', 'mActionOpenTable',
-            'mActionOffsetPointSymbols', 'mActionOffsetCurve', 'mActionNext', 'mActionNewVirtualLayer',
-            'mActionNewVectorLayer', 'mActionNewTableRow', 'mActionNewSpatiaLiteLayer', 'mActionNewReport',
-            'mActionNewPage', 'mActionNewMeshLayer', 'mActionNewMap', 'mActionNewLayout', 'mActionNewGeoPackageLayer',
-            'mActionNewFolder', 'mActionNewComposer', 'mActionNewBookmark', 'mActionNewAttribute',
-            'mActionNew3DMap', 'mActionMultiEdit', 'mActionMoveVertex', 'mActionMoveLabel', 'mActionMoveItemsToTop',
-            'mActionMoveItemsToBottom', 'mActionMoveItemContent', 'mActionMoveFeaturePoint',
-            'mActionMoveFeatureLine', 'mActionMoveFeatureCopyLine', 'mActionMoveFeatureCopyPoint',
-            'mActionMoveFeatureCopy', 'mActionMoveFeature', 'mActionMeshDigitizing', 'mActionMeshDigitizing',
-            'mActionMergeFeatures', 'mActionMergeFeaturesAttributes', 'mActionMeasureBearing',
-            'mActionMeasureArea', 'mActionMeasureAngle', 'mActionMapTips', 'mActionMapSettings',
-            'mActionMapIdentification', 'mActionLowerItems', 'mActionFeature', 'mActionLockItems',
-            'mActionLockExtent', 'mActionLocalHistogramStretch', 'mActionLocalCumulativeCutStretch',
-            'mActionLink', 'mActionLayoutManager', 'mActionLast', 'mActionLabeling', 'mActionLabelAnchorStart',
-            'mActionLabelAnchorEnd', 'mActionLabelAnchorCustom', 'mActionLabelAnchorCenter', 'mActionLabel',
-            'mActionKeyboardShortcuts', 'mActionInvertSelection', 'mActionInterfaceCustomization',
-            'mActionInOverview', 'mActionIncreaseGamma', 'mActionIncreaseFont', 'mActionIncreaseContrast',
-            'mActionIncreaseBrightness', 'mActionIdentifyByRectangle', 'mActionIdentifyByRadius',
+            'mActionZoomTo', 'mActionZoomOut', 'mActionZoomToSelected',
+            'mActionZoomToLayer', 'mActionZoomToBookmark',
+            'mActionZoomToArea', 'mActionZoomNext', 'mActionZoomLast',
+            'mActionZoomIn', 'mActionZoomFullExtent',
+            'mActionZoomActual', 'mActionWhatsThis',
+            'mActionViewScaleInCanvas', 'mActionViewExtentInCanvas',
+            'mActionVertexToolActiveLayer', 'mActionVertexTool',
+            'mActionUnlockAll', 'mActionUnlink',
+            'mActionUngroupItems', 'mActionUndo', 'mActionTrimExtendFeature',
+            'mActionTracing', 'mActionTouch',
+            'mActionToggleSelectedLayers', 'mActionToggleEditing',
+            'mActionToggleAllLayers', 'mActionTiltUp',
+            'mActionTiltDown', 'mActionTextAnnotation', 'mActionTerminal',
+            'mActionSvgAnnotation', 'mActionSum',
+            'mActionStyleManager', 'mActionStreamingDigitize', 'mActionStop',
+            'mActionStart', 'mActionSimplify',
+            'mActionShowUnplacedLabel', 'mActionShowSelectedLayers',
+            'mActionShowPluginManager',
+            'mActionShowPinnedLabels', 'mActionShowMeshCalculator',
+            'mActionShowHideLabels', 'mActionShowBookmarks',
+            'mActionShowAllLayersGray', 'mActionSharingImport',
+            'mActionSharingExport', 'mActionSharing',
+            'mActionSetToCanvasScale', 'mActionSplitParts',
+            'mActionSetToCanvasEtent', 'mActionSetProjection',
+            'mActionSelectRectangle', 'mActionSelectRadius',
+            'mActionSelectPolygon', 'mActionSelectPan',
+            'mActionShowAllLayers', 'mACtionSelectFreehand',
+            'mActionSelectedToTop', 'mActionSelectAllTree',
+            'mActionSelectAll', 'mActionSelect', 'mActionScriptOpen',
+            'mActionScaleHighlightFeature',
+            'mActionScaleFeature', 'mActionScaleBar', 'mActionSaveMapAsImage',
+            'mActionSaveEdits', 'mActionSaveAsSVG',
+            'mActionSaveAsPython', 'mActionSaveAsPDF', 'mActionSplitFeatures',
+            'mActionSaveAllEdits',
+            'mActionRotatePointSymbols', 'mActionRotateFeature',
+            'mActionRollbackEdits', 'mActionRollbackAllEdits',
+            'mActionReverseLine', 'mActionResizeWidest',
+            'mActionResizeTallest', 'mActionResizeSquare',
+            'mActionResizeShortest', 'mActionResizeNarrowest',
+            'mActionReshape', 'mActionRemoveSelectedFeature',
+            'mActionRemoveLayer', 'mActionRemoveAllFromOverview',
+            'mActionRemove', 'mActionReload',
+            'mActionRegularPolygonCenterPoint',
+            'mActionRegularPolygonCenterCorner',
+            'mActionRegularPolygon2Points',
+            'mActionRefresh', 'mActionRedo', 'mActionRectangleExtent',
+            'mActionRectangleCenter',
+            'mActionRectangle3PointsProjected',
+            'mActionRectangle3PointsDistance', 'mActionRecord',
+            'mActionRaiseItems', 'mActionPropertyItem',
+            'mActionPropertiesWidget', 'mActionProjectProperties',
+            'mActionProcessSelected', 'mActionPrevious', 'mActionPlay',
+            'mActionPinLabels', 'mActionRotateLabel',
+            'mActionPanToSelected', 'mActionPanTo',
+            'mActionPanHighlightFeature', 'mActionOptions',
+            'mActionOpenTableVisible', 'mActionOpenTableSelected',
+            'mActionOpenTableEdited', 'mActionOpenTable',
+            'mActionOffsetPointSymbols', 'mActionOffsetCurve', 'mActionNext',
+            'mActionNewVirtualLayer',
+            'mActionNewVectorLayer', 'mActionNewTableRow',
+            'mActionNewSpatiaLiteLayer', 'mActionNewReport',
+            'mActionNewPage', 'mActionNewMeshLayer', 'mActionNewMap',
+            'mActionNewLayout', 'mActionNewGeoPackageLayer',
+            'mActionNewFolder', 'mActionNewComposer', 'mActionNewBookmark',
+            'mActionNewAttribute',
+            'mActionNew3DMap', 'mActionMultiEdit', 'mActionMoveVertex',
+            'mActionMoveLabel', 'mActionMoveItemsToTop',
+            'mActionMoveItemsToBottom', 'mActionMoveItemContent',
+            'mActionMoveFeaturePoint',
+            'mActionMoveFeatureLine', 'mActionMoveFeatureCopyLine',
+            'mActionMoveFeatureCopyPoint',
+            'mActionMoveFeatureCopy', 'mActionMoveFeature',
+            'mActionMeshDigitizing', 'mActionMeshDigitizing',
+            'mActionMergeFeatures', 'mActionMergeFeaturesAttributes',
+            'mActionMeasureBearing',
+            'mActionMeasureArea', 'mActionMeasureAngle', 'mActionMapTips',
+            'mActionMapSettings',
+            'mActionMapIdentification', 'mActionLowerItems', 'mActionFeature',
+            'mActionLockItems',
+            'mActionLockExtent', 'mActionLocalHistogramStretch',
+            'mActionLocalCumulativeCutStretch',
+            'mActionLink', 'mActionLayoutManager', 'mActionLast',
+            'mActionLabeling', 'mActionLabelAnchorStart',
+            'mActionLabelAnchorEnd', 'mActionLabelAnchorCustom',
+            'mActionLabelAnchorCenter', 'mActionLabel',
+            'mActionKeyboardShortcuts', 'mActionInvertSelection',
+            'mActionInterfaceCustomization',
+            'mActionInOverview', 'mActionIncreaseGamma', 'mActionIncreaseFont',
+            'mActionIncreaseContrast',
+            'mActionIncreaseBrightness', 'mActionIdentifyByRectangle',
+            'mActionIdentifyByRadius',
             'mActionIdentifyByPolygon',
-            'mActionIdentifyByFreehand', 'mActionIdentify', 'mActionIconView', 'mActionHtmlAnnotation',
-            'mActionHistory', 'mActionHighlightFeature', 'mActionHideSelectedLayers',
-            'mActionHideDeselectedLayers', 'mActionHideAllLayers', 'mActionHelpContents',
+            'mActionIdentifyByFreehand', 'mActionIdentify', 'mActionIconView',
+            'mActionHtmlAnnotation',
+            'mActionHistory', 'mActionHighlightFeature',
+            'mActionHideSelectedLayers',
+            'mActionHideDeselectedLayers', 'mActionHideAllLayers',
+            'mActionHelpContents',
             'mActionHelpAbout', 'mActionHandleStoreFilterExpressionUnchecked',
             'mActionHandleStoreFilterExpressionChecked',
-            'mActionGroupItems', 'mActionFullHistogramStretch', 'mActionFullCumulativeCutStretch',
-            'mActionFromSelectedFeature', 'mActionFromLargestFeature', 'mActionFormView', 'mActionFormAnnotation',
-            'mActionFolder', 'mActionFirst', 'mActionFindReplace', 'mActionFilterTableFields', 'mActionFilter2',
-            'mActionFilter', 'mActionFillRing', 'mActionFileSaveAs', 'mActionFileSave', 'mActionFilePrint',
-            'mActionFileNew', 'mActionFileExit', 'mActionExport', 'mActionExpandTree', 'mActionExpandNewTree',
-            'mActionEllipseExtent', 'mActionEllipseCenterPoint', 'mActionEllipseCenter2Points',
-            'mActionEditTable', 'mActionEditPaste', 'mActionEditNodesItem', 'mActionEditModelComponent',
-            'mActionEditHtml', 'mActionEditHelpContent', 'mActionEditCut', 'mActionEditCopy', 'mActionDuplicateLayout',
-            'mActionDuplicateLayer', 'mActionDuplicateFeatureDigitized', 'mActionDuplicateFeature',
-            'mActionDuplicateComposer', 'mActionDoubleArrowRight', 'mActionDoubleArrowLeft', 'mActionDistributeVSpace',
-            'mActionDistributeVCenter', 'mActionDistributeTop', 'mActionDistributeRight', 'mActionDistributeLeft',
-            'mActionDistributeHSpace', 'mActionDistributeHCenter', 'mActionDistributeBottom',
+            'mActionGroupItems', 'mActionFullHistogramStretch',
+            'mActionFullCumulativeCutStretch',
+            'mActionFromSelectedFeature', 'mActionFromLargestFeature',
+            'mActionFormView', 'mActionFormAnnotation',
+            'mActionFolder', 'mActionFirst', 'mActionFindReplace',
+            'mActionFilterTableFields', 'mActionFilter2',
+            'mActionFilter', 'mActionFillRing', 'mActionFileSaveAs',
+            'mActionFileSave', 'mActionFilePrint',
+            'mActionFileNew', 'mActionFileExit', 'mActionExport',
+            'mActionExpandTree', 'mActionExpandNewTree',
+            'mActionEllipseExtent', 'mActionEllipseCenterPoint',
+            'mActionEllipseCenter2Points',
+            'mActionEditTable', 'mActionEditPaste', 'mActionEditNodesItem',
+            'mActionEditModelComponent',
+            'mActionEditHtml', 'mActionEditHelpContent', 'mActionEditCut',
+            'mActionEditCopy', 'mActionDuplicateLayout',
+            'mActionDuplicateLayer', 'mActionDuplicateFeatureDigitized',
+            'mActionDuplicateFeature',
+            'mActionDuplicateComposer', 'mActionDoubleArrowRight',
+            'mActionDoubleArrowLeft', 'mActionDistributeVSpace',
+            'mActionDistributeVCenter', 'mActionDistributeTop',
+            'mActionDistributeRight', 'mActionDistributeLeft',
+            'mActionDistributeHSpace', 'mActionDistributeHCenter',
+            'mActionDistributeBottom',
             'mActionDigitizeWithCurve',
-            'mActionDeselectAllTree', 'mActionDeselectAll', 'mActionDeselectActiveLayer', 'mActionDeleteTable',
-            'mActionDeleteSelectedFeatures', 'mActionDeleteSelected', 'mActionDeleteRing', 'mActionDeletePart',
-            'mActionDeleteModelComponent', 'mActionDeleteAttribute', 'mActionDecreaseGamma', 'mActionDecreaseFont',
-            'mActionDecreaseContrast', 'mActionDecreaseBrightness', 'mActionDataSourceManager',
+            'mActionDeselectAllTree', 'mActionDeselectAll',
+            'mActionDeselectActiveLayer', 'mActionDeleteTable',
+            'mActionDeleteSelectedFeatures', 'mActionDeleteSelected',
+            'mActionDeleteRing', 'mActionDeletePart',
+            'mActionDeleteModelComponent', 'mActionDeleteAttribute',
+            'mActionDecreaseGamma', 'mActionDecreaseFont',
+            'mActionDecreaseContrast', 'mActionDecreaseBrightness',
+            'mActionDataSourceManager',
             'mActionCustomProjection',
-            'mActionCreateTable', 'mActionCreateMemory', 'mActionConditionalFormatting', 'mActionComposerManager',
-            'mActionCollapseTree', 'mActionCircularStringRadius', 'mActionCircularStringCurvePoint',
-            'mActionCircleExtent', 'mActionCircleCenterPoint', 'mActionCircle3Tangents', 'mActionCircle3Points',
-            'mActionCircle2TangentsPoint', 'mActionCircle2Points', 'mActionChangeLabelProperties',
-            'mActionCapturePoint', 'mActionCaptureLine', 'mActionCancelEdits', 'mActionCancelAllEdits',
-            'mActionCalculateField', 'mActionAvoidIntersetionsLayers', 'mActionAvoidIntersectionsCurrentLayer',
-            'mActionAtlasSettings', 'mActionAtlasPrev', 'mActionAtlasNext', 'mActionAtlasLast', 'mActionAtlasFirst',
-            'mActionArrowUp', 'mActionArrowRight', 'mActionArrowLeft', 'mActionArrowDown', 'mActionAnnotation',
-            'mActionAllowIntersections', 'mActionAllEdits', 'mActionAlignVCenter', 'mActionAlignTop',
-            'mActionAlignRight', 'mActionAlignLeft', 'mActionAlignHCenter', 'mActionAlignBottom',
-            'mActionAddTable', 'mActionAddPolyline', 'mActionAddPolygon', 'mActionAddPointCloudLayer',
-            'mActionAddNodesItem', 'mActionAddMssqlLayer', 'mActionAddMeshLayer', 'mActionAddMarker',
-            'mActionAddMap', 'mActionAddManualTable', 'mActionAddLegend', 'mActionAddLayer', 'mActionAddImage',
-            'mActionAddHtml', 'mActionAddHanaLayer', 'mActionAddGroup', 'mActionAddPackageLayer',
+            'mActionCreateTable', 'mActionCreateMemory',
+            'mActionConditionalFormatting', 'mActionComposerManager',
+            'mActionCollapseTree', 'mActionCircularStringRadius',
+            'mActionCircularStringCurvePoint',
+            'mActionCircleExtent', 'mActionCircleCenterPoint',
+            'mActionCircle3Tangents', 'mActionCircle3Points',
+            'mActionCircle2TangentsPoint', 'mActionCircle2Points',
+            'mActionChangeLabelProperties',
+            'mActionCapturePoint', 'mActionCaptureLine', 'mActionCancelEdits',
+            'mActionCancelAllEdits',
+            'mActionCalculateField', 'mActionAvoidIntersetionsLayers',
+            'mActionAvoidIntersectionsCurrentLayer',
+            'mActionAtlasSettings', 'mActionAtlasPrev', 'mActionAtlasNext',
+            'mActionAtlasLast', 'mActionAtlasFirst',
+            'mActionArrowUp', 'mActionArrowRight', 'mActionArrowLeft',
+            'mActionArrowDown', 'mActionAnnotation',
+            'mActionAllowIntersections', 'mActionAllEdits',
+            'mActionAlignVCenter', 'mActionAlignTop',
+            'mActionAlignRight', 'mActionAlignLeft', 'mActionAlignHCenter',
+            'mActionAlignBottom',
+            'mActionAddTable', 'mActionAddPolyline', 'mActionAddPolygon',
+            'mActionAddPointCloudLayer',
+            'mActionAddNodesItem', 'mActionAddMssqlLayer',
+            'mActionAddMeshLayer', 'mActionAddMarker',
+            'mActionAddMap', 'mActionAddManualTable', 'mActionAddLegend',
+            'mActionAddLayer', 'mActionAddImage',
+            'mActionAddHtml', 'mActionAddHanaLayer', 'mActionAddGroup',
+            'mActionAddPackageLayer',
             'mActionAddGeomodeLayer',
-            'mActionAddExpression', 'mActionAddDelimitedTextLayer', 'mActionAddDb2Layer', 'mActionAddBasicTriangle',
-            'mActionAddBasicShape', 'mActionAddBasicRectangle', 'mActionAddBasicCircle', 'mActionAddArrow',
-            'mActionAddAmsLayer', 'mActionAddAllToOverview', 'mActionAddAfsLayer', 'mActionAdd3DMap',
-            'mActionAdd', 'mActionActive', 'mAction3DNavigation', 'mAction', 'mActionMeasure', 'mActionPan',
-            'mActionFileOpen', 'mActionAddWmsLayer', 'mActionAddWfsLayer', 'mActionAddWcsLayer',
+            'mActionAddExpression', 'mActionAddDelimitedTextLayer',
+            'mActionAddDb2Layer', 'mActionAddBasicTriangle',
+            'mActionAddBasicShape', 'mActionAddBasicRectangle',
+            'mActionAddBasicCircle', 'mActionAddArrow',
+            'mActionAddAmsLayer', 'mActionAddAllToOverview',
+            'mActionAddAfsLayer', 'mActionAdd3DMap',
+            'mActionAdd', 'mActionActive', 'mAction3DNavigation', 'mAction',
+            'mActionMeasure', 'mActionPan',
+            'mActionFileOpen', 'mActionAddWmsLayer', 'mActionAddWfsLayer',
+            'mActionAddWcsLayer',
             'mActionAddVirtualLayer',
-            'mActionAddSpatiaLiteLayer', 'mActionAddRing', 'mActionAddRasterLayer', 'mActionAddPostgisLayer',
-            'mActionAddPart', 'mActionAddOgrLayer', 'mAlgorithmBasicStatistics','mActionStatisticalSummary',
-            'mProcessingUserMenu_native_selectbylocation', 'mProcessingUserMenu_qgis_randomselection',
-            'native_fuzzifyrasterlinearmembership', 'native_fuzzifyrastergaussianmembership',
+            'mActionAddSpatiaLiteLayer', 'mActionAddRing',
+            'mActionAddRasterLayer', 'mActionAddPostgisLayer',
+            'mActionAddPart', 'mActionAddOgrLayer',
+            'mAlgorithmBasicStatistics', 'mActionStatisticalSummary',
+            'mProcessingUserMenu_native_selectbylocation',
+            'mProcessingUserMenu_qgis_randomselection',
+            'native_fuzzifyrasterlinearmembership',
+            'native_fuzzifyrastergaussianmembership',
             'native_fuzzifyrasterlargemembership',
-            'native_fuzzifyrasternearmembership', 'native_fuzzifyrasterpowermembership',
-            'native_fuzzifyrastersmallmembership', 'native_cellstatistics', 'qgis_concavehull',
-            'native_createconstantrasterlayer', 'native_fillnodata', 'native_linedensity',
+            'native_fuzzifyrasternearmembership',
+            'native_fuzzifyrasterpowermembership',
+            'native_fuzzifyrastersmallmembership', 'native_cellstatistics',
+            'qgis_concavehull',
+            'native_createconstantrasterlayer', 'native_fillnodata',
+            'native_linedensity',
             'native_serviceareafromlayer',
             'native_serviceareafrompoint',
             'native_shortestpathlayertopoint',
@@ -904,25 +1034,33 @@ class CustomSection(QWidget):
             'qgis_heatmapkerneldensityestimation',
             'mActionToggleAdvancedDigitizeToolBar',
             'dbManager',
-            'mActionEllipseFoci', 'mActionOpenProject', 'mActionNewProject', 'mActionSaveProject',
-            'mActionSaveProjectAs', 'mActionCapturePolygon','mActionSelectFeatures','mActionAddPgLayer',
-            'mActionAddDelimitedText','mActionNewMemoryLayer', 'mActionShowUnplacedLabels', 'mActionCutFeatures',
-            'mActionPasteFeatures', 'mActionCopyFeatures', 'EnableSnappingAction',
-            'EnableTracingAction', 'mActionSimplifyFeature', 'mActionReshapeFeatures',
-            'mActionSelectByExpression', 'mProcessingAlg_native_selectbylocation', 'mActionOpenFieldCalc',
-            'mActionAddFeature', 'mActionSaveLayerEdits','mActionShowLayoutManager', 'mActionAddOracleLayer',
-            'mActionNewPrintLayout', 'qgis_selectbyattribute','qgis_selectbyexpression'
-
-
-
+            'mActionEllipseFoci', 'mActionOpenProject', 'mActionNewProject',
+            'mActionSaveProject',
+            'mActionSaveProjectAs', 'mActionCapturePolygon',
+            'mActionSelectFeatures', 'mActionAddPgLayer',
+            'mActionAddDelimitedText', 'mActionNewMemoryLayer',
+            'mActionShowUnplacedLabels', 'mActionCutFeatures',
+            'mActionPasteFeatures', 'mActionCopyFeatures',
+            'EnableSnappingAction',
+            'EnableTracingAction', 'mActionSimplifyFeature',
+            'mActionReshapeFeatures',
+            'mActionSelectByExpression',
+            'mProcessingAlg_native_selectbylocation', 'mActionOpenFieldCalc',
+            'mActionAddFeature', 'mActionSaveLayerEdits',
+            'mActionShowLayoutManager', 'mActionAddOracleLayer',
+            'mActionNewPrintLayout', 'qgis_selectbyattribute',
+            'qgis_selectbyexpression'
 
         ]
         if name_tool in list_tool:
-            action.setIcon(QIcon(os.path.join(dirnm, 'icons', button.objectName())))
-        if name_tool =='mActionNewMemoryLayer':
-            action.setIcon(QIcon(os.path.join(dirnm, 'icons', 'mActionNewMemoryLayer')))
-        if name_tool =='mActionSaveProjectAs':
-            action.setIcon(QIcon(os.path.join(dirnm, 'icons', 'mActionSaveProjectAs')))
+            action.setIcon(
+                QIcon(os.path.join(dirnm, 'icons', button.objectName())))
+        if name_tool == 'mActionNewMemoryLayer':
+            action.setIcon(
+                QIcon(os.path.join(dirnm, 'icons', 'mActionNewMemoryLayer')))
+        if name_tool == 'mActionSaveProjectAs':
+            action.setIcon(
+                QIcon(os.path.join(dirnm, 'icons', 'mActionSaveProjectAs')))
         if name_tool == 'mActionAddFeature':
             self.parent().parent().parent().parent().add_action = action
         if name_tool == 'mActionMoveFeature':

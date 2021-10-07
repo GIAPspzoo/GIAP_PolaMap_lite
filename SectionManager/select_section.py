@@ -22,25 +22,33 @@ class SelectSection(QDialog, FORM_CLASS):
         self.parent = parent
         self.add_searchBox.hide()
         self.add_custom_searchBox.hide()
-        self.prepare_sections_list()
-        self.prepare_toolbox_tab()
-        self.prepare_predefined_custom_sectons()
+        self.refresh_lists()
 
     def prepare_sections_list(self) -> None:
         self.listWidget_obj = QListWidget()
         self.header_delegate = SectionHeaderDelegate(self)
         self.tmp_tools_headers = deepcopy(TOOLS_HEADERS)
+        self.custom_sections = self.parent.conf.load_custom_sections_setup()
         tools = [tr(tool['label']) for tool in STANDARD_TOOLS
                  if tool['id'] not in GIAP_CUSTOM_TOOLS]
         standard_qgs_tools = [tr(tool['label'])
                               for tool in STANDARD_QGIS_TOOLS]
         giap_tools = sorted([tr(tool) for tool in GIAP_CUSTOM_TOOLS])
+        if self.custom_sections:
+            custom_sec = sorted(
+                [tr(tool['label']) for tool in self.custom_sections
+                 if tool['id'] not in GIAP_CUSTOM_TOOLS])
+            custom_sec.sort()
         tools.extend(standard_qgs_tools)
         tools.sort()
         self.add_header_and_delegate(0, tools, self.toolList)
         tools.extend(giap_tools)
         self.add_header_and_delegate(
             tools.index(giap_tools[0]), tools, self.toolList)
+        if self.custom_sections:
+            tools.extend(custom_sec)
+            self.add_header_and_delegate(
+                tools.index(custom_sec[0]), tools, self.toolList)
         self.sort = QSortFilterProxyModel()
         self.listWidget_obj.addItems(tools)
         self.sort.setSourceModel(self.listWidget_obj.model())
@@ -68,9 +76,8 @@ class SelectSection(QDialog, FORM_CLASS):
         self.algorithmTree.setFilters(filters)
 
     def prepare_predefined_custom_sectons(self) -> None:
-        self.reserved_columns = {0: 'GIAP sections'}
+        self.reserved_rows = {0: 'GIAP sections'}
         self.tools_id_dict = {}
-        self.custom_sections = self.parent.conf.load_custom_sections_setup()
         self.customlistWidget_obj = QListWidget()
         self.tmp_tools_headers = deepcopy(TOOLS_HEADERS)
 
@@ -86,14 +93,14 @@ class SelectSection(QDialog, FORM_CLASS):
                                if tool['id'] not in GIAP_CUSTOM_TOOLS}
             tools_dict.update(cust_tools_dict)
             cust_tools = [tool for tool in cust_tools_dict.values()]
-            self.add_header_and_delegate(-1, tools, self.customToolList,
-                                         'User sections')
-            self.reserved_columns[tools.index(tr('User sections'))] = \
-                'User sections'
             tools.extend(cust_tools)
+            self.add_header_and_delegate(tools.index(cust_tools[0]), tools,
+                                         self.customToolList, 'User sections')
+            self.reserved_rows[tools.index(tr('User sections'))] = \
+                'User sections'
 
         for tool in tools:
-            if tools.index(tool) not in self.reserved_columns.keys():
+            if tools.index(tool) not in self.reserved_rows.keys():
                 self.tools_id_dict[tools.index(tool)] = \
                     {name: tl_id for tl_id, name in tools_dict.items()}[tool]
 
@@ -108,3 +115,8 @@ class SelectSection(QDialog, FORM_CLASS):
         if rows and rows[0].row() in self.tools_id_dict.keys():
             return rows[0], self.tools_id_dict[rows[0].row()]
         return None
+
+    def refresh_lists(self) -> None:
+        self.prepare_sections_list()
+        self.prepare_toolbox_tab()
+        self.prepare_predefined_custom_sectons()
