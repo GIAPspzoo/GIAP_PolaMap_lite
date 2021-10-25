@@ -291,8 +291,9 @@ class MainTabQgsWidget:
         """
 
         if not opt:
-            conf = self.main_widget.generate_ribbon_config()
-            self.config.save_user_ribbon_setup(conf)
+            ribbon_conf = self.main_widget.generate_ribbon_config()
+            sections_conf = self.config.load_custom_sections_setup()
+            self.config.save_user_ribbon_setup(ribbon_conf, sections_conf)
 
     def load_default_user_layout(self):
         """Restores original user toolbars to qgis window from settings

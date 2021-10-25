@@ -5,10 +5,11 @@ from typing import List, Union, Set
 from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QModelIndex
 from qgis.PyQt.QtCore import QSortFilterProxyModel
-from qgis.PyQt.QtWidgets import QDialog, QListWidget
+from qgis.PyQt.QtGui import QIcon, QStandardItemModel, QStandardItem
+from qgis.PyQt.QtWidgets import QDialog
 
 from ..CustomMessageBox import CustomMessageBox
-from ..utils import STANDARD_TOOLS, unpack_nested_lists, Qt, tr
+from ..utils import STANDARD_TOOLS, unpack_nested_lists, Qt, tr, TOOL_LIST
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'UI/add_section_dialog.ui'))
@@ -28,16 +29,39 @@ class CustomSectionManager(QDialog, FORM_CLASS):
         self.pushButton_save.clicked.connect(self.save_section)
 
     def add_available_tools_into_list(self) -> None:
-        self.test_listWidget = QListWidget()
+        dirnm = os.path.join(os.path.dirname(__file__), '../icons')
         tmp_tools_list = unpack_nested_lists(unpack_nested_lists(
             [tool['btns'] for tool in STANDARD_TOOLS]))
         tools = list(set([tool for tool in tmp_tools_list
                           if isinstance(tool, str)]))
         tools.sort()
         self.availableToolList_sort = QSortFilterProxyModel()
-        self.test_listWidget.addItems(tools)
-        self.availableToolList_sort.setSourceModel(
-            self.test_listWidget.model())
+        model = QStandardItemModel()
+        for tool in tools:
+            item = QStandardItem(tool)
+            if 'mProcessing' in tool:
+                tool = tool.replace(':', '_')
+            if tool in TOOL_LIST:
+                icon = QIcon(os.path.join(dirnm, f'{tool}.png'))
+            if tool == 'giapWMS':
+                icon = QIcon(os.path.join(dirnm, 'orto_icon2.png'))
+            elif tool == 'giapCompositions':
+                icon = QIcon(os.path.join(dirnm, 'compositions_giap.png'))
+            elif tool == "giapQuickPrint":
+                icon = QIcon(os.path.join(dirnm, 'quick_print.png'))
+            elif tool == "giapMyPrints":
+                icon = QIcon(os.path.join(dirnm, 'my_prints.png'))
+            elif tool == 'mActionShowAlignRasterTool':
+                icon = QIcon(
+                    os.path.join(dirnm, 'mActionShowAlignRasterTool.png'))
+            elif tool == 'mActionNewMemoryLayer':
+                icon = QIcon(os.path.join(dirnm, 'mActionNewMemoryLayer.png'))
+            elif tool == 'mActionSaveProjectAs':
+                icon = QIcon(os.path.join(dirnm, 'mActionSaveProjectAs.png'))
+            item.setData(icon, Qt.DecorationRole)
+            model.appendRow(item)
+
+        self.availableToolList_sort.setSourceModel(model)
         self.availableToolList_sort.setFilterCaseSensitivity(
             Qt.CaseInsensitive)
         self.availableToolList.setModel(self.availableToolList_sort)
@@ -137,7 +161,7 @@ class CustomSectionManager(QDialog, FORM_CLASS):
                 self.remove_section(existing_sections, self.edit_id)
                 del self.edit_id
             existing_sections.append(section_dict)
-        self.parent.conf.setts['custom_sections'] = existing_sections
+        self.parent.conf.save_custom_sections_setup(existing_sections)
         self.accept()
 
     def remove_section(self, sections, section_id):
@@ -153,7 +177,7 @@ class CustomSectionManager(QDialog, FORM_CLASS):
             0, self.selectedToolList.model().rowCount())
         existing_sections = self.parent.conf.load_custom_sections_setup()
         self.remove_section(existing_sections, tool_id[-1])
-        self.parent.conf.setts['custom_sections'] = existing_sections
+        self.parent.conf.save_custom_sections_setup(existing_sections)
 
     def edit_in_protected_mode(self) -> None:
         self.pushButton_save.setEnabled(False)

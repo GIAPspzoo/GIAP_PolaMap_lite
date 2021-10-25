@@ -652,6 +652,26 @@ Proszę czekać...</translation>
         <source>Service return {} not valid features.</source>
         <translation>Usługa zwróciła {} niepoprawnych obiektów.</translation>
     </message>
+    <message>
+        <location filename="../giap_dynamic_layout.py" line="427"/>
+        <source>Do you want to delete this section?</source>
+        <translation>Czy chcesz usunąć tę sekcję?</translation>
+    </message>
+    <message>
+        <location filename="../giap_dynamic_layout.py" line="413"/>
+        <source>Error - Unable to edit the object.</source>
+        <translation>Błąd - nie udało się edytować obiektu.</translation>
+    </message>
+    <message>
+        <location filename="../giap_dynamic_layout.py" line="425"/>
+        <source>Error - Unable to remove the object.</source>
+        <translation>Błąd - nie udało się usunąć obiektu.</translation>
+    </message>
+    <message>
+        <location filename="../SectionManager/CustomSectionManager.py" line="425"/>
+        <source>Error - Check the entered data.</source>
+        <translation>Błąd - Sprawdź wprowadzone dane.</translation>
+    </message>
 </context>
 <context>
     <name>CompositionsSaverDialog</name>
@@ -704,6 +724,59 @@ Proszę czekać...</translation>
         <location filename="../Kompozycje/compositions_saver.ui" line="314"/>
         <source>Compositions</source>
         <translation>Kompozycje</translation>
+    </message>
+</context>
+<context>
+    <name>AddSectionDialog</name>
+    <message>
+        <location filename="../SectionManager/UI/add_section_dialog.ui" line="32"/>
+        <source>GIAP-PolaMap(lite) - Add/Edit section</source>
+        <translation>GIAP-PolaMap(lite) - Dodaj/Edytuj sekcję</translation>
+    </message>
+    <message>
+        <location filename="../SectionManager/UI/add_section_dialog.ui" line="32"/>
+        <source>Add/Edit custom tool section</source>
+        <translation>Dodaj/Edytuj sekcję użytkownika</translation>
+    </message>
+    <message>
+        <location filename="../SectionManager/UI/add_section_dialog.ui" line="32"/>
+        <source>Section name</source>
+        <translation>Nazwa sekcji</translation>
+    </message>
+    <message>
+        <location filename="../SectionManager/UI/add_section_dialog.ui" line="32"/>
+        <source>Save</source>
+        <translation>Zapisz</translation>
+    </message>
+    <message>
+        <location filename="../SectionManager/UI/add_section_dialog.ui" line="32"/>
+        <source>Cancel</source>
+        <translation>Anuluj</translation>
+    </message>
+    <message>
+        <location filename="../SectionManager/UI/add_section_dialog.ui" line="32"/>
+        <source>Selected tools</source>
+        <translation>Wybrane narzędzia</translation>
+    </message>
+    <message>
+        <location filename="../SectionManager/UI/add_section_dialog.ui" line="32"/>
+        <source>Available tools</source>
+        <translation>Dostępne narzędzia</translation>
+    </message>
+    <message>
+        <location filename="../SectionManager/UI/add_section_dialog.ui" line="32"/>
+        <source>Save selected</source>
+        <translation>Zapisz wybrane</translation>
+    </message>
+    <message>
+        <location filename="../SectionManager/UI/add_section_dialog.ui" line="32"/>
+        <source>Find tool</source>
+        <translation>Wyszukaj narzędzie</translation>
+    </message>
+    <message>
+        <location filename="../SectionManager/UI/add_section_dialog.ui" line="32"/>
+        <source>Search...</source>
+        <translation>Wyszukaj...</translation>
     </message>
 </context>
 <context>
