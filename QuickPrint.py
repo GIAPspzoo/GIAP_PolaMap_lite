@@ -14,8 +14,8 @@ from qgis._core import QgsLayoutExporter, QgsWkbTypes, QgsLayoutItemMap, \
     QgsLayoutItemLabel, QgsLayoutItemScaleBar
 from qgis._gui import QgsRubberBand
 from qgis.utils import iface
-from .utils import tr
-from .CustomMessageBox import CustomMessageBox, normalize_path
+
+from .utils import tr, CustomMessageBox, normalize_path
 from .wydruk_dialog import WydrukDialog
 
 pdf_open_error_msg = '''
@@ -24,6 +24,7 @@ pdf_open_error_msg = '''
     Jeżeli tak, sprawdź, czy pliki PDF otwierają się po podwójnym kliknięciu.\n
     Jeżeli nie, ustaw skojarzenie dla plików PDF z tą przeglądarką plików PDF.
 '''
+
 
 def only_preview_file(output_file):
     output_file = normalize_path(output_file)
@@ -37,6 +38,7 @@ def only_preview_file(output_file):
                 subprocess.call(('xdg-open', output_file))
         except OSError:
             CustomMessageBox(None, pdf_open_error_msg).button_ok()
+
 
 def get_layer_with_selection():
     layer_with_selection = []
@@ -198,7 +200,8 @@ class PrintMapTool:
                     tmp_type = types[type]
                 except KeyError:
                     return
-                tmp_layer = QgsVectorLayer('%s?crs=%s' % (tmp_type, layer_with_selection.crs().authid()),
+                tmp_layer = QgsVectorLayer('%s?crs=%s' % (
+                tmp_type, layer_with_selection.crs().authid()),
                                            'tmp_layer_fast_print', "memory")
                 tmp_features = []
                 for feature in features:
@@ -233,7 +236,8 @@ class PrintMapTool:
         w, h = self.get_paper_size()
         if self.dialog.legendCheckBox.isChecked():
             # TODO: Do zmiany generowanie legendy
-            self.layout.setNumPages(2)  # utworzenie dodatkowej strony dla legendy
+            self.layout.setNumPages(
+                2)  # utworzenie dodatkowej strony dla legendy
             self.layout.setPagesVisible(True)
             legend = QgsLayoutItemLegend(self.layout)  # inicjalizacja legendy
             layerGroup = QgsLayerTreeGroup()  # utworzenie grupy warstw
@@ -289,7 +293,8 @@ class PrintMapTool:
             title_font.setWeight(75)
             title.setFont(title_font)
             title.adjustSizeToText()
-            title.setPos((w / 2)-(len(self.dialog.titleLineEdit.text())*2), 3)
+            title.setPos((w / 2) - (len(self.dialog.titleLineEdit.text()) * 2),
+                         3)
             self.layout.addItem(title)
 
         if self.dialog.adnotacje_lineEdit.text():
@@ -392,7 +397,8 @@ class PrintMapTool:
                 else:
                     adnotation.setText(self.dialog.adnotacje_lineEdit.text())
 
-            elif w == 1189 and len(self.dialog.adnotacje_lineEdit.text()) > 700:
+            elif w == 1189 and len(
+                    self.dialog.adnotacje_lineEdit.text()) > 700:
                 if 700 < len(self.dialog.adnotacje_lineEdit.text()) <= 780:
                     default_font_Size = 7
                 if 780 < len(self.dialog.adnotacje_lineEdit.text()) <= 940:
@@ -407,9 +413,11 @@ class PrintMapTool:
                     # CustomMessageBox(self.dialog, 'Adnotacja zawiera za dużo znaków').button_ok()
                     return
                 else:
-                    adnotation.setText(self.dialog.adnotacje_lineEdit.text()+'\n'+self.dialog.adnotacje_lineEdit.text())
+                    adnotation.setText(
+                        self.dialog.adnotacje_lineEdit.text() + '\n' + self.dialog.adnotacje_lineEdit.text())
             else:
-                adnotation.setText(self.dialog.adnotacje_lineEdit.text()+'\n'+self.dialog.adnotacje_lineEdit.text())
+                adnotation.setText(
+                    self.dialog.adnotacje_lineEdit.text() + '\n' + self.dialog.adnotacje_lineEdit.text())
             adnotation.setText(
                 self.dialog.adnotacje_lineEdit.text() + '\n' + self.dialog.adnotacje_lineEdit.text())
             adnotation_font.setPointSize(int(default_font_Size))
@@ -417,8 +425,8 @@ class PrintMapTool:
             adnotation.adjustSizeToText()
             self.layout.addItem(adnotation)
             new_width = w - (len(
-                self.dialog.adnotacje_lineEdit.text() )* 2.6) if w - (len(
-                self.dialog.adnotacje_lineEdit.text() )* 2.6) > w / 2.6 else w / 2.6
+                self.dialog.adnotacje_lineEdit.text()) * 2.6) if w - (len(
+                self.dialog.adnotacje_lineEdit.text()) * 2.6) > w / 2.6 else w / 2.6
             adnotation.setPos(new_width, h - 14)
         p.show()
         p.setValue(20)
@@ -458,6 +466,5 @@ class PrintMapTool:
         pdf_settings.dpi = self.dpi
         p.setValue(90)
         exporter.exportToImage(filename,
-                             pdf_settings)
+                               pdf_settings)
         p.setValue(100)
-

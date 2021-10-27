@@ -1,15 +1,16 @@
 import os.path
 import re
-from urllib.error import HTTPError, URLError
-from urllib.request import urlopen
 import socket
 from http.client import IncompleteRead
+from urllib.error import HTTPError, URLError
+from urllib.request import urlopen
+
 from qgis.core import QgsGeometry, QgsFeature, \
     QgsProject, QgsVectorLayer, Qgis
-
 from qgis.utils import iface
-from ..utils import tr
-from ..CustomMessageBox import CustomMessageBox
+
+from ..utils import tr, CustomMessageBox
+
 
 class FetchULDK:
     def __init__(self, params=None):
@@ -33,7 +34,7 @@ class FetchULDK:
         if not isinstance(teryt, str):
             return False
         self.params = f'request=GetParcelById&id={teryt}&result=' + \
-            'geom_wkt,teryt,voivodeship,county,region,commune,parcel'
+                      'geom_wkt,teryt,voivodeship,county,region,commune,parcel'
         return self.fetch()
 
     def fetch_in_point(self, coords):
@@ -50,22 +51,27 @@ class FetchULDK:
             with urlopen(url, timeout=19) as r:
                 content = r.read()
         except IncompleteRead:
-            CustomMessageBox(None, f"{tr('Error!')} {tr('Service returned incomplete responce.')}").button_ok()
+            CustomMessageBox(None,
+                             f"{tr('Error!')} {tr('Service returned incomplete responce.')}").button_ok()
             return False
         except HTTPError:
-            CustomMessageBox(None, f"{tr('Error')} {tr('Service error')}").button_ok()
+            CustomMessageBox(None,
+                             f"{tr('Error')} {tr('Service error')}").button_ok()
             return False
         except URLError:
-            CustomMessageBox(None, f"{tr('Error!')} {tr('Service is not responding.')}").button_ok()
+            CustomMessageBox(None,
+                             f"{tr('Error!')} {tr('Service is not responding.')}").button_ok()
             return False
         except socket.timeout:
-            CustomMessageBox(None, f"{tr('Error!')} {tr('Service temporary unvailiable on the ULDK side.')}").button_ok()
+            CustomMessageBox(None,
+                             f"{tr('Error!')} {tr('Service temporary unvailiable on the ULDK side.')}").button_ok()
             return False
 
         content = content.decode()
         res = content.split('\n')
         if res[0] != '0':
-            CustomMessageBox(None, f"{tr('Service did not find any matches, wrong plot number.')}").button_ok()
+            CustomMessageBox(None,
+                             f"{tr('Service did not find any matches, wrong plot number.')}").button_ok()
             return False
 
         self.responce = self.natural_sort([x for x in res[1:] if x != ''])
@@ -75,6 +81,7 @@ class FetchULDK:
         convert = lambda text: int(text) if text.isdigit() else text.lower()
         alpha_key = lambda key: [convert(c) for c in re.split('([0-9]+)', key)]
         return sorted(list, key=alpha_key)
+
 
 class ParseResponce:
     def __init__(self):
@@ -96,7 +103,8 @@ class ParseResponce:
             return
         QgsProject.instance().addMapLayer(self.lyr)
         direc = os.path.dirname(__file__)
-        self.lyr.loadNamedStyle(os.path.join(direc, 'layer_style', 'dzialki.qml'))
+        self.lyr.loadNamedStyle(
+            os.path.join(direc, 'layer_style', 'dzialki.qml'))
 
     def parse_responce(self, resp):
         feats = []
@@ -128,7 +136,7 @@ class ParseResponce:
 
     def _create_feature(self, row):
         if row[:4].upper() == 'SRID':
-            row = row[row.index(';')+1:]
+            row = row[row.index(';') + 1:]
         feat = QgsFeature()
         lrow = row.split('|')
         geom = QgsGeometry().fromWkt(lrow[0])

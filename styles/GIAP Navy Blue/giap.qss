@@ -553,41 +553,41 @@ QTreeView:branch:hover
 	background-color: #b7d3e8;
 }
 
-QTreeView::branch:has-siblings:!adjoins-item
+QTreeView:branch:has-siblings:!adjoins-item
 {
 	border-image: url(icons/transparent.png);
 }
 
-QTreeView::branch:has-siblings:adjoins-item
+QTreeView:branch:has-siblings:adjoins-item
 {
 	border-image: url(icons/transparent.png);
 }
 
-QTreeView::branch:!has-children:!has-siblings:adjoins-item
+QTreeView:branch:!has-children:!has-siblings:adjoins-item
 {
 	border-image: url(icons/transparent.png);
 }
 
-QTreeView::branch:has-children:!has-siblings:closed,
-QTreeView::branch:closed:has-children:has-siblings
+QTreeView:branch:has-children:!has-siblings:closed,
+QTreeView:branch:closed:has-children:has-siblings
 {
 	image: url(icons/branch_closed-on.png);
 }
 
-QTreeView::branch:open:has-children:!has-siblings,
-QTreeView::branch:open:has-children:has-siblings
+QTreeView:branch:open:has-children:!has-siblings,
+QTreeView:branch:open:has-children:has-siblings
 {
 	image: url(icons/branch_open-on.png);
 }
 
-QTreeView::branch:has-children:!has-siblings:closed:hover,
-QTreeView::branch:closed:has-children:has-siblings:hover
+QTreeView:branch:has-children:!has-siblings:closed:hover,
+QTreeView:branch:closed:has-children:has-siblings:hover
 {
 	image: url(icons/branch_closed-on.png);
 }
 
-QTreeView::branch:open:has-children:!has-siblings:hover,
-QTreeView::branch:open:has-children:has-siblings:hover
+QTreeView:branch:open:has-children:!has-siblings:hover,
+QTreeView:branch:open:has-children:has-siblings:hover
 {
 	image: url(icons/branch_open-on.png);
 }
@@ -632,7 +632,7 @@ QToolButton {
 
 QToolBar QToolButton
 {
-    font: 8pt "Segoe UI";
+	font: 8pt "Segoe UI";
 	font-weight: bold;
 	border: none;
 }
@@ -663,7 +663,7 @@ QToolButton:pressed
 QToolButton:hover
 {
 	background-color:  #5689b0;
-    border-radius: 2px;
+	border-radius: 2px;
 }
 
 QToolButton:checked {
@@ -680,7 +680,7 @@ QLabel#inTotalLabel, QLabel#outTotalLabel, QLabel#recordCountLabel
 }
 
 QProgressBar:horizontal {
-    border: none;
+	border: none;
 	text-align: center;
 	background:  #375871;
 }
@@ -799,9 +799,9 @@ QMenu::item:disabled {
     color: gray;
 }
 QLabel {
-background-color: rgb(53, 85, 109);
-color: #EDF6FC;
-font: 10pt "Segoe UI";
+	background-color: rgb(53, 85, 109);
+	color: #EDF6FC;
+	font: 10pt "Segoe UI";
 }
 
 QDialog QAbstractSpinBox{
@@ -820,7 +820,7 @@ QDialog QComboBox,QDialog QLabel,QDialog QSlider,QDialog QAbstractSpinBox{
   }
 
  QDialog QErrorMessage {
-     border: 1px solid black;}
+	border: 1px solid black;}
 
 QDialog QListView {
     border: 1px solid #5689B0;
@@ -842,9 +842,9 @@ QDialog QToolButton  {
 }
 
 QAbstractSpinBox:up-button{
-  background-color: transparent;
-  subcontrol-origin: border;
-  subcontrol-position: top right;
+   background-color: transparent;
+   subcontrol-origin: border;
+   subcontrol-position: top right;
    width: 16px;
    background-color: #4f5a63;
    border-top-right-radius: 3px;

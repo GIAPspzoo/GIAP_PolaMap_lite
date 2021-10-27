@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import os
+
 from qgis.PyQt import QtWidgets, uic, QtCore, QtGui
 
-from ..CustomMessageBox import CustomMessageBox
-from ..utils import tr
-
+from ..utils import tr, CustomMessageBox
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'nowa_kompozycja.ui'))
@@ -38,7 +37,8 @@ class NowaKompozycjaDialog(QtWidgets.QDialog, FORM_CLASS):
             if not model.rowCount():
                 raise AttributeError("No layers in 'select layer'")
         except AttributeError:
-            CustomMessageBox(table, tr('No layers in select layers.')).button_ok()
+            CustomMessageBox(table,
+                             tr('No layers in select layers.')).button_ok()
 
     def uncheck(self):
         try:
@@ -52,7 +52,8 @@ class NowaKompozycjaDialog(QtWidgets.QDialog, FORM_CLASS):
             if not model.rowCount():
                 raise AttributeError("No layers in 'selected layer'")
         except AttributeError:
-            CustomMessageBox(None, tr("No layers in select layers.")).button_ok()
+            CustomMessageBox(None,
+                             tr("No layers in select layers.")).button_ok()
 
     def check_all(self):
         try:
@@ -64,7 +65,8 @@ class NowaKompozycjaDialog(QtWidgets.QDialog, FORM_CLASS):
             if not model.rowCount():
                 raise AttributeError("No layers in 'selected layer'")
         except AttributeError:
-            CustomMessageBox(None, tr("No layers in select layers.")).button_ok()
+            CustomMessageBox(None,
+                             tr("No layers in select layers.")).button_ok()
 
     def uncheck_all(self):
         try:
@@ -76,4 +78,5 @@ class NowaKompozycjaDialog(QtWidgets.QDialog, FORM_CLASS):
             if not model.rowCount():
                 raise AttributeError("No layers in 'selected layer'")
         except AttributeError:
-            CustomMessageBox(None, tr("No layers in select layers.")).button_ok()
+            CustomMessageBox(None,
+                             tr("No layers in select layers.")).button_ok()

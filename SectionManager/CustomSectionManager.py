@@ -5,62 +5,46 @@ from typing import List, Union, Set
 from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QModelIndex
 from qgis.PyQt.QtCore import QSortFilterProxyModel
-from qgis.PyQt.QtGui import QIcon, QStandardItemModel, QStandardItem
+from qgis.PyQt.QtGui import QStandardItemModel, QStandardItem
 from qgis.PyQt.QtWidgets import QDialog
 
-from ..CustomMessageBox import CustomMessageBox
-from ..utils import STANDARD_TOOLS, unpack_nested_lists, Qt, tr, TOOL_LIST
+from ..utils import STANDARD_TOOLS, unpack_nested_lists, Qt, tr, \
+    icon_manager, CustomMessageBox
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'UI/add_section_dialog.ui'))
 
 
 class CustomSectionManager(QDialog, FORM_CLASS):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, mode=None):
         super(CustomSectionManager, self).__init__(parent)
         self.setupUi(self)
         self.parent = parent
+        self.main_qgs_widget = parent.parent
+        self.mode = mode
         self.removed_idx = set()
-        self.add_available_tools_into_list()
-        self.find_tool_searchbox.textChanged.connect(
-            self.search_available_tools)
-        self.toolButton_add_tool.clicked.connect(self.add_to_selected)
-        self.toolButton_remove_tool.clicked.connect(self.remove_from_selected)
-        self.pushButton_save.clicked.connect(self.save_section)
+        if mode != 'remove':
+            self.add_available_tools_into_list()
+            self.find_tool_searchbox.textChanged.connect(
+                self.search_available_tools)
+            self.toolButton_add_tool.clicked.connect(self.add_to_selected)
+            self.toolButton_remove_tool.clicked.connect(
+                self.remove_from_selected)
+            self.pushButton_save.clicked.connect(self.save_section)
 
     def add_available_tools_into_list(self) -> None:
-        dirnm = os.path.join(os.path.dirname(__file__), '../icons')
-        tmp_tools_list = unpack_nested_lists(unpack_nested_lists(
-            [tool['btns'] for tool in STANDARD_TOOLS]))
-        tools = list(set([tool for tool in tmp_tools_list
-                          if isinstance(tool, str)]))
-        tools.sort()
         self.availableToolList_sort = QSortFilterProxyModel()
         model = QStandardItemModel()
+        tmp_tools_list = unpack_nested_lists(
+            unpack_nested_lists([tool['btns'] for tool in STANDARD_TOOLS]))
+        tools = list(
+            set([tool for tool in tmp_tools_list if isinstance(tool, str)]))
+        tools.sort()
         for tool in tools:
             item = QStandardItem(tool)
-            if 'mProcessing' in tool:
-                tool = tool.replace(':', '_')
-            if tool in TOOL_LIST:
-                icon = QIcon(os.path.join(dirnm, f'{tool}.png'))
-            if tool == 'giapWMS':
-                icon = QIcon(os.path.join(dirnm, 'orto_icon2.png'))
-            elif tool == 'giapCompositions':
-                icon = QIcon(os.path.join(dirnm, 'compositions_giap.png'))
-            elif tool == "giapQuickPrint":
-                icon = QIcon(os.path.join(dirnm, 'quick_print.png'))
-            elif tool == "giapMyPrints":
-                icon = QIcon(os.path.join(dirnm, 'my_prints.png'))
-            elif tool == 'mActionShowAlignRasterTool':
-                icon = QIcon(
-                    os.path.join(dirnm, 'mActionShowAlignRasterTool.png'))
-            elif tool == 'mActionNewMemoryLayer':
-                icon = QIcon(os.path.join(dirnm, 'mActionNewMemoryLayer.png'))
-            elif tool == 'mActionSaveProjectAs':
-                icon = QIcon(os.path.join(dirnm, 'mActionSaveProjectAs.png'))
-            item.setData(icon, Qt.DecorationRole)
+            item.setData(icon_manager([tool], self.main_qgs_widget)[tool],
+                         Qt.DecorationRole)
             model.appendRow(item)
-
         self.availableToolList_sort.setSourceModel(model)
         self.availableToolList_sort.setFilterCaseSensitivity(
             Qt.CaseInsensitive)
@@ -87,13 +71,22 @@ class CustomSectionManager(QDialog, FORM_CLASS):
         self.availableToolList_sort.setFilterFixedString(
             self.find_tool_searchbox.value())
 
-    def add_to_selected(self, selected_tools: List[str] = None):
+    def add_to_selected(self, selected_tools: List[str] = None) -> None:
+        if not hasattr(self, 'selected_model'):
+            self.selected_model = QStandardItemModel()
         if not selected_tools:
             selected_tools = \
                 [item for item in
                  self.availableToolList.selectionModel().selectedRows()]
+        if not selected_tools:
+            return
         selected_tools_labels = [str(item.data(0)) for item in selected_tools]
-        self.selectedToolList.addItems(selected_tools_labels)
+        for tool in selected_tools_labels:
+            item = QStandardItem(tool)
+            item.setData(icon_manager([tool], self.main_qgs_widget)[tool],
+                         Qt.DecorationRole)
+            self.selected_model.appendRow(item)
+        self.selectedToolList.setModel(self.selected_model)
         self.availableToolList.clearSelection()
 
     def remove_from_selected(self) -> None:
@@ -104,9 +97,11 @@ class CustomSectionManager(QDialog, FORM_CLASS):
         for row_id in sorted(selected_tools_ids, reverse=True):
             self.selectedToolList.model().removeRow(row_id)
 
-    def edit_selected_item(self, tool_id: Set[Union[QModelIndex, str]]):
-        self.selectedToolList.model().removeRows(
-            0, self.selectedToolList.model().rowCount())
+    def edit_selected_item(self,
+                           tool_id: Set[Union[QModelIndex, str]]) -> None:
+        if not hasattr(self, 'selected_model'):
+            self.selected_model = QStandardItemModel()
+        self.selectedToolList.setModel(self.selected_model)
         tool_section_id = tool_id[-1]
         tool_section_row_id = tool_id[0].row()
         self.get_actual_tools()
@@ -116,7 +111,11 @@ class CustomSectionManager(QDialog, FORM_CLASS):
                                if isinstance(action_list, list)]
             self.section_name_lineedit.setText(
                 self.tools_dict[tool_section_id][-1])
-            self.selectedToolList.addItems(section_actions)
+            for tool in section_actions:
+                item = QStandardItem(tool)
+                item.setData(icon_manager([tool], self.main_qgs_widget)[tool],
+                             Qt.DecorationRole)
+                self.selected_model.appendRow(item)
         self.edit_id = tool_section_id
         if self.manage_editing_option(tool_section_row_id):
             self.edit_in_protected_mode()
@@ -143,6 +142,7 @@ class CustomSectionManager(QDialog, FORM_CLASS):
 
     def save_section(self) -> None:
         if not self.section_name_lineedit.text() or \
+                not self.selectedToolList.model() or \
                 self.selectedToolList.model().rowCount() < 1:
             CustomMessageBox(
                 self, tr('Error - Check the entered data.')).button_ok()
@@ -164,7 +164,7 @@ class CustomSectionManager(QDialog, FORM_CLASS):
         self.parent.conf.save_custom_sections_setup(existing_sections)
         self.accept()
 
-    def remove_section(self, sections, section_id):
+    def remove_section(self, sections, section_id) -> None:
         tmp_idx = None
         for sec in sections:
             if sec['id'] == section_id:
@@ -172,9 +172,9 @@ class CustomSectionManager(QDialog, FORM_CLASS):
                 break
         sections.pop(tmp_idx)
 
-    def remove_row(self, tool_id: Set[Union[QModelIndex, str]]):
-        self.selectedToolList.model().removeRows(
-            0, self.selectedToolList.model().rowCount())
+    def remove_row(self, tool_id: Set[Union[QModelIndex, str]]) -> None:
+        model = QStandardItemModel()
+        self.selectedToolList.setModel(model)
         existing_sections = self.parent.conf.load_custom_sections_setup()
         self.remove_section(existing_sections, tool_id[-1])
         self.parent.conf.save_custom_sections_setup(existing_sections)

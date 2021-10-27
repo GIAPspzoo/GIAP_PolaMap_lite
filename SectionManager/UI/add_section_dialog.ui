@@ -317,8 +317,8 @@ color: #0A0C0D;</string>
                </property>
                <property name="iconSize">
                 <size>
-                 <width>32</width>
-                 <height>32</height>
+                 <width>24</width>
+                 <height>24</height>
                 </size>
                </property>
               </widget>
@@ -661,7 +661,7 @@ color: #0A0C0D;</string>
               </widget>
              </item>
              <item>
-              <widget class="QListWidget" name="selectedToolList">
+              <widget class="QListView" name="selectedToolList">
                <property name="minimumSize">
                 <size>
                  <width>0</width>
@@ -676,11 +676,44 @@ color: #0A0C0D;</string>
 }
 </string>
                </property>
+               <property name="editTriggers">
+                <set>QAbstractItemView::NoEditTriggers</set>
+               </property>
+               <property name="showDropIndicator" stdset="0">
+                <bool>true</bool>
+               </property>
+               <property name="dragEnabled">
+                <bool>true</bool>
+               </property>
+               <property name="dragDropOverwriteMode">
+                <bool>false</bool>
+               </property>
+               <property name="dragDropMode">
+                <enum>QAbstractItemView::NoDragDrop</enum>
+               </property>
+               <property name="defaultDropAction">
+                <enum>Qt::MoveAction</enum>
+               </property>
                <property name="selectionMode">
                 <enum>QAbstractItemView::MultiSelection</enum>
                </property>
                <property name="selectionBehavior">
                 <enum>QAbstractItemView::SelectRows</enum>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>24</width>
+                 <height>24</height>
+                </size>
+               </property>
+               <property name="movement">
+                <enum>QListView::Static</enum>
+               </property>
+               <property name="layoutMode">
+                <enum>QListView::SinglePass</enum>
+               </property>
+               <property name="selectionRectVisible">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -690,7 +723,7 @@ color: #0A0C0D;</string>
           <item row="0" column="1" colspan="3">
            <widget class="QFrame" name="frame_2">
             <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
+             <enum>QFrame::NoFrame</enum>
             </property>
             <property name="frameShadow">
              <enum>QFrame::Raised</enum>

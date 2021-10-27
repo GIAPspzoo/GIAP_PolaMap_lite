@@ -1,23 +1,19 @@
+import json
+from urllib.parse import quote
+from urllib.request import urlopen
+
 import requests
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QFont, QFontMetrics
+from qgis.PyQt.QtCore import QStringListModel
 from qgis.PyQt.QtCore import QTimer
+from qgis.PyQt.QtWidgets import QCompleter
 from qgis.utils import iface
 
 from .searchAddress import SearchAddress
-
-import json
-
 from .searchParcel import FetchULDK, ParseResponce
-from ..CustomMessageBox import CustomMessageBox
-from qgis.PyQt.QtWidgets import QCompleter
-from qgis.PyQt.QtCore import QStringListModel
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont, QFontMetrics
+from ..utils import tr, CustomMessageBox
 
-from urllib.request import urlopen
-
-from urllib.parse import quote
-
-from ..utils import tr
 
 class SearcherTool:
 
@@ -60,7 +56,6 @@ class SearcherTool:
     def textChanged(self):
         self.typing_timer.start(300)
 
-
     def tips(self):
         address = self.dock.lineEdit_address.displayText()
         url_pref = 'http://services.gugik.gov.pl/uug/?request=GetAddress&address='
@@ -74,14 +69,17 @@ class SearcherTool:
                 if data['found objects'] == 1:
                     self.names.setStringList([f"{city}, {obj['1']['street']}"])
                 else:
-                    self.names.setStringList([f"{city}, {obj[element]['street']}" for element in obj])
+                    self.names.setStringList(
+                        [f"{city}, {obj[element]['street']}" for element in
+                         obj])
             if obj_type == 'city':
                 if data["found objects"] > 1:
                     self.validateCity(data['results'])
                 else:
                     self.getStreets(obj['1']['simc'], obj['1']['city'])
             if obj_type == 'address':
-                self.names.setStringList([f"{obj['1']['city']}, {obj['1']['street']} {obj['1']['number']}"])
+                self.names.setStringList([
+                                             f"{obj['1']['city']}, {obj['1']['street']} {obj['1']['number']}"])
             if limit == 0:
                 return
             self.completer.setCompletionPrefix(f"{address.split(',')[0]}, ")
@@ -91,15 +89,19 @@ class SearcherTool:
 
     def getStreets(self, simc, city):
         try:
-            data = json.loads(urlopen('https://services.gugik.gov.pl/uug/?request=GetStreet&simc=' + simc).read().decode())
+            data = json.loads(urlopen(
+                'https://services.gugik.gov.pl/uug/?request=GetStreet&simc=' + simc).read().decode())
             obj = data['results']
-            self.names.setStringList([f"{city}, {obj[element]['street']}" for element in obj])
+            self.names.setStringList(
+                [f"{city}, {obj[element]['street']}" for element in obj])
         except Exception:
             self.names.setStringList([])
 
     def validateCity(self, obj):
         city = obj['1']['city']
-        self.names.setStringList([f"{city}, {obj[element]['simc']} {obj[element]['county']}" for element in obj])
+        self.names.setStringList(
+            [f"{city}, {obj[element]['simc']} {obj[element]['county']}" for
+             element in obj])
         self.completer.popup().pressed.connect(lambda: self.userPick())
 
     def userPick(self):
@@ -129,9 +131,11 @@ class SearcherTool:
             if not ok:
                 CustomMessageBox(None, f'{tr("Warning!")} {res}').button_ok()
             self.searchaddress_call.add_feats(res)
+
             def change_scale():
                 if iface.mapCanvas().scale() < 500:
                     iface.mapCanvas().zoomScale(500)
+
             self.timer = QTimer()
             self.timer.setSingleShot(True)
             self.timer.timeout.connect(change_scale)
@@ -141,7 +145,8 @@ class SearcherTool:
         if self.dock.lineEdit_address.text():
             return True
         else:
-            CustomMessageBox(None, f" {tr('Invalid')} {tr('Empty address field')}").button_ok()
+            CustomMessageBox(None,
+                             f" {tr('Invalid')} {tr('Empty address field')}").button_ok()
 
     def widthforview(self, result):
         longest = max(result, key=len)
@@ -208,7 +213,8 @@ class SearcherTool:
             else:
                 communities.append(district)
         self.dock.comboBox_gmina.addItems(communities)
-        self.dock.comboBox_gmina.view().setFixedWidth(self.widthforview(communities))
+        self.dock.comboBox_gmina.view().setFixedWidth(
+            self.widthforview(communities))
         self.dock.comboBox_gmina.blockSignals(False)
 
     def gmi_changed(self):
@@ -275,7 +281,7 @@ class SearcherTool:
             comm = self.dock.comboBox_obr.currentText()
             if '|' not in comm:
                 CustomMessageBox(None,
-                    f"{tr('Address of parcel is not valid.')}").button_ok()
+                                 f"{tr('Address of parcel is not valid.')}").button_ok()
                 return
             comm = comm.split('|')[1]
             adr = f'{comm}.{parc}'

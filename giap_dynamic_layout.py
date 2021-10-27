@@ -14,35 +14,33 @@ from qgis.PyQt.QtWidgets import QWidget, QApplication, QHBoxLayout, \
 from qgis.core import QgsApplication
 from qgis.utils import iface
 
-from .CustomMessageBox import CustomMessageBox
 from .OrtoTools import OrtoAddingTool
 from .QuickPrint import PrintMapTool
 from .SectionManager.CustomSectionManager import CustomSectionManager
 from .SectionManager.select_section import SelectSection
 from .config import Config
 from .utils import STANDARD_TOOLS, DEFAULT_TABS, tr, TOOLS_HEADERS, \
-    STANDARD_QGIS_TOOLS, TOOL_LIST
+    STANDARD_QGIS_TOOLS, icon_manager, CustomMessageBox
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'giap_dynamic_layout.ui'))
 
 
-class Widget(QWidget, FORM_CLASS):
+class MainWidget(QWidget, FORM_CLASS):
     editChanged = pyqtSignal(bool)
     printsAdded = pyqtSignal()
     deletePressSignal = pyqtSignal()
 
     def __init__(self, parent=None):
-        super(Widget, self).__init__(parent)
+        super(MainWidget, self).__init__(parent)
         self.setAttribute(Qt.WA_DeleteOnClose)
 
         self.setupUi(self)
-        self.parent = parent  # mainWindow()
-        self.tabs = []  # list w tabwidgets
+        self.parent = parent
+        self.tabs = []
         self.edit_session = False
         self.conf = Config()
         self.save = QMessageBox.Yes
-        # Custom Tools
         self.orto_add = False
 
         self.custom_tabbar = CustomTabBar(tr('New tab'), self.tabWidget)
@@ -56,15 +54,17 @@ class Widget(QWidget, FORM_CLASS):
         self.icon_timer.setInterval(1)
         iface.currentLayerChanged.connect(self.icon_timer.start)
 
-    def reload_add_icons(self):
+    def reload_add_icons(self) -> None:
         # stupid but works
         dirnm = os.path.dirname(__file__)
         if hasattr(self, 'add_action'):
             self.add_action.setIcon(
-                QIcon(os.path.join(dirnm, 'icons', 'mActionAddFeature')))
+                icon_manager(['mActionAddFeature'],
+                             self.parent)['mActionAddFeature'])
         if hasattr(self, 'move_action'):
             self.move_action.setIcon(
-                QIcon(os.path.join(dirnm, 'icons', 'mActionMoveFeature')))
+                icon_manager(['mActionMoveFeature'],
+                             self.parent)['mActionMoveFeature'])
 
     def add_tab(self, label=None):
         """Adds new tab at the end
@@ -77,7 +77,6 @@ class Widget(QWidget, FORM_CLASS):
         tab = CustomTab(label, self.tabWidget)
         self.tabs.append(tab)
 
-        # prevent flickering
         self.tabWidget.setUpdatesEnabled(False)
 
         tab_ind = self.tabWidget.insertTab(
@@ -87,8 +86,6 @@ class Widget(QWidget, FORM_CLASS):
             self._section_control(tab_ind)
 
         self.tabWidget.setCurrentIndex(tab_ind)
-
-        # add button to delete, its edit session so should be visible
         right = self.tabWidget.tabBar().RightSide
         cbutton = QToolButton(self.tabWidget)
         cbutton.setObjectName('giapCloseTab')
@@ -165,15 +162,15 @@ class Widget(QWidget, FORM_CLASS):
         right = self.tabWidget.tabBar().RightSide
 
         if self.edit_session:
-            for i in range(self.tabWidget.count()):
-                self.tabWidget.tabBar().tabButton(i, right).show()
-                self._section_control(i)
-            self._new_tab_tab_control()  # show add tab option
+            for tab_idx in range(self.tabWidget.count()):
+                self.tabWidget.tabBar().tabButton(tab_idx, right).show()
+                self._section_control(tab_idx)
+            self._new_tab_tab_control()
         else:
-            self._new_tab_tab_control()  # hide add tab option
-            for i in range(self.tabWidget.count()):
-                self.tabWidget.tabBar().tabButton(i, right).hide()
-                self._section_control(i)
+            self._new_tab_tab_control()
+            for tab_idx in range(self.tabWidget.count()):
+                self.tabWidget.tabBar().tabButton(tab_idx, right).hide()
+                self._section_control(tab_idx)
 
     def _section_control(self, tabind):
         """add buttons to every tab for adding new section"""
@@ -344,19 +341,19 @@ class Widget(QWidget, FORM_CLASS):
         self.tabWidget.setUpdatesEnabled(True)
         self.dlg.close()
 
-    def search_tree(self):
+    def search_tree(self) -> None:
         self.dlg.algorithmTree.setFilterString(self.dlg.searchBox.value())
 
-    def search_add_sections_tree(self):
+    def search_add_sections_tree(self) -> None:
         self.dlg.sort.setFilterFixedString(self.dlg.add_searchBox.value())
 
-    def section_tab(self):
+    def section_tab(self) -> None:
         self.dlg.stackedWidget.setCurrentIndex(0)
 
-    def search_tab(self):
+    def search_tab(self) -> None:
         self.dlg.stackedWidget.setCurrentIndex(1)
 
-    def user_section_tab(self):
+    def user_section_tab(self) -> None:
         self.dlg.stackedWidget.setCurrentIndex(2)
 
     def _section_control_remove(self, tabind):
@@ -400,12 +397,12 @@ class Widget(QWidget, FORM_CLASS):
                 self.add_tab()
 
     def add_custom_section(self) -> None:
-        self.custom_section_dlg = CustomSectionManager(self)
+        self.custom_section_dlg = CustomSectionManager(self, 'add')
         if self.custom_section_dlg.exec():
             self.dlg.refresh_lists()
 
     def edit_custom_section(self) -> None:
-        self.custom_section_dlg = CustomSectionManager(self)
+        self.custom_section_dlg = CustomSectionManager(self, 'edit')
         row = self.dlg.get_selected_row()
         if not row:
             CustomMessageBox(
@@ -417,7 +414,7 @@ class Widget(QWidget, FORM_CLASS):
             self.dlg.refresh_lists()
 
     def remove_custom_section(self) -> None:
-        self.custom_section_dlg = CustomSectionManager(self)
+        self.custom_section_dlg = CustomSectionManager(self, 'remove')
         row = self.dlg.get_selected_row()
         if not row:
             CustomMessageBox(
@@ -779,64 +776,46 @@ class CustomSection(QWidget):
         return self.tbut
 
     def set_new_giap_icons(self, button, name_tool, action):
-        dirnm = os.path.dirname(__file__)
-        if name_tool in TOOL_LIST:
-            action.setIcon(
-                QIcon(os.path.join(dirnm, 'icons', button.objectName())))
-        if name_tool == 'mActionNewMemoryLayer':
-            action.setIcon(
-                QIcon(os.path.join(dirnm, 'icons', 'mActionNewMemoryLayer')))
-        if name_tool == 'mActionSaveProjectAs':
-            action.setIcon(
-                QIcon(os.path.join(dirnm, 'icons', 'mActionSaveProjectAs')))
+        icon = icon_manager([name_tool], self.parent())[name_tool]
+        if icon:
+            action.setIcon(icon)
         if name_tool == 'mActionAddFeature':
             self.parent().parent().parent().parent().add_action = action
         if name_tool == 'mActionMoveFeature':
             self.parent().parent().parent().parent().move_action = action
 
-    def set_custom_action(self):
+    def set_custom_action(self) -> None:
         oname = self.tbut.objectName()
-        dirnm = os.path.dirname(__file__)
+        tool = oname.lstrip('gp_') if "gp_" in oname else oname
+        if 'giap' in oname:
+            icon = icon_manager([tool], self.parent())[tool]
+            if oname == 'giapWMS':
+                self.orto_add = OrtoAddingTool(self, self.tbut)
+                connect_orto = self.orto_add.connect_ortofotomapa_group
+                for service in self.orto_add.services:
+                    service.orto_group_added.connect(connect_orto)
+            if oname == 'giapCompositions':
+                self.tbut.setToolTip(tr("Composition settings"))
+            if oname == "giapQuickPrint":
+                self.quick_print = PrintMapTool(iface, self)
+                self.tbut.clicked.connect(self.quick_print.run)
+                self.tbut.setToolTip(tr("Map quick print"))
+            if oname == "giapMyPrints":
+                self.tbut.setToolTip(tr("My Prints"))
+            self.tbut.setIcon(icon)
 
-        if oname == 'giapWMS':
-            self.orto_add = OrtoAddingTool(self, self.tbut)
-            connect_orto = self.orto_add.connect_ortofotomapa_group
-            self.tbut.setIcon(
-                QIcon(os.path.join(dirnm, 'icons', 'orto_icon2.png'))
-            )
-            for service in self.orto_add.services:
-                service.orto_group_added.connect(connect_orto)
-
-        if oname == 'giapCompositions':
-            # this on will be find by compositions after loading
-            # documentation purposes
-            self.tbut.setIcon(
-                QIcon(os.path.join(dirnm, 'icons', 'compositions_giap.png'))
-            )
-            self.tbut.setToolTip(tr("Composition settings"))
-
-        if oname == "giapQuickPrint":
-            self.quick_print = PrintMapTool(iface, self)
-            self.tbut.clicked.connect(self.quick_print.run)
-            self.tbut.setToolTip(tr("Map quick print"))
-            self.tbut.setIcon(QIcon(f'{dirnm}/icons/quick_print.png'))
-
-        if oname == "giapMyPrints":
-            self.tbut.setToolTip(tr("My Prints"))
-            self.tbut.setIcon(QIcon(f'{dirnm}/icons/my_prints.png'))
-
-    def unload_custom_actions(self):
+    def unload_custom_actions(self) -> None:
         if self.orto_add:
             self.orto_add.disconnect_ortofotomapa_group()
 
-    def change_label(self, lab):
+    def change_label(self, lab) -> None:
         """Changes label
         :lab: str
         """
         if isinstance(lab, str) and lab not in ['', 'None', 'False']:
             self.label.setText(lab)
 
-    def set_size(self, sz):
+    def set_size(self, sz) -> None:
         """change size of button
         :sz: int
         """
@@ -882,7 +861,7 @@ class CustomSection(QWidget):
             pass
         return super().eventFilter(watched, event)
 
-    def mouseReleaseEvent(self, event):
+    def mouseReleaseEvent(self, event) -> None:
         event.accept()
 
     def mouseMoveEvent(self, e):
@@ -905,10 +884,10 @@ class CustomSection(QWidget):
         drag.exec_(Qt.MoveAction)
         e.accept()
 
-    def dragEnterEvent(self, event):
+    def dragEnterEvent(self, event) -> None:
         event.accept()
 
-    def dropEvent(self, event):  # noqa
+    def dropEvent(self, event) -> None:  # noqa
         gpos = QCursor().pos()
 
         if isinstance(event.source(), CustomToolButton):
@@ -981,7 +960,7 @@ class CustomSection(QWidget):
                 lay.addItem(it)
             self.target = target
 
-    def show_edit_options(self):
+    def show_edit_options(self) -> None:
         self.pushButton_close_sec.show()
         self.edit = True
         self.clean_grid_layout()
@@ -991,7 +970,7 @@ class CustomSection(QWidget):
                 it.turn_on_edit()
                 it.edit = True
 
-    def hide_edit_options(self):
+    def hide_edit_options(self) -> None:
         self.pushButton_close_sec.hide()
         self.edit = False
         self.clean_grid_layout()
@@ -1019,14 +998,14 @@ class CustomToolButton(QToolButton):
                 return True
         return super().eventFilter(widget, event)
 
-    def turn_on_edit(self):
+    def turn_on_edit(self) -> None:
         """ toggle standard behaviour, from clicking to select"""
         self.org_state = self.isEnabled()
         self.setEnabled(True)
         self.blockSignals(True)
         self.setDown(False)
 
-    def turn_off_edit(self):
+    def turn_off_edit(self) -> None:
         """ toggle standard behaviour, from clicking to select"""
         self.setStyleSheet('')
         self.selected = False
@@ -1034,14 +1013,14 @@ class CustomToolButton(QToolButton):
         self.blockSignals(False)
         self.edit = False
 
-    def mouseClickEvent(self, event):
+    def mouseClickEvent(self, event) -> None:
         if self.edit:
             event.accept()
             event.source.setDown(False)
         else:
             super(CustomToolButton, self).mouseClickEvent(event)
 
-    def mouseDoubleClickEvent(self, event):
+    def mouseDoubleClickEvent(self, event) -> None:
         if self.edit:
             if self.selected:
                 self.selected = False
@@ -1051,7 +1030,7 @@ class CustomToolButton(QToolButton):
                 self.selected = True
             self.drag_state = False
 
-    def mouseMoveEvent(self, e):
+    def mouseMoveEvent(self, e) -> None:
         if not self.edit or not self.drag_state:
             return
         drag = QDrag(self)
@@ -1068,7 +1047,7 @@ class CustomToolButton(QToolButton):
         drag.setHotSpot(e.pos())
         drag.exec_(Qt.MoveAction)
 
-    def mousePressEvent(self, event):
+    def mousePressEvent(self, event) -> None:
         if self.edit:
             event.accept()
             self.setDown(False)
@@ -1077,7 +1056,7 @@ class CustomToolButton(QToolButton):
         else:
             super(CustomToolButton, self).mousePressEvent(event)
 
-    def dragEnterEvent(self, event):
+    def dragEnterEvent(self, event) -> None:
         event.accept()
 
 

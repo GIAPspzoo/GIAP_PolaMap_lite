@@ -497,6 +497,25 @@ background-color: #EDF6FC;</string>
              <property name="topMargin">
               <number>0</number>
              </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <spacer name="verticalSpacer_4">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Minimum</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>8</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
              <item>
               <widget class="QListView" name="toolList">
                <property name="styleSheet">
@@ -514,6 +533,22 @@ background-color: #EDF6FC;</string>
                 <enum>QAbstractItemView::SelectRows</enum>
                </property>
               </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_5">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>5</height>
+                </size>
+               </property>
+              </spacer>
              </item>
             </layout>
            </widget>
@@ -695,8 +730,11 @@ background-color: #EDF6FC;</string>
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout_5">
+             <property name="topMargin">
+              <number>0</number>
+             </property>
              <property name="bottomMargin">
-              <number>9</number>
+              <number>0</number>
              </property>
              <item row="1" column="0">
               <widget class="QgsProcessingToolboxTreeView" name="algorithmTree">
@@ -970,6 +1008,25 @@ background-color: #EDF6FC;</string>
              <property name="topMargin">
               <number>0</number>
              </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <spacer name="verticalSpacer_6">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Minimum</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>8</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
              <item>
               <widget class="QListView" name="customToolList">
                <property name="styleSheet">
@@ -990,6 +1047,22 @@ background-color: #EDF6FC;</string>
                 <enum>QAbstractItemView::SelectRows</enum>
                </property>
               </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_7">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>5</height>
+                </size>
+               </property>
+              </spacer>
              </item>
             </layout>
            </widget>

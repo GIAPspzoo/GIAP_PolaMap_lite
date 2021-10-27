@@ -15,7 +15,6 @@ from qgis.PyQt.QtWidgets import QPushButton
 from qgis.core import QgsProject, Qgis, QgsSettings, QgsApplication
 from qgis.utils import iface
 
-from .CustomMessageBox import CustomMessageBox, normalize_path
 from .Kompozycje.Kompozycje import CompositionsTool
 from .OrtoTools import OrtoAddingTool
 from .QuickPrint import PrintMapTool
@@ -23,11 +22,11 @@ from .Searcher.searchTool import SearcherTool
 from .Settings.settings_layout import SettingsDialog
 from .StyleManager.stylemanager import StyleManagerDialog
 from .config import Config
-from .giap_dynamic_layout import Widget
+from .giap_dynamic_layout import MainWidget
 from .kompozycje_widget import kompozycjeWidget
 from .ribbon_config import RIBBON_DEFAULT
 from .tools import StyleManager
-from .utils import tr, Qt
+from .utils import tr, Qt, icon_manager, CustomMessageBox
 
 project = QgsProject.instance()
 
@@ -46,7 +45,7 @@ class MainTabQgsWidget:
         self.iface = iface
         self.plugin_dir = os.path.dirname(__file__)
         self.install_translator()
-        self.main_widget = Widget(self.iface.mainWindow())
+        self.main_widget = MainWidget(self.iface.mainWindow())
         self.kompozycje_widget = kompozycjeWidget()
         self.left_docks = []
         self.config = Config()
@@ -224,9 +223,8 @@ class MainTabQgsWidget:
                     else:
                         if btn[0] == 'mActionShowAlignRasterTool':
                             child.setIcon(
-                                QIcon(normalize_path(os.path.join(
-                                    self.plugin_dir,
-                                    'icons/mActionShowAlignRasterTool.png'))))
+                                icon_manager([btn[0]], self.main_widget)[
+                                    btn[0]])
                         sec.add_action(child, *btn[1:])
                 if dsec['label'] == 'Prints':
                     self.custom_prints()
@@ -255,7 +253,8 @@ class MainTabQgsWidget:
 
         b_mprints = self.main_widget.findChildren(QToolButton, 'giapMyPrints')
         for b_mprint in b_mprints:
-            b_mprint.setIcon(QIcon(f'{self.plugin_dir}/icons/my_prints.png'))
+            b_mprint.setIcon(icon_manager(['giapMyPrints'], self.main_widget)[
+                                 'giapMyPrints'])
         self.my_prints_setup()
 
     def save_default_user_layout(self):
