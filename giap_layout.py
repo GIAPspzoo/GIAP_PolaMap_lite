@@ -374,7 +374,7 @@ class MainTabQgsWidget:
 
     def set_edit_session(self):
         if self.editButton.isChecked():
-            self.editButton.setText(tr("Finish edition"))
+            self.editButton.setText(tr("Finish editing"))
             self.main_widget.edit_session_toggle()
         else:
             self.editButton.setText(tr("Edit menu"))

@@ -55,8 +55,6 @@ class MainWidget(QWidget, FORM_CLASS):
         iface.currentLayerChanged.connect(self.icon_timer.start)
 
     def reload_add_icons(self) -> None:
-        # stupid but works
-        dirnm = os.path.dirname(__file__)
         if hasattr(self, 'add_action'):
             self.add_action.setIcon(
                 icon_manager(['mActionAddFeature'],

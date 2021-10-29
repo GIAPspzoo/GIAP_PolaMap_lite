@@ -1171,6 +1171,13 @@ custom_icon_dict = {
     'window_icon': 'giap_logo.png'
 }
 
+custom_label_dict = {
+    'giapWMS': "Add WMS/WMTS services",
+    'giapCompositions': "Composition settings",
+    "giapQuickPrint": "Map quick print",
+    "giapMyPrints": "My Prints"
+}
+
 
 def icon_manager(tool_list: List[str], main_qgs_widget: QObject = None) -> \
         Dict[str, Union[Optional[QIcon], Any]]:
@@ -1194,3 +1201,16 @@ def icon_manager(tool_list: List[str], main_qgs_widget: QObject = None) -> \
             icon = QIcon(os.path.join(dirnm, custom_icon_dict[tool]))
         icon_dict[tool] = icon
     return icon_dict
+
+
+def get_tool_label(tool: str, main_qgs_widget: QObject = None) -> str:
+    label = tool
+    if main_qgs_widget.findChild(QAction, tool):
+        label = main_qgs_widget.findChild(QAction, tool).text()
+    if tool in custom_label_dict.keys():
+        label = custom_label_dict[tool]
+    if len(label) < 2:
+        label = tool
+    for char in ('&', '~', '`'):
+        label = label.replace(char, '')
+    return label

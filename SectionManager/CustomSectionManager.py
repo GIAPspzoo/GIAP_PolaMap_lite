@@ -9,7 +9,7 @@ from qgis.PyQt.QtGui import QStandardItemModel, QStandardItem
 from qgis.PyQt.QtWidgets import QDialog
 
 from ..utils import STANDARD_TOOLS, unpack_nested_lists, Qt, tr, \
-    icon_manager, CustomMessageBox
+    icon_manager, CustomMessageBox, get_tool_label
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'UI/add_section_dialog.ui'))
@@ -33,28 +33,35 @@ class CustomSectionManager(QDialog, FORM_CLASS):
             self.pushButton_save.clicked.connect(self.save_section)
 
     def add_available_tools_into_list(self) -> None:
-        self.availableToolList_sort = QSortFilterProxyModel()
+        self.availableToolTable_sort = QSortFilterProxyModel()
         model = QStandardItemModel()
+        model.setColumnCount(2)
         tmp_tools_list = unpack_nested_lists(
             unpack_nested_lists([tool['btns'] for tool in STANDARD_TOOLS]))
         tools = list(
             set([tool for tool in tmp_tools_list if isinstance(tool, str)]))
         tools.sort()
         for tool in tools:
-            item = QStandardItem(tool)
+            item = QStandardItem(
+                tr(get_tool_label(tool, self.main_qgs_widget)))
             item.setData(icon_manager([tool], self.main_qgs_widget)[tool],
                          Qt.DecorationRole)
-            model.appendRow(item)
-        self.availableToolList_sort.setSourceModel(model)
-        self.availableToolList_sort.setFilterCaseSensitivity(
+            model.appendRow([QStandardItem(tool), item])
+        self.availableToolTable_sort.setSourceModel(model)
+        self.availableToolTable_sort.setFilterCaseSensitivity(
             Qt.CaseInsensitive)
-        self.availableToolList.setModel(self.availableToolList_sort)
+        self.availableToolTable_sort.setFilterKeyColumn(-1)
+        self.availableToolTable_sort.sort(1, Qt.AscendingOrder)
+        self.availableToolTable.setModel(self.availableToolTable_sort)
+        self.availableToolTable.resizeColumnsToContents()
+        self.availableToolTable.hideColumn(0)
+        self.selectedToolTable.hideColumn(0)
 
     def prepare_selected_tools_list(self) -> List[str or int]:
         btns_list = []
         row = 0
         column = 0
-        model = self.selectedToolList.model()
+        model = self.selectedToolTable.model()
 
         for action_id in range(model.rowCount()):
             label = model.index(action_id, 0).data(0)
@@ -68,40 +75,46 @@ class CustomSectionManager(QDialog, FORM_CLASS):
         return btns_list
 
     def search_available_tools(self) -> None:
-        self.availableToolList_sort.setFilterFixedString(
+        self.availableToolTable_sort.setFilterFixedString(
             self.find_tool_searchbox.value())
 
     def add_to_selected(self, selected_tools: List[str] = None) -> None:
         if not hasattr(self, 'selected_model'):
             self.selected_model = QStandardItemModel()
+            self.selected_model.setColumnCount(2)
         if not selected_tools:
             selected_tools = \
                 [item for item in
-                 self.availableToolList.selectionModel().selectedRows()]
+                 self.availableToolTable.selectionModel().selectedRows()]
         if not selected_tools:
             return
         selected_tools_labels = [str(item.data(0)) for item in selected_tools]
+
         for tool in selected_tools_labels:
-            item = QStandardItem(tool)
+            item = QStandardItem(
+                tr(get_tool_label(tool, self.main_qgs_widget)))
             item.setData(icon_manager([tool], self.main_qgs_widget)[tool],
                          Qt.DecorationRole)
-            self.selected_model.appendRow(item)
-        self.selectedToolList.setModel(self.selected_model)
-        self.availableToolList.clearSelection()
+            self.selected_model.appendRow([QStandardItem(tool), item])
+        self.selectedToolTable.setModel(self.selected_model)
+        self.selectedToolTable.resizeColumnsToContents()
+        self.selectedToolTable.hideColumn(0)
+        self.availableToolTable.clearSelection()
 
     def remove_from_selected(self) -> None:
         selected_tools = \
             [item for item in
-             self.selectedToolList.selectionModel().selectedRows()]
+             self.selectedToolTable.selectionModel().selectedRows()]
         selected_tools_ids = [item.row() for item in selected_tools]
         for row_id in sorted(selected_tools_ids, reverse=True):
-            self.selectedToolList.model().removeRow(row_id)
+            self.selectedToolTable.model().removeRow(row_id)
 
     def edit_selected_item(self,
                            tool_id: Set[Union[QModelIndex, str]]) -> None:
         if not hasattr(self, 'selected_model'):
             self.selected_model = QStandardItemModel()
-        self.selectedToolList.setModel(self.selected_model)
+            self.selected_model.setColumnCount(2)
+        self.selectedToolTable.setModel(self.selected_model)
         tool_section_id = tool_id[-1]
         tool_section_row_id = tool_id[0].row()
         self.get_actual_tools()
@@ -112,11 +125,14 @@ class CustomSectionManager(QDialog, FORM_CLASS):
             self.section_name_lineedit.setText(
                 self.tools_dict[tool_section_id][-1])
             for tool in section_actions:
-                item = QStandardItem(tool)
+                item = QStandardItem(
+                    tr(get_tool_label(tool, self.main_qgs_widget)))
                 item.setData(icon_manager([tool], self.main_qgs_widget)[tool],
                              Qt.DecorationRole)
-                self.selected_model.appendRow(item)
+                self.selected_model.appendRow([QStandardItem(tool), item])
         self.edit_id = tool_section_id
+        self.selectedToolTable.resizeColumnsToContents()
+        self.selectedToolTable.hideColumn(0)
         if self.manage_editing_option(tool_section_row_id):
             self.edit_in_protected_mode()
 
@@ -142,10 +158,18 @@ class CustomSectionManager(QDialog, FORM_CLASS):
 
     def save_section(self) -> None:
         if not self.section_name_lineedit.text() or \
-                not self.selectedToolList.model() or \
-                self.selectedToolList.model().rowCount() < 1:
+                not self.selectedToolTable.model() or \
+                self.selectedToolTable.model().rowCount() < 1:
             CustomMessageBox(
                 self, tr('Error - Check the entered data.')).button_ok()
+            return
+        existing_sections = self.parent.conf.load_custom_sections_setup()
+        section_labels = [section['label'] for section in existing_sections]
+        if self.section_name_lineedit.text() in section_labels and \
+                self.mode != 'edit':
+            CustomMessageBox(
+                self,
+                tr('Error - The section name already exists.')).button_ok()
             return
         section_dict = {
             "label": self.section_name_lineedit.text(),
@@ -153,7 +177,6 @@ class CustomSectionManager(QDialog, FORM_CLASS):
             "btn_size": 30,
             "btns": self.prepare_selected_tools_list()
         }
-        existing_sections = self.parent.conf.load_custom_sections_setup()
         if not existing_sections:
             existing_sections = [section_dict]
         else:
@@ -174,7 +197,7 @@ class CustomSectionManager(QDialog, FORM_CLASS):
 
     def remove_row(self, tool_id: Set[Union[QModelIndex, str]]) -> None:
         model = QStandardItemModel()
-        self.selectedToolList.setModel(model)
+        self.selectedToolTable.setModel(model)
         existing_sections = self.parent.conf.load_custom_sections_setup()
         self.remove_section(existing_sections, tool_id[-1])
         self.parent.conf.save_custom_sections_setup(existing_sections)

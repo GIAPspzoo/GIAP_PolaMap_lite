@@ -291,14 +291,9 @@ color: #0A0C0D;</string>
               </widget>
              </item>
              <item>
-              <widget class="QListView" name="availableToolList">
+              <widget class="QTableView" name="availableToolTable">
                <property name="styleSheet">
-                <string notr="true">QListView {
-    alternate-background-color:  rgb(87, 131, 167);
-	background-color: #EDF6FC;
-	border-width: 0px;
-}
-</string>
+                <string notr="true">border: none</string>
                </property>
                <property name="frameShape">
                 <enum>QFrame::NoFrame</enum>
@@ -321,6 +316,27 @@ color: #0A0C0D;</string>
                  <height>24</height>
                 </size>
                </property>
+               <property name="showGrid">
+                <bool>false</bool>
+               </property>
+               <property name="cornerButtonEnabled">
+                <bool>false</bool>
+               </property>
+               <attribute name="horizontalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
+               <attribute name="horizontalHeaderDefaultSectionSize">
+                <number>250</number>
+               </attribute>
+               <attribute name="horizontalHeaderHighlightSections">
+                <bool>false</bool>
+               </attribute>
+               <attribute name="horizontalHeaderMinimumSectionSize">
+                <number>200</number>
+               </attribute>
+               <attribute name="verticalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
               </widget>
              </item>
             </layout>
@@ -661,38 +677,18 @@ color: #0A0C0D;</string>
               </widget>
              </item>
              <item>
-              <widget class="QListView" name="selectedToolList">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>0</height>
-                </size>
-               </property>
+              <widget class="QTableView" name="selectedToolTable">
                <property name="styleSheet">
-                <string notr="true">QListView {
-    alternate-background-color:  rgb(87, 131, 167);
-	background-color: #EDF6FC;
-	border-width: 0px;
-}
-</string>
+                <string notr="true">border: none</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
+               </property>
+               <property name="lineWidth">
+                <number>0</number>
                </property>
                <property name="editTriggers">
                 <set>QAbstractItemView::NoEditTriggers</set>
-               </property>
-               <property name="showDropIndicator" stdset="0">
-                <bool>true</bool>
-               </property>
-               <property name="dragEnabled">
-                <bool>true</bool>
-               </property>
-               <property name="dragDropOverwriteMode">
-                <bool>false</bool>
-               </property>
-               <property name="dragDropMode">
-                <enum>QAbstractItemView::NoDragDrop</enum>
-               </property>
-               <property name="defaultDropAction">
-                <enum>Qt::MoveAction</enum>
                </property>
                <property name="selectionMode">
                 <enum>QAbstractItemView::MultiSelection</enum>
@@ -706,15 +702,27 @@ color: #0A0C0D;</string>
                  <height>24</height>
                 </size>
                </property>
-               <property name="movement">
-                <enum>QListView::Static</enum>
-               </property>
-               <property name="layoutMode">
-                <enum>QListView::SinglePass</enum>
-               </property>
-               <property name="selectionRectVisible">
+               <property name="showGrid">
                 <bool>false</bool>
                </property>
+               <property name="cornerButtonEnabled">
+                <bool>false</bool>
+               </property>
+               <attribute name="horizontalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
+               <attribute name="horizontalHeaderDefaultSectionSize">
+                <number>250</number>
+               </attribute>
+               <attribute name="horizontalHeaderHighlightSections">
+                <bool>false</bool>
+               </attribute>
+               <attribute name="horizontalHeaderMinimumSectionSize">
+                <number>200</number>
+               </attribute>
+               <attribute name="verticalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
               </widget>
              </item>
             </layout>

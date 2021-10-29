@@ -484,7 +484,7 @@ Proszę czekać...</translation>
     </message>
     <message>
         <location filename="../giap_layout.py" line="399"/>
-        <source>Finish edition</source>
+        <source>Finish editing</source>
         <translation>Zakończ edycję</translation>
     </message>
     <message>
@@ -671,6 +671,11 @@ Proszę czekać...</translation>
         <location filename="../SectionManager/CustomSectionManager.py" line="425"/>
         <source>Error - Check the entered data.</source>
         <translation>Błąd - Sprawdź wprowadzone dane.</translation>
+    </message>
+       <message>
+        <location filename="../SectionManager/CustomSectionManager.py" line="425"/>
+        <source>Error - The section name already exists.</source>
+        <translation>Błąd - Sekcja o wybranej nazwie już istnieje.</translation>
     </message>
 </context>
 <context>
