@@ -294,8 +294,7 @@ class MainWidget(QWidget, FORM_CLASS):
         self.dlg.searchBox.textChanged.connect(self.search_tree)
         self.dlg.add_searchBox.textChanged.connect(
             self.search_add_sections_tree)
-        self.dlg.customToolList.selectionModel().selectionChanged.connect(
-            self.check_for_remove)
+        self.connect_checking_signal()
 
     def add_to_ribbon(self):
         self.tabWidget.setUpdatesEnabled(True)
@@ -396,10 +395,17 @@ class MainWidget(QWidget, FORM_CLASS):
             if ind == self.tabWidget.tabBar().count() - 1:
                 self.add_tab()
 
+    def connect_checking_signal(self):
+        self.dlg.customToolList.selectionModel(). \
+            selectionChanged.disconnect()
+        self.dlg.customToolList.selectionModel(). \
+            selectionChanged.connect(self.check_for_remove)
+
     def add_custom_section(self) -> None:
         self.custom_section_dlg = CustomSectionManager(self, 'add')
         if self.custom_section_dlg.exec():
             self.dlg.refresh_lists()
+            self.connect_checking_signal()
 
     def edit_custom_section(self) -> None:
         self.custom_section_dlg = CustomSectionManager(self, 'edit')
@@ -412,11 +418,14 @@ class MainWidget(QWidget, FORM_CLASS):
         self.custom_section_dlg.edit_selected_item(row)
         if self.custom_section_dlg.exec():
             self.dlg.refresh_lists()
+            self.connect_checking_signal()
 
     def check_for_remove(self):
-        self.custom_section_dlg = CustomSectionManager(self, 'remove')
+        if not hasattr(self, 'custom_section_dlg'):
+            self.custom_section_dlg = CustomSectionManager(self, 'remove')
         row = self.dlg.get_selected_row()
-        if not row or self.custom_section_dlg.manage_editing_option(row[0].row()):
+        if not row or self.custom_section_dlg.manage_editing_option(
+                row[0].row()):
             self.dlg.pushButton_remove_custom.setEnabled(False)
         else:
             self.dlg.pushButton_remove_custom.setEnabled(True)
@@ -434,6 +443,7 @@ class MainWidget(QWidget, FORM_CLASS):
         if req == QMessageBox.Yes:
             self.custom_section_dlg.remove_row(row)
             self.dlg.refresh_lists()
+            self.connect_checking_signal()
 
     def eventFilter(self, watched, ev):
         # turn off dragging while not in edit session

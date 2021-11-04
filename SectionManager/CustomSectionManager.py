@@ -9,7 +9,7 @@ from qgis.PyQt.QtGui import QStandardItemModel, QStandardItem
 from qgis.PyQt.QtWidgets import QDialog
 
 from ..utils import STANDARD_TOOLS, unpack_nested_lists, Qt, tr, \
-    icon_manager, CustomMessageBox, get_tool_label
+    icon_manager, CustomMessageBox, get_tool_label, GIAP_CUSTOM_TOOLS
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'UI/add_section_dialog.ui'))
@@ -31,6 +31,7 @@ class CustomSectionManager(QDialog, FORM_CLASS):
             self.toolButton_remove_tool.clicked.connect(
                 self.remove_from_selected)
             self.pushButton_save.clicked.connect(self.save_section)
+            self.protected = False
 
     def add_available_tools_into_list(self) -> None:
         self.availableToolTable_sort = QSortFilterProxyModel()
@@ -124,6 +125,7 @@ class CustomSectionManager(QDialog, FORM_CLASS):
                                if isinstance(action_list, list)]
             self.section_name_lineedit.setText(
                 self.tools_dict[tool_section_id][-1])
+            self.section_name_backup = self.section_name_lineedit.text()
             for tool in section_actions:
                 item = QStandardItem(
                     tr(get_tool_label(tool, self.main_qgs_widget)))
@@ -134,7 +136,7 @@ class CustomSectionManager(QDialog, FORM_CLASS):
         self.selectedToolTable.resizeColumnsToContents()
         self.selectedToolTable.hideColumn(0)
         if self.manage_editing_option(tool_section_row_id):
-            self.edit_in_protected_mode()
+            self.protected = True
 
     def get_actual_tools(self) -> None:
         self.tools_dict = {tool['id']: [tool['btns'], tool['label']]
@@ -165,12 +167,23 @@ class CustomSectionManager(QDialog, FORM_CLASS):
             return
         existing_sections = self.parent.conf.load_custom_sections_setup()
         section_labels = [section['label'] for section in existing_sections]
-        if self.section_name_lineedit.text() in section_labels and \
-                self.mode != 'edit':
-            CustomMessageBox(
-                self,
-                tr('Error - The section name already exists.')).button_ok()
-            return
+        if self.protected:
+            if tr(self.section_name_lineedit.text()) in \
+                    sorted([tr(tool) for tool in GIAP_CUSTOM_TOOLS]):
+                self.section_name_lineedit.setText(
+                    f'{tr(self.section_name_lineedit.text())} - edytowany')
+        if self.section_name_lineedit.text() in section_labels:
+            if self.mode == 'edit':
+                if self.section_name_backup != self.section_name_lineedit.text():
+                    CustomMessageBox(
+                        self,
+                        tr('Error - The section name already exists.')).button_ok()
+                    return
+            else:
+                CustomMessageBox(
+                    self,
+                    tr('Error - The section name already exists.')).button_ok()
+                return
         section_dict = {
             "label": self.section_name_lineedit.text(),
             "id": f"custom_{datetime.now().strftime('%y%m%d%H%M%S%f')}",
@@ -181,7 +194,8 @@ class CustomSectionManager(QDialog, FORM_CLASS):
             existing_sections = [section_dict]
         else:
             if hasattr(self, 'edit_id') and self.edit_id:
-                self.remove_section(existing_sections, self.edit_id)
+                if not self.protected:
+                    self.remove_section(existing_sections, self.edit_id)
                 del self.edit_id
             existing_sections.append(section_dict)
         self.parent.conf.save_custom_sections_setup(existing_sections)
@@ -201,9 +215,3 @@ class CustomSectionManager(QDialog, FORM_CLASS):
         existing_sections = self.parent.conf.load_custom_sections_setup()
         self.remove_section(existing_sections, tool_id[-1])
         self.parent.conf.save_custom_sections_setup(existing_sections)
-
-    def edit_in_protected_mode(self) -> None:
-        self.pushButton_save.setEnabled(False)
-        self.section_name_lineedit.setEnabled(False)
-        self.toolButton_add_tool.setEnabled(False)
-        self.toolButton_remove_tool.setEnabled(False)
