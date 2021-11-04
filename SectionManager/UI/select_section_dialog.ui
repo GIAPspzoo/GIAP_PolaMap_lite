@@ -754,9 +754,15 @@ background-color: #EDF6FC;</string>
 }
 QTreeView:item:hover{   
 	background-color: #6FB1E3;
+	color: #fff;
 }
 QTreeView:branch:hover{   
 	background-color: #6FB1E3;
+	color: #fff;
+}
+QTreeView:item:selected{
+	background-color: #6FB1E3;
+	color: #fff;
 }
 QTreeView{    
 	border:1px;
