@@ -294,6 +294,8 @@ class MainWidget(QWidget, FORM_CLASS):
         self.dlg.searchBox.textChanged.connect(self.search_tree)
         self.dlg.add_searchBox.textChanged.connect(
             self.search_add_sections_tree)
+        self.dlg.customToolList.selectionModel().selectionChanged.connect(
+            self.check_for_remove)
 
     def add_to_ribbon(self):
         self.tabWidget.setUpdatesEnabled(True)
@@ -410,6 +412,14 @@ class MainWidget(QWidget, FORM_CLASS):
         self.custom_section_dlg.edit_selected_item(row)
         if self.custom_section_dlg.exec():
             self.dlg.refresh_lists()
+
+    def check_for_remove(self):
+        self.custom_section_dlg = CustomSectionManager(self, 'remove')
+        row = self.dlg.get_selected_row()
+        if not row or self.custom_section_dlg.manage_editing_option(row[0].row()):
+            self.dlg.pushButton_remove_custom.setEnabled(False)
+        else:
+            self.dlg.pushButton_remove_custom.setEnabled(True)
 
     def remove_custom_section(self) -> None:
         self.custom_section_dlg = CustomSectionManager(self, 'remove')
@@ -889,6 +899,7 @@ class CustomSection(QWidget):
         gpos = QCursor().pos()
 
         if isinstance(event.source(), CustomToolButton):
+            move = False
             # check if source and target are in the same gridlayout
             if event.source().parent() is not self:
                 event.source().drag_state = False
@@ -899,20 +910,20 @@ class CustomSection(QWidget):
             source = self.get_toolbutton_layout_index_from_pos(gpos)
             glay = event.source().parent().gridLayout
             self.target = None
-            for i in range(glay.count()):
-                it = glay.itemAt(i)
-                if it.widget() is event.source():
-                    self.target = i
+            for lay_id in range(glay.count()):
+                item = glay.itemAt(lay_id)
+                if item.widget() is event.source():
+                    self.target = lay_id
                     break
 
             if source == self.target:
                 try:
-                    it.widget().drag_state = False
+                    item.widget().drag_state = False
                 except Exception:
                     pass
                 return
 
-            if None not in [source, self.target]:
+            if None not in [source, self.target] and not move:
                 # swap qtoolbuttons
                 i, j = max(self.target, source), min(self.target, source)
                 p1 = self.gridLayout.getItemPosition(i)
@@ -925,6 +936,12 @@ class CustomSection(QWidget):
                 it2.widget().drag_state = False
                 self.gridLayout.addItem(it1, *p2)
                 self.gridLayout.addItem(it2, *p1)
+            # elif move:
+            #     i = self.target
+            #     it1 = self.gridLayout.takeAt(i)
+            #     it1.widget().setDown(False)
+            #     it1.widget().drag_state = False
+            #     self.gridLayout.addWidget(event.source())
 
         if isinstance(event.source(), CustomSection):
             lay = self.parent().lay

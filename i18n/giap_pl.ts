@@ -672,7 +672,7 @@ Proszę czekać...</translation>
         <source>Error - Check the entered data.</source>
         <translation>Błąd - Sprawdź wprowadzone dane.</translation>
     </message>
-       <message>
+    <message>
         <location filename="../SectionManager/CustomSectionManager.py" line="425"/>
         <source>Error - The section name already exists.</source>
         <translation>Błąd - Sekcja o wybranej nazwie już istnieje.</translation>

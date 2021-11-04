@@ -6,8 +6,7 @@ from qgis.PyQt.QtCore import QObject, pyqtSignal
 from qgis.PyQt.QtWidgets import QToolButton, QMenu, QAction
 from qgis.core import QgsProject, QgsRasterLayer, QgsMessageLog
 
-from .utils import WMS_SERVERS, WMS_SERVERS_GROUPS
-from .utils import tr, CustomMessageBox
+from .utils import WMS_SERVERS, WMS_SERVERS_GROUPS, tr, CustomMessageBox
 
 
 class OrtoAddingTool(object):
