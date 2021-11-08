@@ -1,22 +1,16 @@
 import json
-from urllib.request import urlopen
+import os
+from http.client import IncompleteRead
+from urllib.error import HTTPError, URLError
 from urllib.parse import quote
+from urllib.request import urlopen
+
+from qgis.PyQt.QtCore import QVariant
+from qgis.core import QgsGeometry, QgsFeature, QgsField, QgsFields, \
+    QgsProject, QgsVectorLayer, QgsMessageLog, Qgis
 from qgis.utils import iface
 
-from qgis.core import QgsGeometry, QgsFeature, QgsField, QgsFields, \
-    QgsProject, QgsVectorLayer, QgsMessageLog, Qgis, QgsExpression
-from qgis.PyQt.QtCore import QVariant
-
-import os
-
-
-from urllib.error import HTTPError, URLError
-
-from http.client import IncompleteRead
-
 from ..utils import tr
-
-from ..CustomMessageBox import CustomMessageBox
 
 
 class SearchAddress:
@@ -40,8 +34,6 @@ class SearchAddress:
             QgsField("x", QVariant.Double, "double", 10, 4),
             QgsField("y", QVariant.Double, "double", 10, 4),
         ]
-
-
 
     def fetch_address(self, address):
         self.address = address
@@ -109,7 +101,8 @@ class SearchAddress:
 
         if 'found objects' in self.jres:
             if self.jres['found objects'] == 0:
-                return False, tr('Service did not find any objects for this query.')
+                return False, tr(
+                    'Service did not find any objects for this query.')
         else:
             return False, tr('Zero objects found.')
 
@@ -122,8 +115,9 @@ class SearchAddress:
             return False, tr('Check log, problems occured.')
         fnm = lyr.dataProvider().fieldNameMap()
         feats = []
-        if 'only exact numbers' in self.jres.keys():    # if jezeli znajdzie dokladnie ten adres
-            exact_adr = self.jres['results']['1']   # poprzednia metoda zapelniala warstwe wszystkim co znalazla
+        if 'only exact numbers' in self.jres.keys():  # if jezeli znajdzie dokladnie ten adres
+            exact_adr = self.jres['results'][
+                '1']  # poprzednia metoda zapelniala warstwe wszystkim co znalazla
             feat = QgsFeature()
             feat.setFields(lyr.fields())
             for column in feat.fields():
@@ -148,7 +142,6 @@ class SearchAddress:
                 if feat.isValid():
                     feats.append(feat)
 
-
         return True, feats
 
     def zoom_to_feature(self, layer):
@@ -169,4 +162,3 @@ class SearchAddress:
             lyr.dataProvider().addFeatures(feats)
             self.zoom_to_feature(obj_type)
         return True
-

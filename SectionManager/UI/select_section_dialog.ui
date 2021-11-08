@@ -497,6 +497,25 @@ background-color: #EDF6FC;</string>
              <property name="topMargin">
               <number>0</number>
              </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <spacer name="verticalSpacer_4">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Minimum</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>8</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
              <item>
               <widget class="QListView" name="toolList">
                <property name="styleSheet">
@@ -514,6 +533,22 @@ background-color: #EDF6FC;</string>
                 <enum>QAbstractItemView::SelectRows</enum>
                </property>
               </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_5">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>5</height>
+                </size>
+               </property>
+              </spacer>
              </item>
             </layout>
            </widget>
@@ -695,8 +730,11 @@ background-color: #EDF6FC;</string>
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout_5">
+             <property name="topMargin">
+              <number>0</number>
+             </property>
              <property name="bottomMargin">
-              <number>9</number>
+              <number>0</number>
              </property>
              <item row="1" column="0">
               <widget class="QgsProcessingToolboxTreeView" name="algorithmTree">
@@ -716,9 +754,15 @@ background-color: #EDF6FC;</string>
 }
 QTreeView:item:hover{   
 	background-color: #6FB1E3;
+	color: #fff;
 }
 QTreeView:branch:hover{   
 	background-color: #6FB1E3;
+	color: #fff;
+}
+QTreeView:item:selected{
+	background-color: #6FB1E3;
+	color: #fff;
 }
 QTreeView{    
 	border:1px;
@@ -970,30 +1014,27 @@ background-color: #EDF6FC;</string>
              <property name="topMargin">
               <number>0</number>
              </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
              <item>
-              <widget class="QLabel" name="label_2">
-               <property name="minimumSize">
+              <spacer name="verticalSpacer_6">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Minimum</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
                 <size>
-                 <width>0</width>
-                 <height>30</height>
+                 <width>20</width>
+                 <height>8</height>
                 </size>
                </property>
-               <property name="styleSheet">
-                <string notr="true">border-width: 0px;
-border-radius: 0px;
-border-bottom: 1px solid  #0A0C0D;
-color: #0A0C0D;</string>
-               </property>
-               <property name="text">
-                <string>Sections</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
+              </spacer>
              </item>
              <item>
-              <widget class="QListView" name="toolList_2">
+              <widget class="QListView" name="customToolList">
                <property name="styleSheet">
                 <string notr="true">QListView {
     alternate-background-color:  rgb(87, 131, 167);
@@ -1002,13 +1043,32 @@ color: #0A0C0D;</string>
 }
 </string>
                </property>
+               <property name="alternatingRowColors">
+                <bool>false</bool>
+               </property>
                <property name="selectionMode">
-                <enum>QAbstractItemView::MultiSelection</enum>
+                <enum>QAbstractItemView::SingleSelection</enum>
                </property>
                <property name="selectionBehavior">
                 <enum>QAbstractItemView::SelectRows</enum>
                </property>
               </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_7">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>5</height>
+                </size>
+               </property>
+              </spacer>
              </item>
             </layout>
            </widget>
@@ -1065,7 +1125,7 @@ color: #0A0C0D;</string>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QgsFilterLineEdit" name="add_searchBox_2">
+           <widget class="QgsFilterLineEdit" name="add_custom_searchBox">
             <property name="toolTip">
              <string>Enter algorithm name to filter list</string>
             </property>

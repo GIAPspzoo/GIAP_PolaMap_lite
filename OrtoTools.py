@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
+
 from qgis.PyQt.QtCore import QObject, pyqtSignal
-from qgis.PyQt.QtWidgets import QToolButton, QMenu, QAction, QCheckBox
+from qgis.PyQt.QtWidgets import QToolButton, QMenu, QAction
 from qgis.core import QgsProject, QgsRasterLayer, QgsMessageLog
-from qgis.utils import iface
-from .utils import WMS_SERVERS, WMS_SERVERS_GROUPS
-from .CustomMessageBox import CustomMessageBox
-from .utils import tr
+
+from .utils import WMS_SERVERS, WMS_SERVERS_GROUPS, tr, CustomMessageBox
 
 
 class OrtoAddingTool(object):
@@ -57,7 +56,7 @@ class OrtoAddingTool(object):
                     QgsMessageLog.logMessage(
                         tr("Error, detaching signals from "
                            "groups in layers tree."
-                        ),
+                           ),
                         tag="GIAP-PolaMap(lite)"
                     )
 
@@ -103,8 +102,10 @@ class OrtoAddingTool(object):
                     None, tr('Can\'t add layer') + name).button_ok()
         else:
             lyr = QgsProject.instance().mapLayersByName(name)[0]
-            lyrontree = QgsProject.instance().layerTreeRoot().findLayer(lyr.id())
-            lyrontree.setItemVisibilityChecked(not lyrontree.isItemVisibilityCheckedRecursive())
+            lyrontree = QgsProject.instance().layerTreeRoot().findLayer(
+                lyr.id())
+            lyrontree.setItemVisibilityChecked(
+                not lyrontree.isItemVisibilityCheckedRecursive())
 
     def create_menu(self):
         layers_names = []
@@ -149,9 +150,11 @@ class OrtoAddingTool(object):
         self.ortomenu = menu
 
     def ortocheck(self):
-        checked = [layer.name() for layer in QgsProject.instance().layerTreeRoot().checkedLayers()]
+        checked = [layer.name() for layer in
+                   QgsProject.instance().layerTreeRoot().checkedLayers()]
         for orto in self.ortomenu.actions():
             orto.setChecked(orto.text() in checked)
+
 
 class OrtoActionService(QObject):
     orto_added = pyqtSignal()

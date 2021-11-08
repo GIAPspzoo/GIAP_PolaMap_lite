@@ -1,9 +1,9 @@
 import os
+
 from qgis.PyQt import uic
 from qgis.PyQt.QtWidgets import QDialog, QFileDialog, QInputDialog, QMessageBox
-from qgis.PyQt.QtCore import Qt, QCoreApplication
-from ..utils import tr
-from ..utils import DEFAULT_STYLE
+
+from ..utils import DEFAULT_STYLE, tr, Qt
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'ui_stylemanager.ui'))
@@ -30,7 +30,7 @@ class StyleManagerDialog(QDialog, FORM_CLASS):
     def add_style(self):
         """ add new style"""
         filename, _ = QFileDialog.getOpenFileName(
-            self, tr("Open qss"), '',  "*.qss"
+            self, tr("Open qss"), '', "*.qss"
         )
         text, ok = QInputDialog.getText(
             self, tr('Style Name'), tr('Enter name for style:'),

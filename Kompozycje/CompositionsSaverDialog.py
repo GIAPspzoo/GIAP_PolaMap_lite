@@ -2,9 +2,10 @@
 
 
 import os
+
+from PyQt5.QtCore import Qt
 from qgis.PyQt import QtWidgets
 from qgis.PyQt import uic
-from PyQt5.QtCore import Qt
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__),

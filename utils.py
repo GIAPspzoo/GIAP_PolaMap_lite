@@ -1,14 +1,150 @@
-from typing import List, Any
+import os
+import re
+from typing import List, Any, Dict, Optional, Union
 
 from PyQt5.QtCore import Qt
 from qgis.PyQt import QtCore, QtGui
-from qgis.PyQt.QtCore import QThread
-from qgis.PyQt.QtGui import QPen, QBrush
+from qgis.PyQt.QtCore import QThread, QObject
+from qgis.PyQt.QtGui import QPen, QBrush, QIcon, QPixmap
 from qgis.PyQt.QtWidgets import QApplication, QProgressDialog, \
-    QStyledItemDelegate
-from qgis.core import QgsProject, QgsMessageLog, Qgis
+    QStyledItemDelegate, QAction, QMessageBox, QScrollArea, QWidget, \
+    QGridLayout, QLabel, QDialogButtonBox
+from qgis.core import QgsProject, QgsMessageLog, Qgis, QgsApplication
 
 project = QgsProject.instance()
+
+
+class CustomMessageBox(QMessageBox):
+    stylesheet = """
+        * {
+            background-color: rgb(53, 85, 109, 220);
+            color: rgb(255, 255, 255);
+            font: 10pt "Segoe UI";
+            border: 0px;
+        }
+
+        QAbstractItemView {
+            selection-background-color:  rgb(87, 131, 167);
+        }
+
+        QPushButton {
+            border: none;
+            border-width: 2px;
+            border-radius: 6px;
+            background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(65, 97, 124, 255), stop:1 rgba(90, 135, 172, 255));
+            padding: 5px 15px;
+        }
+
+        QPushButton:checked {
+            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(65, 97, 124, 255), stop:1 rgba(31, 65, 90, 255));
+            border: solid;
+            border-width: 2px;
+            border-color: rgb(65, 97, 124);
+        }
+
+        QPushButton:pressed {
+            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(65, 97, 124, 255), stop:1 rgba(31, 65, 90, 255));
+            border: solid;
+            border-width: 2px;
+            border-color: rgb(65, 97, 124);
+        }
+    """
+
+    def __init__(self, parent=None, text='', image=''):
+        super(CustomMessageBox, self).__init__(parent)
+        self.text = text
+
+        self.rebuild_layout(text, image)
+
+    def rebuild_layout(self, text, image):
+        self.setStyleSheet(self.stylesheet)
+
+        scrll = QScrollArea(self)
+        scrll.setWidgetResizable(True)
+        self.qwdt = QWidget()
+        self.qwdt.setLayout(QGridLayout(self))
+        grd = self.findChild(QGridLayout)
+        if text:
+            lbl = QLabel(text, self)
+            lbl.setStyleSheet(self.stylesheet)
+            lbl.setAlignment(Qt.AlignCenter)
+            lbl.setWordWrap(False)
+            lbl.setTextInteractionFlags(
+                Qt.TextSelectableByMouse)
+            self.qwdt.layout().addWidget(lbl, 1, 0)
+        if image:
+            px_lbl = QLabel(self)
+            img_path = normalize_path(image)
+            pixmap = QPixmap(img_path)
+            px_lbl.setPixmap(pixmap)
+            px_lbl.setMinimumSize(pixmap.width(), pixmap.height())
+            px_lbl.setAlignment(Qt.AlignCenter)
+            px_lbl.setWordWrap(False)
+            self.qwdt.layout().addWidget(px_lbl, 0, 0)
+
+        scrll.setWidget(self.qwdt)
+        scrll.setContentsMargins(15, 5, 15, 10)
+        scrll.setStyleSheet(self.stylesheet)
+        grd.addWidget(scrll, 0, 1)
+        self.layout().removeItem(self.layout().itemAt(0))
+        self.layout().removeItem(self.layout().itemAt(0))
+        self.setWindowTitle('GIAP-PolaMap(lite)')
+        self.setWindowIcon(icon_manager(['window_icon'])['window_icon'])
+
+    def button_ok(self):
+        self.setStandardButtons(QMessageBox.Ok)
+        self.setDefaultButton(QMessageBox.Ok)
+        self.set_proper_size()
+        QMessageBox.exec_(self)
+
+    def button_yes_no(self):
+        self.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        self.setDefaultButton(QMessageBox.No)
+        self.set_proper_size()
+        return QMessageBox.exec_(self)
+
+    def button_yes_no_open(self):
+        self.setStandardButtons(
+            QMessageBox.Yes | QMessageBox.No | QMessageBox.Open)
+        self.setDefaultButton(QMessageBox.No)
+        self.set_proper_size()
+        return QMessageBox.exec_(self)
+
+    def button_ok_open(self):
+        self.setStandardButtons(QMessageBox.Ok | QMessageBox.Open)
+        self.setDefaultButton(QMessageBox.Open)
+        self.set_proper_size()
+        return QMessageBox.exec_(self)
+
+    def button_editr_close(self):
+        self.setStandardButtons(
+            QMessageBox.Save | QMessageBox.Cancel | QMessageBox.Discard)
+        self.setDefaultButton(QMessageBox.Discard)
+        self.set_proper_size()
+        return QMessageBox.exec_(self)
+
+    def set_proper_size(self):
+        scrll = self.findChild(QScrollArea)
+        new_size = self.qwdt.sizeHint()
+        if self.qwdt.sizeHint().height() > 600:
+            new_size.setHeight(600)
+        else:
+            new_size.setHeight(self.qwdt.sizeHint().height())
+        if self.qwdt.sizeHint().width() > 800:
+            new_size.setWidth(800)
+            new_size.setHeight(new_size.height() + 20)
+        else:
+            btn_box_width = self.findChild(QDialogButtonBox).sizeHint().width()
+            if self.qwdt.sizeHint().width() > btn_box_width:
+                new_size.setWidth(self.qwdt.sizeHint().width())
+            else:
+                new_size.setWidth(btn_box_width)
+        scrll.setFixedSize(new_size)
+        scrll.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        scrll.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.show()
+        scrll.horizontalScrollBar().setValue(
+            int(scrll.horizontalScrollBar().maximum() / 2))
 
 
 class SingletonModel:
@@ -59,6 +195,10 @@ def identify_layer_in_group_by_parts(group_name, layer_to_find):
 def set_project_config(parameter, key, value):
     if isinstance(project, QgsProject):
         return project.writeEntry(parameter, key, value)
+
+
+def normalize_path(path):
+    return os.path.normpath(os.sep.join(re.split(r'\\|/', path)))
 
 
 def tr(message):
@@ -748,3 +888,329 @@ TOOLS_HEADERS = [
     'GIAP sections',
     'User sections'
 ]
+TOOL_LIST = [
+    'mProcessingUserMenu_native_buffer',
+    'mProcessingUserMenu_native_centroids',
+    'mProcessingUserMenu_native_clip',
+    'mProcessingUserMenu_native_collect',
+    'mProcessingUserMenu_native_convexhull',
+    'mProcessingUserMenu_native_countpointsinpolygon',
+    'mProcessingUserMenu_native_creategrid',
+    'mProcessingUserMenu_native_difference',
+    'mProcessingUserMenu_native_extractvertices',
+    'mProcessingUserMenu_native_intersection',
+    'mProcessingUserMenu_native_lineintersections',
+    'mProcessingUserMenu_native_meancoordinates',
+    'mProcessingUserMenu_native_multiparttosingleparts',
+    'mProcessingUserMenu_native_nearestneighbouranalysis',
+    'mProcessingUserMenu_native_polygonfromlayerextent',
+    'mProcessingUserMenu_native_polygonstolines',
+    'mProcessingUserMenu_native_randompointsinextent',
+    'mProcessingUserMenu_native_simplifygeometries',
+    'mProcessingUserMenu_native_sumlinelengths',
+    'mProcessingUserMenu_native_symmetricaldifference',
+    'mProcessingUserMenu_native_union',
+    'mProcessingUserMenu_qgis_basicstatisticsforfields',
+    'mProcessingUserMenu_qgis_checkvalidity',
+    'mProcessingUserMenu_qgis_delaunaytriangulation',
+    'mProcessingUserMenu_qgis_distancematrix',
+    'mProcessingUserMenu_qgis_eliminateselectedpolygons',
+    'mProcessingUserMenu_qgis_exportaddgeometrycolumns',
+    'mProcessingUserMenu_qgis_linestopolygons',
+    'mProcessingUserMenu_qgis_listuniquevalues',
+    'mProcessingUserMenu_qgis_randompointsinsidepolygons',
+    'mProcessingUserMenu_qgis_regularpoints',
+    'mProcessingUserMenu_qgis_voronoipolygons',
+    'mProcessingUserMenu_native_dissolve',
+    'mProcessingUserMenu_qgis_randompointsinlayerbounds',
+    'mProcessingUserMenu_native_densifygeometries',
+    'mProcessingUserMenu_gdal_aspect',
+    'mProcessingUserMenu_gdal_fillnodata',
+    'mProcessingUserMenu_gdal_gridaverage',
+    'mProcessingUserMenu_gdal_griddatametrics',
+    'mProcessingUserMenu_gdal_gridinversedistance',
+    'mProcessingUserMenu_gdal_gridnearestneighbor',
+    'mProcessingUserMenu_gdal_hillshade',
+    'mProcessingUserMenu_gdal_roughness',
+    'mProcessingUserMenu_gdal_slope',
+    'mProcessingUserMenu_gdal_tpitopographicpositionindex',
+    'mProcessingUserMenu_gdal_triterrainruggednessindex',
+    'mProcessingUserMenu_native_createspatialindex',
+    'mProcessingUserMenu_native_joinattributesbylocation',
+    'mProcessingUserMenu_native_reprojectlayer',
+
+    'mActionZoomTo', 'mActionZoomOut', 'mActionZoomToSelected',
+    'mActionZoomToLayer', 'mActionZoomToBookmark',
+    'mActionZoomToArea', 'mActionZoomNext', 'mActionZoomLast',
+    'mActionZoomIn', 'mActionZoomFullExtent',
+    'mActionZoomActual', 'mActionWhatsThis',
+    'mActionViewScaleInCanvas', 'mActionViewExtentInCanvas',
+    'mActionVertexToolActiveLayer', 'mActionVertexTool',
+    'mActionUnlockAll', 'mActionUnlink',
+    'mActionUngroupItems', 'mActionUndo', 'mActionTrimExtendFeature',
+    'mActionTracing', 'mActionTouch',
+    'mActionToggleSelectedLayers', 'mActionToggleEditing',
+    'mActionToggleAllLayers', 'mActionTiltUp',
+    'mActionTiltDown', 'mActionTextAnnotation', 'mActionTerminal',
+    'mActionSvgAnnotation', 'mActionSum',
+    'mActionStyleManager', 'mActionStreamingDigitize', 'mActionStop',
+    'mActionStart', 'mActionSimplify',
+    'mActionShowUnplacedLabel', 'mActionShowSelectedLayers',
+    'mActionShowPluginManager',
+    'mActionShowPinnedLabels', 'mActionShowMeshCalculator',
+    'mActionShowHideLabels', 'mActionShowBookmarks',
+    'mActionShowAllLayersGray', 'mActionSharingImport',
+    'mActionSharingExport', 'mActionSharing',
+    'mActionSetToCanvasScale', 'mActionSplitParts',
+    'mActionSetToCanvasEtent', 'mActionSetProjection',
+    'mActionSelectRectangle', 'mActionSelectRadius',
+    'mActionSelectPolygon', 'mActionSelectPan',
+    'mActionShowAllLayers', 'mACtionSelectFreehand',
+    'mActionSelectedToTop', 'mActionSelectAllTree',
+    'mActionSelectAll', 'mActionSelect', 'mActionScriptOpen',
+    'mActionScaleHighlightFeature',
+    'mActionScaleFeature', 'mActionScaleBar', 'mActionSaveMapAsImage',
+    'mActionSaveEdits', 'mActionSaveAsSVG',
+    'mActionSaveAsPython', 'mActionSaveAsPDF', 'mActionSplitFeatures',
+    'mActionSaveAllEdits',
+    'mActionRotatePointSymbols', 'mActionRotateFeature',
+    'mActionRollbackEdits', 'mActionRollbackAllEdits',
+    'mActionReverseLine', 'mActionResizeWidest',
+    'mActionResizeTallest', 'mActionResizeSquare',
+    'mActionResizeShortest', 'mActionResizeNarrowest',
+    'mActionReshape', 'mActionRemoveSelectedFeature',
+    'mActionRemoveLayer', 'mActionRemoveAllFromOverview',
+    'mActionRemove', 'mActionReload',
+    'mActionRegularPolygonCenterPoint',
+    'mActionRegularPolygonCenterCorner',
+    'mActionRegularPolygon2Points',
+    'mActionRefresh', 'mActionRedo', 'mActionRectangleExtent',
+    'mActionRectangleCenter',
+    'mActionRectangle3PointsProjected',
+    'mActionRectangle3PointsDistance', 'mActionRecord',
+    'mActionRaiseItems', 'mActionPropertyItem',
+    'mActionPropertiesWidget', 'mActionProjectProperties',
+    'mActionProcessSelected', 'mActionPrevious', 'mActionPlay',
+    'mActionPinLabels', 'mActionRotateLabel',
+    'mActionPanToSelected', 'mActionPanTo',
+    'mActionPanHighlightFeature', 'mActionOptions',
+    'mActionOpenTableVisible', 'mActionOpenTableSelected',
+    'mActionOpenTableEdited', 'mActionOpenTable',
+    'mActionOffsetPointSymbols', 'mActionOffsetCurve', 'mActionNext',
+    'mActionNewVirtualLayer',
+    'mActionNewVectorLayer', 'mActionNewTableRow',
+    'mActionNewSpatiaLiteLayer', 'mActionNewReport',
+    'mActionNewPage', 'mActionNewMeshLayer', 'mActionNewMap',
+    'mActionNewLayout', 'mActionNewGeoPackageLayer',
+    'mActionNewFolder', 'mActionNewComposer', 'mActionNewBookmark',
+    'mActionNewAttribute',
+    'mActionNew3DMap', 'mActionMultiEdit', 'mActionMoveVertex',
+    'mActionMoveLabel', 'mActionMoveItemsToTop',
+    'mActionMoveItemsToBottom', 'mActionMoveItemContent',
+    'mActionMoveFeaturePoint',
+    'mActionMoveFeatureLine', 'mActionMoveFeatureCopyLine',
+    'mActionMoveFeatureCopyPoint',
+    'mActionMoveFeatureCopy', 'mActionMoveFeature',
+    'mActionMeshDigitizing', 'mActionMeshDigitizing',
+    'mActionMergeFeatures', 'mActionMergeFeaturesAttributes',
+    'mActionMeasureBearing',
+    'mActionMeasureArea', 'mActionMeasureAngle', 'mActionMapTips',
+    'mActionMapSettings',
+    'mActionMapIdentification', 'mActionLowerItems', 'mActionFeature',
+    'mActionLockItems',
+    'mActionLockExtent', 'mActionLocalHistogramStretch',
+    'mActionLocalCumulativeCutStretch',
+    'mActionLink', 'mActionLayoutManager', 'mActionLast',
+    'mActionLabeling', 'mActionLabelAnchorStart',
+    'mActionLabelAnchorEnd', 'mActionLabelAnchorCustom',
+    'mActionLabelAnchorCenter', 'mActionLabel',
+    'mActionKeyboardShortcuts', 'mActionInvertSelection',
+    'mActionInterfaceCustomization',
+    'mActionInOverview', 'mActionIncreaseGamma', 'mActionIncreaseFont',
+    'mActionIncreaseContrast',
+    'mActionIncreaseBrightness', 'mActionIdentifyByRectangle',
+    'mActionIdentifyByRadius',
+    'mActionIdentifyByPolygon',
+    'mActionIdentifyByFreehand', 'mActionIdentify', 'mActionIconView',
+    'mActionHtmlAnnotation',
+    'mActionHistory', 'mActionHighlightFeature',
+    'mActionHideSelectedLayers',
+    'mActionHideDeselectedLayers', 'mActionHideAllLayers',
+    'mActionHelpContents',
+    'mActionHelpAbout', 'mActionHandleStoreFilterExpressionUnchecked',
+    'mActionHandleStoreFilterExpressionChecked',
+    'mActionGroupItems', 'mActionFullHistogramStretch',
+    'mActionFullCumulativeCutStretch',
+    'mActionFromSelectedFeature', 'mActionFromLargestFeature',
+    'mActionFormView', 'mActionFormAnnotation',
+    'mActionFolder', 'mActionFirst', 'mActionFindReplace',
+    'mActionFilterTableFields', 'mActionFilter2',
+    'mActionFilter', 'mActionFillRing', 'mActionFileSaveAs',
+    'mActionFileSave', 'mActionFilePrint',
+    'mActionFileNew', 'mActionFileExit', 'mActionExport',
+    'mActionExpandTree', 'mActionExpandNewTree',
+    'mActionEllipseExtent', 'mActionEllipseCenterPoint',
+    'mActionEllipseCenter2Points',
+    'mActionEditTable', 'mActionEditPaste', 'mActionEditNodesItem',
+    'mActionEditModelComponent',
+    'mActionEditHtml', 'mActionEditHelpContent', 'mActionEditCut',
+    'mActionEditCopy', 'mActionDuplicateLayout',
+    'mActionDuplicateLayer', 'mActionDuplicateFeatureDigitized',
+    'mActionDuplicateFeature',
+    'mActionDuplicateComposer', 'mActionDoubleArrowRight',
+    'mActionDoubleArrowLeft', 'mActionDistributeVSpace',
+    'mActionDistributeVCenter', 'mActionDistributeTop',
+    'mActionDistributeRight', 'mActionDistributeLeft',
+    'mActionDistributeHSpace', 'mActionDistributeHCenter',
+    'mActionDistributeBottom',
+    'mActionDigitizeWithCurve',
+    'mActionDeselectAllTree', 'mActionDeselectAll',
+    'mActionDeselectActiveLayer', 'mActionDeleteTable',
+    'mActionDeleteSelectedFeatures', 'mActionDeleteSelected',
+    'mActionDeleteRing', 'mActionDeletePart',
+    'mActionDeleteModelComponent', 'mActionDeleteAttribute',
+    'mActionDecreaseGamma', 'mActionDecreaseFont',
+    'mActionDecreaseContrast', 'mActionDecreaseBrightness',
+    'mActionDataSourceManager',
+    'mActionCustomProjection',
+    'mActionCreateTable', 'mActionCreateMemory',
+    'mActionConditionalFormatting', 'mActionComposerManager',
+    'mActionCollapseTree', 'mActionCircularStringRadius',
+    'mActionCircularStringCurvePoint',
+    'mActionCircleExtent', 'mActionCircleCenterPoint',
+    'mActionCircle3Tangents', 'mActionCircle3Points',
+    'mActionCircle2TangentsPoint', 'mActionCircle2Points',
+    'mActionChangeLabelProperties',
+    'mActionCapturePoint', 'mActionCaptureLine', 'mActionCancelEdits',
+    'mActionCancelAllEdits',
+    'mActionCalculateField', 'mActionAvoidIntersetionsLayers',
+    'mActionAvoidIntersectionsCurrentLayer',
+    'mActionAtlasSettings', 'mActionAtlasPrev', 'mActionAtlasNext',
+    'mActionAtlasLast', 'mActionAtlasFirst',
+    'mActionArrowUp', 'mActionArrowRight', 'mActionArrowLeft',
+    'mActionArrowDown', 'mActionAnnotation',
+    'mActionAllowIntersections', 'mActionAllEdits',
+    'mActionAlignVCenter', 'mActionAlignTop',
+    'mActionAlignRight', 'mActionAlignLeft', 'mActionAlignHCenter',
+    'mActionAlignBottom',
+    'mActionAddTable', 'mActionAddPolyline', 'mActionAddPolygon',
+    'mActionAddPointCloudLayer',
+    'mActionAddNodesItem', 'mActionAddMssqlLayer',
+    'mActionAddMeshLayer', 'mActionAddMarker',
+    'mActionAddMap', 'mActionAddManualTable', 'mActionAddLegend',
+    'mActionAddLayer', 'mActionAddImage',
+    'mActionAddHtml', 'mActionAddHanaLayer', 'mActionAddGroup',
+    'mActionAddPackageLayer',
+    'mActionAddGeomodeLayer',
+    'mActionAddExpression', 'mActionAddDelimitedTextLayer',
+    'mActionAddDb2Layer', 'mActionAddBasicTriangle',
+    'mActionAddBasicShape', 'mActionAddBasicRectangle',
+    'mActionAddBasicCircle', 'mActionAddArrow',
+    'mActionAddAmsLayer', 'mActionAddAllToOverview',
+    'mActionAddAfsLayer', 'mActionAdd3DMap',
+    'mActionAdd', 'mActionActive', 'mAction3DNavigation', 'mAction',
+    'mActionMeasure', 'mActionPan',
+    'mActionFileOpen', 'mActionAddWmsLayer', 'mActionAddWfsLayer',
+    'mActionAddWcsLayer',
+    'mActionAddVirtualLayer',
+    'mActionAddSpatiaLiteLayer', 'mActionAddRing',
+    'mActionAddRasterLayer', 'mActionAddPostgisLayer',
+    'mActionAddPart', 'mActionAddOgrLayer',
+    'mAlgorithmBasicStatistics', 'mActionStatisticalSummary',
+    'mProcessingUserMenu_native_selectbylocation',
+    'mProcessingUserMenu_qgis_randomselection',
+    'native_fuzzifyrasterlinearmembership',
+    'native_fuzzifyrastergaussianmembership',
+    'native_fuzzifyrasterlargemembership',
+    'native_fuzzifyrasternearmembership',
+    'native_fuzzifyrasterpowermembership',
+    'native_fuzzifyrastersmallmembership', 'native_cellstatistics',
+    'qgis_concavehull',
+    'native_createconstantrasterlayer', 'native_fillnodata',
+    'native_linedensity',
+    'native_serviceareafromlayer',
+    'native_serviceareafrompoint',
+    'native_shortestpathlayertopoint',
+    'native_shortestpathpointtolayer',
+    'native_shortestpathpointtopoint',
+    'native_createrandomnormalrasterlayer',
+    'native_createrandomexponentialrasterlayer',
+    'native_createrandompoissonrasterlayer',
+    'native_createrandomuniformrasterlayer',
+    'native_createrandomgammarasterlayer',
+    'native_roundrastervalues',
+    'qgis_heatmapkerneldensityestimation',
+    'mActionToggleAdvancedDigitizeToolBar',
+    'dbManager',
+    'mActionEllipseFoci', 'mActionOpenProject', 'mActionNewProject',
+    'mActionSaveProject',
+    'mActionSaveProjectAs', 'mActionCapturePolygon',
+    'mActionSelectFeatures', 'mActionAddPgLayer',
+    'mActionAddDelimitedText', 'mActionNewMemoryLayer',
+    'mActionShowUnplacedLabels', 'mActionCutFeatures',
+    'mActionPasteFeatures', 'mActionCopyFeatures',
+    'EnableSnappingAction',
+    'EnableTracingAction', 'mActionSimplifyFeature',
+    'mActionReshapeFeatures',
+    'mActionSelectByExpression',
+    'mProcessingAlg_native_selectbylocation', 'mActionOpenFieldCalc',
+    'mActionAddFeature', 'mActionSaveLayerEdits',
+    'mActionShowLayoutManager', 'mActionAddOracleLayer',
+    'mActionNewPrintLayout', 'qgis_selectbyattribute',
+    'qgis_selectbyexpression'
+]
+
+custom_icon_dict = {
+    'giapWMS': 'orto_icon2.png',
+    'giapCompositions': 'compositions_giap.png',
+    "giapQuickPrint": 'quick_print.png',
+    "giapMyPrints": 'my_prints.png',
+    'mActionShowAlignRasterTool': 'mActionShowAlignRasterTool.png',
+    'mActionNewMemoryLayer': 'mActionNewMemoryLayer.png',
+    'mActionSaveProjectAs': 'mActionSaveProjectAs.png',
+    'window_icon': 'giap_logo.png'
+}
+
+custom_label_dict = {
+    'giapWMS': "Add WMS/WMTS services",
+    'giapCompositions': "Composition settings",
+    "giapQuickPrint": "Map quick print",
+    "giapMyPrints": "My Prints"
+}
+
+
+def icon_manager(tool_list: List[str], main_qgs_widget: QObject = None) -> \
+        Dict[str, Union[Optional[QIcon], Any]]:
+    dirnm = normalize_path(os.path.join(os.path.dirname(__file__), 'icons'))
+    icon_dict = {}
+    for tool in tool_list:
+        icon = None
+        action = None
+        alg = QgsApplication.processingRegistry().algorithmById(tool)
+        if main_qgs_widget:
+            action = main_qgs_widget.findChild(QAction, tool)
+        if alg:
+            icon = alg.icon()
+        elif action:
+            icon = action.icon()
+        elif 'mProcessing' in tool:
+            tool = tool.replace(':', '_')
+        if tool in TOOL_LIST and not icon:
+            icon = QIcon(os.path.join(dirnm, f'{tool}.png'))
+        if tool in custom_icon_dict.keys():
+            icon = QIcon(os.path.join(dirnm, custom_icon_dict[tool]))
+        icon_dict[tool] = icon
+    return icon_dict
+
+
+def get_tool_label(tool: str, main_qgs_widget: QObject = None) -> str:
+    label = tool
+    if main_qgs_widget.findChild(QAction, tool):
+        label = main_qgs_widget.findChild(QAction, tool).text()
+    if tool in custom_label_dict.keys():
+        label = custom_label_dict[tool]
+    if len(label) < 2:
+        label = tool
+    for char in ('&', '~', '`'):
+        label = label.replace(char, '')
+    return label

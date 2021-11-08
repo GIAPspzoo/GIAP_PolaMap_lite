@@ -9,12 +9,14 @@ from .utils import DEFAULT_STYLE
 class Config:
     def __init__(self):
         """Constructor"""
-        # load config from file
         self.setts = {}
         self.conf_dir = os.path.dirname(__file__)
-        config_path = os.path.join(self.conf_dir, 'config.json')
-        if os.path.exists(config_path):
-            with open(config_path, 'r') as fl:
+        self.reload_config()
+
+    def reload_config(self):
+        self.config_path = os.path.join(self.conf_dir, 'config.json')
+        if os.path.exists(self.config_path):
+            with open(self.config_path, 'r') as fl:
                 conf = fl.read()
             try:
                 self.setts = json.loads(conf)[0]
@@ -44,7 +46,7 @@ class Config:
         self.setts['org_toolbars'] = tbrs
         self.save_config()
 
-    def save_user_ribbon_setup(self, val):
+    def save_user_ribbon_setup(self, ribbon, sections):
         """ Saves user setup to config qgis file
         {'ribbons': {
             'tab_name': 'name',
@@ -59,12 +61,37 @@ class Config:
                 ],
             }, ... },
          'fast_access': [ action, action, ... ]
+         'custom_sections':[
+                    [
+                    'label': 'lab_name',
+                    'btn_size': 30,
+                    'btns': [
+                        [action, row, col],
+                    ], ...
+            ]
         }
+        """
+        if isinstance(ribbon, list):
+            self.setts['ribbons_config'] = ribbon
+
+        self.setts['custom_sections'] = sections
+        self.save_config()
+
+    def save_custom_sections_setup(self, val):
+        """ Saves custom sections to config qgis file
+           [
+                    [
+                    'label': 'lab_name',
+                    'btn_size': 30,
+                    'btns': [
+                        [action, row, col],
+                    ], ...
+            ]
         """
         if not isinstance(val, list):
             return False
 
-        self.setts['ribbons_config'] = val
+        self.setts['custom_sections'] = val
         self.save_config()
 
     def load_user_ribbon_setup(self):
@@ -76,6 +103,15 @@ class Config:
             return False
 
         return self.setts['ribbons_config']
+
+    def load_custom_sections_setup(self):
+        self.reload_config()
+        if 'custom_sections' not in self.setts:
+            return []
+        lay = self.setts['custom_sections']
+        if not lay:
+            return []
+        return self.setts['custom_sections']
 
     def get_original_toolbars(self):
         """ Return list of objectnames toolbars originally opened before first

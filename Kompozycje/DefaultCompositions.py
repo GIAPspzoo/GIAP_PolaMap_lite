@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
+
 from .CompositionsLib import get_all_groups_layers, LayersPanel, \
-    get_checked_layers_ids_from_composition, get_layers_ids_from_composition,\
-    get_map_layer
-from ..utils import get_project_config, tr
+    get_checked_layers_ids_from_composition, get_map_layer
+from ..utils import tr
 
 default_compositions = {}
 

@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import qgis
-from qgis.core import QgsProject, QgsMapLayer, QgsLayerTreeGroup, QgsLayerTreeLayer
 from PyQt5.QtCore import Qt
+from qgis.core import QgsProject, QgsMapLayer, QgsLayerTreeGroup, \
+    QgsLayerTreeLayer
 
 
 def singleton(class_):
@@ -41,14 +42,16 @@ class LayersPanel(object):
 
     def showHiddenNodes(self, group):
         for child in group.children():
-            if child.customProperty("nodeHidden") == 'true':  # Node is currently hidden
+            if child.customProperty(
+                    "nodeHidden") == 'true':  # Node is currently hidden
                 self.hideNode(child, False)
             if isinstance(child, QgsLayerTreeGroup):  # Continue iterating
                 self.showHiddenNodes(child)
 
     def hideNodesByProperty(self, group):
         for child in group.children():
-            if child.customProperty("nodeHidden") == 'true':  # Node should be hidden
+            if child.customProperty(
+                    "nodeHidden") == 'true':  # Node should be hidden
                 self.hideNode(child)
             if isinstance(child, QgsLayerTreeGroup):  # Continue iterating
                 self.hideNodesByProperty(child)
@@ -135,9 +138,11 @@ class LayersPanel(object):
 
     def checkLayersByIds(self, layers_ids):
         layers = QgsProject.instance().mapLayers()
+
         def change_layers_visibility(layer):
             if layer in layers_ids:
                 self.root.findLayer(layer).setItemVisibilityChecked(Qt.Checked)
+
         list(map(change_layers_visibility, layers))
 
     def checkGroupsByName(self, groups):
@@ -195,6 +200,7 @@ class LayersPanel(object):
                             subgroup.setItemVisibilityChecked(Qt.Unchecked)
                         else:
                             subgroup.setItemVisibilityChecked(Qt.Checked)
+
 
 def get_qgs_layer_tree_node_name(node):
     return node.name()
@@ -307,7 +313,8 @@ def layer_tree_layer_in_groups(layer, groups):
 def identify_layer_in_groups(layer_to_find, groups):
     root = QgsProject.instance().layerTreeRoot()
     for lr in root.findLayers():
-        if lr.layer().name() == layer_to_find and layer_tree_layer_in_groups(lr, groups):
+        if lr.layer().name() == layer_to_find and layer_tree_layer_in_groups(
+                lr, groups):
             return lr.layer()
     return
 
@@ -336,7 +343,8 @@ def get_groups(layerid):
 
 
 def change_visibility(ch):
-    if isinstance(ch, QgsLayerTreeLayer) and ch.customProperty("nodeHidden") == 'true':
+    if isinstance(ch, QgsLayerTreeLayer) and ch.customProperty(
+            "nodeHidden") == 'true':
         ch.setItemVisibilityChecked(Qt.Unchecked)
 
 

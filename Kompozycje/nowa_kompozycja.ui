@@ -666,6 +666,131 @@ QScrollBar:vertical{
             <height>100</height>
            </size>
           </property>
+          <property name="styleSheet">
+           <string notr="true">* {
+	background-color: rgb(53, 85, 109);
+    font: 10pt &quot;Segoe UI&quot;; 
+	color: #EDF6FC;
+
+}
+QAbstractItemView
+{
+	alternate-background-color:  #e6e6e6;
+}
+QComboBox
+{
+	selection-background-color: #b7d3e8;
+    background-color: #4f5a63;
+	border-style: solid;
+	border: 1px solid  #5689b0;
+	border-radius: 3px;
+	padding: 2px;
+	font: 9pt &quot;Segoe UI&quot;;
+    height: 20px;
+}
+
+QComboBox:on
+{
+	background-color: #4f5a63;
+	padding-top: 3px;
+	padding-left: 1px;
+	selection-background-color: #4a4a4a;
+}
+
+QComboBox QAbstractItemView
+{
+	background-color: #4f5a63;
+	border-radius: 4px;
+	border: 1px solid  #6fb1e3;
+	selection-background-color: #4f5a63;
+    padding: 4px 10px 4px 10px;
+    width: 1.9em;
+}
+
+QComboBox::drop-down
+{
+	subcontrol-origin: padding;
+	subcontrol-position: top right;
+	width: 15px;
+    background-color: #5689b0;
+	border-left-width: 0;
+	border-left-color:  #1a2936;
+	border-left-style: solid;
+	border-top-right-radius: 3px; 
+	border-bottom-right-radius: 3px;
+}
+
+QComboBox::down-arrow
+{
+	image: url(icons/down_arrow_disabled.png);
+}
+
+QComboBox::down-arrow:on, 
+QComboBox::down-arrow:hover,
+QComboBox::down-arrow:focus
+{
+	image: url(icons/down_arrow.png);
+}
+
+QLineEdit
+{
+	border: None;
+    border-radius: 3px;
+    background-color: #4f5a63;
+}
+
+QPushButton {
+	color: #0A0C0D;
+	border: 1px solid #0A0C0D;
+	background-color: #b7d3e8;
+	border-radius: 3px;
+	padding: 4px;
+}
+
+QPushButton:hover {
+	font-weight: bold;
+}
+QPushButton:pressed {
+   background-color: #5689b0;
+   border: 1px solid #6fb1e3;
+}
+
+QPushButton:disabled
+{
+	color: gray;
+}
+
+QGroupBox {
+border: 1px solid #5689b0;
+}
+
+QToolButton {
+	color: #EDF6FC;
+	border-radius: 6px;
+	border: 1px solid white;
+}
+
+QToolButton:hover {
+   background-color: #b7d3e8;
+   border: 1px solid #0A0C0D;
+   color: #0A0C0D;
+}
+
+QToolButton:pressed {
+   background-color: #b7d3e8;
+   border: 1px solid #0A0C0D;
+   color: #0A0C0D;
+}
+
+QListView:item:selected {
+   background-color: #6fb1e3;
+}
+
+QListView:item:hover {
+   background-color: #6fb1e3;
+}
+   </string>
+          </property>
           <property name="text">
            <string>...</string>
           </property>
@@ -681,6 +806,131 @@ QScrollBar:vertical{
             <width>30</width>
             <height>100</height>
            </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">* {
+	background-color: rgb(53, 85, 109);
+    font: 10pt &quot;Segoe UI&quot;; 
+	color: #EDF6FC;
+
+}
+QAbstractItemView
+{
+	alternate-background-color:  #e6e6e6;
+}
+QComboBox
+{
+	selection-background-color: #b7d3e8;
+    background-color: #4f5a63;
+	border-style: solid;
+	border: 1px solid  #5689b0;
+	border-radius: 3px;
+	padding: 2px;
+	font: 9pt &quot;Segoe UI&quot;;
+    height: 20px;
+}
+
+QComboBox:on
+{
+	background-color: #4f5a63;
+	padding-top: 3px;
+	padding-left: 1px;
+	selection-background-color: #4a4a4a;
+}
+
+QComboBox QAbstractItemView
+{
+	background-color: #4f5a63;
+	border-radius: 4px;
+	border: 1px solid  #6fb1e3;
+	selection-background-color: #4f5a63;
+    padding: 4px 10px 4px 10px;
+    width: 1.9em;
+}
+
+QComboBox::drop-down
+{
+	subcontrol-origin: padding;
+	subcontrol-position: top right;
+	width: 15px;
+    background-color: #5689b0;
+	border-left-width: 0;
+	border-left-color:  #1a2936;
+	border-left-style: solid;
+	border-top-right-radius: 3px; 
+	border-bottom-right-radius: 3px;
+}
+
+QComboBox::down-arrow
+{
+	image: url(icons/down_arrow_disabled.png);
+}
+
+QComboBox::down-arrow:on, 
+QComboBox::down-arrow:hover,
+QComboBox::down-arrow:focus
+{
+	image: url(icons/down_arrow.png);
+}
+
+QLineEdit
+{
+	border: None;
+    border-radius: 3px;
+    background-color: #4f5a63;
+}
+
+QPushButton {
+	color: #0A0C0D;
+	border: 1px solid #0A0C0D;
+	background-color: #b7d3e8;
+	border-radius: 3px;
+	padding: 4px;
+}
+
+QPushButton:hover {
+	font-weight: bold;
+}
+QPushButton:pressed {
+   background-color: #5689b0;
+   border: 1px solid #6fb1e3;
+}
+
+QPushButton:disabled
+{
+	color: gray;
+}
+
+QGroupBox {
+border: 1px solid #5689b0;
+}
+
+QToolButton {
+	color: #EDF6FC;
+	border-radius: 6px;
+	border: 1px solid white;
+}
+
+QToolButton:hover {
+   background-color: #b7d3e8;
+   border: 1px solid #0A0C0D;
+   color: #0A0C0D;
+}
+
+QToolButton:pressed {
+   background-color: #b7d3e8;
+   border: 1px solid #0A0C0D;
+   color: #0A0C0D;
+}
+
+QListView:item:selected {
+   background-color: #6fb1e3;
+}
+
+QListView:item:hover {
+   background-color: #6fb1e3;
+}
+   </string>
           </property>
           <property name="text">
            <string>...</string>

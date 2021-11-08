@@ -10,39 +10,37 @@ from qgis.PyQt.QtGui import QDrag, QPainter, QPixmap, QCursor, QIcon, QFont, \
 from qgis.PyQt.QtWidgets import QWidget, QApplication, QHBoxLayout, \
     QFrame, QLabel, QPushButton, QTabBar, QToolButton, QVBoxLayout, \
     QGridLayout, QSpacerItem, QLineEdit, QWidgetItem, QAction, \
-    QBoxLayout, QMessageBox, QScrollArea, QWidgetAction
+    QBoxLayout, QMessageBox, QScrollArea
 from qgis.core import QgsApplication
 from qgis.utils import iface
 
-from .CustomMessageBox import CustomMessageBox
 from .OrtoTools import OrtoAddingTool
 from .QuickPrint import PrintMapTool
 from .SectionManager.CustomSectionManager import CustomSectionManager
 from .SectionManager.select_section import SelectSection
 from .config import Config
 from .utils import STANDARD_TOOLS, DEFAULT_TABS, tr, TOOLS_HEADERS, \
-    STANDARD_QGIS_TOOLS
+    STANDARD_QGIS_TOOLS, icon_manager, CustomMessageBox
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'giap_dynamic_layout.ui'))
 
 
-class Widget(QWidget, FORM_CLASS):
+class MainWidget(QWidget, FORM_CLASS):
     editChanged = pyqtSignal(bool)
     printsAdded = pyqtSignal()
     deletePressSignal = pyqtSignal()
 
     def __init__(self, parent=None):
-        super(Widget, self).__init__(parent)
+        super(MainWidget, self).__init__(parent)
         self.setAttribute(Qt.WA_DeleteOnClose)
 
         self.setupUi(self)
-        self.parent = parent  # mainWindow()
-        self.tabs = []  # list w tabwidgets
+        self.parent = parent
+        self.tabs = []
         self.edit_session = False
         self.conf = Config()
         self.save = QMessageBox.Yes
-        # Custom Tools
         self.orto_add = False
 
         self.custom_tabbar = CustomTabBar(tr('New tab'), self.tabWidget)
@@ -56,13 +54,15 @@ class Widget(QWidget, FORM_CLASS):
         self.icon_timer.setInterval(1)
         iface.currentLayerChanged.connect(self.icon_timer.start)
 
-    def reload_add_icons(self):
-        # stupid but works
-        dirnm = os.path.dirname(__file__)
+    def reload_add_icons(self) -> None:
         if hasattr(self, 'add_action'):
-            self.add_action.setIcon(QIcon(os.path.join(dirnm, 'icons', 'mActionAddFeature')))
+            self.add_action.setIcon(
+                icon_manager(['mActionAddFeature'],
+                             self.parent)['mActionAddFeature'])
         if hasattr(self, 'move_action'):
-            self.move_action.setIcon(QIcon(os.path.join(dirnm, 'icons', 'mActionMoveFeature')))
+            self.move_action.setIcon(
+                icon_manager(['mActionMoveFeature'],
+                             self.parent)['mActionMoveFeature'])
 
     def add_tab(self, label=None):
         """Adds new tab at the end
@@ -75,7 +75,6 @@ class Widget(QWidget, FORM_CLASS):
         tab = CustomTab(label, self.tabWidget)
         self.tabs.append(tab)
 
-        # prevent flickering
         self.tabWidget.setUpdatesEnabled(False)
 
         tab_ind = self.tabWidget.insertTab(
@@ -85,8 +84,6 @@ class Widget(QWidget, FORM_CLASS):
             self._section_control(tab_ind)
 
         self.tabWidget.setCurrentIndex(tab_ind)
-
-        # add button to delete, its edit session so should be visible
         right = self.tabWidget.tabBar().RightSide
         cbutton = QToolButton(self.tabWidget)
         cbutton.setObjectName('giapCloseTab')
@@ -143,8 +140,8 @@ class Widget(QWidget, FORM_CLASS):
         """Show controls for edti session"""
 
         self.edit_session = not self.edit_session
-
-        self.conf = Config()
+        if not hasattr(self, 'conf'):
+            self.conf = Config()
         if ask and self.conf.setts[
             'ribbons_config'] != self.generate_ribbon_config():
             self.save = CustomMessageBox(None, tr(
@@ -163,15 +160,15 @@ class Widget(QWidget, FORM_CLASS):
         right = self.tabWidget.tabBar().RightSide
 
         if self.edit_session:
-            for i in range(self.tabWidget.count()):
-                self.tabWidget.tabBar().tabButton(i, right).show()
-                self._section_control(i)
-            self._new_tab_tab_control()  # show add tab option
+            for tab_idx in range(self.tabWidget.count()):
+                self.tabWidget.tabBar().tabButton(tab_idx, right).show()
+                self._section_control(tab_idx)
+            self._new_tab_tab_control()
         else:
-            self._new_tab_tab_control()  # hide add tab option
-            for i in range(self.tabWidget.count()):
-                self.tabWidget.tabBar().tabButton(i, right).hide()
-                self._section_control(i)
+            self._new_tab_tab_control()
+            for tab_idx in range(self.tabWidget.count()):
+                self.tabWidget.tabBar().tabButton(tab_idx, right).hide()
+                self._section_control(tab_idx)
 
     def _section_control(self, tabind):
         """add buttons to every tab for adding new section"""
@@ -189,7 +186,8 @@ class Widget(QWidget, FORM_CLASS):
 
         if self.edit_session:
             self.instr = QLabel()
-            self.instr.setText(f"""<html><head/><body><b>{tr('Edit tools within a section:')}</b><br>
+            self.instr.setText(
+                f"""<html><head/><body><b>{tr('Edit tools within a section:')}</b><br>
 <b>{tr('Moving tools')}</b> - {tr('click and hold the left mouse button')}<br>
 {tr('on the icon and move it to the desired location')}<br><br>
 
@@ -247,19 +245,21 @@ class Widget(QWidget, FORM_CLASS):
 
     def add_user_selected_section(self):
         """Show dialog to user and adds selected section to current ribbon
-            if there should be more cutom tools, here is the place to put them
+            if there should be more custom tools, here is the place to put them
         """
-        self.dlg = SelectSection()
+        self.dlg = SelectSection(self)
         self.run_select_section()
         response = self.dlg.exec_()
         if not response:
             return
 
         ind = self.tabWidget.currentIndex()
-        # selected tools
+        self.custom_sections = self.conf.load_custom_sections_setup()
         section_names = [tr(name) for name in TOOLS_HEADERS]
         all_available_tools = [tool for tool in STANDARD_TOOLS]
         all_available_tools.extend([tool for tool in STANDARD_QGIS_TOOLS])
+        if self.custom_sections:
+            all_available_tools.extend([tool for tool in self.custom_sections])
         selected = [str(item.data(0)) for item in
                     self.dlg.toolList.selectionModel().selectedRows()
                     if str(item.data(0)) not in section_names]
@@ -277,10 +277,8 @@ class Widget(QWidget, FORM_CLASS):
                     sec.add_action(child, *btn[1:])
                     if btn[0] in ['giapMyPrints', 'giapQuickPrint']:
                         print_trig = True
-
             if sel == 'Prints' or print_trig:
                 self.printsAdded.emit()
-
         self.tabWidget.setUpdatesEnabled(True)
 
     def run_select_section(self):
@@ -288,15 +286,15 @@ class Widget(QWidget, FORM_CLASS):
         self.dlg.searchToolTab.clicked.connect(self.search_tab)
         self.dlg.userSectionsTab.clicked.connect(self.user_section_tab)
         self.dlg.addAlgButton.clicked.connect(self.add_to_ribbon)
-        self.dlg.pushButton_add_custom.clicked.connect(self.add_custom_toolbar)
+        self.dlg.pushButton_add_custom.clicked.connect(self.add_custom_section)
         self.dlg.pushButton_edit_custom.clicked.connect(
-            self.edit_custom_toolbar)
+            self.edit_custom_section)
         self.dlg.pushButton_remove_custom.clicked.connect(
-            self.remove_custom_toolbar)
-
+            self.remove_custom_section)
         self.dlg.searchBox.textChanged.connect(self.search_tree)
         self.dlg.add_searchBox.textChanged.connect(
             self.search_add_sections_tree)
+        self.connect_checking_signal()
 
     def add_to_ribbon(self):
         self.tabWidget.setUpdatesEnabled(True)
@@ -342,19 +340,19 @@ class Widget(QWidget, FORM_CLASS):
         self.tabWidget.setUpdatesEnabled(True)
         self.dlg.close()
 
-    def search_tree(self):
+    def search_tree(self) -> None:
         self.dlg.algorithmTree.setFilterString(self.dlg.searchBox.value())
 
-    def search_add_sections_tree(self):
+    def search_add_sections_tree(self) -> None:
         self.dlg.sort.setFilterFixedString(self.dlg.add_searchBox.value())
 
-    def section_tab(self):
+    def section_tab(self) -> None:
         self.dlg.stackedWidget.setCurrentIndex(0)
 
-    def search_tab(self):
+    def search_tab(self) -> None:
         self.dlg.stackedWidget.setCurrentIndex(1)
 
-    def user_section_tab(self):
+    def user_section_tab(self) -> None:
         self.dlg.stackedWidget.setCurrentIndex(2)
 
     def _section_control_remove(self, tabind):
@@ -397,15 +395,55 @@ class Widget(QWidget, FORM_CLASS):
             if ind == self.tabWidget.tabBar().count() - 1:
                 self.add_tab()
 
-    def add_custom_toolbar(self):
-        self.add_window = CustomSectionManager(self)
-        self.add_window.exec()
+    def connect_checking_signal(self):
+        self.dlg.customToolList.selectionModel(). \
+            selectionChanged.disconnect()
+        self.dlg.customToolList.selectionModel(). \
+            selectionChanged.connect(self.check_for_remove)
 
-    def edit_custom_toolbar(self):
-        pass
+    def add_custom_section(self) -> None:
+        self.custom_section_dlg = CustomSectionManager(self, 'add')
+        if self.custom_section_dlg.exec():
+            self.dlg.refresh_lists()
+            self.connect_checking_signal()
 
-    def remove_custom_toolbar(self):
-        pass
+    def edit_custom_section(self) -> None:
+        self.custom_section_dlg = CustomSectionManager(self, 'edit')
+        row = self.dlg.get_selected_row()
+        if not row:
+            CustomMessageBox(
+                self.dlg,
+                tr("Error - Unable to edit the object.")).button_ok()
+            return
+        self.custom_section_dlg.edit_selected_item(row)
+        if self.custom_section_dlg.exec():
+            self.dlg.refresh_lists()
+            self.connect_checking_signal()
+
+    def check_for_remove(self):
+        if not hasattr(self, 'custom_section_dlg'):
+            self.custom_section_dlg = CustomSectionManager(self, 'remove')
+        row = self.dlg.get_selected_row()
+        if not row or self.custom_section_dlg.manage_editing_option(
+                row[0].row()):
+            self.dlg.pushButton_remove_custom.setEnabled(False)
+        else:
+            self.dlg.pushButton_remove_custom.setEnabled(True)
+
+    def remove_custom_section(self) -> None:
+        self.custom_section_dlg = CustomSectionManager(self, 'remove')
+        row = self.dlg.get_selected_row()
+        if not row:
+            CustomMessageBox(
+                self.dlg,
+                tr("Error - Unable to remove the object.")).button_ok()
+            return
+        req = CustomMessageBox(self, tr(
+            "Do you want to delete this section?")).button_yes_no()
+        if req == QMessageBox.Yes:
+            self.custom_section_dlg.remove_row(row)
+            self.dlg.refresh_lists()
+            self.connect_checking_signal()
 
     def eventFilter(self, watched, ev):
         # turn off dragging while not in edit session
@@ -756,213 +794,46 @@ class CustomSection(QWidget):
         return self.tbut
 
     def set_new_giap_icons(self, button, name_tool, action):
-        dirnm = os.path.dirname(__file__)
-        list_tool = [
-            'mProcessingUserMenu_native_buffer','mProcessingUserMenu_native_centroids',
-            'mProcessingUserMenu_native_clip','mProcessingUserMenu_native_collect',
-            'mProcessingUserMenu_native_convexhull','mProcessingUserMenu_native_countpointsinpolygon',
-            'mProcessingUserMenu_native_creategrid','mProcessingUserMenu_native_difference',
-            'mProcessingUserMenu_native_extractvertices','mProcessingUserMenu_native_intersection',
-            'mProcessingUserMenu_native_lineintersections','mProcessingUserMenu_native_meancoordinates',
-            'mProcessingUserMenu_native_multiparttosingleparts','mProcessingUserMenu_native_nearestneighbouranalysis',
-            'mProcessingUserMenu_native_polygonfromlayerextent','mProcessingUserMenu_native_polygonstolines',
-            'mProcessingUserMenu_native_randompointsinextent','mProcessingUserMenu_native_simplifygeometries',
-            'mProcessingUserMenu_native_sumlinelengths','mProcessingUserMenu_native_symmetricaldifference',
-            'mProcessingUserMenu_native_union','mProcessingUserMenu_qgis_basicstatisticsforfields',
-            'mProcessingUserMenu_qgis_checkvalidity','mProcessingUserMenu_qgis_delaunaytriangulation',
-            'mProcessingUserMenu_qgis_distancematrix','mProcessingUserMenu_qgis_eliminateselectedpolygons',
-            'mProcessingUserMenu_qgis_exportaddgeometrycolumns', 'mProcessingUserMenu_qgis_linestopolygons',
-            'mProcessingUserMenu_qgis_listuniquevalues', 'mProcessingUserMenu_qgis_randompointsinsidepolygons',
-            'mProcessingUserMenu_qgis_regularpoints', 'mProcessingUserMenu_qgis_voronoipolygons',
-            'mProcessingUserMenu_native_dissolve', 'mProcessingUserMenu_qgis_randompointsinlayerbounds',
-            'mProcessingUserMenu_native_densifygeometries','mProcessingUserMenu_gdal_aspect',
-            'mProcessingUserMenu_gdal_fillnodata', 'mProcessingUserMenu_gdal_gridaverage',
-            'mProcessingUserMenu_gdal_griddatametrics', 'mProcessingUserMenu_gdal_gridinversedistance',
-            'mProcessingUserMenu_gdal_gridnearestneighbor', 'mProcessingUserMenu_gdal_hillshade',
-            'mProcessingUserMenu_gdal_roughness', 'mProcessingUserMenu_gdal_slope',
-            'mProcessingUserMenu_gdal_tpitopographicpositionindex', 'mProcessingUserMenu_gdal_triterrainruggednessindex',
-            'mProcessingUserMenu_native_createspatialindex', 'mProcessingUserMenu_native_joinattributesbylocation',
-            'mProcessingUserMenu_native_reprojectlayer',
-
-            'mActionZoomTo', 'mActionZoomOut', 'mActionZoomToSelected', 'mActionZoomToLayer', 'mActionZoomToBookmark',
-            'mActionZoomToArea', 'mActionZoomNext', 'mActionZoomLast', 'mActionZoomIn', 'mActionZoomFullExtent',
-            'mActionZoomActual', 'mActionWhatsThis', 'mActionViewScaleInCanvas', 'mActionViewExtentInCanvas',
-            'mActionVertexToolActiveLayer', 'mActionVertexTool', 'mActionUnlockAll', 'mActionUnlink',
-            'mActionUngroupItems', 'mActionUndo', 'mActionTrimExtendFeature', 'mActionTracing', 'mActionTouch',
-            'mActionToggleSelectedLayers', 'mActionToggleEditing', 'mActionToggleAllLayers', 'mActionTiltUp',
-            'mActionTiltDown', 'mActionTextAnnotation', 'mActionTerminal', 'mActionSvgAnnotation', 'mActionSum',
-            'mActionStyleManager', 'mActionStreamingDigitize', 'mActionStop', 'mActionStart', 'mActionSimplify',
-            'mActionShowUnplacedLabel', 'mActionShowSelectedLayers', 'mActionShowPluginManager',
-            'mActionShowPinnedLabels', 'mActionShowMeshCalculator', 'mActionShowHideLabels', 'mActionShowBookmarks',
-            'mActionShowAllLayersGray', 'mActionSharingImport', 'mActionSharingExport', 'mActionSharing',
-            'mActionSetToCanvasScale', 'mActionSplitParts', 'mActionSetToCanvasEtent', 'mActionSetProjection',
-            'mActionSelectRectangle', 'mActionSelectRadius', 'mActionSelectPolygon', 'mActionSelectPan',
-            'mActionShowAllLayers', 'mACtionSelectFreehand', 'mActionSelectedToTop', 'mActionSelectAllTree',
-            'mActionSelectAll', 'mActionSelect', 'mActionScriptOpen', 'mActionScaleHighlightFeature',
-            'mActionScaleFeature', 'mActionScaleBar', 'mActionSaveMapAsImage', 'mActionSaveEdits', 'mActionSaveAsSVG',
-            'mActionSaveAsPython', 'mActionSaveAsPDF', 'mActionSplitFeatures', 'mActionSaveAllEdits',
-            'mActionRotatePointSymbols', 'mActionRotateFeature', 'mActionRollbackEdits', 'mActionRollbackAllEdits',
-            'mActionReverseLine', 'mActionResizeWidest', 'mActionResizeTallest', 'mActionResizeSquare',
-            'mActionResizeShortest', 'mActionResizeNarrowest', 'mActionReshape', 'mActionRemoveSelectedFeature',
-            'mActionRemoveLayer', 'mActionRemoveAllFromOverview', 'mActionRemove', 'mActionReload',
-            'mActionRegularPolygonCenterPoint', 'mActionRegularPolygonCenterCorner', 'mActionRegularPolygon2Points',
-            'mActionRefresh', 'mActionRedo', 'mActionRectangleExtent', 'mActionRectangleCenter',
-            'mActionRectangle3PointsProjected', 'mActionRectangle3PointsDistance', 'mActionRecord',
-            'mActionRaiseItems', 'mActionPropertyItem', 'mActionPropertiesWidget', 'mActionProjectProperties',
-            'mActionProcessSelected', 'mActionPrevious', 'mActionPlay', 'mActionPinLabels', 'mActionRotateLabel',
-            'mActionPanToSelected', 'mActionPanTo', 'mActionPanHighlightFeature', 'mActionOptions',
-            'mActionOpenTableVisible', 'mActionOpenTableSelected', 'mActionOpenTableEdited', 'mActionOpenTable',
-            'mActionOffsetPointSymbols', 'mActionOffsetCurve', 'mActionNext', 'mActionNewVirtualLayer',
-            'mActionNewVectorLayer', 'mActionNewTableRow', 'mActionNewSpatiaLiteLayer', 'mActionNewReport',
-            'mActionNewPage', 'mActionNewMeshLayer', 'mActionNewMap', 'mActionNewLayout', 'mActionNewGeoPackageLayer',
-            'mActionNewFolder', 'mActionNewComposer', 'mActionNewBookmark', 'mActionNewAttribute',
-            'mActionNew3DMap', 'mActionMultiEdit', 'mActionMoveVertex', 'mActionMoveLabel', 'mActionMoveItemsToTop',
-            'mActionMoveItemsToBottom', 'mActionMoveItemContent', 'mActionMoveFeaturePoint',
-            'mActionMoveFeatureLine', 'mActionMoveFeatureCopyLine', 'mActionMoveFeatureCopyPoint',
-            'mActionMoveFeatureCopy', 'mActionMoveFeature', 'mActionMeshDigitizing', 'mActionMeshDigitizing',
-            'mActionMergeFeatures', 'mActionMergeFeaturesAttributes', 'mActionMeasureBearing',
-            'mActionMeasureArea', 'mActionMeasureAngle', 'mActionMapTips', 'mActionMapSettings',
-            'mActionMapIdentification', 'mActionLowerItems', 'mActionFeature', 'mActionLockItems',
-            'mActionLockExtent', 'mActionLocalHistogramStretch', 'mActionLocalCumulativeCutStretch',
-            'mActionLink', 'mActionLayoutManager', 'mActionLast', 'mActionLabeling', 'mActionLabelAnchorStart',
-            'mActionLabelAnchorEnd', 'mActionLabelAnchorCustom', 'mActionLabelAnchorCenter', 'mActionLabel',
-            'mActionKeyboardShortcuts', 'mActionInvertSelection', 'mActionInterfaceCustomization',
-            'mActionInOverview', 'mActionIncreaseGamma', 'mActionIncreaseFont', 'mActionIncreaseContrast',
-            'mActionIncreaseBrightness', 'mActionIdentifyByRectangle', 'mActionIdentifyByRadius',
-            'mActionIdentifyByPolygon',
-            'mActionIdentifyByFreehand', 'mActionIdentify', 'mActionIconView', 'mActionHtmlAnnotation',
-            'mActionHistory', 'mActionHighlightFeature', 'mActionHideSelectedLayers',
-            'mActionHideDeselectedLayers', 'mActionHideAllLayers', 'mActionHelpContents',
-            'mActionHelpAbout', 'mActionHandleStoreFilterExpressionUnchecked',
-            'mActionHandleStoreFilterExpressionChecked',
-            'mActionGroupItems', 'mActionFullHistogramStretch', 'mActionFullCumulativeCutStretch',
-            'mActionFromSelectedFeature', 'mActionFromLargestFeature', 'mActionFormView', 'mActionFormAnnotation',
-            'mActionFolder', 'mActionFirst', 'mActionFindReplace', 'mActionFilterTableFields', 'mActionFilter2',
-            'mActionFilter', 'mActionFillRing', 'mActionFileSaveAs', 'mActionFileSave', 'mActionFilePrint',
-            'mActionFileNew', 'mActionFileExit', 'mActionExport', 'mActionExpandTree', 'mActionExpandNewTree',
-            'mActionEllipseExtent', 'mActionEllipseCenterPoint', 'mActionEllipseCenter2Points',
-            'mActionEditTable', 'mActionEditPaste', 'mActionEditNodesItem', 'mActionEditModelComponent',
-            'mActionEditHtml', 'mActionEditHelpContent', 'mActionEditCut', 'mActionEditCopy', 'mActionDuplicateLayout',
-            'mActionDuplicateLayer', 'mActionDuplicateFeatureDigitized', 'mActionDuplicateFeature',
-            'mActionDuplicateComposer', 'mActionDoubleArrowRight', 'mActionDoubleArrowLeft', 'mActionDistributeVSpace',
-            'mActionDistributeVCenter', 'mActionDistributeTop', 'mActionDistributeRight', 'mActionDistributeLeft',
-            'mActionDistributeHSpace', 'mActionDistributeHCenter', 'mActionDistributeBottom',
-            'mActionDigitizeWithCurve',
-            'mActionDeselectAllTree', 'mActionDeselectAll', 'mActionDeselectActiveLayer', 'mActionDeleteTable',
-            'mActionDeleteSelectedFeatures', 'mActionDeleteSelected', 'mActionDeleteRing', 'mActionDeletePart',
-            'mActionDeleteModelComponent', 'mActionDeleteAttribute', 'mActionDecreaseGamma', 'mActionDecreaseFont',
-            'mActionDecreaseContrast', 'mActionDecreaseBrightness', 'mActionDataSourceManager',
-            'mActionCustomProjection',
-            'mActionCreateTable', 'mActionCreateMemory', 'mActionConditionalFormatting', 'mActionComposerManager',
-            'mActionCollapseTree', 'mActionCircularStringRadius', 'mActionCircularStringCurvePoint',
-            'mActionCircleExtent', 'mActionCircleCenterPoint', 'mActionCircle3Tangents', 'mActionCircle3Points',
-            'mActionCircle2TangentsPoint', 'mActionCircle2Points', 'mActionChangeLabelProperties',
-            'mActionCapturePoint', 'mActionCaptureLine', 'mActionCancelEdits', 'mActionCancelAllEdits',
-            'mActionCalculateField', 'mActionAvoidIntersetionsLayers', 'mActionAvoidIntersectionsCurrentLayer',
-            'mActionAtlasSettings', 'mActionAtlasPrev', 'mActionAtlasNext', 'mActionAtlasLast', 'mActionAtlasFirst',
-            'mActionArrowUp', 'mActionArrowRight', 'mActionArrowLeft', 'mActionArrowDown', 'mActionAnnotation',
-            'mActionAllowIntersections', 'mActionAllEdits', 'mActionAlignVCenter', 'mActionAlignTop',
-            'mActionAlignRight', 'mActionAlignLeft', 'mActionAlignHCenter', 'mActionAlignBottom',
-            'mActionAddTable', 'mActionAddPolyline', 'mActionAddPolygon', 'mActionAddPointCloudLayer',
-            'mActionAddNodesItem', 'mActionAddMssqlLayer', 'mActionAddMeshLayer', 'mActionAddMarker',
-            'mActionAddMap', 'mActionAddManualTable', 'mActionAddLegend', 'mActionAddLayer', 'mActionAddImage',
-            'mActionAddHtml', 'mActionAddHanaLayer', 'mActionAddGroup', 'mActionAddPackageLayer',
-            'mActionAddGeomodeLayer',
-            'mActionAddExpression', 'mActionAddDelimitedTextLayer', 'mActionAddDb2Layer', 'mActionAddBasicTriangle',
-            'mActionAddBasicShape', 'mActionAddBasicRectangle', 'mActionAddBasicCircle', 'mActionAddArrow',
-            'mActionAddAmsLayer', 'mActionAddAllToOverview', 'mActionAddAfsLayer', 'mActionAdd3DMap',
-            'mActionAdd', 'mActionActive', 'mAction3DNavigation', 'mAction', 'mActionMeasure', 'mActionPan',
-            'mActionFileOpen', 'mActionAddWmsLayer', 'mActionAddWfsLayer', 'mActionAddWcsLayer',
-            'mActionAddVirtualLayer',
-            'mActionAddSpatiaLiteLayer', 'mActionAddRing', 'mActionAddRasterLayer', 'mActionAddPostgisLayer',
-            'mActionAddPart', 'mActionAddOgrLayer', 'mAlgorithmBasicStatistics','mActionStatisticalSummary',
-            'mProcessingUserMenu_native_selectbylocation', 'mProcessingUserMenu_qgis_randomselection',
-            'native_fuzzifyrasterlinearmembership', 'native_fuzzifyrastergaussianmembership',
-            'native_fuzzifyrasterlargemembership',
-            'native_fuzzifyrasternearmembership', 'native_fuzzifyrasterpowermembership',
-            'native_fuzzifyrastersmallmembership', 'native_cellstatistics', 'qgis_concavehull',
-            'native_createconstantrasterlayer', 'native_fillnodata', 'native_linedensity',
-            'native_serviceareafromlayer',
-            'native_serviceareafrompoint',
-            'native_shortestpathlayertopoint',
-            'native_shortestpathpointtolayer',
-            'native_shortestpathpointtopoint',
-            'native_createrandomnormalrasterlayer',
-            'native_createrandomexponentialrasterlayer',
-            'native_createrandompoissonrasterlayer',
-            'native_createrandomuniformrasterlayer',
-            'native_createrandomgammarasterlayer',
-            'native_roundrastervalues',
-            'qgis_heatmapkerneldensityestimation',
-            'mActionToggleAdvancedDigitizeToolBar',
-            'dbManager',
-            'mActionEllipseFoci', 'mActionOpenProject', 'mActionNewProject', 'mActionSaveProject',
-            'mActionSaveProjectAs', 'mActionCapturePolygon','mActionSelectFeatures','mActionAddPgLayer',
-            'mActionAddDelimitedText','mActionNewMemoryLayer', 'mActionShowUnplacedLabels', 'mActionCutFeatures',
-            'mActionPasteFeatures', 'mActionCopyFeatures', 'EnableSnappingAction',
-            'EnableTracingAction', 'mActionSimplifyFeature', 'mActionReshapeFeatures',
-            'mActionSelectByExpression', 'mProcessingAlg_native_selectbylocation', 'mActionOpenFieldCalc',
-            'mActionAddFeature', 'mActionSaveLayerEdits','mActionShowLayoutManager', 'mActionAddOracleLayer',
-            'mActionNewPrintLayout', 'qgis_selectbyattribute','qgis_selectbyexpression'
-
-
-
-
-        ]
-        if name_tool in list_tool:
-            action.setIcon(QIcon(os.path.join(dirnm, 'icons', button.objectName())))
-        if name_tool =='mActionNewMemoryLayer':
-            action.setIcon(QIcon(os.path.join(dirnm, 'icons', 'mActionNewMemoryLayer')))
-        if name_tool =='mActionSaveProjectAs':
-            action.setIcon(QIcon(os.path.join(dirnm, 'icons', 'mActionSaveProjectAs')))
+        icon = icon_manager([name_tool], self.parent())[name_tool]
+        if icon:
+            action.setIcon(icon)
         if name_tool == 'mActionAddFeature':
             self.parent().parent().parent().parent().add_action = action
         if name_tool == 'mActionMoveFeature':
             self.parent().parent().parent().parent().move_action = action
 
-    def set_custom_action(self):
+    def set_custom_action(self) -> None:
         oname = self.tbut.objectName()
-        dirnm = os.path.dirname(__file__)
+        tool = oname.lstrip('gp_') if "gp_" in oname else oname
+        if 'giap' in oname:
+            icon = icon_manager([tool], self.parent())[tool]
+            if oname == 'giapWMS':
+                self.orto_add = OrtoAddingTool(self, self.tbut)
+                connect_orto = self.orto_add.connect_ortofotomapa_group
+                for service in self.orto_add.services:
+                    service.orto_group_added.connect(connect_orto)
+            if oname == 'giapCompositions':
+                self.tbut.setToolTip(tr("Composition settings"))
+            if oname == "giapQuickPrint":
+                self.quick_print = PrintMapTool(iface, self)
+                self.tbut.clicked.connect(self.quick_print.run)
+                self.tbut.setToolTip(tr("Map quick print"))
+            if oname == "giapMyPrints":
+                self.tbut.setToolTip(tr("My Prints"))
+            self.tbut.setIcon(icon)
 
-        if oname == 'giapWMS':
-            self.orto_add = OrtoAddingTool(self, self.tbut)
-            connect_orto = self.orto_add.connect_ortofotomapa_group
-            self.tbut.setIcon(
-                QIcon(os.path.join(dirnm, 'icons', 'orto_icon2.png'))
-            )
-            for service in self.orto_add.services:
-                service.orto_group_added.connect(connect_orto)
-
-        if oname == 'giapCompositions':
-            # this on will be find by compositions after loading
-            # documentation purposes
-            self.tbut.setIcon(
-                QIcon(os.path.join(dirnm, 'icons', 'compositions_giap.png'))
-            )
-            self.tbut.setToolTip(tr("Composition settings"))
-
-        if oname == "giapQuickPrint":
-            self.quick_print = PrintMapTool(iface, self)
-            self.tbut.clicked.connect(self.quick_print.run)
-            self.tbut.setToolTip(tr("Map quick print"))
-            self.tbut.setIcon(QIcon(f'{dirnm}/icons/quick_print.png'))
-
-        if oname == "giapMyPrints":
-            self.tbut.setToolTip(tr("My Prints"))
-            self.tbut.setIcon(QIcon(f'{dirnm}/icons/my_prints.png'))
-
-    def unload_custom_actions(self):
+    def unload_custom_actions(self) -> None:
         if self.orto_add:
             self.orto_add.disconnect_ortofotomapa_group()
 
-    def change_label(self, lab):
+    def change_label(self, lab) -> None:
         """Changes label
         :lab: str
         """
         if isinstance(lab, str) and lab not in ['', 'None', 'False']:
             self.label.setText(lab)
 
-    def set_size(self, sz):
+    def set_size(self, sz) -> None:
         """change size of button
         :sz: int
         """
@@ -1008,7 +879,7 @@ class CustomSection(QWidget):
             pass
         return super().eventFilter(watched, event)
 
-    def mouseReleaseEvent(self, event):
+    def mouseReleaseEvent(self, event) -> None:
         event.accept()
 
     def mouseMoveEvent(self, e):
@@ -1031,13 +902,14 @@ class CustomSection(QWidget):
         drag.exec_(Qt.MoveAction)
         e.accept()
 
-    def dragEnterEvent(self, event):
+    def dragEnterEvent(self, event) -> None:
         event.accept()
 
-    def dropEvent(self, event):  # noqa
+    def dropEvent(self, event) -> None:  # noqa
         gpos = QCursor().pos()
 
         if isinstance(event.source(), CustomToolButton):
+            move = False
             # check if source and target are in the same gridlayout
             if event.source().parent() is not self:
                 event.source().drag_state = False
@@ -1048,20 +920,20 @@ class CustomSection(QWidget):
             source = self.get_toolbutton_layout_index_from_pos(gpos)
             glay = event.source().parent().gridLayout
             self.target = None
-            for i in range(glay.count()):
-                it = glay.itemAt(i)
-                if it.widget() is event.source():
-                    self.target = i
+            for lay_id in range(glay.count()):
+                item = glay.itemAt(lay_id)
+                if item.widget() is event.source():
+                    self.target = lay_id
                     break
 
             if source == self.target:
                 try:
-                    it.widget().drag_state = False
+                    item.widget().drag_state = False
                 except Exception:
                     pass
                 return
 
-            if None not in [source, self.target]:
+            if None not in [source, self.target] and not move:
                 # swap qtoolbuttons
                 i, j = max(self.target, source), min(self.target, source)
                 p1 = self.gridLayout.getItemPosition(i)
@@ -1074,6 +946,12 @@ class CustomSection(QWidget):
                 it2.widget().drag_state = False
                 self.gridLayout.addItem(it1, *p2)
                 self.gridLayout.addItem(it2, *p1)
+            # elif move:
+            #     i = self.target
+            #     it1 = self.gridLayout.takeAt(i)
+            #     it1.widget().setDown(False)
+            #     it1.widget().drag_state = False
+            #     self.gridLayout.addWidget(event.source())
 
         if isinstance(event.source(), CustomSection):
             lay = self.parent().lay
@@ -1107,7 +985,7 @@ class CustomSection(QWidget):
                 lay.addItem(it)
             self.target = target
 
-    def show_edit_options(self):
+    def show_edit_options(self) -> None:
         self.pushButton_close_sec.show()
         self.edit = True
         self.clean_grid_layout()
@@ -1117,7 +995,7 @@ class CustomSection(QWidget):
                 it.turn_on_edit()
                 it.edit = True
 
-    def hide_edit_options(self):
+    def hide_edit_options(self) -> None:
         self.pushButton_close_sec.hide()
         self.edit = False
         self.clean_grid_layout()
@@ -1145,14 +1023,14 @@ class CustomToolButton(QToolButton):
                 return True
         return super().eventFilter(widget, event)
 
-    def turn_on_edit(self):
+    def turn_on_edit(self) -> None:
         """ toggle standard behaviour, from clicking to select"""
         self.org_state = self.isEnabled()
         self.setEnabled(True)
         self.blockSignals(True)
         self.setDown(False)
 
-    def turn_off_edit(self):
+    def turn_off_edit(self) -> None:
         """ toggle standard behaviour, from clicking to select"""
         self.setStyleSheet('')
         self.selected = False
@@ -1160,14 +1038,14 @@ class CustomToolButton(QToolButton):
         self.blockSignals(False)
         self.edit = False
 
-    def mouseClickEvent(self, event):
+    def mouseClickEvent(self, event) -> None:
         if self.edit:
             event.accept()
             event.source.setDown(False)
         else:
             super(CustomToolButton, self).mouseClickEvent(event)
 
-    def mouseDoubleClickEvent(self, event):
+    def mouseDoubleClickEvent(self, event) -> None:
         if self.edit:
             if self.selected:
                 self.selected = False
@@ -1177,7 +1055,7 @@ class CustomToolButton(QToolButton):
                 self.selected = True
             self.drag_state = False
 
-    def mouseMoveEvent(self, e):
+    def mouseMoveEvent(self, e) -> None:
         if not self.edit or not self.drag_state:
             return
         drag = QDrag(self)
@@ -1194,7 +1072,7 @@ class CustomToolButton(QToolButton):
         drag.setHotSpot(e.pos())
         drag.exec_(Qt.MoveAction)
 
-    def mousePressEvent(self, event):
+    def mousePressEvent(self, event) -> None:
         if self.edit:
             event.accept()
             self.setDown(False)
@@ -1203,7 +1081,7 @@ class CustomToolButton(QToolButton):
         else:
             super(CustomToolButton, self).mousePressEvent(event)
 
-    def dragEnterEvent(self, event):
+    def dragEnterEvent(self, event) -> None:
         event.accept()
 
 

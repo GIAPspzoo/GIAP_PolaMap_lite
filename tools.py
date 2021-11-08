@@ -1,11 +1,10 @@
 import os
 import re
 
-from qgis.PyQt.QtWidgets import QApplication
 from qgis.PyQt.QtCore import QFileSystemWatcher
+from qgis.PyQt.QtWidgets import QApplication
 
-from .utils import tr
-from .utils import DEFAULT_STYLE
+from .utils import DEFAULT_STYLE, tr
 
 
 class StyleManager:
@@ -13,8 +12,6 @@ class StyleManager:
         self.app = QApplication.instance()
 
         self.config = parent.config
-        # keep watch on file, there are applications that change or remove a
-        # file
         self.watch = QFileSystemWatcher()
         self.watch.fileChanged.connect(self.reload_style)
 
@@ -22,19 +19,18 @@ class StyleManager:
             os.path.dirname(os.path.abspath(__file__)), 'styles'
         ))
 
-        # here add default styles, otherwise the will not be seen in qgis
         self.styles = {
             'GIAP Navy Blue': 'giap.qss',
-            #'blueglass': 'blueglass.qss',
-            #'coffee': 'coffee.qss',
-            #'darkblue': 'darkblue.qss',
-            #'darkorange': 'darkorange.qss',
-            #'lightblue': 'lightblue.qss',
+            # 'blueglass': 'blueglass.qss',
+            # 'coffee': 'coffee.qss',
+            # 'darkblue': 'darkblue.qss',
+            # 'darkorange': 'darkorange.qss',
+            # 'lightblue': 'lightblue.qss',
             'GIAP Dark': 'wombat.qss',
         }
 
     def get_style_list(self):
-        return [x for x in self.styles.keys()]
+        return [style for style in self.styles.keys()]
 
     def get_style_dictionary(self):
         return self.styles
@@ -88,14 +84,12 @@ class StyleManager:
                 self.style_dir, name, self.config.get_style_path(name)
             )
 
-        # if path to style not found set default style
         if pth in ['', None]:
             self.app.setStyleSheet(DEFAULT_STYLE)
             pth = ''
 
-        # check if file exist
         if not os.path.exists(pth):
-            self.app.setStyleSheet(DEFAULT_STYLE)  # return do default, and save it in con
+            self.app.setStyleSheet(DEFAULT_STYLE)
             if name == 'default':
                 self.config.set_active_style(DEFAULT_STYLE)
                 return False, tr('Default style set')
