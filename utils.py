@@ -9,7 +9,8 @@ from qgis.PyQt.QtGui import QPen, QBrush, QIcon, QPixmap
 from qgis.PyQt.QtWidgets import QApplication, QProgressDialog, \
     QStyledItemDelegate, QAction, QMessageBox, QScrollArea, QWidget, \
     QGridLayout, QLabel, QDialogButtonBox
-from qgis.core import QgsProject, QgsMessageLog, Qgis, QgsApplication
+from qgis.core import QgsProject, QgsMessageLog, Qgis, QgsApplication, \
+    QgsVectorLayer, QgsMapLayer
 
 project = QgsProject.instance()
 
@@ -302,6 +303,8 @@ WMS_SERVERS_GROUPS = {
     'Monitoring Warunków Glebowych': group_name,
     'Uzbrojenie terenu': group_name
 }
+
+search_group_name = 'WYNIKI WYSZUKIWANIA'
 
 STANDARD_TOOLS = [
     {
@@ -1214,3 +1217,30 @@ def get_tool_label(tool: str, main_qgs_widget: QObject = None) -> str:
     for char in ('&', '~', '`'):
         label = label.replace(char, '')
     return label
+
+
+def add_map_layer_to_group(
+        layer: Union[QgsVectorLayer, QgsMapLayer],
+        group_name: str, main_group_name:
+        str = None, important: bool = False, position: int = 0,
+        force_create: bool = False):
+    if not layer.isValid():
+        QgsMessageLog.logMessage(
+            f'Warstwa nieprawidłowa {layer.name()}. Wymagana interwencja.',
+            "GIAP - PolaMap Lite",
+            Qgis.Info)
+    root = project.layerTreeRoot()
+    if main_group_name and root.findGroup(main_group_name):
+        group = root.findGroup(main_group_name).findGroup(group_name)
+    else:
+        group = root.findGroup(group_name)
+    if not group:
+        if force_create:
+            group = project.layerTreeRoot().addGroup(group_name)
+        else:
+            project.addMapLayer(layer)
+            return
+    project.addMapLayer(layer, False)
+    if group_name:
+        group.insertLayer(position, layer)
+        # group.setExpanded(False)
