@@ -10,7 +10,7 @@ from qgis.core import QgsGeometry, QgsFeature, QgsField, QgsFields, \
     QgsProject, QgsVectorLayer, QgsMessageLog, Qgis
 from qgis.utils import iface
 
-from ..utils import tr
+from ..utils import tr, add_map_layer_to_group, search_group_name
 
 
 class SearchAddress:
@@ -88,7 +88,8 @@ class SearchAddress:
                 flds.append(fld)
         lyr.dataProvider().addAttributes(flds)
         lyr.updateFields()
-        QgsProject.instance().addMapLayer(lyr)
+        # QgsProject.instance().addMapLayer(lyr)
+        add_map_layer_to_group(lyr, search_group_name, force_create=True)
         direc = os.path.dirname(__file__)
         lyr.loadNamedStyle(os.path.join(direc, qml))
         return lyr

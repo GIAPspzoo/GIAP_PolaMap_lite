@@ -9,7 +9,8 @@ from qgis.PyQt.QtGui import QPen, QBrush, QIcon, QPixmap
 from qgis.PyQt.QtWidgets import QApplication, QProgressDialog, \
     QStyledItemDelegate, QAction, QMessageBox, QScrollArea, QWidget, \
     QGridLayout, QLabel, QDialogButtonBox
-from qgis.core import QgsProject, QgsMessageLog, Qgis, QgsApplication
+from qgis.core import QgsProject, QgsMessageLog, Qgis, QgsApplication, \
+    QgsVectorLayer, QgsMapLayer
 
 project = QgsProject.instance()
 
@@ -287,8 +288,8 @@ WMS_SERVERS = {
     'Krajowa Integracja Ewidencji Gruntów - WMS': 'contextualWMSLegend=0&crs=EPSG:2180&dpiMode=7&featureCount=10&format=image/png&layers=dzialki&layers=geoportal&layers=powiaty&layers=ekw&layers=zsin&layers=obreby&layers=numery_dzialek&layers=budynki&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&url=http://integracja.gugik.gov.pl/cgi-bin/KrajowaIntegracjaEwidencjiGruntow',
     'Bank Danych o Lasach - WMS': 'contextualWMSLegend=0&crs=EPSG:2180&dpiMode=7&featureCount=10&format=image/jpeg&layers=0&layers=1&layers=2&layers=3&layers=4&layers=5&styles=&styles=&styles=&styles=&styles=&styles=&url=http://mapserver.bdl.lasy.gov.pl/ArcGIS/services/WMS_BDL/mapserver/WMSServer',
     'Wody Polskie - mapa zagrożenia powodziowego': 'contextualWMSLegend=0&crs=EPSG:2180&dpiMode=7&featureCount=10&format=image/png&layers=OSZP1m&layers=OSZP1&layers=OSZP10&styles=&styles=&styles=&url=http://integracja.gugik.gov.pl/cgi-bin/MapaZagrozeniaPowodziowego?',
-    'Monitoring Warunków Glebowych': 'contextualWMSLegend=0&crs=EPSG:2180&dpiMode=7&featureCount=10&format=image/png&layers=smois_2021_07_03_12_00_00&layers=smois_2021_07_04_12_00_00&layers=smois_2021_07_05_12_00_00&layers=smois_2021_07_06_12_00_00&layers=smois_2021_07_07_12_00_00&layers=punkty&layers=wojewodztwa&styles&styles&styles&styles&styles&styles&styles&url=https://integracja.gugik.gov.pl/cgi-bin/MonitoringWarunkowGlebowych',
-    'Uzbrojenie terenu': 'contextualWMSLegend=0&crs=EPSG:2180&dpiMode=7&featureCount=10&format=image/png&layers=gesut&layers=kgesut&layers=kgesut_dane&layers=przewod_elektroenergetyczny&layers=przewod_telekomunikacyjny&layers=przewod_wodociagowy&layers=przewod_kanalizacyjny&layers=przewod_gazowy&layers=przewod_cieplowniczy&layers=przewod_specjalny&layers=przewod_inny&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&url=http://integracja.gugik.gov.pl/cgi-bin/KrajowaIntegracjaUzbrojeniaTerenu?'
+    'Monitoring Warunków Glebowych': 'contextualWMSLegend=0&crs=EPSG:2180&dpiMode=7&featureCount=10&format=image/png&layers=smois_2021_11_13_12_00_00&layers=smois_2021_11_14_12_00_00&layers=smois_2021_11_15_12_00_00&layers=smois_2021_11_16_12_00_00&layers=smois_2021_11_17_12_00_00&layers=punkty&layers=wojewodztwa&styles&styles&styles&styles&styles&styles&styles&url=https://integracja.gugik.gov.pl/cgi-bin/MonitoringWarunkowGlebowych',
+    'Uzbrojenie terenu': 'contextualWMSLegend=0&crs=EPSG:2180&dpiMode=7&featureCount=10&format=image/png&layers=gesut&layers=kgesut&layers=kgesut_dane&layers=przewod_urzadzenia&layers=przewod_niezidentyfikowany&layers=przewod_specjalny&layers=przewod_telekomunikacyjny&layers=przewod_cieplowniczy&layers=przewod_gazowy&layers=przewod_elektroenergetyczny&layers=przewod_kanalizacyjny&layers=przewod_wodociagowy&styles&styles&styles&styles&styles&styles&styles&styles&styles&styles&styles&styles&url=https://integracja.gugik.gov.pl/cgi-bin/KrajowaIntegracjaUzbrojeniaTerenu'
 }
 
 group_name = "WMS/WMTS"
@@ -302,6 +303,8 @@ WMS_SERVERS_GROUPS = {
     'Monitoring Warunków Glebowych': group_name,
     'Uzbrojenie terenu': group_name
 }
+
+search_group_name = 'WYNIKI WYSZUKIWANIA'
 
 STANDARD_TOOLS = [
     {
@@ -1214,3 +1217,30 @@ def get_tool_label(tool: str, main_qgs_widget: QObject = None) -> str:
     for char in ('&', '~', '`'):
         label = label.replace(char, '')
     return label
+
+
+def add_map_layer_to_group(
+        layer: Union[QgsVectorLayer, QgsMapLayer],
+        group_name: str, main_group_name:
+        str = None, important: bool = False, position: int = 0,
+        force_create: bool = False):
+    if not layer.isValid():
+        QgsMessageLog.logMessage(
+            f'Warstwa nieprawidłowa {layer.name()}. Wymagana interwencja.',
+            "GIAP - PolaMap Lite",
+            Qgis.Info)
+    root = project.layerTreeRoot()
+    if main_group_name and root.findGroup(main_group_name):
+        group = root.findGroup(main_group_name).findGroup(group_name)
+    else:
+        group = root.findGroup(group_name)
+    if not group:
+        if force_create:
+            group = project.layerTreeRoot().addGroup(group_name)
+        else:
+            project.addMapLayer(layer)
+            return
+    project.addMapLayer(layer, False)
+    if group_name:
+        group.insertLayer(position, layer)
+        # group.setExpanded(False)
