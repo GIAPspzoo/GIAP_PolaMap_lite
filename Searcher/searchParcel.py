@@ -9,7 +9,8 @@ from qgis.core import QgsGeometry, QgsFeature, \
     QgsProject, QgsVectorLayer, Qgis
 from qgis.utils import iface
 
-from ..utils import tr, CustomMessageBox
+from ..utils import tr, CustomMessageBox, search_group_name, \
+    add_map_layer_to_group
 
 
 class FetchULDK:
@@ -101,7 +102,8 @@ class ParseResponce:
         if len(lyr) > 0:
             self.lyr = lyr[0]
             return
-        QgsProject.instance().addMapLayer(self.lyr)
+        # QgsProject.instance().addMapLayer(self.lyr)
+        add_map_layer_to_group(self.lyr, search_group_name, force_create=True)
         direc = os.path.dirname(__file__)
         self.lyr.loadNamedStyle(
             os.path.join(direc, 'layer_style', 'dzialki.qml'))
