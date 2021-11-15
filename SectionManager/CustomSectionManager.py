@@ -124,7 +124,7 @@ class CustomSectionManager(QDialog, FORM_CLASS):
                                self.tools_dict[tool_section_id][0]
                                if isinstance(action_list, list)]
             self.section_name_lineedit.setText(
-                self.tools_dict[tool_section_id][-1])
+                tr(self.tools_dict[tool_section_id][-1]))
             self.section_name_backup = self.section_name_lineedit.text()
             for tool in section_actions:
                 item = QStandardItem(
