@@ -4,7 +4,7 @@ import subprocess
 import sys
 import tempfile
 
-from PyQt5.QtCore import QRectF
+from PyQt5.QtCore import QRectF, QDateTime
 from PyQt5.QtGui import QColor, QFont
 from PyQt5.QtWidgets import QFileDialog, QApplication
 from qgis._core import QgsLayoutExporter, QgsWkbTypes, QgsLayoutItemMap, \
@@ -49,7 +49,6 @@ def get_layer_with_selection():
 
 
 class PrintMapTool:
-    dpi = 600
     mm_paper_sizes = {
         # '4A0': (1682, 2378),
         # '2A0': (1189, 1682),
@@ -284,6 +283,16 @@ class PrintMapTool:
             scale_label.moveBy(16, h - 14.)
             scale.moveBy(30, h - 15.)
 
+        if self.dialog.dateCheckBox.isChecked():
+            date_label = QgsLayoutItemLabel(self.layout)
+            date_label.setText(self.dialog.dateedit.text())
+            date_label.adjustSizeToText()
+            self.layout.addItem(date_label)
+            if self.dialog.scaleCheckBox.isChecked():
+                date_label.moveBy(16, scale_label.y() + 5)
+            else:
+                date_label.moveBy(16, h - 14.)
+
         if self.dialog.titleLineEdit.text():
             title = QgsLayoutItemLabel(self.layout)
             current_text = ' '
@@ -452,7 +461,7 @@ class PrintMapTool:
         p.setValue(50)
         exporter = QgsLayoutExporter(self.layout)
         pdf_settings = exporter.PdfExportSettings()
-        pdf_settings.dpi = self.dpi
+        pdf_settings.dpi = self.dialog.resspinBox.value()
         p.setValue(90)
         exporter.exportToPdf(filename,
                              pdf_settings)
@@ -463,7 +472,7 @@ class PrintMapTool:
         p.setValue(50)
         exporter = QgsLayoutExporter(self.layout)
         pdf_settings = exporter.ImageExportSettings()
-        pdf_settings.dpi = self.dpi
+        pdf_settings.dpi = self.dialog.resspinBox.value()
         p.setValue(90)
         exporter.exportToImage(filename,
                                pdf_settings)
