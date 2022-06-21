@@ -13,11 +13,11 @@
     <x>0</x>
     <y>0</y>
     <width>550</width>
-    <height>527</height>
+    <height>576</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
     <horstretch>1</horstretch>
     <verstretch>1</verstretch>
    </sizepolicy>
@@ -41,7 +41,7 @@
   <property name="styleSheet">
    <string notr="true">* {
 	background-color: rgb(53, 85, 109);
-    font: 10pt &quot;Segoe UI&quot;; 
+    font: 10pt &quot;Segoe UI&quot;;
 	color: #EDF6FC;
 }
 QComboBox
@@ -82,7 +82,7 @@ QComboBox::drop-down
 	border-left-width: 0;
 	border-left-color:  #1a2936;
 	border-left-style: solid;
-	border-top-right-radius: 3px; 
+	border-top-right-radius: 3px;
 	border-bottom-right-radius: 3px;
 }
 
@@ -251,7 +251,46 @@ border: 1px solid #5689b0;
           <enum>QFrame::Plain</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout_4">
-          <item row="6" column="0">
+          <item row="0" column="0">
+           <widget class="QProgressBar" name="progressBar">
+            <property name="value">
+             <number>24</number>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QGroupBox" name="groupBox_6">
+            <property name="title">
+             <string>Annotations</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_10">
+             <item row="0" column="0">
+              <widget class="QLineEdit" name="adnotacje_lineEdit">
+               <property name="maxLength">
+                <number>100</number>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QGroupBox" name="groupBox_2">
+            <property name="title">
+             <string>Print title</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_2">
+             <item row="0" column="0">
+              <widget class="QLineEdit" name="titleLineEdit">
+               <property name="maxLength">
+                <number>60</number>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="7" column="0">
            <widget class="QGroupBox" name="groupBox_3">
             <property name="title">
              <string>Format</string>
@@ -284,45 +323,6 @@ border: 1px solid #5689b0;
             </layout>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QGroupBox" name="groupBox_2">
-            <property name="title">
-             <string>Print title</string>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_2">
-             <item row="0" column="0">
-              <widget class="QLineEdit" name="titleLineEdit">
-               <property name="maxLength">
-                <number>60</number>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QGroupBox" name="groupBox">
-            <property name="title">
-             <string>Additional options</string>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_6">
-             <item row="0" column="0">
-              <widget class="QCheckBox" name="scaleCheckBox">
-               <property name="text">
-                <string>Add scale</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QCheckBox" name="legendCheckBox">
-               <property name="text">
-                <string>Add legend</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
           <item row="3" column="0">
            <widget class="QGroupBox" name="groupBox_4">
             <property name="title">
@@ -346,23 +346,47 @@ border: 1px solid #5689b0;
             </layout>
            </widget>
           </item>
-          <item row="0" column="0">
-           <widget class="QProgressBar" name="progressBar">
-            <property name="value">
-             <number>24</number>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QGroupBox" name="groupBox_6">
+          <item row="2" column="0">
+           <widget class="QGroupBox" name="groupBox">
             <property name="title">
-             <string>Annotations</string>
+             <string>Additional options</string>
             </property>
-            <layout class="QGridLayout" name="gridLayout_10">
+            <layout class="QGridLayout" name="gridLayout_6">
              <item row="0" column="0">
-              <widget class="QLineEdit" name="adnotacje_lineEdit">
-               <property name="maxLength">
-                <number>100</number>
+              <widget class="QCheckBox" name="scaleCheckBox">
+               <property name="text">
+                <string>Add scale</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QCheckBox" name="dateCheckBox">
+               <property name="text">
+                <string>Add date</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QCheckBox" name="legendCheckBox">
+               <property name="text">
+                <string>Add legend</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="dateedit">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="QToolButton" name="date_button">
+               <property name="text">
+                <string/>
                </property>
               </widget>
              </item>
@@ -377,6 +401,28 @@ border: 1px solid #5689b0;
             <layout class="QGridLayout" name="gridLayout_9">
              <item row="0" column="0">
               <widget class="QComboBox" name="paperFormatComboBox"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QGroupBox" name="groupBox_7">
+            <property name="title">
+             <string>Resolution</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_11">
+             <item row="0" column="0">
+              <widget class="QSpinBox" name="resspinBox">
+               <property name="minimum">
+                <number>-1</number>
+               </property>
+               <property name="maximum">
+                <number>2000</number>
+               </property>
+               <property name="value">
+                <number>600</number>
+               </property>
+              </widget>
              </item>
             </layout>
            </widget>
