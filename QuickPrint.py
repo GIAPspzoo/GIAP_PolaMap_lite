@@ -3,17 +3,18 @@ import os
 import subprocess
 import sys
 import tempfile
-
-from PyQt5.QtCore import QRectF, QDateTime
-from PyQt5.QtGui import QColor, QFont
-from PyQt5.QtWidgets import QFileDialog, QApplication
+from qgis.PyQt import QtWidgets
+from qgis.PyQt.QtCore import QRectF, QDateTime
+from qgis.PyQt.QtGui import QColor, QFont
+from qgis.PyQt.QtWidgets import QFileDialog, QApplication
 from qgis._core import QgsLayoutExporter, QgsWkbTypes, QgsLayoutItemMap, \
     QgsLayout, QgsProject, QgsUnitTypes, QgsLayoutSize, QgsGeometry, \
     QgsVectorLayer, QgsFeature, QgsSymbol, QgsSimpleFillSymbolLayer, \
     QgsLayoutItemLegend, QgsLayerTreeGroup, QgsLegendStyle, QgsLayoutItem, \
     QgsLayoutItemLabel, QgsLayoutItemScaleBar
-from qgis._gui import QgsRubberBand
+from qgis._gui import QgsRubberBand, QgisInterface
 from qgis.utils import iface
+from typing import Union
 
 from .utils import tr, CustomMessageBox, normalize_path
 from .wydruk_dialog import WydrukDialog
@@ -26,7 +27,7 @@ pdf_open_error_msg = '''
 '''
 
 
-def only_preview_file(output_file):
+def only_preview_file(output_file:str) -> None:
     output_file = normalize_path(output_file)
     if sys.platform.startswith('darwin'):
         subprocess.call(('open', output_file))
@@ -40,7 +41,7 @@ def only_preview_file(output_file):
             CustomMessageBox(None, pdf_open_error_msg).button_ok()
 
 
-def get_layer_with_selection():
+def get_layer_with_selection() -> None:
     layer_with_selection = []
     for layer in list(QgsProject.instance().mapLayers().values()):
         if layer.type().value == 0 and layer.selectedFeatureCount():
@@ -65,7 +66,7 @@ class PrintMapTool:
         # 'A10': (26, 37),
     }
 
-    def __init__(self, iface, parent=None):
+    def __init__(self, iface : QgisInterface, parent : QtWidgets=None) -> None:
         self.iface = iface
         self.dialog = WydrukDialog()
         self.dialog.pdfRadioButton.setChecked(True)
@@ -85,14 +86,14 @@ class PrintMapTool:
             self.create_composer)
         self.setup_rubberband()
 
-    def setup_rubberband(self):
-        self.r = QgsRubberBand(iface.mapCanvas(), QgsWkbTypes.PolygonGeometry)
-        self.r.setColor(QColor(255, 0, 0, 100))
-        self.r.setWidth(5)
-        self.r.setFillColor(QColor(255, 255, 255, 0))
+    def setup_rubberband(self) -> None:
+        self.rubberband = QgsRubberBand(iface.mapCanvas(), QgsWkbTypes.PolygonGeometry)
+        self.rubberband.setColor(QColor(255, 0, 0, 100))
+        self.rubberband.setWidth(5)
+        self.rubberband.setFillColor(QColor(255, 255, 255, 0))
         self.is_active = False
 
-    def get_paper_size(self):
+    def get_paper_size(self) -> tuple:
         paper_format = self.dialog.paperFormatComboBox.currentText()
         width, height = self.mm_paper_sizes[paper_format]
 
@@ -101,14 +102,14 @@ class PrintMapTool:
         else:
             return width, height
 
-    def get_map_item(self):
+    def get_map_item(self) -> QgsLayoutItemMap:
         item_object = None
         for item in self.layout.items():
             if isinstance(item, QgsLayoutItemMap):
                 item_object = item
         return item_object
 
-    def create_composer(self):
+    def create_composer(self) -> None:
         self.reset_rubber()
         if self.is_active:
             self.layout = QgsLayout(QgsProject.instance())
@@ -117,15 +118,15 @@ class PrintMapTool:
             page = self.layout.pageCollection().pages()[0]
 
             width, height = self.get_paper_size()
-            x, y = 16, 16
+            pos_x, pos_y = 16, 16
             page.setPageSize(QgsLayoutSize(width, height))
             canvas_extent = self.iface.mapCanvas().extent()
-            current_rect = QRectF(x, y, width - 2 * x, height - 2 * y)
+            current_rect = QRectF(pos_x, pos_y, width - 2 * pos_x, height - 2 * pos_y)
 
             map_item = QgsLayoutItemMap(self.layout)
             map_item.updateBoundingRect()
             map_item.setRect(current_rect)
-            map_item.setPos(x, y)
+            map_item.setPos(pos_x, pos_y)
             map_item.setFrameEnabled(True)
 
             map_item.setLayers(
@@ -134,15 +135,15 @@ class PrintMapTool:
             map_item.setExtent(canvas_extent)
             map_item.attemptSetSceneRect(current_rect)
             map_item.setScale(round(self.iface.mapCanvas().scale()))
-            self.r.addGeometry(QgsGeometry.fromRect(map_item.extent()),
+            self.rubberband.addGeometry(QgsGeometry.fromRect(map_item.extent()),
                                QgsVectorLayer())
 
             self.layout.addItem(map_item)
 
-    def reset_rubber(self):
-        self.r.reset(QgsWkbTypes.PolygonGeometry)
+    def reset_rubber(self) -> None:
+        self.rubberband.reset(QgsWkbTypes.PolygonGeometry)
 
-    def rejected_dialog(self):
+    def rejected_dialog(self) -> None:
         self.is_active = False
         self.reset_rubber()
         try:
@@ -152,7 +153,7 @@ class PrintMapTool:
         except TypeError:
             pass
 
-    def run(self):
+    def run(self) -> None:
         if not self.is_active:
             self.is_active = True
             self.iface.mapCanvas().scaleChanged.connect(self.create_composer)
@@ -162,7 +163,7 @@ class PrintMapTool:
         else:
             self.dialog.activateWindow()
 
-    def save(self):
+    def save(self) -> None:
         filename, __ = QFileDialog.getSaveFileName(
             self.dialog, tr("Save file"))
         tmp_layer = self.create_tmp_layer()
@@ -171,7 +172,7 @@ class PrintMapTool:
         if isinstance(tmp_layer, str):
             QgsProject.instance().removeMapLayers(tmp_layer)
 
-    def preview(self):
+    def preview(self) -> None:
         file_handle, filename = tempfile.mkstemp(suffix='quick_print')
         os.close(file_handle)
         tmp_layer = self.create_tmp_layer()
@@ -179,7 +180,7 @@ class PrintMapTool:
         self.save_file(filename)
         QgsProject.instance().removeMapLayers(tmp_layer)
 
-    def create_tmp_layer(self):
+    def create_tmp_layer(self) -> list:
         layers_with_selection = get_layer_with_selection()
         temps_layer_list = []
         tmp_layer = None
@@ -204,9 +205,9 @@ class PrintMapTool:
                                            'tmp_layer_fast_print', "memory")
                 tmp_features = []
                 for feature in features:
-                    f = QgsFeature()
-                    f.setGeometry(QgsGeometry(feature.geometry()))
-                    tmp_features.append(f)
+                    qgs_feat = QgsFeature()
+                    qgs_feat.setGeometry(QgsGeometry(feature.geometry()))
+                    tmp_features.append(qgs_feat)
                 tmp_layer.dataProvider().addFeatures(tmp_features)
                 QgsProject.instance().addMapLayer(tmp_layer)
                 selection_color = self.iface.mapCanvas().mapSettings().selectionColor()
@@ -230,9 +231,9 @@ class PrintMapTool:
             temps_layer_list.append(tmp_layer)
         return temps_layer_list
 
-    def save_file(self, filename):
-        p = self.dialog.progressBar
-        w, h = self.get_paper_size()
+    def save_file(self, filename:str) -> None:
+        progress = self.dialog.progressBar
+        width, height = self.get_paper_size()
         if self.dialog.legendCheckBox.isChecked():
             # TODO: Do zmiany generowanie legendy
             self.layout.setNumPages(
@@ -240,14 +241,14 @@ class PrintMapTool:
             self.layout.setPagesVisible(True)
             legend = QgsLayoutItemLegend(self.layout)  # inicjalizacja legendy
             layerGroup = QgsLayerTreeGroup()  # utworzenie grupy warstw
-            n = 0  # licznik id
+            id = 0  # licznik id
             # petla iteruje po liscie aktywnych warstw
             visibleLayers = self.iface.mapCanvas().layers()
             visibleLayersCount = len(visibleLayers)
             for the_layer in visibleLayers:
-                layerGroup.insertLayer(n, the_layer)  # dodanie widocznej
+                layerGroup.insertLayer(id, the_layer)  # dodanie widocznej
                 # warstwy do grupy warstw layerGroup
-                n += 1  # zwiekszanie id o 1
+                id += 1  # zwiekszanie id o 1
             legend.modelV2().setRootGroup(layerGroup)
             legend.setSymbolHeight(3.0)
             legend.setSymbolWidth(5.0)
@@ -262,7 +263,7 @@ class PrintMapTool:
             legend.setResizeToContents(True)
             self.layout.addItem(legend)
             legend.setItemPosition(5,
-                                   h + 8,
+                                   height + 8,
                                    legendSize.width(),
                                    legendSize.height(),
                                    QgsLayoutItem.UpperLeft,
@@ -280,8 +281,8 @@ class PrintMapTool:
             scale_label.adjustSizeToText()
             self.layout.addItem(scale_label)
             self.layout.addItem(scale)
-            scale_label.moveBy(16, h - 14.)
-            scale.moveBy(30, h - 15.)
+            scale_label.moveBy(16, height - 14.)
+            scale.moveBy(30, height - 15.)
 
         if self.dialog.dateCheckBox.isChecked():
             date_label = QgsLayoutItemLabel(self.layout)
@@ -291,7 +292,7 @@ class PrintMapTool:
             if self.dialog.scaleCheckBox.isChecked():
                 date_label.moveBy(16, scale_label.y() + 5)
             else:
-                date_label.moveBy(16, h - 14.)
+                date_label.moveBy(16, height - 14.)
 
         if self.dialog.titleLineEdit.text():
             title = QgsLayoutItemLabel(self.layout)
@@ -302,7 +303,7 @@ class PrintMapTool:
             title_font.setWeight(75)
             title.setFont(title_font)
             title.adjustSizeToText()
-            title.setPos((w / 2) - (len(self.dialog.titleLineEdit.text()) * 2),
+            title.setPos((width / 2) - (len(self.dialog.titleLineEdit.text()) * 2),
                          3)
             self.layout.addItem(title)
 
@@ -310,7 +311,7 @@ class PrintMapTool:
             adnotation = QgsLayoutItemLabel(self.layout)
             adnotation_font = QFont()
             default_font_Size = 10
-            if w == 148 and len(self.dialog.adnotacje_lineEdit.text()) > 50:
+            if width == 148 and len(self.dialog.adnotacje_lineEdit.text()) > 50:
                 if 50 <= len(self.dialog.adnotacje_lineEdit.text()) <= 55:
                     default_font_Size = 7
                 if 55 < len(self.dialog.adnotacje_lineEdit.text()) <= 65:
@@ -326,7 +327,7 @@ class PrintMapTool:
                 else:
                     adnotation.setText(self.dialog.adnotacje_lineEdit.text())
 
-            elif w == 210 and len(self.dialog.adnotacje_lineEdit.text()) > 90:
+            elif width == 210 and len(self.dialog.adnotacje_lineEdit.text()) > 90:
                 if 90 <= len(self.dialog.adnotacje_lineEdit.text()) <= 98:
                     default_font_Size = 7
                 if 98 < len(self.dialog.adnotacje_lineEdit.text()) <= 118:
@@ -342,7 +343,7 @@ class PrintMapTool:
                 else:
                     adnotation.setText(self.dialog.adnotacje_lineEdit.text())
 
-            elif w == 297 and len(self.dialog.adnotacje_lineEdit.text()) > 145:
+            elif width == 297 and len(self.dialog.adnotacje_lineEdit.text()) > 145:
                 if 145 <= len(self.dialog.adnotacje_lineEdit.text()) <= 160:
                     default_font_Size = 7
                 if 160 < len(self.dialog.adnotacje_lineEdit.text()) <= 190:
@@ -358,7 +359,7 @@ class PrintMapTool:
                 else:
                     adnotation.setText(self.dialog.adnotacje_lineEdit.text())
 
-            elif w == 420 and len(self.dialog.adnotacje_lineEdit.text()) > 220:
+            elif width == 420 and len(self.dialog.adnotacje_lineEdit.text()) > 220:
                 if 220 <= len(self.dialog.adnotacje_lineEdit.text()) <= 245:
                     default_font_Size = 7
                 if 245 < len(self.dialog.adnotacje_lineEdit.text()) <= 280:
@@ -374,7 +375,7 @@ class PrintMapTool:
                 else:
                     adnotation.setText(self.dialog.adnotacje_lineEdit.text())
 
-            elif w == 594 and len(self.dialog.adnotacje_lineEdit.text()) > 335:
+            elif width == 594 and len(self.dialog.adnotacje_lineEdit.text()) > 335:
                 if 335 <= len(self.dialog.adnotacje_lineEdit.text()) <= 360:
                     default_font_Size = 7
                 if 360 < len(self.dialog.adnotacje_lineEdit.text()) <= 440:
@@ -390,7 +391,7 @@ class PrintMapTool:
                 else:
                     adnotation.setText(self.dialog.adnotacje_lineEdit.text())
 
-            elif w == 841 and len(self.dialog.adnotacje_lineEdit.text()) > 475:
+            elif width == 841 and len(self.dialog.adnotacje_lineEdit.text()) > 475:
                 if 475 <= len(self.dialog.adnotacje_lineEdit.text()) <= 540:
                     default_font_Size = 7
                 if 540 < len(self.dialog.adnotacje_lineEdit.text()) <= 640:
@@ -406,7 +407,7 @@ class PrintMapTool:
                 else:
                     adnotation.setText(self.dialog.adnotacje_lineEdit.text())
 
-            elif w == 1189 and len(
+            elif width == 1189 and len(
                     self.dialog.adnotacje_lineEdit.text()) > 700:
                 if 700 < len(self.dialog.adnotacje_lineEdit.text()) <= 780:
                     default_font_Size = 7
@@ -433,12 +434,12 @@ class PrintMapTool:
             adnotation.setFont(adnotation_font)
             adnotation.adjustSizeToText()
             self.layout.addItem(adnotation)
-            new_width = w - (len(
-                self.dialog.adnotacje_lineEdit.text()) * 2.6) if w - (len(
-                self.dialog.adnotacje_lineEdit.text()) * 2.6) > w / 2.6 else w / 2.6
-            adnotation.setPos(new_width, h - 14)
-        p.show()
-        p.setValue(20)
+            new_width = width - (len(
+                self.dialog.adnotacje_lineEdit.text()) * 2.6) if width - (len(
+                self.dialog.adnotacje_lineEdit.text()) * 2.6) > width / 2.6 else width / 2.6
+            adnotation.setPos(new_width, height - 14)
+        progress.show()
+        progress.setValue(20)
         if filename:
             if self.dialog.jpgRadioButton.isChecked():
                 ext = '.jpg'
@@ -453,27 +454,27 @@ class PrintMapTool:
                 filename += ext
             function(filename)
             only_preview_file(filename)
-        p.setValue(100)
-        p.hide()
+        progress.setValue(100)
+        progress.hide()
 
-    def print_pdf(self, filename):
-        p = self.dialog.progressBar
-        p.setValue(50)
+    def print_pdf(self, filename:str) -> None:
+        progress = self.dialog.progressBar
+        progress.setValue(50)
         exporter = QgsLayoutExporter(self.layout)
         pdf_settings = exporter.PdfExportSettings()
         pdf_settings.dpi = self.dialog.resspinBox.value()
-        p.setValue(90)
+        progress.setValue(90)
         exporter.exportToPdf(filename,
                              pdf_settings)
-        p.setValue(100)
+        progress.setValue(100)
 
-    def print_image(self, filename):
-        p = self.dialog.progressBar
-        p.setValue(50)
+    def print_image(self, filename:str) -> None:
+        progress = self.dialog.progressBar
+        progress.setValue(50)
         exporter = QgsLayoutExporter(self.layout)
         pdf_settings = exporter.ImageExportSettings()
         pdf_settings.dpi = self.dialog.resspinBox.value()
-        p.setValue(90)
+        progress.setValue(90)
         exporter.exportToImage(filename,
                                pdf_settings)
-        p.setValue(100)
+        progress.setValue(100)

@@ -13,7 +13,7 @@ FORM_CLASS, _ = uic.loadUiType(os.path.join(
 
 
 class WydrukDialog(QtWidgets.QDialog, FORM_CLASS):
-    def __init__(self, parent=None):
+    def __init__(self, parent : QtWidgets=None) -> None:
         """Constructor."""
         super(WydrukDialog, self).__init__(parent)
         self.setupUi(self)
@@ -34,7 +34,7 @@ class WydrukDialog(QtWidgets.QDialog, FORM_CLASS):
 
 
 
-    def date_input(self):
+    def date_input(self) -> None:
         cur_pos = self.dateedit.cursorPosition()
         if self.dateedit.text() == '--':
             self.dateedit.setInputMask('')
@@ -42,7 +42,7 @@ class WydrukDialog(QtWidgets.QDialog, FORM_CLASS):
             self.dateedit.setInputMask('9999-99-99')
             self.dateedit.setCursorPosition(cur_pos)
 
-    def set_date(self):
+    def set_date(self) -> None:
         data = self.calendar.selectedDate()
         self.dateedit.setText(data.toString('yyyy-MM-dd'))
         self.date_button.menu().close()
