@@ -241,14 +241,14 @@ class PrintMapTool:
             self.layout.setPagesVisible(True)
             legend = QgsLayoutItemLegend(self.layout)  # inicjalizacja legendy
             layerGroup = QgsLayerTreeGroup()  # utworzenie grupy warstw
-            id = 0  # licznik id
+            layer_id = 0  # licznik id
             # petla iteruje po liscie aktywnych warstw
             visibleLayers = self.iface.mapCanvas().layers()
             visibleLayersCount = len(visibleLayers)
             for the_layer in visibleLayers:
-                layerGroup.insertLayer(id, the_layer)  # dodanie widocznej
+                layerGroup.insertLayer(layer_id, the_layer)  # dodanie widocznej
                 # warstwy do grupy warstw layerGroup
-                id += 1  # zwiekszanie id o 1
+                layer_id += 1  # zwiekszanie id o 1
             legend.modelV2().setRootGroup(layerGroup)
             legend.setSymbolHeight(3.0)
             legend.setSymbolWidth(5.0)
