@@ -5,7 +5,7 @@ import webbrowser
 
 import qgis
 from qgis.PyQt.QtCore import QTranslator, QCoreApplication, QSize, \
-    QRect, QPropertyAnimation, QEasingCurve, QSettings
+    QRect, QPropertyAnimation, QEasingCurve, QSettings, QObject
 from qgis.PyQt.QtGui import QCursor
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QToolBar, QToolButton, QWidget, \
@@ -27,13 +27,14 @@ from .kompozycje_widget import kompozycjeWidget
 from .ribbon_config import RIBBON_DEFAULT
 from .tools import StyleManager
 from .utils import tr, Qt, icon_manager, CustomMessageBox
-
+from .AreaAndLengthTool.AreaAndLengthTool import AreaAndLengthTool
+from qgis.gui import QgsMapTool
 project = QgsProject.instance()
 
 
 class MainTabQgsWidget:
 
-    def __init__(self, iface):
+    def __init__(self, iface: iface) -> None:
         """Constructor.
 
         :param iface: An interface instance that will be passed to this class
@@ -58,13 +59,13 @@ class MainTabQgsWidget:
         self.iface.initializationCompleted.connect(self.load_ribbons)
         self.iface.newProjectCreated.connect(self.missingCorePlugins)
 
-    def missingCorePlugins(self):
+    def missingCorePlugins(self) -> None:
         if len(iface.mainWindow().findChild(
                 QToolBar, 'mVectorToolBar').actions()) == 0:
             CustomMessageBox(None,
                              f'{tr("Switch on manually missing core plugin: Topology Checker")}').button_ok()
 
-    def initGui(self):
+    def initGui(self) -> None:
         # set default style and active style if config.json doesn't extists
         dic_style = self.style_manager.get_style_dictionary()
         self.config.set_default_style(dic_style)
@@ -168,6 +169,17 @@ class MainTabQgsWidget:
         self.main_widget.runCompositionButton.setToolTip(
             tr("Composition settings"))
 
+        area_length_tool = QgsMapTool(self.iface.mapCanvas())
+        self.area_length_event = AreaAndLengthTool(self.iface)
+        self.area_length_action = QAction(QIcon(f'{self.plugin_dir}/icons/measuring.png'),
+            "Area and length", self.iface.mainWindow())
+        self.area_length_action.setCheckable(True)
+        self.area_length_action.triggered.connect(self.area_length_event.run)
+        area_length_tool.setAction(self.area_length_action)
+        self.main_widget.runArea.setDefaultAction(self.area_length_action)
+        self.main_widget.runArea.setIcon(QIcon(f'{self.plugin_dir}/icons/measuring.png'))
+        self.main_widget.runArea.setToolTip(tr("Map quick print"))
+
         orto_button = self.main_widget.runOrtoTool
         orto_button.setIcon(QIcon(f'{self.plugin_dir}/icons/orto_icon2.png'))
         self.orto = OrtoAddingTool(self.main_widget, orto_button)
@@ -187,7 +199,7 @@ class MainTabQgsWidget:
             process.initProcessing()
             self.load_ribbons()
 
-    def ustaw_legende(self):
+    def ustaw_legende(self) -> None:
         self.layer_panel = \
             self.iface.mainWindow().findChildren(QDockWidget, 'Layers')[0]
 
@@ -205,7 +217,7 @@ class MainTabQgsWidget:
         self.layer_panel.setTitleBarWidget(QWidget())
         self.main_widget.pokaz_warstwy.toggled.connect(self.warstwy_show)
 
-    def load_ribbons(self):
+    def load_ribbons(self) -> None:
         self.main_widget.edit_session_toggle()
         ribbon_conf = self.config.load_user_ribbon_setup()
         if not ribbon_conf:
@@ -232,14 +244,14 @@ class MainTabQgsWidget:
         self.main_widget.tabWidget.setCurrentIndex(0)
         self.main_widget.edit_session_toggle()
 
-    def visible_logo_giap_toolbar(self, visible):
+    def visible_logo_giap_toolbar(self, visible: bool) -> None:
         self.logo_toolbar.setVisible(not visible)
 
-    def lock_logo_Toolbar(self):
+    def lock_logo_Toolbar(self) -> None:
         if not self.logo_toolbar.isVisible() and not self.toolbar.isVisible():
             self.logo_toolbar.setVisible(True)
 
-    def off_on_search_tool(self, visibility):
+    def off_on_search_tool(self, visibility) -> None:
         elements = ['comboBox_woj', 'comboBox_pow', 'comboBox_gmina',
                     'comboBox_obr',
                     'lineEdit_parcel', 'lineEdit_address', 'line']
@@ -248,7 +260,7 @@ class MainTabQgsWidget:
             getattr(self.main_widget, elem).setVisible(visibility)
         self.visibility_search_tool = not visibility
 
-    def custom_prints(self):
+    def custom_prints(self) -> None:
         """Load custom tools to qgis"""
 
         b_mprints = self.main_widget.findChildren(QToolButton, 'giapMyPrints')
@@ -306,7 +318,7 @@ class MainTabQgsWidget:
                 tbar.show()
         self.iface.mainWindow().menuBar().show()
 
-    def my_prints_setup(self):
+    def my_prints_setup(self) -> None:
         btns = self.iface.mainWindow().findChildren(
             QToolButton, 'giapMyPrints')
         for btn in btns:
@@ -320,7 +332,7 @@ class MainTabQgsWidget:
                 self.action_my_prints_menu
             )
 
-    def action_my_prints_menu(self):
+    def action_my_prints_menu(self) -> None:
         btns = self.iface.mainWindow().findChildren(
             QToolButton, 'giapMyPrints')
         for btn in btns:
@@ -340,11 +352,11 @@ class MainTabQgsWidget:
             list(map(menu.addAction, actions))
             btn.setMenu(menu)
 
-    def open_layout_by_name(self, action_name):
+    def open_layout_by_name(self, action_name: str) -> None:
         layout = self.projectLayoutManager.layoutByName(action_name)
         self.iface.openLayoutDesigner(layout)
 
-    def unload(self):
+    def unload(self) -> None:
         self.iface.mainWindow().menuBar().show()
         self.style_manager.activate_style('')
         self.save_user_ribbon_config(False)
@@ -360,7 +372,7 @@ class MainTabQgsWidget:
             0
         )
 
-    def menu_show(self):
+    def menu_show(self) -> None:
         """Toggle visiblity of menubar"""
         mbar = self.iface.mainWindow().menuBar()
         splitter_start = QRect(0, -20, mbar.width(), 20)
@@ -372,7 +384,7 @@ class MainTabQgsWidget:
             self.set_animation(mbar, splitter_end, splitter_start, 200)
             mbar.hide()
 
-    def set_edit_session(self):
+    def set_edit_session(self) -> None:
         if self.editButton.isChecked():
             self.editButton.setText(tr("Finish editing"))
             self.main_widget.edit_session_toggle()
@@ -384,7 +396,7 @@ class MainTabQgsWidget:
                     self.main_widget.remove_tab(0)
                 self.load_ribbons()
 
-    def warstwy_show(self):
+    def warstwy_show(self) -> None:
         splitter_start = QRect(-self.layer_panel.width(), self.layer_panel.y(),
                                self.layer_panel.width(),
                                self.layer_panel.height())
@@ -400,12 +412,12 @@ class MainTabQgsWidget:
             self.set_animation(
                 self.layer_panel, splitter_end, splitter_start, 200, 'out')
 
-    def resize_layer_view(self):
+    def resize_layer_view(self) -> None:
         canvas_geom = self.iface.mapCanvas().geometry()
         self.layer_view.setGeometry(0, 79, 280, canvas_geom.height() - 79)
 
     def set_animation(
-            self, widget, qrect_start, qrect_end, duration, mode='in'):
+            self, widget: QObject, qrect_start: QRect, qrect_end: QRect, duration: int, mode: str='in') -> None:
         animation_in = QPropertyAnimation(widget, b"geometry")
         animation_in.setStartValue(qrect_start)
         animation_in.setEndValue(qrect_end)
@@ -416,11 +428,11 @@ class MainTabQgsWidget:
             lambda: self.delete_animation(animation_in, widget, mode)
         )
 
-    def repair_layers_names_for_compositions(self):
+    def repair_layers_names_for_compositions(self) -> None:
         for layer in list(project.mapLayers().values()):
             layer.setName(layer.name().replace(':', '_'))
 
-    def projekt_wczytany(self):
+    def projekt_wczytany(self) -> None:
         """
             setup after loading new project
         """
@@ -429,12 +441,12 @@ class MainTabQgsWidget:
         self.kompozycje.start()
         self.kompozycje.modify_tool.check_for_changes_in_comps()
 
-    def delete_animation(self, animation, widget, mode):
+    def delete_animation(self, animation: QPropertyAnimation, widget: QObject, mode: str) -> None:
         del animation
         if mode == 'out':
             widget.hide()
 
-    def show_style_manager_dialog(self):
+    def show_style_manager_dialog(self) -> None:
         """Show dialog to manage qgis styles"""
         self.style_manager_dlg = StyleManagerDialog(self.style_manager)
         self.style_manager_dlg.setWindowFlags(
@@ -442,7 +454,7 @@ class MainTabQgsWidget:
         )
         self.style_manager_dlg.exec_()
 
-    def show_settings_dialog(self):
+    def show_settings_dialog(self) -> None:
         self.set_dlg = SettingsDialog()
         self.set_dlg.pushButton_restore.clicked.connect(
             self.restore_default_ribbon_settings)
@@ -457,7 +469,7 @@ class MainTabQgsWidget:
             self.set_dlg.radioButton_pl.setChecked(True)
         self.set_dlg.exec_()
 
-    def set_polish(self):
+    def set_polish(self) -> None:
         self.check_lang_win_flag()
         str(QSettings().setValue('locale/userLocale', 'pl_PL'))
         self.iface.messageBar().pushMessage(
@@ -468,7 +480,7 @@ class MainTabQgsWidget:
         )
         self.restart_qgis()
 
-    def set_english(self):
+    def set_english(self) -> None:
         self.check_lang_win_flag()
         str(QSettings().setValue('locale/userLocale', 'en'))
         self.iface.messageBar().pushMessage(
@@ -479,7 +491,7 @@ class MainTabQgsWidget:
         )
         self.restart_qgis()
 
-    def restore_overrideFlag(self):
+    def restore_overrideFlag(self) -> None:
         str(QSettings().setValue('locale/overrideFlag', "false"))
         self.iface.messageBar().pushMessage(
             'GIAP-PolaMap(lite)',
@@ -489,7 +501,7 @@ class MainTabQgsWidget:
         )
         self.restart_qgis()
 
-    def restore_default_ribbon_settings(self):
+    def restore_default_ribbon_settings(self) -> None:
         self.set_dlg.pushButton_restore.clicked.disconnect()
         edit_ses_on_start = self.main_widget.edit_session
         if edit_ses_on_start: self.main_widget.edit_session_toggle()
@@ -501,10 +513,10 @@ class MainTabQgsWidget:
         self.set_dlg.pushButton_restore.clicked.connect(
             self.restore_default_ribbon_settings)
 
-    def check_lang_win_flag(self):
+    def check_lang_win_flag(self) -> None:
         QgsSettings().setValue('locale/overrideFlag', 'true')
 
-    def restart_qgis(self):
+    def restart_qgis(self) -> None:
         if project.write():
             res = CustomMessageBox(
                 None,
@@ -518,7 +530,7 @@ class MainTabQgsWidget:
                     f'{QgsApplication.arguments()[0]} {project.fileName()}')
                 self.iface.actionExit().trigger()
 
-    def install_translator(self):
+    def install_translator(self) -> None:
         locale = 'en'
         try:
             loc = str(QSettings().value('locale/userLocale'))
