@@ -677,6 +677,16 @@ Proszę czekać...</translation>
         <source>Error - The section name already exists.</source>
         <translation>Błąd - Sekcja o wybranej nazwie już istnieje.</translation>
     </message>
+    <message>
+        <location filename="../AreaAndLengthTool/Events/BaseEventPrototype.py" line="80"/>
+        <source>Length:</source>
+        <translation>Długość</translation>
+    </message>
+    <message>
+        <location filename="../AreaAndLengthTool/Events/BaseEventPrototype.py" line="87"/>
+        <source>Area:</source>
+        <translation>Powierzchnia</translation>
+    </message>
 </context>
 <context>
     <name>CompositionsSaverDialog</name>
@@ -1171,9 +1181,19 @@ lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
         <translation>Adnotacje</translation>
     </message>
     <message>
+        <location filename="../wydruk_dialog.ui" line="365"/>
+        <source>Add date</source>
+        <translation>Dodaj datę</translation>
+    </message>
+    <message>
         <location filename="../wydruk_dialog.ui" line="375"/>
         <source>Paper size</source>
         <translation>Format Arkusza</translation>
+    </message>
+    <message>
+        <location filename="../wydruk_dialog.ui" line="411"/>
+        <source>Resolution</source>
+        <translation>Adnotacje</translation>
     </message>
     <message>
         <location filename="../wydruk_dialog.ui" line="531"/>

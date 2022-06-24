@@ -2,7 +2,7 @@ from qgis.PyQt.QtCore import pyqtSlot, QObject, QEvent
 from qgis.core import QgsCoordinateReferenceSystem, QgsUnitTypes, QgsProject, \
     QgsCoordinateTransform, QgsDistanceArea, QgsGeometry
 
-
+from ...utils import tr
 from ..AnnotationHandler import AnnotationHandler
 
 
@@ -77,14 +77,14 @@ class BaseEventPrototype(QObject):
             string_length = get_string(
                 geometry_length, self.crs_unit['length'],
                 self.measure.convertLengthMeasurement)
-            label_elems.append(f"Length: {string_length}")
+            label_elems.append(f"{tr('Length:')} {string_length}")
 
         geometry_area = geometry.area()/10000
         if geometry_area > 0:
             string_area = get_string(
                 geometry_area, self.crs_unit['area'],
                 self.measure.convertAreaMeasurement)
-            label_elems.append(f"Area: {string_area}")
+            label_elems.append(f"{tr('Area:')} {string_area}")
         return '\n'.join(label_elems)
 
     @pyqtSlot(QObject, QEvent)
