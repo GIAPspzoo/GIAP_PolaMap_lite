@@ -500,6 +500,7 @@ STANDARD_TOOLS = [
             ['giapCompositions', 0, 0],
             ['giapWMS', 0, 1],
             ['giapQuickPrint', 0, 2],
+            ['giapAreaLength', 0, 3],
         ]
     },
 
@@ -1168,6 +1169,7 @@ custom_icon_dict = {
     'giapCompositions': 'compositions_giap.png',
     "giapQuickPrint": 'quick_print.png',
     "giapMyPrints": 'my_prints.png',
+    "giapAreaLength": 'measuring.png',
     'mActionShowAlignRasterTool': 'mActionShowAlignRasterTool.png',
     'mActionNewMemoryLayer': 'mActionNewMemoryLayer.png',
     'mActionSaveProjectAs': 'mActionSaveProjectAs.png',

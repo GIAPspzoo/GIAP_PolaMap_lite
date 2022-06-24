@@ -271,6 +271,13 @@ for the street: Warszawa, Pasaż Ursynowski</string>
       </widget>
      </item>
      <item>
+      <widget class="QToolButton" name="runArea">
+       <property name="text">
+        <string>...</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QToolButton" name="runQuickPrintButton">
        <property name="text">
         <string>...</string>

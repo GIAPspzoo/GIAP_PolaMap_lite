@@ -2,9 +2,9 @@ import os
 import webbrowser
 
 from plugins.processing.tools.general import execAlgorithmDialog
-from qgis.PyQt import uic
+from qgis.PyQt import uic, QtWidgets
 from qgis.PyQt.QtCore import Qt, QSize, QEvent, pyqtSignal, QMimeData, QRect, \
-    QTimer
+    QTimer, QPoint
 from qgis.PyQt.QtGui import QDrag, QPainter, QPixmap, QCursor, QIcon, QFont, \
     QFontMetrics
 from qgis.PyQt.QtWidgets import QWidget, QApplication, QHBoxLayout, \
@@ -13,6 +13,7 @@ from qgis.PyQt.QtWidgets import QWidget, QApplication, QHBoxLayout, \
     QBoxLayout, QMessageBox, QScrollArea
 from qgis.core import QgsApplication
 from qgis.utils import iface
+from qgis.gui import QgsMapTool
 
 from .OrtoTools import OrtoAddingTool
 from .QuickPrint import PrintMapTool
@@ -22,6 +23,7 @@ from .config import Config
 from .utils import STANDARD_TOOLS, DEFAULT_TABS, tr, TOOLS_HEADERS, \
     STANDARD_QGIS_TOOLS, icon_manager, CustomMessageBox
 
+from .AreaAndLengthTool.AreaAndLengthTool import AreaAndLengthTool
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'giap_dynamic_layout.ui'))
 
@@ -31,7 +33,7 @@ class MainWidget(QWidget, FORM_CLASS):
     printsAdded = pyqtSignal()
     deletePressSignal = pyqtSignal()
 
-    def __init__(self, parent=None):
+    def __init__(self, parent: QtWidgets=None) -> None:
         super(MainWidget, self).__init__(parent)
         self.setAttribute(Qt.WA_DeleteOnClose)
 
@@ -64,7 +66,7 @@ class MainWidget(QWidget, FORM_CLASS):
                 icon_manager(['mActionMoveFeature'],
                              self.parent)['mActionMoveFeature'])
 
-    def add_tab(self, label=None):
+    def add_tab(self, label: str=None):
         """Adds new tab at the end
         :return: tab widget
         """
@@ -97,7 +99,7 @@ class MainWidget(QWidget, FORM_CLASS):
 
         return tab_ind, tab
 
-    def remove_tab(self, tind):
+    def remove_tab(self, tind: int) -> None:
         """Removes tab with given tab index"""
 
         self.tabWidget.removeTab(tind)
@@ -136,7 +138,7 @@ class MainWidget(QWidget, FORM_CLASS):
 
         return section
 
-    def edit_session_toggle(self, ask=False):
+    def edit_session_toggle(self, ask: bool=False) -> None:
         """Show controls for edti session"""
 
         self.edit_session = not self.edit_session
@@ -155,7 +157,7 @@ class MainWidget(QWidget, FORM_CLASS):
 
         self._tab_controls()
 
-    def _tab_controls(self):
+    def _tab_controls(self) -> None:
         """ show tab controls"""
         right = self.tabWidget.tabBar().RightSide
 
@@ -170,7 +172,7 @@ class MainWidget(QWidget, FORM_CLASS):
                 self.tabWidget.tabBar().tabButton(tab_idx, right).hide()
                 self._section_control(tab_idx)
 
-    def _section_control(self, tabind):
+    def _section_control(self, tabind: int) -> None:
         """add buttons to every tab for adding new section"""
         plug_dir = os.path.dirname(__file__)
         lay = self.tabWidget.widget(tabind).lay
@@ -243,7 +245,7 @@ class MainWidget(QWidget, FORM_CLASS):
                 self.tabWidget.widget(tabind).lay.addWidget(gbut)
             self.tabWidget.widget(tabind).setUpdatesEnabled(True)
 
-    def add_user_selected_section(self):
+    def add_user_selected_section(self) -> None:
         """Show dialog to user and adds selected section to current ribbon
             if there should be more custom tools, here is the place to put them
         """
@@ -281,7 +283,7 @@ class MainWidget(QWidget, FORM_CLASS):
                 self.printsAdded.emit()
         self.tabWidget.setUpdatesEnabled(True)
 
-    def run_select_section(self):
+    def run_select_section(self) -> None:
         self.dlg.addSectionTab.clicked.connect(self.section_tab)
         self.dlg.searchToolTab.clicked.connect(self.search_tab)
         self.dlg.userSectionsTab.clicked.connect(self.user_section_tab)
@@ -296,7 +298,7 @@ class MainWidget(QWidget, FORM_CLASS):
             self.search_add_sections_tree)
         self.connect_checking_signal()
 
-    def add_to_ribbon(self):
+    def add_to_ribbon(self) -> None:
         self.tabWidget.setUpdatesEnabled(True)
         sel_ind = self.dlg.algorithmTree.selectedIndexes()
         tool = {}
@@ -355,7 +357,7 @@ class MainWidget(QWidget, FORM_CLASS):
     def user_section_tab(self) -> None:
         self.dlg.stackedWidget.setCurrentIndex(2)
 
-    def _section_control_remove(self, tabind):
+    def _section_control_remove(self, tabind: int) -> None:
         lay = self.tabWidget.widget(tabind).lay
         self.tabWidget.setUpdatesEnabled(False)
         for ind in range(lay.count() - 1, -1, -1):
@@ -370,7 +372,7 @@ class MainWidget(QWidget, FORM_CLASS):
         QApplication.processEvents()
         self.tabWidget.setUpdatesEnabled(True)
 
-    def _new_tab_tab_control(self):
+    def _new_tab_tab_control(self) -> None:
         """Pseudo tab to control adding fully feature tab"""
 
         self.tabWidget.setUpdatesEnabled(False)
@@ -385,17 +387,17 @@ class MainWidget(QWidget, FORM_CLASS):
                 self.tabWidget.removeTab(last_tab)
         self.tabWidget.setUpdatesEnabled(True)
 
-    def tab_doubleclicked(self, ind):
+    def tab_doubleclicked(self, ind: int) -> None:
         if not self.edit_session:
             return
         self.tabWidget.tabBar().editTab(ind)
 
-    def tab_clicked(self, ind):
+    def tab_clicked(self, ind: int) -> None:
         if self.edit_session:
             if ind == self.tabWidget.tabBar().count() - 1:
                 self.add_tab()
 
-    def connect_checking_signal(self):
+    def connect_checking_signal(self) -> None:
         self.dlg.customToolList.selectionModel(). \
             selectionChanged.disconnect()
         self.dlg.customToolList.selectionModel(). \
@@ -420,7 +422,7 @@ class MainWidget(QWidget, FORM_CLASS):
             self.dlg.refresh_lists()
             self.connect_checking_signal()
 
-    def check_for_remove(self):
+    def check_for_remove(self) -> None:
         if not hasattr(self, 'custom_section_dlg'):
             self.custom_section_dlg = CustomSectionManager(self, 'remove')
         row = self.dlg.get_selected_row()
@@ -445,14 +447,14 @@ class MainWidget(QWidget, FORM_CLASS):
             self.dlg.refresh_lists()
             self.connect_checking_signal()
 
-    def eventFilter(self, watched, ev):
+    def eventFilter(self, watched: QWidget, ev: QEvent) -> bool:
         # turn off dragging while not in edit session
         if isinstance(watched, CustomSection) and not self.edit_session:
             if ev.type() == QEvent.MouseMove:
                 return True
         return super().eventFilter(watched, ev)
 
-    def keyPressEvent(self, e):
+    def keyPressEvent(self, e: QEvent) ->None:
         if self.edit_session:
             if e.key() == Qt.Key_Delete:
                 self.deletePressSignal.emit()
@@ -482,7 +484,7 @@ class MainWidget(QWidget, FORM_CLASS):
 
 
 class CustomTabBar(QTabBar):
-    def __init__(self, label='New tab', parent=None):
+    def __init__(self, label: str='New tab', parent: QtWidgets=None) -> None:
         super().__init__(parent)
         self.setAttribute(Qt.WA_DeleteOnClose)
 
@@ -491,7 +493,7 @@ class CustomTabBar(QTabBar):
         self._editor.editingFinished.connect(self.handleEditingFinished)
         self._editor.installEventFilter(self)
 
-    def eventFilter(self, widget, event):
+    def eventFilter(self, widget: QtWidgets, event: QEvent) -> bool:
         if ((event.type() == QEvent.MouseButtonPress and
              not self._editor.geometry().contains(event.globalPos())) or
                 (event.type() == QEvent.KeyPress and
@@ -500,7 +502,7 @@ class CustomTabBar(QTabBar):
             self._editor.hide()
         return super().eventFilter(widget, event)
 
-    def editTab(self, index):
+    def editTab(self, index: int) -> None:
         rect = self.parent().tabBar().tabRect(index)
         self._editor.setFixedSize(rect.size())
         self._editor.move(self.parent().mapToGlobal(rect.topLeft()))
@@ -516,7 +518,7 @@ class CustomTabBar(QTabBar):
 
 
 class CustomTab(QWidget):
-    def __init__(self, lab, parent=None):
+    def __init__(self, lab: str, parent: QtWidgets =None) -> None:
         super(CustomTab, self).__init__(parent)
         self.setAttribute(Qt.WA_DeleteOnClose)
 
@@ -532,13 +534,13 @@ class CustomTab(QWidget):
 
         self.setAcceptDrops(True)
 
-    def dragEnterEvent(self, e):
+    def dragEnterEvent(self, e: QEvent) -> None:
         e.accept()
 
-    def dragMoveEvent(self, e):
+    def dragMoveEvent(self, e: QEvent) -> None:
         e.accept()
 
-    def dropEvent(self, e):
+    def dropEvent(self, e: QEvent) -> None:
         # accept only Custom Sections
         if not isinstance(e.source(), CustomSection):
             if isinstance(e.source(), CustomToolButton):
@@ -594,7 +596,7 @@ class CustomTab(QWidget):
 
 
 class CustomSection(QWidget):
-    def __init__(self, name='New Section', parent=None):
+    def __init__(self, name: str ='New Section', parent: QtWidgets =None) -> None:
         super(CustomSection, self).__init__(parent)
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.edit = True
@@ -661,7 +663,7 @@ class CustomSection(QWidget):
         self.setLayout(self.horizontalLayout)
         self.pushButton_close_sec.clicked.connect(self.unload)
 
-    def unload(self):
+    def unload(self) -> None:
         self.hide()
         self.deleteLater()
         QApplication.processEvents()
@@ -694,13 +696,13 @@ class CustomSection(QWidget):
             'label': lab, 'btn_size': self.button_size, 'btns': blist,
         }
 
-    def edit_toggle(self, state):
+    def edit_toggle(self, state: bool) -> None:
         if state:
             self.show_edit_options()
         else:
             self.hide_edit_options()
 
-    def key_pressed(self):
+    def key_pressed(self) -> None:
         """user pressed delete, and we are in edit session"""
         if not self.edit:
             return
@@ -721,7 +723,7 @@ class CustomSection(QWidget):
 
         self.clean_grid_layout()
 
-    def clean_grid_layout(self):
+    def clean_grid_layout(self) -> None:
         """ move all icons to left, after some where deleted"""
         items = [[], []]  # both rows
         for col in range(self.gridLayout.columnCount()):
@@ -744,7 +746,7 @@ class CustomSection(QWidget):
         self.gridLayout.update()
         # self.gridLayoutWidget.adjustSize()
 
-    def add_action(self, action, row, col):
+    def add_action(self, action: QAction, row: int, col: int):
         self.tbut = CustomToolButton(self)
         if isinstance(action, QAction):
             name_tool = action.objectName()
@@ -793,7 +795,7 @@ class CustomSection(QWidget):
 
         return self.tbut
 
-    def set_new_giap_icons(self, button, name_tool, action):
+    def set_new_giap_icons(self, button, name_tool: str, action: QAction) -> None:
         icon = icon_manager([name_tool], self.parent())[name_tool]
         if icon:
             action.setIcon(icon)
@@ -820,6 +822,18 @@ class CustomSection(QWidget):
                 self.tbut.setToolTip(tr("Map quick print"))
             if oname == "giapMyPrints":
                 self.tbut.setToolTip(tr("My Prints"))
+            if oname == "giapAreaLength":
+                self.tbut.setToolTip(tr("Area and length"))
+                iface.mapCanvas().refresh()
+                area_length_tool = QgsMapTool(iface.mapCanvas())
+                self.area_length_event = AreaAndLengthTool(iface)
+                self.area_length_action = QAction( QIcon(icon),
+                    "Area and length", iface.mainWindow())
+                self.area_length_action.setCheckable(True)
+                self.area_length_action.triggered.connect(self.area_length_event.run)
+                area_length_tool.setAction(self.area_length_action)
+                self.tbut.setDefaultAction(self.area_length_action)
+                raise
             self.tbut.setIcon(icon)
 
     def unload_custom_actions(self) -> None:
@@ -851,16 +865,16 @@ class CustomSection(QWidget):
                     items[row].append(it.widget())
         return items
 
-    def get_toolbutton_layout_index_from_pos(self, pos):
-        for i in range(self.gridLayout.count()):
-            rect = self.gridLayout.itemAt(i).widget()
+    def get_toolbutton_layout_index_from_pos(self, pos: QPoint) -> int:
+        for index in range(self.gridLayout.count()):
+            rect = self.gridLayout.itemAt(index).widget()
             # recalculate rect to compatible coord system
             rect_ok = QRect(0, 0, rect.width(), rect.height())
             if rect_ok.contains(rect.mapFromGlobal(pos)) and \
-                    i != self.target:
-                return i
+                    index != self.target:
+                return index
 
-    def eventFilter(self, watched, event):
+    def eventFilter(self, watched, event: QEvent) -> bool:
         if event.type() == QEvent.MouseButtonPress:
             self.mousePressEvent(event)
         elif event.type() == QEvent.MouseMove and \
@@ -879,11 +893,10 @@ class CustomSection(QWidget):
             pass
         return super().eventFilter(watched, event)
 
-    def mouseReleaseEvent(self, event) -> None:
+    def mouseReleaseEvent(self, event: QEvent) -> None:
         event.accept()
 
-    def mouseMoveEvent(self, e):
-        print('mouse event')
+    def mouseMoveEvent(self, e: QEvent):
         if not self.edit:
             return
 
@@ -902,10 +915,10 @@ class CustomSection(QWidget):
         drag.exec_(Qt.MoveAction)
         e.accept()
 
-    def dragEnterEvent(self, event) -> None:
+    def dragEnterEvent(self, event: QEvent) -> None:
         event.accept()
 
-    def dropEvent(self, event) -> None:  # noqa
+    def dropEvent(self, event: QEvent) -> None:  # noqa
         gpos = QCursor().pos()
 
         if isinstance(event.source(), CustomToolButton):
@@ -935,17 +948,17 @@ class CustomSection(QWidget):
 
             if None not in [source, self.target] and not move:
                 # swap qtoolbuttons
-                i, j = max(self.target, source), min(self.target, source)
-                p1 = self.gridLayout.getItemPosition(i)
-                p2 = self.gridLayout.getItemPosition(j)
-                it1 = self.gridLayout.takeAt(i)
-                it2 = self.gridLayout.takeAt(j)
+                max_ind, min_ind, = max(self.target, source), min(self.target, source)
+                pos1 = self.gridLayout.getItemPosition(max_ind)
+                pos2 = self.gridLayout.getItemPosition(min_ind)
+                it1 = self.gridLayout.takeAt(max_ind)
+                it2 = self.gridLayout.takeAt(min_ind)
                 it1.widget().setDown(False)
                 it2.widget().setDown(False)
                 it1.widget().drag_state = False
                 it2.widget().drag_state = False
-                self.gridLayout.addItem(it1, *p2)
-                self.gridLayout.addItem(it2, *p1)
+                self.gridLayout.addItem(it1, *pos2)
+                self.gridLayout.addItem(it2, *pos1)
             # elif move:
             #     i = self.target
             #     it1 = self.gridLayout.takeAt(i)
@@ -958,16 +971,16 @@ class CustomSection(QWidget):
 
             target = None
             source = None
-            for i in range(lay.count()):
-                if not isinstance(lay.itemAt(i).widget(), CustomSection):
+            for index in range(lay.count()):
+                if not isinstance(lay.itemAt(index).widget(), CustomSection):
                     continue
 
-                it = lay.itemAt(i)
+                it = lay.itemAt(index)
                 if it.widget() is event.source():
-                    source = i
+                    source = index
                 if it.widget().geometry().contains(
                         it.widget().parent().mapFromGlobal(gpos)):
-                    target = i
+                    target = index
 
             if source == target or None in [source, target]:
                 return
@@ -977,8 +990,8 @@ class CustomSection(QWidget):
                 target -= 1
 
             it_list = []
-            for i in range(lay.count() - 1, target - 1, -1):
-                it_list.append(lay.takeAt(i))
+            for index in range(lay.count() - 1, target - 1, -1):
+                it_list.append(lay.takeAt(index))
             it_list.reverse()
             lay.addItem(item)
             for it in it_list:
@@ -1006,7 +1019,7 @@ class CustomSection(QWidget):
 
 
 class CustomToolButton(QToolButton):
-    def __init__(self, parent):
+    def __init__(self, parent:QtWidgets) -> None:
         super(CustomToolButton, self).__init__(parent)
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.edit = True
@@ -1015,7 +1028,7 @@ class CustomToolButton(QToolButton):
         self.org_state = True  # True - enabled for click outside edit sesion
         self.drag_state = False
 
-    def eventFilter(self, widget, event):
+    def eventFilter(self, widget: QWidget, event: QEvent) -> bool:
         if event.type() == QEvent.MouseButtonRelease and self.edit:
             return True
         if self.edit and event.type() == QEvent.MouseButtonPress:
@@ -1038,7 +1051,7 @@ class CustomToolButton(QToolButton):
         self.blockSignals(False)
         self.edit = False
 
-    def mouseClickEvent(self, event) -> None:
+    def mouseClickEvent(self, event: QEvent) -> None:
         if self.edit:
             event.accept()
             event.source.setDown(False)
@@ -1055,7 +1068,7 @@ class CustomToolButton(QToolButton):
                 self.selected = True
             self.drag_state = False
 
-    def mouseMoveEvent(self, e) -> None:
+    def mouseMoveEvent(self, e: QEvent) -> None:
         if not self.edit or not self.drag_state:
             return
         drag = QDrag(self)
@@ -1072,7 +1085,7 @@ class CustomToolButton(QToolButton):
         drag.setHotSpot(e.pos())
         drag.exec_(Qt.MoveAction)
 
-    def mousePressEvent(self, event) -> None:
+    def mousePressEvent(self, event: QEvent) -> None:
         if self.edit:
             event.accept()
             self.setDown(False)
@@ -1081,12 +1094,12 @@ class CustomToolButton(QToolButton):
         else:
             super(CustomToolButton, self).mousePressEvent(event)
 
-    def dragEnterEvent(self, event) -> None:
+    def dragEnterEvent(self, event: QEvent) -> None:
         event.accept()
 
 
 class CustomSectionAdd(QToolButton):
-    def __init__(self, parent=None):
+    def __init__(self, parent: QtWidgets=None) -> None:
         super(CustomSectionAdd, self).__init__(parent)
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.setObjectName('giapSectionAddButton')
@@ -1103,7 +1116,7 @@ class CustomSectionAdd(QToolButton):
 
 
 class CustomLabel(QLabel):
-    def __init__(self, lab, parent=None):
+    def __init__(self, lab: str, parent: QtWidgets=None) -> None:
         super(CustomLabel, self).__init__(parent)
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.setText(lab)
@@ -1118,7 +1131,7 @@ class CustomLabel(QLabel):
         self.font = QFont('Segoe UI')
         self.fontm = QFontMetrics(self.font)
 
-    def mousePressEvent(self, event):
+    def mousePressEvent(self, event) -> None:
         if not self.parent().edit:
             return
 
@@ -1129,7 +1142,7 @@ class CustomLabel(QLabel):
         if not self.cinput.isVisible():
             self.cinput.show()
 
-    def eventFilter(self, widget, event):
+    def eventFilter(self, widget, event: QEvent) -> bool:
         if ((event.type() == QEvent.MouseButtonPress and
              not self.cinput.geometry().contains(event.globalPos())) or
                 (event.type() == QEvent.KeyPress and
