@@ -833,7 +833,6 @@ class CustomSection(QWidget):
                 self.area_length_action.triggered.connect(self.area_length_event.run)
                 area_length_tool.setAction(self.area_length_action)
                 self.tbut.setDefaultAction(self.area_length_action)
-                raise
             self.tbut.setIcon(icon)
 
     def unload_custom_actions(self) -> None:
