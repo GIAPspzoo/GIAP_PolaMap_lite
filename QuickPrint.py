@@ -271,7 +271,7 @@ class PrintMapTool:
 
         if self.dialog.scaleCheckBox.isChecked():
             scale_label = QgsLayoutItemLabel(self.layout)
-            scale_label.setText(tr("SCALE: "))
+            scale_label.setText(tr("SCALE:"))
             scale = QgsLayoutItemScaleBar(self.layout)
             scale.setLinkedMap(self.get_map_item())
             scale.setStyle('Numeric')
@@ -281,12 +281,15 @@ class PrintMapTool:
             scale_label.adjustSizeToText()
             self.layout.addItem(scale_label)
             self.layout.addItem(scale)
+            scale_height = scale_label.rectWithFrame().height() / 4
             scale_label.moveBy(16, height - 14.)
-            scale.moveBy(30, height - 15.)
+            scale.moveBy(16 + scale_label.rectWithFrame().width(), height - scale_height - 14.)
 
         if self.dialog.dateCheckBox.isChecked():
             date_label = QgsLayoutItemLabel(self.layout)
             date_label.setText(self.dialog.dateedit.text())
+            date_font = QFont()
+            date_label.setFont(date_font)
             date_label.adjustSizeToText()
             self.layout.addItem(date_label)
             if self.dialog.scaleCheckBox.isChecked():
@@ -434,10 +437,7 @@ class PrintMapTool:
             adnotation.setFont(adnotation_font)
             adnotation.adjustSizeToText()
             self.layout.addItem(adnotation)
-            new_width = width - (len(
-                self.dialog.adnotacje_lineEdit.text()) * 2.6) if width - (len(
-                self.dialog.adnotacje_lineEdit.text()) * 2.6) > width / 2.6 else width / 2.6
-            adnotation.setPos(new_width, height - 14)
+            adnotation.moveBy(width - adnotation.rectWithFrame().width() - 16, height - 14)
         progress.show()
         progress.setValue(20)
         if filename:
