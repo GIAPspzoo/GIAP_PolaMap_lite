@@ -30,7 +30,7 @@
     </message>
     <message>
         <location filename="../QuickPrint.py" line="270"/>
-        <source>SCALE: </source>
+        <source>SCALE:</source>
         <translation>SKALA: </translation>
     </message>
     <message>
