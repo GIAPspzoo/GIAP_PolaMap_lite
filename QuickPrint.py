@@ -11,7 +11,7 @@ from qgis._core import QgsLayoutExporter, QgsWkbTypes, QgsLayoutItemMap, \
     QgsLayout, QgsProject, QgsUnitTypes, QgsLayoutSize, QgsGeometry, \
     QgsVectorLayer, QgsFeature, QgsSymbol, QgsSimpleFillSymbolLayer, \
     QgsLayoutItemLegend, QgsLayerTreeGroup, QgsLegendStyle, QgsLayoutItem, \
-    QgsLayoutItemLabel, QgsLayoutItemScaleBar
+    QgsLayoutItemLabel, QgsLayoutItemScaleBar, QgsRectangle
 from qgis._gui import QgsRubberBand, QgisInterface
 from qgis.utils import iface
 from typing import Union
@@ -121,7 +121,8 @@ class PrintMapTool:
             pos_x, pos_y = 16, 16
             page.setPageSize(QgsLayoutSize(width, height))
             canvas_extent = self.iface.mapCanvas().extent()
-            current_rect = QRectF(pos_x, pos_y, width - 2 * pos_x, height - 2 * pos_y)
+            current_rect = QRectF(pos_x, pos_y, width, height) #current_rect ustawia QRectF na wymiary \
+            # całego okna widoku
 
             map_item = QgsLayoutItemMap(self.layout)
             map_item.updateBoundingRect()
@@ -140,12 +141,29 @@ class PrintMapTool:
 
             self.layout.addItem(map_item)
 
+            # zablokowanie skali i zmniejszenie powiększenia tak, aby ramka current_rect odsunęła się od krawędzi widoku
+            self.iface.mapCanvas().scaleChanged.disconnect(
+                self.create_composer
+            )
+            self.iface.mapCanvas().setScaleLocked(True)
+            xmin = (map_item.extent().xMinimum())-16
+            xmax = (map_item.extent().xMaximum())+16
+            ymin = (map_item.extent().yMinimum())-16
+            ymax = (map_item.extent().yMaximum())+16
+            self.iface.mapCanvas().setExtent(QgsRectangle(xmin, ymin, xmax, ymax), magnified=True)
+            self.iface.mapCanvas().scaleChanged.connect(
+                self.create_composer
+            )
+            self.iface.mapCanvas().setScaleLocked(False)
+
     def reset_rubber(self) -> None:
         self.rubberband.reset(QgsWkbTypes.PolygonGeometry)
 
     def rejected_dialog(self) -> None:
         self.is_active = False
         self.reset_rubber()
+        self.iface.mapCanvas().setMagnificationFactor(1) #powrót do powiększenia 100% przy wyłączeniu okna\
+        # szybkiego wydruku
         try:
             self.iface.mapCanvas().scaleChanged.disconnect(
                 self.create_composer
