@@ -121,9 +121,7 @@ class PrintMapTool:
             pos_x, pos_y = 16, 16
             page.setPageSize(QgsLayoutSize(width, height))
             canvas_extent = self.iface.mapCanvas().extent()
-            current_rect = QRectF(pos_x, pos_y, width, height) #current_rect ustawia QRectF na wymiary \
-            # całego okna widoku
-
+            current_rect = QRectF(pos_x, pos_y, width, height)
             map_item = QgsLayoutItemMap(self.layout)
             map_item.updateBoundingRect()
             map_item.setRect(current_rect)
@@ -141,19 +139,16 @@ class PrintMapTool:
 
             self.layout.addItem(map_item)
 
-            # zablokowanie skali i zmniejszenie powiększenia tak, aby ramka current_rect odsunęła się od krawędzi widoku
             self.iface.mapCanvas().scaleChanged.disconnect(
-                self.create_composer
-            )
+                self.create_composer)
             self.iface.mapCanvas().setScaleLocked(True)
-            xmin = (map_item.extent().xMinimum())-16
-            xmax = (map_item.extent().xMaximum())+16
-            ymin = (map_item.extent().yMinimum())-16
-            ymax = (map_item.extent().yMaximum())+16
+            xmin = (map_item.extent().xMinimum()) - pos_x
+            xmax = (map_item.extent().xMaximum()) + pos_x
+            ymin = (map_item.extent().yMinimum()) - pos_x
+            ymax = (map_item.extent().yMaximum()) + pos_x
             self.iface.mapCanvas().setExtent(QgsRectangle(xmin, ymin, xmax, ymax), magnified=True)
             self.iface.mapCanvas().scaleChanged.connect(
-                self.create_composer
-            )
+                self.create_composer)
             self.iface.mapCanvas().setScaleLocked(False)
 
     def reset_rubber(self) -> None:
@@ -162,8 +157,7 @@ class PrintMapTool:
     def rejected_dialog(self) -> None:
         self.is_active = False
         self.reset_rubber()
-        self.iface.mapCanvas().setMagnificationFactor(1) #powrót do powiększenia 100% przy wyłączeniu okna\
-        # szybkiego wydruku
+        self.iface.mapCanvas().setMagnificationFactor(1)
         try:
             self.iface.mapCanvas().scaleChanged.disconnect(
                 self.create_composer
