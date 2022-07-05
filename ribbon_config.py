@@ -86,7 +86,8 @@ RIBBON_DEFAULT = [
                         ['mActionNewMemoryLayer', 0, 2],
                         ['mActionNewVectorLayer', 0, 1],
                         ['mActionNewSpatiaLiteLayer', 1, 2],
-                        ['mActionNewVirtualLayer', 0, 3]
+                        ['mActionNewVirtualLayer', 0, 3],
+                        ['mActionNewMeshLayer', 1, 3],
                     ],
                 },
 
@@ -182,12 +183,13 @@ RIBBON_DEFAULT = [
                     ['EnableSnappingAction', 0, 0],
                     ['EnableTracingAction', 0, 1],
                     ['mActionRotateFeature', 0, 2],
-                    ['mActionSimplifyFeature', 0, 3],
-                    ['mActionAddRing', 0, 4],
-                    ['mActionAddPart', 0, 5],
-                    ['mActionFillRing', 0, 6],
-                    ['mActionOffsetCurve', 0, 7],
-                    ['mActionCircularStringCurvePoint', 0, 8],
+                    ['mActionScaleFeature', 0, 3],
+                    ['mActionSimplifyFeature', 0, 4],
+                    ['mActionAddRing', 0, 5],
+                    ['mActionAddPart', 0, 6],
+                    ['mActionFillRing', 0, 7],
+                    ['mActionOffsetCurve', 0, 8],
+                    ['mActionCircularStringCurvePoint', 0, 9],
 
                     ['mActionDeleteRing', 1, 0],
                     ['mActionDeletePart', 1, 1],
@@ -308,7 +310,38 @@ RIBBON_DEFAULT = [
                    ['mProcessingUserMenu_native:reprojectlayer', 1, 0],
                    ['mProcessingUserMenu_native:splitvectorlayer', 1, 1],
                ],
-           },
+            },
+            {
+                'label': tr('Annotations'),
+                'id': 'Annotations',
+                'btn_size': 30,
+                'btns': [
+                    ['mActionCreateAnnotationLayer', 0, 0],
+                    ['mMainAnnotationLayerProperties', 0, 1],
+                    ['mActionModifyAnnotation', 0, 2],
+                    ['mAnnotationsToolBar_1_action', 0, 3],
+                    ['mAnnotationsToolBar_2_action', 0, 4],
+                    ['mAnnotationsToolBar_3_action', 0, 5],
+                    ['mAnnotationsToolBar_4_action', 1, 0],
+                    ['mActionTextAnnotation', 1, 1],
+                    ['mActionFormAnnotation', 1, 2],
+                    ['mActionHtmlAnnotation', 1, 3],
+                    ['mActionSvgAnnotation', 1, 4],
+                    ['mActionAnnotation', 1, 5],
+                ]
+            },
+            {
+                'label': tr('Mesh digitizing'),
+                'id': 'Mesh',
+                'btn_size': 30,
+                'btns': [
+                    ['mMeshToolBar_0_action', 0, 0],
+                    ['ActionMeshSelectByPolygon', 0, 1],
+                    ['ActionMeshSelectByExpression', 0, 2],
+                    ['mMeshToolBar_1_action', 1, 0],
+                    ['mMeshToolBar_1_menu', 1, 1],
+                ]
+            },
 
         ]
     },

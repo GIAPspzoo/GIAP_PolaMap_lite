@@ -3,7 +3,7 @@
 import qgis
 from PyQt5.QtCore import Qt
 from qgis.core import QgsProject, QgsMapLayer, QgsLayerTreeGroup, \
-    QgsLayerTreeLayer
+    QgsLayerTreeLayer, QgsLayerTreeModel, QgsLayerTree
 
 
 def singleton(class_):
@@ -22,7 +22,7 @@ class LayersPanel(object):
     def __init__(self):
         self.iface = qgis.utils.iface
         self.ltv = self.iface.layerTreeView()
-        self.model = self.ltv.model()
+        self.model = self.ltv.layerTreeModel()
         self.root = QgsProject.instance().layerTreeRoot()
 
     def runHide(self):
@@ -35,7 +35,10 @@ class LayersPanel(object):
 
     def hideNode(self, node, bHide=True):
         if type(node) in (QgsLayerTreeLayer, QgsLayerTreeGroup):
-            index = self.model.node2index(node)
+            try:
+                index = self.ltv.node2index(node)
+            except AttributeError:
+                index = self.model.node2index(node)
             self.ltv.setRowHidden(index.row(), index.parent(), bHide)
             node.setCustomProperty('nodeHidden', 'true' if bHide else 'false')
             self.ltv.setCurrentIndex(self.model.node2index(self.root))

@@ -8,10 +8,10 @@ from qgis.PyQt.QtCore import QThread, QObject
 from qgis.PyQt.QtGui import QPen, QBrush, QIcon, QPixmap
 from qgis.PyQt.QtWidgets import QApplication, QProgressDialog, \
     QStyledItemDelegate, QAction, QMessageBox, QScrollArea, QWidget, \
-    QGridLayout, QLabel, QDialogButtonBox
+    QGridLayout, QLabel, QDialogButtonBox, QToolButton, QToolBar
 from qgis.core import QgsProject, QgsMessageLog, Qgis, QgsApplication, \
     QgsVectorLayer, QgsMapLayer
-
+from qgis.utils import iface
 project = QgsProject.instance()
 
 
@@ -879,6 +879,39 @@ STANDARD_QGIS_TOOLS = [
             ['mProcessingAlg_native:selectbylocation', 0, 5],
         ]
     },
+    {
+        'label': tr('Annotations'),
+        'id': 'Annotations',
+        'btn_size': 30,
+        'btns': [
+            ['mActionCreateAnnotationLayer', 0, 0],
+            ['mMainAnnotationLayerProperties', 0, 1],
+            ['mActionModifyAnnotation', 0, 2],
+            ['mAnnotationsToolBar_1_action', 0, 3],
+            ['mAnnotationsToolBar_2_action', 0, 4],
+            ['mAnnotationsToolBar_3_action', 0, 5],
+            ['mAnnotationsToolBar_4_action', 1, 0],
+            ['mActionTextAnnotation', 1, 1],
+            ['mActionFormAnnotation', 1, 2],
+            ['mActionHtmlAnnotation', 1, 3],
+            ['mActionSvgAnnotation', 1, 4],
+            ['mActionAnnotation', 1, 5],
+
+        ]
+    },
+    {
+        'label': tr('Mesh digitizing'),
+        'id': 'MeshDigitizing',
+        'btn_size': 30,
+        'btns': [
+            ['mMeshToolBar_0_action', 0, 0],
+            ['ActionMeshSelectByPolygon', 0, 1],
+            ['ActionMeshSelectByExpression', 0, 2],
+            ['mMeshToolBar_1_action', 1, 0],
+            ['mMeshToolBar_1_menu', 1, 1],
+        ]
+    },
+
 ]
 
 DEFAULT_STYLE = "GIAP Navy Blue"
@@ -1161,7 +1194,7 @@ TOOL_LIST = [
     'mActionAddFeature', 'mActionSaveLayerEdits',
     'mActionShowLayoutManager', 'mActionAddOracleLayer',
     'mActionNewPrintLayout', 'qgis_selectbyattribute',
-    'qgis_selectbyexpression'
+    'mMainAnnotationLayerProperties',
 ]
 
 custom_icon_dict = {
@@ -1183,6 +1216,7 @@ custom_label_dict = {
     "giapMyPrints": "My Prints"
 }
 
+max_ele_nazwy = 4
 
 def icon_manager(tool_list: List[str], main_qgs_widget: QObject = None) -> \
         Dict[str, Union[Optional[QIcon], Any]]:
@@ -1245,4 +1279,62 @@ def add_map_layer_to_group(
     project.addMapLayer(layer, False)
     if group_name:
         group.insertLayer(position, layer)
-        # group.setExpanded(False)
+
+def find_widget_with_menu_in_toolbar(toolbar: QToolBar) -> List[QToolButton]:
+    lista_widgets = toolbar.children()
+    qmenu_list = []
+    for widget in lista_widgets:
+        if isinstance(widget, QToolButton):
+            if widget.popupMode():
+                qmenu_list.append(widget)
+    return qmenu_list
+
+def get_action_from_toolbar(toolbar: QToolBar) -> List[QAction]:
+    lista_widgets = toolbar.children()
+    act_list = []
+    for widget in lista_widgets:
+        if isinstance(widget, QToolButton):
+            if not widget.popupMode() and widget.actions():
+                act_list.append(widget.actions()[0])
+    return act_list
+
+def add_action_from_toolbar(iface: iface, sec, btn: list) -> None:
+    if iface.mainWindow().findChild(QToolBar, btn[0].split('_')[0]):
+        dlu =  len(btn[0].split('_'))
+        if dlu == max_ele_nazwy:
+            objname_toolbar, ind, typ, ind_menu = btn[0].split('_')
+        else:
+            objname_toolbar, ind, typ = btn[0].split('_')
+
+        toolbar = iface.mainWindow().findChild(QToolBar, objname_toolbar)
+        if typ == "action":
+            action = get_action_from_toolbar(toolbar) \
+                [int(ind)]
+            action.setObjectName(btn[0])
+            sec.add_action(get_action_from_toolbar(toolbar)
+                           [int(ind)], btn[1], btn[2])
+        if typ == "menu":
+            widgs = find_widget_with_menu_in_toolbar(toolbar)
+            widg = widgs[int(ind)]
+
+            if dlu == max_ele_nazwy:
+                if widg.menu():
+                    #Wyciąganie i dodawanie pojdeynczej akcji z menu
+                    sel_act_from_menu = widg.menu().actions()[int(ind_menu)]
+                    objname = sel_act_from_menu.objectName()
+                    sel_act_from_menu.setObjectName(btn[0])
+                    sec.add_action(sel_act_from_menu, btn[1], btn[2])
+                    sel_act_from_menu.setObjectName(objname)
+                else:
+                    #Dodawanie wybranej akcji
+                    sel_act = widg.actions()[int(ind_menu)]
+                    objname = sel_act.objectName()
+                    sel_act.setObjectName(btn[0])
+                    sec.add_action(sel_act, btn[1], btn[2])
+                    sel_act.setObjectName(objname)
+            else:
+                #Dodawanie menu i domyślnej akcji
+                objname = widg.defaultAction().objectName()
+                widg.defaultAction().setObjectName(btn[0])
+                sec.add_action(widg.defaultAction(), btn[1], btn[2], widg.menu())
+                widg.defaultAction().setObjectName(objname)

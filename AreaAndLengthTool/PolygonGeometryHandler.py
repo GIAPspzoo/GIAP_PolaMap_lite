@@ -23,6 +23,16 @@ class PolygonGeometryHandler(QObject):
             actions = [action for action in
                        iface.advancedDigitizeToolBar().actions() if
                        action.objectName() == name]
+
+            if not actions:
+                for toolbar_child in iface.advancedDigitizeToolBar().children():
+                    try:
+                        actions= toolbar_child.actions()
+                        for action in actions:
+                            if action.objectName() == 'mActionDigitizeWithCurve':
+                                return action
+                    except AttributeError:
+                        continue
             if not actions:
                 QgsMessageLog.logMessage(
                     f"QgisInterface missing '{name}' action",
