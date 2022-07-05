@@ -258,6 +258,16 @@ Proszę czekać...</translation>
         <translation>Narzędzia GIAP</translation>
     </message>
     <message>
+        <location filename="../ribbon_config.py" line="334"/>
+        <source>Mesh digitizing</source>
+        <translation>Digitalizacja warstwy siatkowej</translation>
+    </message>
+    <message>
+        <location filename="../ribbon_config.py" line="315"/>
+        <source>Annotations</source>
+        <translation>Adnotacje</translation>
+    </message>
+    <message>
         <location filename="../tools.py" line="101"/>
         <source>Default style set</source>
         <translation>Ustawiono styl domyślny</translation>
@@ -408,6 +418,16 @@ Proszę czekać...</translation>
         <translation>Zaawansowane narzędzia digitalizacji</translation>
     </message>
     <message>
+        <location filename="../utils.py" line="883"/>
+        <source>Annotations</source>
+        <translation>Adnotacje</translation>
+    </message>
+    <message>
+        <location filename="../utils.py" line="903"/>
+        <source>Mesh digitizing</source>
+        <translation>Digitalizacja warstwy siatkowej</translation>
+    </message>
+    <message>
         <location filename="../giap_layout.py" line="78"/>
         <source>Switch on manually missing core plugin: Topology Checker</source>
         <translation>Włącz brakującą wtyczkę wbudowaną: Kontrola Topologii</translation>
@@ -486,6 +506,11 @@ Proszę czekać...</translation>
         <location filename="../giap_layout.py" line="399"/>
         <source>Finish editing</source>
         <translation>Zakończ edycję</translation>
+    </message>
+    <message>
+        <location filename="../giap_layout.py" line="181"/>
+        <source>Area and length</source>
+        <translation>Powierzchnia i długość</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.py" line="132"/>
@@ -666,6 +691,11 @@ Proszę czekać...</translation>
         <location filename="../giap_dynamic_layout.py" line="425"/>
         <source>Error - Unable to remove the object.</source>
         <translation>Błąd - nie udało się usunąć obiektu.</translation>
+    </message>
+    <message>
+        <location filename="../giap_dynamic_layout.py" line="848"/>
+        <source>Area and length</source>
+        <translation>Powierzchnia i długość</translation>
     </message>
     <message>
         <location filename="../SectionManager/CustomSectionManager.py" line="425"/>
@@ -1193,7 +1223,7 @@ lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
     <message>
         <location filename="../wydruk_dialog.ui" line="411"/>
         <source>Resolution</source>
-        <translation>Adnotacje</translation>
+        <translation>Rozdzielczość</translation>
     </message>
     <message>
         <location filename="../wydruk_dialog.ui" line="531"/>

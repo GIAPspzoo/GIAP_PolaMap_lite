@@ -9,7 +9,7 @@ from qgis.PyQt.QtCore import QTranslator, QCoreApplication, QSize, \
 from qgis.PyQt.QtGui import QCursor
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QToolBar, QToolButton, QWidget, \
-    QHBoxLayout, QMenu, QMessageBox
+    QHBoxLayout, QMenu, QMessageBox, QApplication
 from qgis.PyQt.QtWidgets import QDockWidget, QVBoxLayout
 from qgis.PyQt.QtWidgets import QPushButton
 from qgis.core import QgsProject, Qgis, QgsSettings, QgsApplication
@@ -26,7 +26,7 @@ from .giap_dynamic_layout import MainWidget
 from .kompozycje_widget import kompozycjeWidget
 from .ribbon_config import RIBBON_DEFAULT
 from .tools import StyleManager
-from .utils import tr, Qt, icon_manager, CustomMessageBox
+from .utils import tr, Qt, icon_manager, CustomMessageBox, add_action_from_toolbar
 from .AreaAndLengthTool.AreaAndLengthTool import AreaAndLengthTool
 from qgis.gui import QgsMapTool
 project = QgsProject.instance()
@@ -172,13 +172,13 @@ class MainTabQgsWidget:
         area_length_tool = QgsMapTool(self.iface.mapCanvas())
         self.area_length_event = AreaAndLengthTool(self.iface)
         self.area_length_action = QAction(QIcon(f'{self.plugin_dir}/icons/measuring.png'),
-            "Area and length", self.iface.mainWindow())
+            None, self.iface.mainWindow())
         self.area_length_action.setCheckable(True)
         self.area_length_action.triggered.connect(self.area_length_event.run)
         area_length_tool.setAction(self.area_length_action)
         self.main_widget.runArea.setDefaultAction(self.area_length_action)
         self.main_widget.runArea.setIcon(QIcon(f'{self.plugin_dir}/icons/measuring.png'))
-        self.main_widget.runArea.setToolTip(tr("Map quick print"))
+        self.main_widget.runArea.setToolTip(tr("Area and length"))
 
         orto_button = self.main_widget.runOrtoTool
         orto_button.setIcon(QIcon(f'{self.plugin_dir}/icons/orto_icon2.png'))
@@ -231,13 +231,20 @@ class MainTabQgsWidget:
                 for btn in dsec['btns']:
                     child = self.iface.mainWindow().findChild(QAction, btn[0])
                     if child is None:
-                        sec.add_action(*btn)
+                        if QgsApplication.processingRegistry().algorithmById(btn[0]) \
+                                or btn[0].startswith('giap'):
+                            sec.add_action(*btn)
+                        add_action_from_toolbar(self.iface, sec, btn)
                     else:
                         if btn[0] == 'mActionShowAlignRasterTool':
                             child.setIcon(
                                 icon_manager([btn[0]], self.main_widget)[
                                     btn[0]])
                         sec.add_action(child, *btn[1:])
+
+                if sec.gridLayout.count() != len(dsec['btns']):
+                    sec.delete_blank_button()
+
                 if dsec['label'] == 'Prints':
                     self.custom_prints()
 

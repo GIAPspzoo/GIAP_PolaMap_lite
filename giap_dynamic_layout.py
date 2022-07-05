@@ -1,6 +1,6 @@
 import os
 import webbrowser
-
+from math import ceil
 from plugins.processing.tools.general import execAlgorithmDialog
 from qgis.PyQt import uic, QtWidgets
 from qgis.PyQt.QtCore import Qt, QSize, QEvent, pyqtSignal, QMimeData, QRect, \
@@ -10,7 +10,7 @@ from qgis.PyQt.QtGui import QDrag, QPainter, QPixmap, QCursor, QIcon, QFont, \
 from qgis.PyQt.QtWidgets import QWidget, QApplication, QHBoxLayout, \
     QFrame, QLabel, QPushButton, QTabBar, QToolButton, QVBoxLayout, \
     QGridLayout, QSpacerItem, QLineEdit, QWidgetItem, QAction, \
-    QBoxLayout, QMessageBox, QScrollArea
+    QBoxLayout, QMessageBox, QScrollArea, QMenu, QToolBar
 from qgis.core import QgsApplication
 from qgis.utils import iface
 from qgis.gui import QgsMapTool
@@ -21,7 +21,7 @@ from .SectionManager.CustomSectionManager import CustomSectionManager
 from .SectionManager.select_section import SelectSection
 from .config import Config
 from .utils import STANDARD_TOOLS, DEFAULT_TABS, tr, TOOLS_HEADERS, \
-    STANDARD_QGIS_TOOLS, icon_manager, CustomMessageBox
+    STANDARD_QGIS_TOOLS, icon_manager, CustomMessageBox, add_action_from_toolbar
 
 from .AreaAndLengthTool.AreaAndLengthTool import AreaAndLengthTool
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -274,11 +274,18 @@ class MainWidget(QWidget, FORM_CLASS):
             for btn in secdef['btns']:
                 child = self.parent.findChild(QAction, btn[0])
                 if child is None:
-                    sec.add_action(*btn)
+                    if QgsApplication.processingRegistry().algorithmById(btn[0]) \
+                            or btn[0].startswith('giap'):
+                        sec.add_action(*btn)
+                    add_action_from_toolbar(iface, sec, btn)
                 else:
                     sec.add_action(child, *btn[1:])
                     if btn[0] in ['giapMyPrints', 'giapQuickPrint']:
                         print_trig = True
+
+            if sec.gridLayout.count() != len(secdef['btns']):
+                sec.delete_blank_button()
+
             if sel == 'Prints' or print_trig:
                 self.printsAdded.emit()
         self.tabWidget.setUpdatesEnabled(True)
@@ -681,7 +688,8 @@ class CustomSection(QWidget):
                 itw = it.widget()
                 ind = self.gridLayout.indexOf(itw)
                 wid = self.gridLayout.itemAt(ind).widget()
-                if wid.objectName()[:4].lower() == 'giap' or not wid.actions():
+                if wid.objectName()[:4].lower() == 'giap' or not wid.actions()\
+                        or wid.menu():
                     act = wid.objectName()
                 else:
                     act = wid.actions()[0].objectName()
@@ -746,9 +754,18 @@ class CustomSection(QWidget):
         self.gridLayout.update()
         # self.gridLayoutWidget.adjustSize()
 
-    def add_action(self, action: QAction, row: int, col: int):
+    def add_action(self, action: QAction, row: int, col: int, menu: QMenu = None):
         self.tbut = CustomToolButton(self)
-        if isinstance(action, QAction):
+        if menu:
+            name_tool = action.objectName()
+            name_tool = name_tool.replace(':', '_')
+            self.tbut.setObjectName(name_tool)
+            self.tbut.org_state = action.isEnabled()
+            self.set_new_giap_icons(self.tbut, name_tool, action)
+            self.tbut.setDefaultAction(action)
+            self.tbut.setPopupMode(QToolButton.MenuButtonPopup)
+            self.tbut.setMenu(menu)
+        elif isinstance(action, QAction):
             name_tool = action.objectName()
             name_tool = name_tool.replace(':', '_')
             self.tbut.setObjectName(name_tool)
@@ -828,7 +845,7 @@ class CustomSection(QWidget):
                 area_length_tool = QgsMapTool(iface.mapCanvas())
                 self.area_length_event = AreaAndLengthTool(iface)
                 self.area_length_action = QAction( QIcon(icon),
-                    "Area and length", iface.mainWindow())
+                    tr("Area and length"), iface.mainWindow())
                 self.area_length_action.setCheckable(True)
                 self.area_length_action.triggered.connect(self.area_length_event.run)
                 area_length_tool.setAction(self.area_length_action)
@@ -1016,6 +1033,14 @@ class CustomSection(QWidget):
             for it in itms[row]:
                 it.turn_off_edit()
 
+    def delete_blank_button(self) -> None:
+        max_col = ceil(self.gridLayout.count()/2)
+        for ind in range(0, self.gridLayout.count()):
+            item = self.gridLayout.takeAt(0).widget()
+            if ind < max_col:
+                self.gridLayout.addWidget(item, 0, ind, 1, 1)
+            else:
+                self.gridLayout.addWidget(item, 1, ind -max_col, 1, 1)
 
 class CustomToolButton(QToolButton):
     def __init__(self, parent:QtWidgets) -> None:
