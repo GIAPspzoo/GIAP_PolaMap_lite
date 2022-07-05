@@ -37,7 +37,7 @@ class LayersPanel(object):
         if type(node) in (QgsLayerTreeLayer, QgsLayerTreeGroup):
             try:
                 index = self.ltv.node2index(node)
-            except:
+            except AttributeError:
                 index = self.model.node2index(node)
             self.ltv.setRowHidden(index.row(), index.parent(), bHide)
             node.setCustomProperty('nodeHidden', 'true' if bHide else 'false')

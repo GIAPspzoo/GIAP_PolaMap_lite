@@ -1216,6 +1216,7 @@ custom_label_dict = {
     "giapMyPrints": "My Prints"
 }
 
+max_ele_nazwy = 4
 
 def icon_manager(tool_list: List[str], main_qgs_widget: QObject = None) -> \
         Dict[str, Union[Optional[QIcon], Any]]:
@@ -1280,16 +1281,17 @@ def add_map_layer_to_group(
         group.insertLayer(position, layer)
         # group.setExpanded(False)
 
-def find_widget_with_menu_in_toolbar(toolbar: QToolBar) -> list:
+def find_widget_with_menu_in_toolbar(toolbar: QToolBar) -> List[QToolButton]:
     lista_widgets = toolbar.children()
     qmenu_list = []
     for widget in lista_widgets:
         if isinstance(widget, QToolButton):
             if widget.popupMode():
                 qmenu_list.append(widget)
+    raise
     return qmenu_list
 
-def get_action_from_toolbar(toolbar: QToolBar) -> list:
+def get_action_from_toolbar(toolbar: QToolBar) -> List[QAction]:
     lista_widgets = toolbar.children()
     act_list = []
     for widget in lista_widgets:
@@ -1301,7 +1303,7 @@ def get_action_from_toolbar(toolbar: QToolBar) -> list:
 def add_action_from_toolbar(iface: iface, sec, btn: list) -> None:
     if iface.mainWindow().findChild(QToolBar, btn[0].split('_')[0]):
         dlu =  len(btn[0].split('_'))
-        if dlu == 4:
+        if dlu == max_ele_nazwy:
             objname_toolbar, ind, typ, ind_menu = btn[0].split('_')
         else:
             objname_toolbar, ind, typ = btn[0].split('_')
@@ -1317,19 +1319,23 @@ def add_action_from_toolbar(iface: iface, sec, btn: list) -> None:
             widgs = find_widget_with_menu_in_toolbar(toolbar)
             widg = widgs[int(ind)]
 
-            if dlu == 4:
+            if dlu == max_ele_nazwy:
                 if widg.menu():
-                    objname = widg.menu().actions()[int(ind_menu)].objectName()
-                    widg.menu().actions()[int(ind_menu)].setObjectName(btn[0])
-                    sec.add_action(widg.menu().actions()[int(ind_menu)], btn[1], btn[2])
-                    widg.menu().actions()[int(ind_menu)].setObjectName(objname)
+                    #Wyciąganie i dodawanie pojdeynczej akcji z menu
+                    sel_act_from_menu = widg.menu().actions()[int(ind_menu)]
+                    objname = sel_act_from_menu.objectName()
+                    sel_act_from_menu.setObjectName(btn[0])
+                    sec.add_action(sel_act_from_menu, btn[1], btn[2])
+                    sel_act_from_menu.setObjectName(objname)
                 else:
-                    objname = widg.actions()[int(ind_menu)].objectName()
-                    widg.actions()[int(ind_menu)].setObjectName(btn[0])
-                    sec.add_action(widg.actions()[int(ind_menu)], btn[1], btn[2])
-                    widg.actions()[int(ind_menu)].setObjectName(objname)
+                    #Dodawanie wybranej akcji
+                    sel_act = widg.actions()[int(ind_menu)]
+                    objname = sel_act.objectName()
+                    sel_act.setObjectName(btn[0])
+                    sec.add_action(sel_act, btn[1], btn[2])
+                    sel_act.setObjectName(objname)
             else:
-                # raise
+                #Dodawanie menu i domyślnej akcji
                 objname = widg.defaultAction().objectName()
                 widg.defaultAction().setObjectName(btn[0])
                 sec.add_action(widg.defaultAction(), btn[1], btn[2], widg.menu())

@@ -31,7 +31,7 @@ class PolygonGeometryHandler(QObject):
                         for action in actions:
                             if action.objectName() == 'mActionDigitizeWithCurve':
                                 return action
-                    except:
+                    except AttributeError:
                         continue
             if not actions:
                 QgsMessageLog.logMessage(

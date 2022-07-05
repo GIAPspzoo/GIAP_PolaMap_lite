@@ -160,35 +160,35 @@ class MainTabQgsWidget:
             self.print_map_tool.run)
         self.main_widget.runQuickPrintButton.setToolTip(tr("Map quick print"))
         self.main_widget.runQuickPrintButton.setIcon(
-            QIcon(f'{self.plugin_dir}/icons/quick_print.png'))
+            QIcon(os.path.join(self.plugin_dir, 'icons', 'quick_print.png')))
 
         self.main_widget.runCompositionButton.clicked.connect(
             self.kompozycje.config)
         self.main_widget.runCompositionButton.setIcon(
-            QIcon(f'{self.plugin_dir}/icons/compositions_giap.png'))
+            QIcon(os.path.join(self.plugin_dir, 'icons', 'compositions_giap.png')))
         self.main_widget.runCompositionButton.setToolTip(
             tr("Composition settings"))
 
         area_length_tool = QgsMapTool(self.iface.mapCanvas())
         self.area_length_event = AreaAndLengthTool(self.iface)
-        self.area_length_action = QAction(QIcon(f'{self.plugin_dir}/icons/measuring.png'),
+        self.area_length_action = QAction(QIcon(os.path.join(self.plugin_dir, 'icons', 'measuring.png')),
             None, self.iface.mainWindow())
         self.area_length_action.setCheckable(True)
         self.area_length_action.triggered.connect(self.area_length_event.run)
         area_length_tool.setAction(self.area_length_action)
         self.main_widget.runArea.setDefaultAction(self.area_length_action)
-        self.main_widget.runArea.setIcon(QIcon(f'{self.plugin_dir}/icons/measuring.png'))
+        self.main_widget.runArea.setIcon(QIcon(os.path.join(self.plugin_dir, 'icons', 'measuring.png')))
         self.main_widget.runArea.setToolTip(tr("Area and length"))
 
         orto_button = self.main_widget.runOrtoTool
-        orto_button.setIcon(QIcon(f'{self.plugin_dir}/icons/orto_icon2.png'))
+        orto_button.setIcon(QIcon(os.path.join(self.plugin_dir, 'icons', 'orto_icon2.png')))
         self.orto = OrtoAddingTool(self.main_widget, orto_button)
 
         self.visibility_search_tool = False
         self.main_widget.offOnSearchButton.clicked.connect(
             lambda: self.off_on_search_tool(self.visibility_search_tool))
         self.main_widget.offOnSearchButton.setIcon(
-            QIcon(f'{self.plugin_dir}/styles/GIAP Navy Blue/icons/close.png'))
+            QIcon(os.path.join(self.plugin_dir, 'styles', 'GIAP Navy Blue', 'icons', 'close.png')))
 
         # self.searcher.run()
         self.main_widget.setFocusPolicy(Qt.StrongFocus)
