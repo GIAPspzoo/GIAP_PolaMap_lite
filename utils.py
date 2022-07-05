@@ -1279,7 +1279,6 @@ def add_map_layer_to_group(
     project.addMapLayer(layer, False)
     if group_name:
         group.insertLayer(position, layer)
-        # group.setExpanded(False)
 
 def find_widget_with_menu_in_toolbar(toolbar: QToolBar) -> List[QToolButton]:
     lista_widgets = toolbar.children()
@@ -1288,7 +1287,6 @@ def find_widget_with_menu_in_toolbar(toolbar: QToolBar) -> List[QToolButton]:
         if isinstance(widget, QToolButton):
             if widget.popupMode():
                 qmenu_list.append(widget)
-    raise
     return qmenu_list
 
 def get_action_from_toolbar(toolbar: QToolBar) -> List[QAction]:
