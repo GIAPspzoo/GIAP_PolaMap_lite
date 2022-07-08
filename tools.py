@@ -5,11 +5,17 @@ from qgis.PyQt.QtCore import QFileSystemWatcher
 from qgis.PyQt.QtWidgets import QApplication
 
 from .utils import DEFAULT_STYLE, tr
-
+from .Settings.settings_layout import SettingsDialog
+from qgis.utils import iface
 
 class StyleManager:
     def __init__(self, parent):
         self.app = QApplication.instance()
+        self.parent = parent
+        self.main_widget = self.parent.main_widget
+        self.status_bar = iface.statusBarIface()
+        self.menu_bar = iface.mainWindow().menuBar()
+        self.tab_bar = self.parent.tab_bar
 
         self.config = parent.config
         self.watch = QFileSystemWatcher()
@@ -35,7 +41,7 @@ class StyleManager:
     def get_style_dictionary(self):
         return self.styles
 
-    def run_last_style(self):
+    def run_last_style(self, value=None):
         """ load active style on stratup"""
         try:
             last = self.config.get_active_style()
@@ -43,7 +49,7 @@ class StyleManager:
                 last_pth = os.path.join(
                     self.style_dir, last, self.config.get_style_path(last)
                 )
-                self.reload_style(last_pth)
+                self.reload_style(last_pth, value)
         except Exception:
             return
 
@@ -54,7 +60,7 @@ class StyleManager:
             self.activate_style('')
         self.config.delete_style(name)
 
-    def reload_style(self, path):
+    def reload_style(self, path, value=None):
         """ load style to qgis, and set watch on it to remain active
         :path: str  ( path to style)
         :return: bool, str
@@ -68,7 +74,27 @@ class StyleManager:
             path = os.path.dirname(path).replace("\\", "/")
             stylesheet = re.sub(r'url\((.*?)\)', r'url("{}/\1")'.format(path),
                                 stylesheet)
-            self.app.setStyleSheet(stylesheet)
+
+            if value:
+            #     self.main_widget.setStyleSheet(f'{stylesheet} \nQMenuBar,\
+            #     QWidget, QToolTip, QMenu, QAbstractItemView, QTabBar,\
+            #     QPushButton, QComboBox, QToolBar, QDockWidget, QLabel,\
+            #     QToolButton, QTabWidget, QLineEdit, QGroupBox, QScrollBar,\
+            #     QTabBar, QDialog, QHeaderView, QDateEdit, QListView, QTreeView,\
+            #     QTableView, QTextEdit, QDialog, QPlainTextEdit, QToolBar QLabel,\
+            #     QToolBar QToolButton, QDialog QLabel {{font: {value}pt;}}')
+                self.status_bar.setStyleSheet(f'{stylesheet} \n\
+                QWidget, QComboBox {{font: {value}pt;}}')
+                self.menu_bar.setStyleSheet(f'{stylesheet} \nQMenuBar,\
+                QMenu {{font: {value}pt;}}')
+                self.app.setStyleSheet(f'{stylesheet} \n QTabBar, \
+                QAbstractItemView {{font: {value}pt;}}')
+                self.tab_bar.setStyleSheet(f'{stylesheet} \n\
+                {{font: {value}pt;}}')
+
+
+            else:
+                self.app.setStyleSheet(stylesheet)
             self.app.processEvents()
 
     def activate_style(self, name):

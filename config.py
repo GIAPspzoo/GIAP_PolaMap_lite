@@ -20,6 +20,7 @@ class Config:
                 conf = fl.read()
             try:
                 self.setts = json.loads(conf)[0]
+                self.setts['value'] = 20
             except ValueError:
                 QgsMessageLog.logMessage(
                     'Failed to load config from config.json')

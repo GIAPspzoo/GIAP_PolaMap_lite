@@ -13,7 +13,7 @@ QWidget
 	background-color:  rgb(53, 85, 109);
 	selection-background-color: #6FB1E3;
 	selection-color:  #EDF6FC;
-    font: 10pt "Segoe UI";
+    font: 20pt "Segoe UI";
 }
 
 QMenuBar
@@ -81,7 +81,7 @@ QAbstractItemView
 	alternate-background-color:  #4f5a63;
 	color:  #EDF6FC;
 	border-radius: 3px;
-	font: 9pt "Segoe UI";
+	font: 9pt "Segoe UI"; /* ortofotomapa */
 	background-color: #6FB1E3;
 }
 
@@ -186,7 +186,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
 
 QTabBar {
     qproperty-drawBase: 0;
-    font: 10pt "Segoe UI";
+    font: 10pt "Segoe UI"; /* komunikaty wtyczki general */
 	font-weight: 600;
 }
 
@@ -283,7 +283,7 @@ QComboBox
 	border-style: solid;
 	border-radius: 3px;
 	padding: 2px;
-	font: 10pt "Segoe UI";
+	font: 20pt "Segoe UI";
     height: 20px;
 }
 
@@ -716,7 +716,7 @@ QProgressBar::chunk:horizontal {
 
 QToolBar QLabel
 {
-    font: 9pt "Segoe UI";
+    font: 9pt "Segoe UI"; #na gorze projekt nawigacja atrybuty
 	font-weight: bold;
 	border: none;
 }

@@ -95,12 +95,14 @@
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">QToolButton
-{
-    font: 8pt &quot;Segoe UI&quot;;
-	font-weight: bold;
-    border: none;
-}</string>
+        <string notr="true">
+<!--QToolButton&ndash;&gt;-->
+<!--{-->
+<!--    font: 8pt &quot;Segoe UI&quot;;-->
+<!--	font-weight: bold;-->
+<!--    border: none};-->
+
+</string>
        </property>
        <property name="text">
         <string>Layers</string>

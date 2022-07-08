@@ -12,7 +12,7 @@ from qgis.PyQt.QtWidgets import QAction, QToolBar, QToolButton, QWidget, \
     QHBoxLayout, QMenu, QMessageBox
 from qgis.PyQt.QtWidgets import QDockWidget, QVBoxLayout
 from qgis.PyQt.QtWidgets import QPushButton
-from qgis.core import QgsProject, Qgis, QgsSettings, QgsApplication
+from qgis._core import QgsProject, Qgis, QgsSettings
 from qgis.utils import iface
 
 from .Kompozycje.Kompozycje import CompositionsTool
@@ -30,6 +30,7 @@ from .utils import tr, Qt, icon_manager, CustomMessageBox
 from .AreaAndLengthTool.AreaAndLengthTool import AreaAndLengthTool
 from qgis.gui import QgsMapTool
 project = QgsProject.instance()
+from . import giap_dynamic_layout
 
 
 class MainTabQgsWidget:
@@ -47,6 +48,9 @@ class MainTabQgsWidget:
         self.plugin_dir = os.path.dirname(__file__)
         self.install_translator()
         self.main_widget = MainWidget(self.iface.mainWindow())
+        self.status_bar = MainWidget(self.iface.statusBarIface())
+        self.tab_bar = MainWidget().tabWidget
+        self.tab_bar.setWindowTitle('afdfsdfs')
         self.kompozycje_widget = kompozycjeWidget()
         self.left_docks = []
         self.config = Config()
@@ -467,6 +471,7 @@ class MainTabQgsWidget:
             self.set_dlg.radioButton_en.setChecked(True)
         elif str(QSettings().value('locale/userLocale')) == "pl_PL":
             self.set_dlg.radioButton_pl.setChecked(True)
+        self.set_dlg.spinBox_button.clicked.connect(self.set_size)
         self.set_dlg.exec_()
 
     def set_polish(self) -> None:
@@ -500,6 +505,19 @@ class MainTabQgsWidget:
             0
         )
         self.restart_qgis()
+
+    def set_size(self):
+        self.set_dlg.spinBox_font.setValue(self.set_dlg.spinBox_font.value())
+        value = self.set_dlg.spinBox_font.value()
+        # self.style_manager.run_last_style()
+        get_qgis_app()
+
+        self.kompozycje_widget.setStyleSheet(f'font: {value}pt;')  # napis kompoyzje wszystkie warstwy
+        # raise NotImplementedError
+        # custom_label = giap_dynamic_layout.CustomLabel(tr('New section'))
+        # custom_label.setStyleSheet(f'font: {value}pt;')
+        self.style_manager.run_last_style(value)
+
 
     def restore_default_ribbon_settings(self) -> None:
         self.set_dlg.pushButton_restore.clicked.disconnect()

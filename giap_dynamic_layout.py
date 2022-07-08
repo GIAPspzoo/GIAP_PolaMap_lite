@@ -1120,7 +1120,7 @@ class CustomLabel(QLabel):
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.setText(lab)
         self.setStyleSheet(
-            'font: 10pt "Segoe UI"; font-weight: normal; '
+            'font: "Segoe UI"; font-weight: normal; '
         )
         self.cinput = QLineEdit(self)
         self.cinput.setWindowFlags(Qt.Popup)

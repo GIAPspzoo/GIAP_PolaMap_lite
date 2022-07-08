@@ -188,6 +188,9 @@ class QgisInterface(QObject):
         In case of QGIS it returns an instance of QgisApp.
         """
         pass
+    #
+    # def statusBarIface(self):
+    #     pass
 
     def addDockWidget(self, area, dock_widget):
         """Add a dock widget to the main window.
