@@ -2,6 +2,7 @@
 import os.path
 import subprocess
 import webbrowser
+import urllib.request
 
 import qgis
 from qgis.PyQt.QtCore import QTranslator, QCoreApplication, QSize, \
