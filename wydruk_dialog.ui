@@ -267,7 +267,7 @@ border: 1px solid #5689b0;
              <item row="0" column="0">
               <widget class="QLineEdit" name="adnotacje_lineEdit">
                <property name="maxLength">
-                <number>100</number>
+                <number>700</number>
                </property>
               </widget>
              </item>

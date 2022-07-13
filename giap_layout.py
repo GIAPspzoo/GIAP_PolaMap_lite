@@ -22,7 +22,7 @@ from .Searcher.searchTool import SearcherTool
 from .Settings.settings_layout import SettingsDialog
 from .StyleManager.stylemanager import StyleManagerDialog
 from .config import Config
-from .giap_dynamic_layout import MainWidget
+from .giap_dynamic_layout import MainWidget, CustomLabel
 from .kompozycje_widget import kompozycjeWidget
 from .ribbon_config import RIBBON_DEFAULT
 from .tools import StyleManager
@@ -47,10 +47,21 @@ class MainTabQgsWidget:
         self.plugin_dir = os.path.dirname(__file__)
         self.install_translator()
         self.main_widget = MainWidget(self.iface.mainWindow())
+        # self.status_bar = MainWidget(self.iface.statusBarIface())
+        self.tab_bar = MainWidget().tabWidget
         self.kompozycje_widget = kompozycjeWidget()
+        self.custom_label = CustomLabel(tr('New section'))
+        self.settings_pointsize = QSettings().value("qgis/stylesheet/fontPointSize")
+        self.kompozycje_widget.setStyleSheet(f'font: {self.settings_pointsize}pt;')
+        self.main_widget.pokaz_warstwy.setStyleSheet(f'font: {self.settings_pointsize}pt;')
+        self.custom_label.setStyleSheet(f'font: {self.settings_pointsize}pt;')
+        SettingsDialog().font.setPointSize(40)
+            # setstyleSheet(f'{self.settings_pointsize}pt;')
+        # self.tab_bar.setStyleSheet(f'font: {self.settings_pointsize}pt;')
         self.left_docks = []
         self.config = Config()
         self.searcher = SearcherTool(self.main_widget, self.iface)
+        self.settings = QMenu(self.main_widget)
 
         self.style_manager = StyleManager(self)
         self.print_map_tool = PrintMapTool(self.iface)
@@ -459,6 +470,7 @@ class MainTabQgsWidget:
         self.style_manager_dlg.setWindowFlags(
             Qt.Window | Qt.WindowCloseButtonHint
         )
+        # self.style_manager_dlg.setStyleSheet(QSettings().value("qgis/stylesheet/fontPointSize"))
         self.style_manager_dlg.exec_()
 
     def show_settings_dialog(self) -> None:
@@ -474,6 +486,8 @@ class MainTabQgsWidget:
             self.set_dlg.radioButton_en.setChecked(True)
         elif str(QSettings().value('locale/userLocale')) == "pl_PL":
             self.set_dlg.radioButton_pl.setChecked(True)
+        self.set_dlg.spinBox_font.setValue(int(self.settings_pointsize))
+        self.set_dlg.spinBox_button.clicked.connect(self.set_size)
         self.set_dlg.exec_()
 
     def set_polish(self) -> None:
@@ -507,6 +521,37 @@ class MainTabQgsWidget:
             0
         )
         self.restart_qgis()
+
+    def set_size(self):
+        # self.menu_bar = self.iface.mainWindow().menuBar()
+        # self.tab_bar = MainWidget().tabWidget
+        # self.status_bar = self.iface.statusBarIface()
+        # self.layer_tree_view = self.iface.layerTreeView()
+        # self.set_dlg.spinBox_font.setValue(self.set_dlg.spinBox_font.value())
+        value = self.set_dlg.spinBox_font.value()
+        self.set_dlg.spinBox_font.setValue(value)
+        QSettings().setValue('qgis/stylesheet/fontPointSize', value)
+
+        # # self.kompozycje_widget.setStyleSheet(f'font: {value}pt;')  # napis kompoyzje wszystkie warstwy
+        #
+        self.iface.messageBar().pushMessage(
+            'GIAP-PolaMap(lite)',
+            tr('Please, restart QGIS!'),
+            Qgis.Info,
+            0
+        )
+        self.restart_qgis()
+        # self.main_widget.setStyleSheet(f'font: {value}pt;')
+        # # self.settings
+        # # self.menu_bar.setStyleSheet(f' QMenuBar,\
+        # # QMenu {{font: {value}pt;}}')
+        # self.menu_bar.setStyleSheet(f'font: {value}pt;')
+        # self.status_bar.setStyleSheet(f'font: {value}pt;')
+        # self.layer_tree_view.setStyleSheet(f'font: {value}pt;')
+        # custom_label = giap_dynamic_layout.CustomLabel(tr('New section'))
+        # custom_label.setStyleSheet(f'font: {value}pt;')
+        # self.style_manager.run_last_style(value)
+
 
     def restore_default_ribbon_settings(self) -> None:
         self.set_dlg.pushButton_restore.clicked.disconnect()
