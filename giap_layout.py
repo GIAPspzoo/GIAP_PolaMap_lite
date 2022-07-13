@@ -3,6 +3,7 @@ import os.path
 import subprocess
 import webbrowser
 import urllib.request
+import re
 
 import qgis
 from qgis.PyQt.QtCore import QTranslator, QCoreApplication, QSize, \
@@ -52,6 +53,7 @@ class MainTabQgsWidget:
         self.left_docks = []
         self.config = Config()
         self.searcher = SearcherTool(self.main_widget, self.iface)
+        self.sett = QgsSettings()
 
         self.style_manager = StyleManager(self)
         self.print_map_tool = PrintMapTool(self.iface)
@@ -194,6 +196,9 @@ class MainTabQgsWidget:
         # self.searcher.run()
         self.main_widget.setFocusPolicy(Qt.StrongFocus)
 
+        new = self.html_div_from_url('https://www.giap.pl/aktualnosci/')
+        self.add_news_from_dict(new)
+
         process = qgis.utils.plugins.get('processing')
         if process:
             process.initGui()
@@ -251,6 +256,71 @@ class MainTabQgsWidget:
 
         self.main_widget.tabWidget.setCurrentIndex(0)
         self.main_widget.edit_session_toggle()
+
+    def html_div_from_url(self, url: str):
+        fp = urllib.request.urlopen(url)
+        html = fp.read()
+        html = html.decode('utf-8')
+        html = html.split('<main>')[1].split('</main>')[0]
+        divs = html.split('<div class="post-excerpt">')
+        news = []
+        for div in divs:
+            lines = [div.strip() for div in div.split('\n') if div.strip()]
+            if not lines[0] == '<div class="row post-row">':
+                continue
+            for line in lines:
+                if '<a href' in line and not 'czytaj dalej...' in line:
+                    link = re.search('="(.*)">', line).group(1)
+                    pk = link.split('/')[-2]
+                if '<img src' in line:
+                    img_link = re.search('="(.*)" c', line).group(1)
+                if '<h2>' in line:
+                    title = re.search('>(.*)<', line).group(1)
+                if '<p>' in line:
+                    content = line
+            news.append({"pk": int(f'999{pk}'),
+                         "publish_from": None,
+                         "publish_to": None,
+                         "title": title,
+                         "image": f'https://www.giap.pl{img_link}',
+                         "content": content,
+                         "url": f'https://www.giap.pl{link}',
+                         "sticky": 'false'
+                         })
+            if len(news) == 5:
+                break
+
+        fp.close()
+        return news
+
+    def add_news_from_dict(self, news: list):
+        edited = False
+        for ele in news:
+
+            pk = ele['pk']
+            key = f'core/NewsFeed/httpsfeedqgisorg/{pk}'
+            title = ele['title']
+            img = ele['image']
+            url = ele['url']
+            sticky = ele['sticky']
+            content = ele['content']
+
+            news_eles = {'title': title, 'content': content, 'imageUrl': img, 'link': url, "sticky": sticky}
+            for news_ele in news_eles:
+                if f'{key}/{news_ele}' not in self.sett.allKeys():
+                    self.sett.setValue(f'{key}/{news_ele}', news_eles[news_ele])
+                    edited = True
+                    last_news = int(key.split('/')[-1]) - 5
+                    key_remove = key.split('/')
+                    key_remove[-1] = str(last_news)
+                    key_remove = '/'.join(key_remove)
+                    self.sett.remove(key_remove)
+                elif self.sett.value(f'{key}/{news_ele}') != news_eles[news_ele]:
+                    self.sett.setValue(f'{key}/{news_ele}', news_eles[news_ele])
+                    edited = True
+
+            if edited:
+                self.sett.setValue('core/NewsFeed/httpsfeedqgisorg/lastFetchTime', 0)
 
     def visible_logo_giap_toolbar(self, visible: bool) -> None:
         self.logo_toolbar.setVisible(not visible)
