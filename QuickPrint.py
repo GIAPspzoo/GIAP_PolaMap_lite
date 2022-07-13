@@ -65,6 +65,13 @@ class PrintMapTool:
         # 'A9': (37, 52),
         # 'A10': (26, 37),
     }
+    dict_width = {148: 50,
+                  210: 90,
+                  297: 145,
+                  420: 220,
+                  594: 335,
+                  841: 475,
+                  1189: 700}
 
     def __init__(self, iface : QgisInterface, parent : QtWidgets=None) -> None:
         self.iface = iface
@@ -98,9 +105,14 @@ class PrintMapTool:
         width, height = self.mm_paper_sizes[paper_format]
 
         if self.dialog.horizontalRadioButton.isChecked():
+            self.set_adnotation_limit(height)
             return height, width
-        else:
+        if self.dialog.verticalRadioButton.isChecked():
+            self.set_adnotation_limit(width)
             return width, height
+
+    def set_adnotation_limit(self, width: int) -> None:
+        self.dialog.adnotacje_lineEdit.setMaxLength(self.dict_width[width])
 
     def get_map_item(self) -> QgsLayoutItemMap:
         item_object = None
@@ -121,7 +133,8 @@ class PrintMapTool:
             pos_x, pos_y = 16, 16
             page.setPageSize(QgsLayoutSize(width, height))
             canvas_extent = self.iface.mapCanvas().extent()
-            current_rect = QRectF(pos_x, pos_y, width, height)
+            current_rect = QRectF(pos_x, pos_y, width - 2 * pos_x, height - 2 * pos_y)
+
             map_item = QgsLayoutItemMap(self.layout)
             map_item.updateBoundingRect()
             map_item.setRect(current_rect)
@@ -139,17 +152,6 @@ class PrintMapTool:
 
             self.layout.addItem(map_item)
 
-            self.iface.mapCanvas().scaleChanged.disconnect(
-                self.create_composer)
-            self.iface.mapCanvas().setScaleLocked(True)
-            xmin = (map_item.extent().xMinimum()) - pos_x
-            xmax = (map_item.extent().xMaximum()) + pos_x
-            ymin = (map_item.extent().yMinimum()) - pos_x
-            ymax = (map_item.extent().yMaximum()) + pos_x
-            self.iface.mapCanvas().setExtent(QgsRectangle(xmin, ymin, xmax, ymax), magnified=True)
-            self.iface.mapCanvas().scaleChanged.connect(
-                self.create_composer)
-            self.iface.mapCanvas().setScaleLocked(False)
 
     def reset_rubber(self) -> None:
         self.rubberband.reset(QgsWkbTypes.PolygonGeometry)
@@ -325,127 +327,7 @@ class PrintMapTool:
         if self.dialog.adnotacje_lineEdit.text():
             adnotation = QgsLayoutItemLabel(self.layout)
             adnotation_font = QFont()
-            default_font_Size = 10
-            if width == 148 and len(self.dialog.adnotacje_lineEdit.text()) > 50:
-                if 50 <= len(self.dialog.adnotacje_lineEdit.text()) <= 55:
-                    default_font_Size = 7
-                if 55 < len(self.dialog.adnotacje_lineEdit.text()) <= 65:
-                    default_font_Size = 6
-                if 65 < len(self.dialog.adnotacje_lineEdit.text()) <= 76:
-                    default_font_Size = 5
-                if 76 < len(self.dialog.adnotacje_lineEdit.text()) <= 96:
-                    default_font_Size = 4
-                if len(self.dialog.adnotacje_lineEdit.text()) > 96:
-                    default_font_Size = 3
-                if len(self.dialog.adnotacje_lineEdit.text()) > 128:
-                    return
-                else:
-                    adnotation.setText(self.dialog.adnotacje_lineEdit.text())
-
-            elif width == 210 and len(self.dialog.adnotacje_lineEdit.text()) > 90:
-                if 90 <= len(self.dialog.adnotacje_lineEdit.text()) <= 98:
-                    default_font_Size = 7
-                if 98 < len(self.dialog.adnotacje_lineEdit.text()) <= 118:
-                    default_font_Size = 6
-                if 118 < len(self.dialog.adnotacje_lineEdit.text()) <= 140:
-                    default_font_Size = 5
-                if 140 < len(self.dialog.adnotacje_lineEdit.text()) <= 175:
-                    default_font_Size = 4
-                if len(self.dialog.adnotacje_lineEdit.text()) > 175:
-                    default_font_Size = 3
-                if len(self.dialog.adnotacje_lineEdit.text()) > 225:
-                    return
-                else:
-                    adnotation.setText(self.dialog.adnotacje_lineEdit.text())
-
-            elif width == 297 and len(self.dialog.adnotacje_lineEdit.text()) > 145:
-                if 145 <= len(self.dialog.adnotacje_lineEdit.text()) <= 160:
-                    default_font_Size = 7
-                if 160 < len(self.dialog.adnotacje_lineEdit.text()) <= 190:
-                    default_font_Size = 6
-                if 190 < len(self.dialog.adnotacje_lineEdit.text()) <= 225:
-                    default_font_Size = 5
-                if 225 < len(self.dialog.adnotacje_lineEdit.text()) <= 270:
-                    default_font_Size = 4
-                if len(self.dialog.adnotacje_lineEdit.text()) > 270:
-                    default_font_Size = 3
-                if len(self.dialog.adnotacje_lineEdit.text()) > 368:
-                    return
-                else:
-                    adnotation.setText(self.dialog.adnotacje_lineEdit.text())
-
-            elif width == 420 and len(self.dialog.adnotacje_lineEdit.text()) > 220:
-                if 220 <= len(self.dialog.adnotacje_lineEdit.text()) <= 245:
-                    default_font_Size = 7
-                if 245 < len(self.dialog.adnotacje_lineEdit.text()) <= 280:
-                    default_font_Size = 6
-                if 280 < len(self.dialog.adnotacje_lineEdit.text()) <= 345:
-                    default_font_Size = 5
-                if 345 < len(self.dialog.adnotacje_lineEdit.text()) <= 425:
-                    default_font_Size = 4
-                if len(self.dialog.adnotacje_lineEdit.text()) > 425:
-                    default_font_Size = 3
-                if len(self.dialog.adnotacje_lineEdit.text()) > 555:
-                    return
-                else:
-                    adnotation.setText(self.dialog.adnotacje_lineEdit.text())
-
-            elif width == 594 and len(self.dialog.adnotacje_lineEdit.text()) > 335:
-                if 335 <= len(self.dialog.adnotacje_lineEdit.text()) <= 360:
-                    default_font_Size = 7
-                if 360 < len(self.dialog.adnotacje_lineEdit.text()) <= 440:
-                    default_font_Size = 6
-                if 440 < len(self.dialog.adnotacje_lineEdit.text()) <= 510:
-                    default_font_Size = 5
-                if 510 < len(self.dialog.adnotacje_lineEdit.text()) <= 640:
-                    default_font_Size = 4
-                if len(self.dialog.adnotacje_lineEdit.text()) > 640:
-                    default_font_Size = 3
-                if len(self.dialog.adnotacje_lineEdit.text()) > 850:
-                    return
-                else:
-                    adnotation.setText(self.dialog.adnotacje_lineEdit.text())
-
-            elif width == 841 and len(self.dialog.adnotacje_lineEdit.text()) > 475:
-                if 475 <= len(self.dialog.adnotacje_lineEdit.text()) <= 540:
-                    default_font_Size = 7
-                if 540 < len(self.dialog.adnotacje_lineEdit.text()) <= 640:
-                    default_font_Size = 6
-                if 640 < len(self.dialog.adnotacje_lineEdit.text()) <= 760:
-                    default_font_Size = 5
-                if 760 < len(self.dialog.adnotacje_lineEdit.text()) <= 960:
-                    default_font_Size = 4
-                if len(self.dialog.adnotacje_lineEdit.text()) > 960:
-                    default_font_Size = 3
-                if len(self.dialog.adnotacje_lineEdit.text()) > 1250:
-                    return
-                else:
-                    adnotation.setText(self.dialog.adnotacje_lineEdit.text())
-
-            elif width == 1189 and len(
-                    self.dialog.adnotacje_lineEdit.text()) > 700:
-                if 700 < len(self.dialog.adnotacje_lineEdit.text()) <= 780:
-                    default_font_Size = 7
-                if 780 < len(self.dialog.adnotacje_lineEdit.text()) <= 940:
-                    default_font_Size = 6
-                if 940 < len(self.dialog.adnotacje_lineEdit.text()) <= 1090:
-                    default_font_Size = 5
-                if 1090 < len(self.dialog.adnotacje_lineEdit.text()) <= 1320:
-                    default_font_Size = 4
-                if len(self.dialog.adnotacje_lineEdit.text()) > 1320:
-                    default_font_Size = 3
-                if len(self.dialog.adnotacje_lineEdit.text()) > 1250:
-                    # CustomMessageBox(self.dialog, 'Adnotacja zawiera za dużo znaków').button_ok()
-                    return
-                else:
-                    adnotation.setText(
-                        self.dialog.adnotacje_lineEdit.text() + '\n' + self.dialog.adnotacje_lineEdit.text())
-            else:
-                adnotation.setText(
-                    self.dialog.adnotacje_lineEdit.text() + '\n' + self.dialog.adnotacje_lineEdit.text())
-            adnotation.setText(
-                self.dialog.adnotacje_lineEdit.text() + '\n' + self.dialog.adnotacje_lineEdit.text())
-            adnotation_font.setPointSize(int(default_font_Size))
+            adnotation.setText(self.dialog.adnotacje_lineEdit.text())
             adnotation.setFont(adnotation_font)
             adnotation.adjustSizeToText()
             self.layout.addItem(adnotation)
