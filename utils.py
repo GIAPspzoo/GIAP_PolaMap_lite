@@ -12,6 +12,7 @@ from qgis.PyQt.QtWidgets import QApplication, QProgressDialog, \
 from qgis.core import QgsProject, QgsMessageLog, Qgis, QgsApplication, \
     QgsVectorLayer, QgsMapLayer
 from qgis.utils import iface
+
 project = QgsProject.instance()
 
 
@@ -279,6 +280,8 @@ class SectionHeaderDelegate(QStyledItemDelegate):
                          index.data(Qt.DisplayRole))
         painter.restore()
 
+
+GIAP_NEWS_WEB_PAGE = 'https://www.giap.pl/aktualnosci/'
 
 # oba poniższe słowniki powinny być spójne
 WMS_SERVERS = {

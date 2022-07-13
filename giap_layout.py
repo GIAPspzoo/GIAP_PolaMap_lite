@@ -5,6 +5,8 @@ import webbrowser
 import urllib.request
 import re
 from typing import List
+from urllib.error import URLError
+
 import qgis
 from qgis.PyQt.QtCore import QTranslator, QCoreApplication, QSize, \
     QRect, QPropertyAnimation, QEasingCurve, QSettings, QObject
@@ -28,7 +30,7 @@ from .giap_dynamic_layout import MainWidget
 from .kompozycje_widget import kompozycjeWidget
 from .ribbon_config import RIBBON_DEFAULT
 from .tools import StyleManager
-from .utils import tr, Qt, icon_manager, CustomMessageBox, add_action_from_toolbar
+from .utils import tr, Qt, icon_manager, CustomMessageBox, add_action_from_toolbar, GIAP_NEWS_WEB_PAGE
 from .AreaAndLengthTool.AreaAndLengthTool import AreaAndLengthTool
 from qgis.gui import QgsMapTool
 project = QgsProject.instance()
@@ -196,7 +198,7 @@ class MainTabQgsWidget:
         # self.searcher.run()
         self.main_widget.setFocusPolicy(Qt.StrongFocus)
 
-        new = self.html_div_from_url('https://www.giap.pl/aktualnosci/')
+        new = self.html_div_from_url(GIAP_NEWS_WEB_PAGE)
         self.add_news_from_dict(new)
 
         process = qgis.utils.plugins.get('processing')
@@ -257,10 +259,14 @@ class MainTabQgsWidget:
         self.main_widget.tabWidget.setCurrentIndex(0)
         self.main_widget.edit_session_toggle()
 
-    def html_div_from_url(self, url: str):
-        fp = urllib.request.urlopen(url)
-        html = fp.read()
-        html = html.decode('utf-8')
+    def html_div_from_url(self, url: str) -> List[dict]:
+        try:
+            url_handler = urllib.request.urlopen(url)
+        except URLError:
+            return
+        html = url_handler.read().decode('utf-8')
+        if not html:
+            return
         html = html.split('<main>')[1].split('</main>')[0]
         divs = html.split('<div class="post-excerpt">')
         news = []
@@ -290,10 +296,12 @@ class MainTabQgsWidget:
             if len(news) == 5:
                 break
 
-        fp.close()
+        url_handler.close()
         return news
 
-    def add_news_from_dict(self, news: List[dict]):
+    def add_news_from_dict(self, news: List[dict]) -> None:
+        if not news:
+            return
         edited = False
         for ele in news:
 
