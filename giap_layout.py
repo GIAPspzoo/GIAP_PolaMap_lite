@@ -4,7 +4,7 @@ import subprocess
 import webbrowser
 import urllib.request
 import re
-
+from typing import List
 import qgis
 from qgis.PyQt.QtCore import QTranslator, QCoreApplication, QSize, \
     QRect, QPropertyAnimation, QEasingCurve, QSettings, QObject
@@ -293,7 +293,7 @@ class MainTabQgsWidget:
         fp.close()
         return news
 
-    def add_news_from_dict(self, news: list):
+    def add_news_from_dict(self, news: List[dict]):
         edited = False
         for ele in news:
 
