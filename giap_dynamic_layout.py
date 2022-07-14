@@ -572,12 +572,18 @@ class CustomTab(QWidget):
 
         if source is None:
             return
-        lay.takeAt(lay.count() - 1)
+
+        max_section_ind = lay.count() - 2
+        if i == max_section_ind:
+            e.setAccepted(False)
+            return
+
+        sec_cont = lay.takeAt(lay.count() - 1)
         addsec = lay.takeAt(lay.count() - 1)
         item = lay.takeAt(i)
-        lay.addItem(item)
         lay.addItem(addsec)
-        lay.addStretch()
+        lay.addItem(item)
+        lay.addItem(sec_cont)
         e.setAccepted(True)
 
     def return_tab_config(self):
