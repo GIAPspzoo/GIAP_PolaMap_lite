@@ -1,3 +1,4 @@
+import itertools
 import os
 from datetime import datetime
 from typing import List, Union, Set
@@ -6,10 +7,12 @@ from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QModelIndex
 from qgis.PyQt.QtCore import QSortFilterProxyModel
 from qgis.PyQt.QtGui import QStandardItemModel, QStandardItem
-from qgis.PyQt.QtWidgets import QDialog
+from qgis.PyQt.QtWidgets import QDialog, QToolBar, QAction
+from qgis.utils import iface
 
 from ..utils import STANDARD_TOOLS, unpack_nested_lists, Qt, tr, \
-    icon_manager, CustomMessageBox, get_tool_label, GIAP_CUSTOM_TOOLS
+    icon_manager, CustomMessageBox, get_tool_label, GIAP_CUSTOM_TOOLS, get_action_from_toolbar, \
+    find_widget_with_menu_in_toolbar
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'UI/add_section_dialog.ui'))
@@ -41,6 +44,8 @@ class CustomSectionManager(QDialog, FORM_CLASS):
             unpack_nested_lists([tool['btns'] for tool in STANDARD_TOOLS]))
         tools = list(
             set([tool for tool in tmp_tools_list if isinstance(tool, str)]))
+        toolbar_tools = [tool.objectName() for tool in self.get_all_actions_from_qgis_toolbars()]
+        [tools.append(tool) for tool in toolbar_tools if tool not in tools]
         tools.sort()
         for tool in tools:
             item = QStandardItem(
@@ -57,6 +62,20 @@ class CustomSectionManager(QDialog, FORM_CLASS):
         self.availableToolTable.resizeColumnsToContents()
         self.availableToolTable.hideColumn(0)
         self.selectedToolTable.hideColumn(0)
+
+    def get_all_actions_from_qgis_toolbars(self) -> List[QAction]:
+        qgis_toolbars = [toolbar for toolbar in iface.mainWindow().findChildren(QToolBar)
+            if "ToolBar" in toolbar.objectName() and "Giap" not in toolbar.objectName()]
+        actions = []
+        for toolbar in qgis_toolbars:
+            acts = get_action_from_toolbar(toolbar)
+            widgs = find_widget_with_menu_in_toolbar(toolbar)
+            for widg in widgs:
+                [acts.append(act) for act in widg.actions()]
+            actions.append(acts)
+
+        all_actions = list(itertools.chain(*actions))
+        return all_actions
 
     def prepare_selected_tools_list(self) -> List[str or int]:
         btns_list = []

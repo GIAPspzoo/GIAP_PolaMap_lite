@@ -31,7 +31,6 @@ from .kompozycje_widget import kompozycjeWidget
 from .ribbon_config import RIBBON_DEFAULT
 from .tools import StyleManager
 from .utils import tr, Qt, icon_manager, CustomMessageBox, add_action_from_toolbar, GIAP_NEWS_WEB_PAGE
-from .AreaAndLengthTool.AreaAndLengthTool import AreaAndLengthTool
 from qgis.gui import QgsMapTool
 project = QgsProject.instance()
 
@@ -175,15 +174,8 @@ class MainTabQgsWidget:
             tr("Composition settings"))
 
         area_length_tool = QgsMapTool(self.iface.mapCanvas())
-        self.area_length_event = AreaAndLengthTool(self.iface)
-        self.area_length_action = QAction(QIcon(os.path.join(self.plugin_dir, 'icons', 'measuring.png')),
-            None, self.iface.mainWindow())
-        self.area_length_action.setCheckable(True)
-        self.area_length_action.triggered.connect(self.area_length_event.run)
-        area_length_tool.setAction(self.area_length_action)
-        self.main_widget.runArea.setDefaultAction(self.area_length_action)
-        self.main_widget.runArea.setIcon(QIcon(os.path.join(self.plugin_dir, 'icons', 'measuring.png')))
-        self.main_widget.runArea.setToolTip(tr("Area and length"))
+        area_length_tool.setAction(self.main_widget.area_length_action)
+        self.main_widget.runArea.setDefaultAction(self.main_widget.area_length_action)
 
         orto_button = self.main_widget.runOrtoTool
         orto_button.setIcon(QIcon(os.path.join(self.plugin_dir, 'icons', 'orto_icon2.png')))
@@ -226,6 +218,7 @@ class MainTabQgsWidget:
         self.main_widget.pokaz_warstwy.toggled.connect(self.warstwy_show)
 
     def load_ribbons(self) -> None:
+        self.main_widget.area_length_action.setToolTip(tr("Area and Length"))
         self.main_widget.edit_session_toggle()
         ribbon_conf = self.config.load_user_ribbon_setup()
         if not ribbon_conf:
