@@ -205,7 +205,6 @@ class MainWidget(QWidget, FORM_CLASS):
                 f"""QFrame, QLabel, QToolTip, QTextEdit{{
             font:{value}pt}}"""
             )
-            # raise
             self.instr.setTextFormat(Qt.AutoText)
             self.instr.setScaledContents(True)
             self.frm = QFrame()
@@ -1153,7 +1152,6 @@ class CustomLabel(QLabel):
         self.setStyleSheet(
             f'font:{value} "Segoe UI"; font-weight: normal; '
         )
-        # raise
         self.cinput = QLineEdit(self)
         self.cinput.setWindowFlags(Qt.Popup)
         self.cinput.editingFinished.connect(self.handleEditingFinished)
