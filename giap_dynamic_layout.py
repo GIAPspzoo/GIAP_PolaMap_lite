@@ -859,7 +859,6 @@ class CustomSection(QWidget):
                 iface.mapCanvas().refresh()
                 area_length_tool = QgsMapTool(iface.mapCanvas())
                 area_length_tool.setAction(main_widget.area_length_action)
-                main_widget.area_length_action.setToolTip(tr("Area and Length"))
                 self.tbut.setDefaultAction(main_widget.area_length_action)
 
             self.tbut.setIcon(icon)

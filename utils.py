@@ -1217,7 +1217,7 @@ custom_label_dict = {
     'giapCompositions': "Composition settings",
     "giapQuickPrint": "Map quick print",
     "giapMyPrints": "My Prints",
-    "giapAreaLength": 'Area and Length'
+    "giapAreaLength": 'Area and length'
 }
 
 max_ele_nazwy = 4

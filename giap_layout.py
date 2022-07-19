@@ -218,7 +218,7 @@ class MainTabQgsWidget:
         self.main_widget.pokaz_warstwy.toggled.connect(self.warstwy_show)
 
     def load_ribbons(self) -> None:
-        self.main_widget.area_length_action.setToolTip(tr("Area and Length"))
+        self.main_widget.area_length_action.setToolTip(tr("Area and length"))
         self.main_widget.edit_session_toggle()
         ribbon_conf = self.config.load_user_ribbon_setup()
         if not ribbon_conf:
