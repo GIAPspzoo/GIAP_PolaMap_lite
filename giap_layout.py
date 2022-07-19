@@ -86,8 +86,8 @@ class MainTabQgsWidget:
             attr.setStyleSheet(f'{attr.styleSheet()} font: {self.font_size}pt;')
         attributes = [self.set_dlg.label, self.set_dlg.label_3]
         for attr in attributes:
-            for replace in (re.findall(r'font-size:\d+', attr.text())):
-                replaced = attr.text().replace(f'{replace}', f'font-size: {self.font_size}')
+            for repl in (re.findall(r'font-size:\d+', attr.text())):
+                replaced = attr.text().replace(f'{repl}', f'font-size: {self.font_size}')
                 attr.setText(replaced)
 
     def setfont_styles_dialog(self) -> None:
