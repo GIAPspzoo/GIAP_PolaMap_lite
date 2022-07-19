@@ -1216,7 +1216,8 @@ custom_label_dict = {
     'giapWMS': "Add WMS/WMTS services",
     'giapCompositions': "Composition settings",
     "giapQuickPrint": "Map quick print",
-    "giapMyPrints": "My Prints"
+    "giapMyPrints": "My Prints",
+    "giapAreaLength": 'Area and length'
 }
 
 max_ele_nazwy = 4
