@@ -48,6 +48,8 @@ class CustomSectionManager(QDialog, FORM_CLASS):
         [tools.append(tool) for tool in toolbar_tools if tool not in tools]
         tools.sort()
         for tool in tools:
+            if not tool:
+                continue
             item = QStandardItem(
                 tr(get_tool_label(tool, self.main_qgs_widget)))
             item.setData(icon_manager([tool], self.main_qgs_widget)[tool],
@@ -65,7 +67,7 @@ class CustomSectionManager(QDialog, FORM_CLASS):
 
     def get_all_actions_from_qgis_toolbars(self) -> List[QAction]:
         qgis_toolbars = [toolbar for toolbar in iface.mainWindow().findChildren(QToolBar)
-            if "ToolBar" in toolbar.objectName() and "Giap" not in toolbar.objectName()]
+            if "toolbar" in toolbar.objectName().lower() and "giap" not in toolbar.objectName().lower()]
         actions = []
         for toolbar in qgis_toolbars:
             acts = get_action_from_toolbar(toolbar)
