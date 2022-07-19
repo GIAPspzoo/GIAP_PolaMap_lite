@@ -1032,7 +1032,7 @@ QListView:item:hover {
     </widget>
    </item>
    <item row="0" column="0" rowspan="3">
-    <widget class="QFrame" name="frame">
+    <widget class="QFrame" name="frame_6">
      <property name="minimumSize">
       <size>
        <width>120</width>

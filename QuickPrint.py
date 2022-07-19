@@ -97,7 +97,9 @@ class PrintMapTool:
             self.set_font_quickprint(QSettings().value("qgis/stylesheet/fontPointSize"))
 
     def set_font_quickprint(self, font_size):
-        self.dialog.label_2.setStyleSheet(f'{self.dialog.label_2.styleSheet()} font: {font_size}pt;')
+        attributes = [self.dialog.label_2, self.dialog.title_label_7]
+        for attr in attributes:
+            attr.setStyleSheet(f'{attr.styleSheet()} font: {font_size}pt;')
         self.dialog.frame_4.setStyleSheet(
             f'{self.dialog.frame_4.styleSheet()} QGroupBox, QCheckBox, QToolButton, '
             f'QLineEdit, QRadioButton, QComboBox, QSpinBox, QProgressBar {{font: {font_size}pt;}}')

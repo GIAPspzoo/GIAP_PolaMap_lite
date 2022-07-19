@@ -20,7 +20,6 @@ from qgis.core import QgsProject, Qgis, QgsSettings, QgsApplication
 from qgis.utils import iface
 
 from .Kompozycje.Kompozycje import CompositionsTool
-from .Kompozycje.CompositionsSaverDialog import CompositionsSaverDialog
 from .OrtoTools import OrtoAddingTool
 from .QuickPrint import PrintMapTool
 from .Searcher.searchTool import SearcherTool
@@ -76,35 +75,30 @@ class MainTabQgsWidget:
             self.setfont_settings_dialog()
             self.setfont_styles_dialog()
 
-    def setfont_compositions_saver_dialog(self) -> None:
-        compositions_saver_dialog = CompositionsSaverDialog()
-        compositions_saver_dialog.label_2.setStyleSheet(f'font: {self.font_size}pt;')
-        compositions_saver_dialog.title_label_12.setStyleSheet(f'font: {self.font_size}pt;')
-        compositions_saver_dialog.frame_17.setStyleSheet(\
-            f'{compositions_saver_dialog.frame_17.styleSheet()}'
-            f' QGroupBox, QPushButton, QFrame, QLabel {{font: {self.font_size}pt;}}')
 
-    def setfont_settings_dialog(self):
-        self.set_dlg.label_2.setStyleSheet(f'{self.set_dlg.frame.styleSheet()} font: {self.font_size}pt;')
+    def setfont_settings_dialog(self) -> None:
         self.set_dlg.frame_4.setStyleSheet(
             f'{self.set_dlg.frame_4.styleSheet()}'
             f' QGroupBox, QPushButton, QSpinBox, QRadioButton {{font: {self.font_size}pt;}}')
-        self.set_dlg.frame_7.setStyleSheet(f'{self.set_dlg.frame_7.styleSheet()} font: {self.font_size}pt;')
-        for i in (re.findall(r'font-size:\d+', self.set_dlg.label.text())):
-            replaced = self.set_dlg.label.text().replace(f'{i}', f'font-size: {self.font_size}')
-            self.set_dlg.label.setText(replaced)
-        for i in (re.findall(r'font-size:\d+', self.set_dlg.label_3.text())):
-            replaced = self.set_dlg.label_3.text().replace(f'{i}', f'font-size: {self.font_size}')
-            self.set_dlg.label_3.setText(replaced)
 
-    def setfont_styles_dialog(self):
-        self.style_manager_dlg.label_3.setStyleSheet(f'font: {self.font_size}pt;')
+        attributes = [self.set_dlg.frame_7, self.set_dlg.label_2]
+        for attr in attributes:
+            attr.setStyleSheet(f'{attr.styleSheet()} font: {self.font_size}pt;')
+        attributes = [self.set_dlg.label, self.set_dlg.label_3]
+        for attr in attributes:
+            for replace in (re.findall(r'font-size:\d+', attr.text())):
+                replaced = attr.text().replace(f'{replace}', f'font-size: {self.font_size}')
+                attr.setText(replaced)
+
+    def setfont_styles_dialog(self) -> None:
+        attributes = [self.style_manager_dlg.title_label_12, self.style_manager_dlg.pushButton_cancel, self.style_manager_dlg.label_3,
+                      ]
+        for attr in attributes:
+            attr.setStyleSheet(f'font: {self.font_size}pt;')
         self.style_manager_dlg.frame_17.setStyleSheet(
             f'{self.style_manager_dlg.frame_17.styleSheet()} QLabel, QPushButton {{font: {self.font_size}pt;}}')
         self.style_manager_dlg.frame_2.setStyleSheet(
             f'{self.style_manager_dlg.frame_2.styleSheet()}font: {self.font_size}pt;')
-        self.style_manager_dlg.title_label_12.setStyleSheet(f'font: {self.font_size}pt;')
-        self.style_manager_dlg.pushButton_cancel.setStyleSheet(f'font: {self.font_size}pt;')
 
     def missingCorePlugins(self) -> None:
         if len(iface.mainWindow().findChild(
@@ -629,7 +623,7 @@ class MainTabQgsWidget:
         )
         self.restart_qgis()
 
-    def set_size(self):
+    def set_size(self) -> None:
         value = self.set_dlg.spinBox_font.value()
         self.set_dlg.spinBox_font.setValue(value)
         QSettings().setValue('qgis/stylesheet/fontPointSize', value)
