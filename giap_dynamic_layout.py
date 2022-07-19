@@ -4,7 +4,7 @@ from math import ceil
 from plugins.processing.tools.general import execAlgorithmDialog
 from qgis.PyQt import uic, QtWidgets
 from qgis.PyQt.QtCore import Qt, QSize, QEvent, pyqtSignal, QMimeData, QRect, \
-    QTimer, QPoint
+    QTimer, QPoint, QSettings
 from qgis.PyQt.QtGui import QDrag, QPainter, QPixmap, QCursor, QIcon, QFont, \
     QFontMetrics
 from qgis.PyQt.QtWidgets import QWidget, QApplication, QHBoxLayout, \
@@ -199,10 +199,13 @@ class MainWidget(QWidget, FORM_CLASS):
             scrll = QScrollArea(self)
             scrll.setWidgetResizable(True)
             scrll.setWidget(self.instr)
+            value = QSettings().value("qgis/stylesheet/fontPointSize") if \
+                self.conf.setts["font_changed"] else 9
             self.instr.setStyleSheet(
-                """QFrame, QLabel, QToolTip, QTextEdit{
-            font:9pt}"""
+                f"""QFrame, QLabel, QToolTip, QTextEdit{{
+            font:{value}pt}}"""
             )
+            # raise
             self.instr.setTextFormat(Qt.AutoText)
             self.instr.setScaledContents(True)
             self.frm = QFrame()
@@ -1144,9 +1147,13 @@ class CustomLabel(QLabel):
         super(CustomLabel, self).__init__(parent)
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.setText(lab)
+        self.conf = Config()
+        value = QSettings().value("qgis/stylesheet/fontPointSize") if \
+            self.conf.setts["font_changed"] else 10
         self.setStyleSheet(
-            'font: "Segoe UI"; font-weight: normal; '
+            f'font:{value} "Segoe UI"; font-weight: normal; '
         )
+        # raise
         self.cinput = QLineEdit(self)
         self.cinput.setWindowFlags(Qt.Popup)
         self.cinput.editingFinished.connect(self.handleEditingFinished)

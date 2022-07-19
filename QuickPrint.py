@@ -4,7 +4,7 @@ import subprocess
 import sys
 import tempfile
 from qgis.PyQt import QtWidgets
-from qgis.PyQt.QtCore import QRectF, QDateTime
+from qgis.PyQt.QtCore import QRectF, QDateTime, QSettings
 from qgis.PyQt.QtGui import QColor, QFont
 from qgis.PyQt.QtWidgets import QFileDialog, QApplication
 from qgis._core import QgsLayoutExporter, QgsWkbTypes, QgsLayoutItemMap, \
@@ -18,6 +18,7 @@ from typing import Union
 
 from .utils import tr, CustomMessageBox, normalize_path
 from .wydruk_dialog import WydrukDialog
+from .config import Config
 
 pdf_open_error_msg = '''
     Nie znaleziono programu do otwierania plików PDF. Sprawdź, czy jest\n
@@ -85,6 +86,15 @@ class PrintMapTool:
         self.dialog.paperFormatComboBox.currentIndexChanged.connect(
             self.create_composer)
         self.setup_rubberband()
+        if Config().setts['font_changed']:
+            self.set_font_quickprint(QSettings().value("qgis/stylesheet/fontPointSize"))
+
+    def set_font_quickprint(self, font_size):
+        self.dialog.label_2.setStyleSheet(f'{self.dialog.label_2.styleSheet()} font: {font_size}pt;')
+        self.dialog.frame_4.setStyleSheet(
+            f'{self.dialog.frame_4.styleSheet()} QGroupBox, QCheckBox, QToolButton, '
+            f'QLineEdit, QRadioButton, QComboBox, QSpinBox, QProgressBar {{font: {font_size}pt;}}')
+        self.dialog.calendar.setStyleSheet(f'font: {font_size}pt;')
 
     def setup_rubberband(self) -> None:
         self.rubberband = QgsRubberBand(iface.mapCanvas(), QgsWkbTypes.PolygonGeometry)

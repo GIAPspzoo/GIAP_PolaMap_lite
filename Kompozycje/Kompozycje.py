@@ -6,7 +6,7 @@ from collections import OrderedDict
 from time import sleep
 
 from qgis.PyQt import QtCore
-from qgis.PyQt.QtCore import QObject, pyqtSignal, QItemSelectionModel
+from qgis.PyQt.QtCore import QObject, pyqtSignal, QItemSelectionModel, QSettings
 from qgis.PyQt.QtGui import QStandardItemModel, QStandardItem
 from qgis.PyQt.QtWidgets import QMessageBox, QApplication, QItemDelegate, \
     QCheckBox, QFileDialog, QProgressDialog, QToolButton, QGraphicsBlurEffect
@@ -29,6 +29,7 @@ from ..utils import get_project_config, SingletonModel, \
     set_project_config, identify_layer_by_id, ConfigSaveProgressDialog, \
     icon_manager
 from ..utils import tr, CustomMessageBox, Qt
+from ..config import Config
 
 LayersPanel = lsp
 
@@ -103,6 +104,12 @@ def get_user_compositions_gui():
             CustomMessageBox(None, tr('Failed to load settings.')).button_ok()
         progress.stop()
     return user_comp
+
+def config():
+    return Config()
+
+def font_size():
+    return QSettings().value("qgis/stylesheet/fontPointSize")
 
 
 class CompositionsTool(object):
@@ -205,6 +212,8 @@ class CompositionsConfig(QObject):
         self.dlg.komp_dol.clicked.connect(self.move_comp_down)
         self.dlg.komp_gora.clicked.connect(self.move_comp_up)
         self.model_kompozycji.rowsInserted.connect(self.comps_order_change)
+        if config().setts['font_changed']:
+            self.set_font_dodajkompozycje(font_size())
 
         self.check_for_changes_in_comps()
         self.create_table_model()
@@ -213,6 +222,16 @@ class CompositionsConfig(QObject):
             dialog = self.dlg.exec_()
             if dialog:
                 self.save()
+
+    def set_font_dodajkompozycje(self, font_size):
+        self.dlg.pushButton_2.setStyleSheet(
+            f'{self.dlg.pushButton_2.styleSheet()} QPushButton{{font: {font_size}pt;}}')
+        self.dlg.wczytaj.setStyleSheet(f'{self.dlg.wczytaj.styleSheet()} font: {font_size}pt;')
+        self.dlg.zapisz.setStyleSheet(f'{self.dlg.zapisz.styleSheet()} QPushButton {{font: {font_size}pt;}}')
+        self.dlg.frame_23.setStyleSheet(
+            f'{self.dlg.frame_23.styleSheet()} QPushButton, QLabel, QTableView {{font: {font_size}pt;}}')
+        self.dlg.frame_24.setStyleSheet(f'{self.dlg.frame_24.styleSheet()} font: {font_size}pt;')
+
 
     def write_file(self):
         blur = QGraphicsBlurEffect()
@@ -487,10 +506,20 @@ class CompositionsSaver(object):
         self.dlg.tabela.setModel(self.model)
         self.dlg.tabela.horizontalHeader().hide()
         self.dlg.tabela.verticalHeader().hide()
+        if config().setts['font_changed']:
+            self.set_font_compositionsaver(font_size())
 
         result = self.dlg.exec_()
         if result:
             self.write()
+
+    def set_font_compositionsaver(self, font_size):
+        self.dlg.label_2.setStyleSheet(f'{self.dlg.label_2.styleSheet()} font: {font_size}pt;')
+        self.dlg.pushButton_3.setStyleSheet(f'font: {font_size}pt;')
+        self.dlg.groupBox_11.setStyleSheet(
+            f'{self.dlg.groupBox_11.styleSheet()} QPushButton {{font: {font_size}pt;}}')
+        self.dlg.title_label_12.setStyleSheet(f'{self.dlg.title_label_12.styleSheet()} font: {font_size}pt;')
+        self.dlg.frame_2.setStyleSheet(f'{self.dlg.frame_2.styleSheet()} font: {font_size}pt;')
 
 
 class CompositionsAdder(object):
@@ -520,9 +549,21 @@ class CompositionsAdder(object):
         self.dlg.wdol_warstwe.hide()
         self.dlg.wgore_warstwe.hide()
         self.wczytaj_grupy()
+        if config().setts['font_changed']:
+            self.set_font_nowakompozycja(font_size())
         if not self.dlg.isActiveWindow():
             self.dlg.show()
             self.dlg.exec_()
+
+    def set_font_nowakompozycja(self, font_size):
+        self.dlg.frame.setStyleSheet(
+            f'{self.dlg.frame.styleSheet()} QFrame, QLabel, QWidget {{font: {font_size}pt;}}')
+        self.dlg.frame_2.setStyleSheet(f'{self.dlg.frame_2.styleSheet()} font: {font_size}pt;')
+        self.dlg.frame_3.setStyleSheet(f'{self.dlg.frame_3.styleSheet()} font: {font_size}pt;')
+        self.dlg.frame_4.setStyleSheet(f'{self.dlg.frame_4.styleSheet()} font: {font_size}pt;')
+        self.dlg.pushButton.setStyleSheet(f'{self.dlg.pushButton.styleSheet()} font: {font_size}pt;')
+        self.dlg.pushButton_2.setStyleSheet(f'{self.dlg.pushButton_2.styleSheet()} font: {font_size}pt;')
+        self.dlg.label_3.setStyleSheet(f'{self.dlg.label_3.styleSheet()} font: {font_size}pt;')
 
     def save(self):
         comp_name = self.dlg.nazwa_lineEdit.text()

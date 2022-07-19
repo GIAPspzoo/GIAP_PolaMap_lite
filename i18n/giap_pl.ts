@@ -1255,5 +1255,15 @@ lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
         <source>Page orientation</source>
         <translation>Orientacja wydruku</translation>
     </message>
+    <message>
+        <location filename="../Settings/ui_settings_layout.ui" line="437"/>
+        <source>Choose font size</source>
+        <translation>Wybierz rozmiar czcionki</translation>
+    </message>
+    <message>
+        <location filename="../Settings/ui_settings_layout.ui" line="456"/>
+        <source>Restart font size</source>
+        <translation>Powrót do ustawień domyślnych czcionki</translation>
+    </message>
 </context>
 </TS>

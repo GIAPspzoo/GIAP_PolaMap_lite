@@ -415,7 +415,7 @@ p, li { white-space: pre-wrap; }
                 <number>5</number>
                 </property>
                 <property name="maximum">
-                <number>30</number>
+                <number>15</number>
                 </property>
                </widget>
               </item>
@@ -435,6 +435,25 @@ p, li { white-space: pre-wrap; }
                </property>
                <property name="text">
                 <string>Choose font size</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QPushButton" name="restart_button">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>200</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Restart font size</string>
                </property>
               </widget>
              </item>
