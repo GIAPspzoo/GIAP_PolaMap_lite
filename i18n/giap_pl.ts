@@ -508,7 +508,7 @@ Proszę czekać...</translation>
         <translation>Zakończ edycję</translation>
     </message>
     <message>
-        <location filename="../giap_layout.py" line="181"/>
+        <location filename="../giap_layout.py" line="221"/>
         <source>Area and length</source>
         <translation>Powierzchnia i długość</translation>
     </message>
@@ -691,11 +691,6 @@ Proszę czekać...</translation>
         <location filename="../giap_dynamic_layout.py" line="425"/>
         <source>Error - Unable to remove the object.</source>
         <translation>Błąd - nie udało się usunąć obiektu.</translation>
-    </message>
-    <message>
-        <location filename="../giap_dynamic_layout.py" line="848"/>
-        <source>Area and length</source>
-        <translation>Powierzchnia i długość</translation>
     </message>
     <message>
         <location filename="../SectionManager/CustomSectionManager.py" line="425"/>

@@ -56,6 +56,13 @@ class MainWidget(QWidget, FORM_CLASS):
         self.icon_timer.setInterval(1)
         iface.currentLayerChanged.connect(self.icon_timer.start)
 
+        icon = icon_manager(['giapAreaLength'], self.parent)['giapAreaLength']
+        self.area_length_event = AreaAndLengthTool(iface)
+        self.area_length_action = QAction(QIcon(icon),None, iface.mainWindow())
+        self.area_length_action.setCheckable(True)
+        self.area_length_action.triggered.connect(self.area_length_event.run)
+        self.setObjectName('giapAreaLength')
+
     def reload_add_icons(self) -> None:
         if hasattr(self, 'add_action'):
             self.add_action.setIcon(
@@ -846,16 +853,14 @@ class CustomSection(QWidget):
             if oname == "giapMyPrints":
                 self.tbut.setToolTip(tr("My Prints"))
             if oname == "giapAreaLength":
-                self.tbut.setToolTip(tr("Area and length"))
+                giap_tool_bar = iface.mainWindow().findChildren(QToolBar, 'GiapToolBar')[0]
+                main_widget = giap_tool_bar.findChildren(MainWidget)[0]
+
                 iface.mapCanvas().refresh()
                 area_length_tool = QgsMapTool(iface.mapCanvas())
-                self.area_length_event = AreaAndLengthTool(iface)
-                self.area_length_action = QAction( QIcon(icon),
-                    tr("Area and length"), iface.mainWindow())
-                self.area_length_action.setCheckable(True)
-                self.area_length_action.triggered.connect(self.area_length_event.run)
-                area_length_tool.setAction(self.area_length_action)
-                self.tbut.setDefaultAction(self.area_length_action)
+                area_length_tool.setAction(main_widget.area_length_action)
+                self.tbut.setDefaultAction(main_widget.area_length_action)
+
             self.tbut.setIcon(icon)
 
     def unload_custom_actions(self) -> None:
