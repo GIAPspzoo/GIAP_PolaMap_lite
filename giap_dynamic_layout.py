@@ -222,9 +222,9 @@ class MainWidget(QWidget, FORM_CLASS):
             cnt = lay.count()
             # there should always be something in layout, (controls)
 
-            for i in range(cnt, -1, -1):
-                if isinstance(lay.itemAt(i), QSpacerItem):
-                    lay.removeItem(lay.itemAt(i))
+            for ind in range(cnt, -1, -1):
+                if isinstance(lay.itemAt(ind), QSpacerItem):
+                    lay.removeItem(lay.itemAt(ind))
 
             self.tabWidget.widget(tabind).lay.addWidget(self.frm)
         else:
@@ -456,16 +456,16 @@ class MainWidget(QWidget, FORM_CLASS):
             self.dlg.refresh_lists()
             self.connect_checking_signal()
 
-    def eventFilter(self, watched: QWidget, ev: QEvent) -> bool:
+    def eventFilter(self, watched: QWidget, event: QEvent) -> bool:
         # turn off dragging while not in edit session
         if isinstance(watched, CustomSection) and not self.edit_session:
-            if ev.type() == QEvent.MouseMove:
+            if event.type() == QEvent.MouseMove:
                 return True
-        return super().eventFilter(watched, ev)
+        return super().eventFilter(watched, event)
 
-    def keyPressEvent(self, e: QEvent) ->None:
+    def keyPressEvent(self, event: QEvent) ->None:
         if self.edit_session:
-            if e.key() == Qt.Key_Delete:
+            if event.key() == Qt.Key_Delete:
                 self.deletePressSignal.emit()
 
     def generate_ribbon_config(self):
@@ -543,44 +543,50 @@ class CustomTab(QWidget):
 
         self.setAcceptDrops(True)
 
-    def dragEnterEvent(self, e: QEvent) -> None:
-        e.accept()
+    def dragEnterEvent(self, event: QEvent) -> None:
+        event.accept()
 
-    def dragMoveEvent(self, e: QEvent) -> None:
-        e.accept()
+    def dragMoveEvent(self, event: QEvent) -> None:
+        event.accept()
 
-    def dropEvent(self, e: QEvent) -> None:
+    def dropEvent(self, event: QEvent) -> None:
         # accept only Custom Sections
-        if not isinstance(e.source(), CustomSection):
-            if isinstance(e.source(), CustomToolButton):
-                e.source().drag_state = False
-            e.setAccepted(False)
+        if not isinstance(event.source(), CustomSection):
+            if isinstance(event.source(), CustomToolButton):
+                event.source().drag_state = False
+            event.setAccepted(False)
             return
 
         try:
-            lay = e.source().parent().lay
+            lay = event.source().parent().lay
         except AttributeError:
             return
 
         source = None
-        for i in range(lay.count()):
-            if not isinstance(lay.itemAt(i).widget(), CustomSection):
+        for ind in range(lay.count()):
+            if not isinstance(lay.itemAt(ind).widget(), CustomSection):
                 continue
 
-            it = lay.itemAt(i)
-            if it.widget() is e.source():
-                source = i
+            it = lay.itemAt(ind)
+            if it.widget() is event.source():
+                source = ind
                 break
 
         if source is None:
             return
-        lay.takeAt(lay.count() - 1)
+
+        max_section_ind = lay.count() - 2
+        if ind == max_section_ind:
+            event.setAccepted(False)
+            return
+
+        sec_cont = lay.takeAt(lay.count() - 1)
         addsec = lay.takeAt(lay.count() - 1)
-        item = lay.takeAt(i)
-        lay.addItem(item)
+        item = lay.takeAt(ind)
         lay.addItem(addsec)
-        lay.addStretch()
-        e.setAccepted(True)
+        lay.addItem(item)
+        lay.addItem(sec_cont)
+        event.setAccepted(True)
 
     def return_tab_config(self):
         """Returns config for current tab with all sections,
@@ -789,7 +795,7 @@ class CustomSection(QWidget):
             self.tbut.org_state = True
             self.tbut.setText(alg.id())
             action = action.replace(':', '_')
-            lista = [x.split('.')[0] for x in os.listdir(
+            lista = [file_name.split('.')[0] for file_name in os.listdir(
                 os.path.join(os.path.dirname(__file__), 'icons'))]
             if action in lista:
                 self.tbut.setIcon(QIcon(
@@ -914,7 +920,7 @@ class CustomSection(QWidget):
     def mouseReleaseEvent(self, event: QEvent) -> None:
         event.accept()
 
-    def mouseMoveEvent(self, e: QEvent):
+    def mouseMoveEvent(self, event: QEvent):
         if not self.edit:
             return
 
@@ -928,10 +934,10 @@ class CustomSection(QWidget):
         painter.end()
 
         drag.setMimeData(mimedata)
-        drag.setHotSpot(e.pos())
+        drag.setHotSpot(event.pos())
         drag.setPixmap(pixmap)
         drag.exec_(Qt.MoveAction)
-        e.accept()
+        event.accept()
 
     def dragEnterEvent(self, event: QEvent) -> None:
         event.accept()
@@ -1094,7 +1100,7 @@ class CustomToolButton(QToolButton):
                 self.selected = True
             self.drag_state = False
 
-    def mouseMoveEvent(self, e: QEvent) -> None:
+    def mouseMoveEvent(self, event: QEvent) -> None:
         if not self.edit or not self.drag_state:
             return
         drag = QDrag(self)
@@ -1108,7 +1114,7 @@ class CustomToolButton(QToolButton):
 
         drag.setMimeData(mimedata)
         drag.setPixmap(pixmap)
-        drag.setHotSpot(e.pos())
+        drag.setHotSpot(event.pos())
         drag.exec_(Qt.MoveAction)
 
     def mousePressEvent(self, event: QEvent) -> None:
