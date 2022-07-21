@@ -36,10 +36,7 @@
     <normaloff>:/plugins/GIAP-giap_layout/icons/giap_logo.png</normaloff>:/plugins/GIAP-giap_layout/icons/giap_logo.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">* {
-	background-color: rgb(53, 85, 109);
-    font: 10pt &quot;Segoe UI&quot;; 
-}
+   <string notr="true">
 
 QListWidget {
 	alternate-background-color:  #e7e7e7;
@@ -64,35 +61,8 @@ QAbstractItemView:selected
 	background-color: rgb(38, 60, 78);
 }
 
-QPushButton {
-	color: #0A0C0D;
-	border: 1px solid #0A0C0D;
-	background-color: #b7d3e8;
-	border-radius: 3px;
-	padding: 4px;
-}
-
-QPushButton:hover {
-
-	font-weight: bold;
-}
-QPushButton:pressed {
-   background-color: #5689b0;
-   border: 1px solid #6fb1e3;
-}
-
-QPushButton:disabled
-{
-	color: gray;
-}
-
 QToolButton {
 	color:  #0A0C0D;
-}
-
-QPushButton:disabled
-{
-	color: gray;
 }
 
 QHeaderView::section

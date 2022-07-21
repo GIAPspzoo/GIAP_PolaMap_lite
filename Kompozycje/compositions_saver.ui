@@ -36,11 +36,7 @@
     <normaloff>:/plugins/GIAP-giap_layout/icons/giap_logo.png</normaloff>:/plugins/GIAP-giap_layout/icons/giap_logo.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">* {
-	background-color: rgb(53, 85, 109);
-    font: 10pt &quot;Segoe UI&quot;; 
-	color: #EDF6FC;
-}
+   <string notr="true">
 QAbstractItemView
 {
 	alternate-background-color:  #e6e6e6;
@@ -105,29 +101,6 @@ QLineEdit
 	border: 1px solid #5689b0;
     border-radius: 3px;
     background-color: #4f5a63;
-}
-
-QPushButton {
-	color: #0A0C0D;
-	border: 1px solid #0A0C0D;
-	background-color: #b7d3e8;
-	border-radius: 3px;
-	padding: 4px;
-}
-
-QPushButton:hover {
-
-	font-weight: bold;
-}
-QPushButton:pressed {
-   background-color: #5689b0;
-   border: 1px solid #6fb1e3;
-   font-weight: bold;
-}
-
-QPushButton:disabled
-{
-	color: gray;
 }
 
 QTableView:item:selected {
@@ -269,11 +242,9 @@ border: 1px solid #5689b0;
            <widget class="QGroupBox" name="groupBox_11">
             <property name="styleSheet">
              <string notr="true">QGroupBox{
-	border: None;
-}
-QPushButton:pressed{
-	font-weight: bold;
-}</string>
+              border: None;
+              }
+             </string>
             </property>
             <property name="title">
              <string/>
@@ -506,12 +477,10 @@ color: #0A0C0D;
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">* {
-font: 75 8pt &quot;Segoe UI Light&quot;;
-}
-QFrame {
-border-right: 2px solid #b7d3e8;
-}</string>
+      <string notr="true">
+       QFrame {
+       border-right: 2px solid #b7d3e8;
+       }</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="spacing">
@@ -534,7 +503,6 @@ border-right: 2px solid #b7d3e8;
         <property name="styleSheet">
          <string notr="true">   background-color: #b7d3e8;
    color: #0A0C0D;
-   font: 10pt &quot;Segoe UI&quot;; 
    font-weight: bold;
 </string>
         </property>

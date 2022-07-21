@@ -26,9 +26,6 @@ class OrtoAddingTool(object):
         self.services = []
         self.create_menu()
         self.connect_ortofotomapa_group()
-        if Config().setts['font_changed']:
-            CustomMessageBox.stylesheet += \
-                f'\n* {{font: {QSettings().value("qgis/stylesheet/fontPointSize")}pt}}'
 
     def connect_ortofotomapa_group(self):
         """

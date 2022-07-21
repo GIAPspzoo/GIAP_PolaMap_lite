@@ -4,7 +4,7 @@ from typing import List, Any, Dict, Optional, Union
 
 from PyQt5.QtCore import Qt
 from qgis.PyQt import QtCore, QtGui
-from qgis.PyQt.QtCore import QThread, QObject
+from qgis.PyQt.QtCore import QThread, QObject, QSettings
 from qgis.PyQt.QtGui import QPen, QBrush, QIcon, QPixmap
 from qgis.PyQt.QtWidgets import QApplication, QProgressDialog, \
     QStyledItemDelegate, QAction, QMessageBox, QScrollArea, QWidget, \
@@ -18,37 +18,8 @@ project = QgsProject.instance()
 
 class CustomMessageBox(QMessageBox):
     stylesheet = """
-        * {
-            background-color: rgb(53, 85, 109, 220);
-            color: rgb(255, 255, 255);
-            font: 10pt "Segoe UI";
-            border: 0px;
-        }
-
         QAbstractItemView {
             selection-background-color:  rgb(87, 131, 167);
-        }
-
-        QPushButton {
-            border: none;
-            border-width: 2px;
-            border-radius: 6px;
-            background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(65, 97, 124, 255), stop:1 rgba(90, 135, 172, 255));
-            padding: 5px 15px;
-        }
-
-        QPushButton:checked {
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(65, 97, 124, 255), stop:1 rgba(31, 65, 90, 255));
-            border: solid;
-            border-width: 2px;
-            border-color: rgb(65, 97, 124);
-        }
-
-        QPushButton:pressed {
-            background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(65, 97, 124, 255), stop:1 rgba(31, 65, 90, 255));
-            border: solid;
-            border-width: 2px;
-            border-color: rgb(65, 97, 124);
         }
     """
 
@@ -59,6 +30,7 @@ class CustomMessageBox(QMessageBox):
         self.rebuild_layout(text, image)
 
     def rebuild_layout(self, text, image):
+        self.stylesheet = f'*{{font: {QSettings().value("qgis/stylesheet/fontPointSize")}pt;}} {self.stylesheet}'
         self.setStyleSheet(self.stylesheet)
 
         scrll = QScrollArea(self)
@@ -148,6 +120,9 @@ class CustomMessageBox(QMessageBox):
         scrll.horizontalScrollBar().setValue(
             int(scrll.horizontalScrollBar().maximum() / 2))
 
+    def set_size(self, value: int) -> None:
+        self.stylesheet = f'*{{font: {value}pt;}} {self.stylesheet}'
+        self.setStyleSheet(self.stylesheet)
 
 class SingletonModel:
     __instance = None

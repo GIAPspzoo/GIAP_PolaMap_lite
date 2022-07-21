@@ -1161,7 +1161,7 @@ class CustomLabel(QLabel):
         value = QSettings().value("qgis/stylesheet/fontPointSize") if \
             self.conf.setts["font_changed"] else 10
         self.setStyleSheet(
-            f'font:{value} "Segoe UI"; font-weight: normal; '
+            f'font:{value}pt "Segoe UI"; font-weight: normal; '
         )
         self.cinput = QLineEdit(self)
         self.cinput.setWindowFlags(Qt.Popup)

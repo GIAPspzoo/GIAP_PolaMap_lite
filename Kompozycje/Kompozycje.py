@@ -330,7 +330,7 @@ class CompositionsConfig(QObject):
 
     def check_comps_order(self):
         if self.order_changed:
-            stoper = CustomMessageBox(self.dlg,
+            stoper = CustomMessageBox(None,
                                       tr(
                                           'The order of the compositions has not been saved! Do you want to save it?')).button_yes_no()
             if stoper == QMessageBox.Yes:
@@ -751,17 +751,27 @@ class CompositionsEditor(CompositionsAdder):
         self.dlg.wdol_warstwe.hide()
         self.dlg.wgore_warstwe.hide()
         self.wczytaj_grupy()
+        if Config().setts['font_changed']:
+            self.set_font_nowakompozycja(font_size())
         if self.ustaw_okno():
             if not self.dlg.isActiveWindow():
                 self.dlg.show()
                 self.dlg.exec_()
+
+    def set_font_nowakompozycja(self, font_size):
+        self.dlg.frame.setStyleSheet(
+            f'{self.dlg.frame.styleSheet()} QFrame, QLabel, QWidget {{font: {font_size}pt;}}')
+        attributes = [self.dlg.frame_2, self.dlg.frame_3, self.dlg.frame_4, self.dlg.pushButton,
+                      self.dlg.pushButton_2, self.dlg.label_3]
+        for attr in attributes:
+            attr.setStyleSheet(f'{attr.styleSheet()} font: {font_size}pt;')
 
     def ustaw_okno(self):
         table = self.pokaz_kompozycje.dlg.tableView
         model = table.selectionModel()
         rows = model.selectedRows()
         if not rows:
-            CustomMessageBox(table,
+            CustomMessageBox(None,
                              tr('Select composition to edit')).button_ok()
             return False
         name = rows[0].data(0)
@@ -857,7 +867,7 @@ class CompositionsDeleter(object):
         rows = model.selectedRows()
         if not rows:
             CustomMessageBox(
-                table, tr('Select composition to remove:')
+                None, tr('Select composition to remove:')
             ).button_ok()
             return
 
