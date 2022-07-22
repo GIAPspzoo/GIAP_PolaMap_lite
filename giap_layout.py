@@ -77,28 +77,28 @@ class MainTabQgsWidget:
 
 
     def setfont_settings_dialog(self) -> None:
-        self.set_dlg.frame_4.setStyleSheet(
-            f'{self.set_dlg.frame_4.styleSheet()}'
+        self.set_dlg.frame_main.setStyleSheet(
+            f'{self.set_dlg.frame_main.styleSheet()}'
             f' QGroupBox, QPushButton, QSpinBox, QRadioButton {{font: {self.font_size}pt;}}')
 
-        attributes = [self.set_dlg.frame_7, self.set_dlg.label_2]
+        attributes = [self.set_dlg.frame_title, self.set_dlg.label_side]
         for attr in attributes:
             attr.setStyleSheet(f'{attr.styleSheet()} font: {self.font_size}pt;')
-        attributes = [self.set_dlg.label, self.set_dlg.label_3]
+        attributes = [self.set_dlg.label_contact_left, self.set_dlg.label_contact_right]
         for attr in attributes:
             for repl in (re.findall(r'font-size:\d+', attr.text())):
                 replaced = attr.text().replace(f'{repl}', f'font-size: {self.font_size}')
                 attr.setText(replaced)
 
     def setfont_styles_dialog(self) -> None:
-        attributes = [self.style_manager_dlg.title_label_12, self.style_manager_dlg.pushButton_cancel, self.style_manager_dlg.label_3,
-                      ]
+        attributes = [self.style_manager_dlg.title_label, self.style_manager_dlg.pushButton_cancel,
+                      self.style_manager_dlg.label_side]
         for attr in attributes:
             attr.setStyleSheet(f'font: {self.font_size}pt;')
-        self.style_manager_dlg.frame_17.setStyleSheet(
-            f'{self.style_manager_dlg.frame_17.styleSheet()} QLabel, QPushButton {{font: {self.font_size}pt;}}')
-        self.style_manager_dlg.frame_2.setStyleSheet(
-            f'{self.style_manager_dlg.frame_2.styleSheet()}font: {self.font_size}pt;')
+        self.style_manager_dlg.frame_main.setStyleSheet(
+            f'{self.style_manager_dlg.frame_main.styleSheet()} QLabel, QPushButton {{font: {self.font_size}pt;}}')
+        self.style_manager_dlg.frame_style.setStyleSheet(
+            f'{self.style_manager_dlg.frame_style.styleSheet()}font: {self.font_size}pt;')
 
     def missingCorePlugins(self) -> None:
         if len(iface.mainWindow().findChild(

@@ -176,7 +176,7 @@ QRadioButton:selected{
         <number>0</number>
        </property>
        <item row="0" column="0">
-        <widget class="QFrame" name="frame_7">
+        <widget class="QFrame" name="frame_title">
          <property name="minimumSize">
           <size>
            <width>200</width>
@@ -227,7 +227,7 @@ QRadioButton:selected{
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QFrame" name="frame_4">
+        <widget class="QFrame" name="frame_main">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
@@ -327,7 +327,7 @@ QRadioButton:selected{
               <number>20</number>
              </property>
              <item row="0" column="0">
-              <widget class="QLabel" name="label">
+              <widget class="QLabel" name="label_contact_left">
                <property name="text">
                 <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -345,7 +345,7 @@ p, li { white-space: pre-wrap; }
               </widget>
              </item>
              <item row="0" column="1">
-              <widget class="QLabel" name="label_3">
+              <widget class="QLabel" name="label_contact_right">
                <property name="text">
                 <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -585,7 +585,7 @@ p, li { white-space: pre-wrap; }
        <number>5</number>
       </property>
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="label_side">
         <property name="styleSheet">
          <string notr="true">   background-color: #b7d3e8;
           color: #0A0C0D;
@@ -618,7 +618,7 @@ p, li { white-space: pre-wrap; }
       </item>
      </layout>
      <zorder>verticalSpacer_3</zorder>
-     <zorder>label_2</zorder>
+     <zorder>label_side</zorder>
     </widget>
    </item>
   </layout>

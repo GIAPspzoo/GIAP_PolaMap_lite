@@ -202,7 +202,7 @@ border: 1px solid #5689b0;
          <property name="frameShadow">
           <enum>QFrame::Plain</enum>
          </property>
-         <widget class="QLabel" name="title_label_12">
+         <widget class="QLabel" name="title_label">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -239,7 +239,7 @@ border: 1px solid #5689b0;
          </property>
          <layout class="QGridLayout" name="gridLayout_17">
           <item row="0" column="1">
-           <widget class="QGroupBox" name="groupBox_11">
+           <widget class="QGroupBox" name="groupBox_main">
             <property name="styleSheet">
              <string notr="true">QGroupBox{
               border: None;
@@ -251,7 +251,7 @@ border: 1px solid #5689b0;
             </property>
             <layout class="QGridLayout" name="gridLayout_2">
              <item row="1" column="0">
-              <widget class="QFrame" name="frame_2">
+              <widget class="QFrame" name="frame_compositions">
                <property name="styleSheet">
                 <string notr="true">border: 1px solid #0A0C0D;
 border-radius: 10px;
@@ -430,7 +430,7 @@ color: #0A0C0D;
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="pushButton_cancel">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -499,7 +499,7 @@ color: #0A0C0D;
        <number>5</number>
       </property>
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="label_side">
         <property name="styleSheet">
          <string notr="true">   background-color: #b7d3e8;
    color: #0A0C0D;
@@ -529,7 +529,7 @@ color: #0A0C0D;
       </item>
      </layout>
      <zorder>verticalSpacer_3</zorder>
-     <zorder>label_2</zorder>
+     <zorder>label_side</zorder>
     </widget>
    </item>
   </layout>
@@ -537,7 +537,7 @@ color: #0A0C0D;
  <resources/>
  <connections>
   <connection>
-   <sender>pushButton_3</sender>
+   <sender>pushButton_cancel</sender>
    <signal>clicked()</signal>
    <receiver>CompositionsSaverDialog</receiver>
    <slot>reject()</slot>

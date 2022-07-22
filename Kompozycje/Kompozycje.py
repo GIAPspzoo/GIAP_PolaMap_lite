@@ -207,8 +207,8 @@ class CompositionsConfig(QObject):
         self.dlg.dodaj_kompozycje.clicked.connect(self.dodaj)
         self.dlg.edytuj_kompozycje.clicked.connect(self.edytuj)
         self.dlg.usun_kompozycje.clicked.connect(self.usun)
-        self.dlg.zapisz.clicked.connect(self.write_file)
-        self.dlg.wczytaj.clicked.connect(self.read_file)
+        self.dlg.save.clicked.connect(self.write_file)
+        self.dlg.load.clicked.connect(self.read_file)
         self.dlg.komp_dol.clicked.connect(self.move_comp_down)
         self.dlg.komp_gora.clicked.connect(self.move_comp_up)
         self.model_kompozycji.rowsInserted.connect(self.comps_order_change)
@@ -224,9 +224,12 @@ class CompositionsConfig(QObject):
                 self.save()
 
     def set_font_dodajkompozycje(self, font_size):
-        attributes = [self.dlg.pushButton_2, self.dlg.wczytaj, self.dlg.zapisz, self.dlg.frame_23, self.dlg.frame_24]
+        attributes = [self.dlg.pushButton_side, self.dlg.load, self.dlg.save,
+                      self.dlg.frame_main, self.dlg.frame_title]
         for attr in attributes:
-            attr.setStyleSheet(f'{attr.styleSheet()} QPushButton, QLabel, QTableView {{font: {font_size}pt;}}; font: {font_size}pt;')
+            attr.setStyleSheet(
+                f'{attr.styleSheet()} QPushButton, QLabel, QTableView '
+                f'{{font: {font_size}pt;}}; font: {font_size}pt;')
 
 
     def write_file(self):
@@ -510,10 +513,10 @@ class CompositionsSaver(object):
             self.write()
 
     def set_font_compositionsaver(self, font_size):
-        self.dlg.groupBox_11.setStyleSheet(
-            f'{self.dlg.groupBox_11.styleSheet()} QPushButton {{font: {font_size}pt;}}')
-        attributes = [self.dlg.label_2, self.dlg.pushButton_3,
-                      self.dlg.title_label_12, self.dlg.frame_2]
+        self.dlg.groupBox_main.setStyleSheet(
+            f'{self.dlg.groupBox_main.styleSheet()} QPushButton {{font: {font_size}pt;}}')
+        attributes = [self.dlg.label_side, self.dlg.pushButton_cancel,
+                      self.dlg.title_label, self.dlg.frame_compositions]
         for attr in attributes:
             attr.setStyleSheet(f'{attr.styleSheet()} font: {font_size}pt;')
 
@@ -537,7 +540,7 @@ class CompositionsAdder(object):
                 self.kompozycje.dock, tr('No layers in project!')).button_ok()
             return
         self.dlg = NowaKompozycjaDialog()
-        self.dlg.pushButton_2.clicked.connect(self.save)
+        self.dlg.pushButton_save.clicked.connect(self.save)
         self.dlg.dodaj_warstwe.clicked.connect(self.add_layer)
         self.dlg.usun_warstwe.clicked.connect(self.del_layer)
         self.dlg.wdol_warstwe.clicked.connect(self.move_down)
@@ -552,10 +555,10 @@ class CompositionsAdder(object):
             self.dlg.exec_()
 
     def set_font_nowakompozycja(self, font_size):
-        self.dlg.frame.setStyleSheet(
-            f'{self.dlg.frame.styleSheet()} QFrame, QLabel, QWidget {{font: {font_size}pt;}}')
-        attributes = [self.dlg.frame_2, self.dlg.frame_3, self.dlg.frame_4, self.dlg.pushButton,
-                      self.dlg.pushButton_2, self.dlg.label_3]
+        self.dlg.frame_main.setStyleSheet(
+            f'{self.dlg.frame_main.styleSheet()} QFrame, QLabel, QWidget {{font: {font_size}pt;}}')
+        attributes = [self.dlg.frame_groups, self.dlg.frame_title, self.dlg.frame_layers,
+                      self.dlg.pushButton_cancel, self.dlg.pushButton_save, self.dlg.label_side]
         for attr in attributes:
             attr.setStyleSheet(f'{attr.styleSheet()} font: {font_size}pt;')
 
@@ -743,7 +746,7 @@ class CompositionsEditor(CompositionsAdder):
         self.root = QgsProject.instance().layerTreeRoot()
         self.dlg = NowaKompozycjaDialog()
         self.dlg.title_label_3.setText(tr('Edit'))
-        self.dlg.pushButton_2.clicked.connect(self.save)
+        self.dlg.pushButton_save.clicked.connect(self.save)
         self.dlg.dodaj_warstwe.clicked.connect(self.add_layer)
         self.dlg.usun_warstwe.clicked.connect(self.del_layer)
         self.dlg.wdol_warstwe.clicked.connect(self.move_down)
@@ -751,7 +754,7 @@ class CompositionsEditor(CompositionsAdder):
         self.dlg.wdol_warstwe.hide()
         self.dlg.wgore_warstwe.hide()
         self.wczytaj_grupy()
-        if Config().setts['font_changed']:
+        if config().setts['font_changed']:
             self.set_font_nowakompozycja(font_size())
         if self.ustaw_okno():
             if not self.dlg.isActiveWindow():
@@ -759,10 +762,10 @@ class CompositionsEditor(CompositionsAdder):
                 self.dlg.exec_()
 
     def set_font_nowakompozycja(self, font_size):
-        self.dlg.frame.setStyleSheet(
-            f'{self.dlg.frame.styleSheet()} QFrame, QLabel, QWidget {{font: {font_size}pt;}}')
-        attributes = [self.dlg.frame_2, self.dlg.frame_3, self.dlg.frame_4, self.dlg.pushButton,
-                      self.dlg.pushButton_2, self.dlg.label_3]
+        self.dlg.frame_main.setStyleSheet(
+            f'{self.dlg.frame_main.styleSheet()} QFrame, QLabel, QWidget {{font: {font_size}pt;}}')
+        attributes = [self.dlg.frame_groups, self.dlg.frame_title, self.dlg.frame_layers,
+                      self.dlg.pushButton_cancel, self.dlg.pushButton_save, self.dlg.label_side]
         for attr in attributes:
             attr.setStyleSheet(f'{attr.styleSheet()} font: {font_size}pt;')
 
