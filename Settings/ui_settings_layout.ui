@@ -40,10 +40,9 @@
   </property>
   <property name="styleSheet">
    <string notr="true">* {
-	background-color: rgb(53, 85, 109);
-    font: 10pt &quot;Segoe UI&quot;; 
-	color: #EDF6FC;
+    font: 10pt &quot;Segoe UI&quot;;
 }
+
 QComboBox
 {
 	selection-background-color: #b7d3e8;
@@ -83,7 +82,7 @@ QComboBox::drop-down
 	border-left-width: 0;
 	border-left-color:  #1a2936;
 	border-left-style: solid;
-	border-top-right-radius: 3px; 
+	border-top-right-radius: 3px;
 	border-bottom-right-radius: 3px;
 }
 
@@ -92,7 +91,7 @@ QComboBox::down-arrow
 	image: url(icons/down_arrow_disabled.png);
 }
 
-QComboBox::down-arrow:on, 
+QComboBox::down-arrow:on,
 QComboBox::down-arrow:hover,
 QComboBox::down-arrow:focus
 {
@@ -104,28 +103,6 @@ QLineEdit
 	border: 1px solid #5689b0;
     border-radius: 3px;
     background-color: #4f5a63;
-}
-
-QPushButton {
-	color: #0A0C0D;
-	border: 1px solid #0A0C0D;
-	background-color: #b7d3e8;
-	border-radius: 3px;
-	padding: 4px;
-}
-
-QPushButton:hover {
-
-	font-weight: bold;
-}
-QPushButton:pressed {
-   background-color: #5689b0;
-   border: 1px solid #6fb1e3;
-}
-
-QPushButton:disabled
-{
-	color: gray;
 }
 
 QGroupBox {
@@ -421,18 +398,6 @@ p, li { white-space: pre-wrap; }
               </item>
              <item row="0" column="1">
               <widget class="QPushButton" name="spinBox_button">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>200</width>
-                 <height>0</height>
-                </size>
-               </property>
                <property name="text">
                 <string>Choose font size</string>
                </property>
@@ -440,18 +405,6 @@ p, li { white-space: pre-wrap; }
              </item>
              <item row="0" column="2">
               <widget class="QPushButton" name="restart_button">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>300</width>
-                 <height>0</height>
-                </size>
-               </property>
                <property name="text">
                 <string>Restart font size</string>
                </property>
@@ -635,10 +588,9 @@ p, li { white-space: pre-wrap; }
        <widget class="QLabel" name="label_side">
         <property name="styleSheet">
          <string notr="true">   background-color: #b7d3e8;
-   color: #0A0C0D;
-   font: 10pt &quot;Segoe UI&quot;; 
-   font-weight: bold;
-</string>
+          color: #0A0C0D;
+          font-weight: bold;
+         </string>
         </property>
         <property name="locale">
          <locale language="English" country="UnitedKingdom"/>

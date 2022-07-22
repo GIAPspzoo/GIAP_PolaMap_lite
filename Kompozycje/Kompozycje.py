@@ -333,7 +333,7 @@ class CompositionsConfig(QObject):
 
     def check_comps_order(self):
         if self.order_changed:
-            stoper = CustomMessageBox(self.dlg,
+            stoper = CustomMessageBox(None,
                                       tr(
                                           'The order of the compositions has not been saved! Do you want to save it?')).button_yes_no()
             if stoper == QMessageBox.Yes:
@@ -774,7 +774,7 @@ class CompositionsEditor(CompositionsAdder):
         model = table.selectionModel()
         rows = model.selectedRows()
         if not rows:
-            CustomMessageBox(table,
+            CustomMessageBox(None,
                              tr('Select composition to edit')).button_ok()
             return False
         name = rows[0].data(0)
@@ -870,7 +870,7 @@ class CompositionsDeleter(object):
         rows = model.selectedRows()
         if not rows:
             CustomMessageBox(
-                table, tr('Select composition to remove:')
+                None, tr('Select composition to remove:')
             ).button_ok()
             return
 

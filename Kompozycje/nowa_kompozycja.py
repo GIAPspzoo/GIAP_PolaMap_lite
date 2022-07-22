@@ -28,9 +28,6 @@ class NowaKompozycjaDialog(QtWidgets.QDialog, FORM_CLASS):
         self.uncheckPushButton.clicked.connect(self.uncheck)
         self.checkAllPushButton.clicked.connect(self.check_all)
         self.uncheckAllPushButton.clicked.connect(self.uncheck_all)
-        if Config().setts['font_changed']:
-            CustomMessageBox.stylesheet += \
-                f'\n* {{font: {QSettings().value("qgis/stylesheet/fontPointSize")}pt}}'
 
     def check(self):
         try:
@@ -44,7 +41,7 @@ class NowaKompozycjaDialog(QtWidgets.QDialog, FORM_CLASS):
             if not model.rowCount():
                 raise AttributeError("No layers in 'select layer'")
         except AttributeError:
-            CustomMessageBox(table,
+            CustomMessageBox(None,
                              tr('No layers in select layers.')).button_ok()
 
     def uncheck(self):

@@ -45,11 +45,8 @@
     <normaloff>:/plugins/GIAP-giap_layout/icons/giap_logo.png</normaloff>:/plugins/GIAP-giap_layout/icons/giap_logo.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">* {
-	background-color: rgb(53, 85, 109);
-    font: 10pt &quot;Segoe UI&quot;; 
-	color: #EDF6FC;
-}
+   <string notr="true">
+
 QAbstractItemView
 {
 	alternate-background-color:  #e6e6e6;
@@ -114,27 +111,6 @@ QLineEdit
 	border: None;
     border-radius: 3px;
     background-color: #4f5a63;
-}
-
-QPushButton {
-	color: #0A0C0D;
-	border: 1px solid #0A0C0D;
-	background-color: #b7d3e8;
-	border-radius: 3px;
-	padding: 4px;
-}
-
-QPushButton:hover {
-	font-weight: bold;
-}
-QPushButton:pressed {
-   background-color: #5689b0;
-   border: 1px solid #6fb1e3;
-}
-
-QPushButton:disabled
-{
-	color: gray;
 }
 
 QGroupBox {
@@ -739,27 +715,6 @@ QLineEdit
     background-color: #4f5a63;
 }
 
-QPushButton {
-	color: #0A0C0D;
-	border: 1px solid #0A0C0D;
-	background-color: #b7d3e8;
-	border-radius: 3px;
-	padding: 4px;
-}
-
-QPushButton:hover {
-	font-weight: bold;
-}
-QPushButton:pressed {
-   background-color: #5689b0;
-   border: 1px solid #6fb1e3;
-}
-
-QPushButton:disabled
-{
-	color: gray;
-}
-
 QGroupBox {
 border: 1px solid #5689b0;
 }
@@ -1050,14 +1005,13 @@ QListView:item:hover {
      </property>
      <property name="styleSheet">
       <string notr="true">
-* {
-	font: 75 8pt &quot;Segoe UI Light&quot;;
-	color: #0A0C0D;
-}
-
-QFrame {
-	border-right: 2px solid #b7d3e8;
-}</string>
+          * {
+          color: #0A0C0D;
+          }
+          QFrame {
+          border-right: 2px solid #b7d3e8;
+          }
+      </string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="1" column="0">
@@ -1078,7 +1032,6 @@ QFrame {
         <property name="styleSheet">
          <string notr="true">   background-color: #b7d3e8;
    color: #0A0C0D;
-   font: 10pt &quot;Segoe UI&quot;; 
    font-weight: bold;
    padding-left: 5px;
    padding-right: 5px;</string>
