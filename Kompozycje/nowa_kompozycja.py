@@ -4,7 +4,11 @@ import os
 
 from qgis.PyQt import QtWidgets, uic, QtCore, QtGui
 
+from qgis.PyQt.QtCore import QSettings
+
 from ..utils import tr, CustomMessageBox
+
+from ..config import Config
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'nowa_kompozycja.ui'))
@@ -24,6 +28,9 @@ class NowaKompozycjaDialog(QtWidgets.QDialog, FORM_CLASS):
         self.uncheckPushButton.clicked.connect(self.uncheck)
         self.checkAllPushButton.clicked.connect(self.check_all)
         self.uncheckAllPushButton.clicked.connect(self.uncheck_all)
+        if Config().setts['font_changed']:
+            CustomMessageBox.stylesheet += \
+                f'\n* {{font: {QSettings().value("qgis/stylesheet/fontPointSize")}pt}}'
 
     def check(self):
         try:

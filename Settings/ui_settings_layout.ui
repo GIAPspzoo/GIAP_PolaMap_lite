@@ -199,7 +199,7 @@ QRadioButton:selected{
         <number>0</number>
        </property>
        <item row="0" column="0">
-        <widget class="QFrame" name="frame_7">
+        <widget class="QFrame" name="frame_title">
          <property name="minimumSize">
           <size>
            <width>200</width>
@@ -250,7 +250,7 @@ QRadioButton:selected{
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QFrame" name="frame_4">
+        <widget class="QFrame" name="frame_main">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
@@ -350,7 +350,7 @@ QRadioButton:selected{
               <number>20</number>
              </property>
              <item row="0" column="0">
-              <widget class="QLabel" name="label">
+              <widget class="QLabel" name="label_contact_left">
                <property name="text">
                 <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -368,7 +368,7 @@ p, li { white-space: pre-wrap; }
               </widget>
              </item>
              <item row="0" column="1">
-              <widget class="QLabel" name="label_3">
+              <widget class="QLabel" name="label_contact_right">
                <property name="text">
                 <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -382,6 +382,78 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;center&quot; style=&quot; margin-top:6px; margin-bottom:6px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;ul. Skrzywana 6&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:6px; margin-bottom:6px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;93-588 Łódź&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:6px; margin-bottom:6px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;telefon: 506 968 838&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="groupBox_5">
+            <property name="title">
+             <string>Choose font size</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_2">
+             <property name="topMargin">
+              <number>20</number>
+             </property>
+              <property name="leftMargin">
+               <number>9</number>
+              </property>
+              <property name="topMargin">
+               <number>20</number>
+              </property>
+              <property name="rightMargin">
+               <number>600</number>
+              </property>
+              <property name="bottomMargin">
+               <number>9</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QSpinBox" name="spinBox_font">
+                <property name="minimum">
+                <number>5</number>
+                </property>
+                <property name="maximum">
+                <number>15</number>
+                </property>
+               </widget>
+              </item>
+             <item row="0" column="1">
+              <widget class="QPushButton" name="spinBox_button">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>200</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Choose font size</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QPushButton" name="restart_button">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>300</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Restart font size</string>
                </property>
               </widget>
              </item>
@@ -560,7 +632,7 @@ p, li { white-space: pre-wrap; }
        <number>5</number>
       </property>
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="label_side">
         <property name="styleSheet">
          <string notr="true">   background-color: #b7d3e8;
    color: #0A0C0D;
@@ -594,7 +666,7 @@ p, li { white-space: pre-wrap; }
       </item>
      </layout>
      <zorder>verticalSpacer_3</zorder>
-     <zorder>label_2</zorder>
+     <zorder>label_side</zorder>
     </widget>
    </item>
   </layout>
