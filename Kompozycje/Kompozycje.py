@@ -685,17 +685,16 @@ class CompositionsAdder(object):
 
     def del_layer(self):
         table_sel_model = self.dlg.warstwy_table.selectionModel()
-        try:
+        if not table_sel_model:
+            CustomMessageBox(
+                self.dlg, tr('Select layer to remove from the mark layers.')
+            ).button_ok()
+        else:
             rows = table_sel_model.selectedRows()
             if not rows:
                 CustomMessageBox(
                     self.dlg, tr('Select layer to remove from the mark layers.')
                 ).button_ok()
-        except AttributeError:
-            CustomMessageBox(
-                self.dlg, tr('Select layer to remove from the mark layers.')
-            ).button_ok()
-        else:
             index_list = []
             for model_index in rows:
                 index = QtCore.QPersistentModelIndex(model_index)

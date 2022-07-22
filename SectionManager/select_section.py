@@ -113,7 +113,8 @@ class SelectSection(QDialog, FORM_CLASS):
     def get_selected_row(self) -> Set[Union[QModelIndex, str]] or None:
         rows = self.customToolList.selectionModel().selectedRows()
         if rows and rows[0].row() in self.tools_id_dict.keys():
-            return rows[0], self.tools_id_dict[rows[0].row()]
+            obj = rows[0], self.tools_id_dict[rows[0].row()]
+            raise
         return None
 
     def refresh_lists(self) -> None:
