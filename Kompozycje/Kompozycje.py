@@ -685,8 +685,13 @@ class CompositionsAdder(object):
 
     def del_layer(self):
         table_sel_model = self.dlg.warstwy_table.selectionModel()
-        rows = table_sel_model.selectedRows()
-        if not rows:
+        try:
+            rows = table_sel_model.selectedRows()
+            if not rows:
+                CustomMessageBox(
+                    self.dlg, tr('Select layer to remove from the mark layers.')
+                ).button_ok()
+        except AttributeError:
             CustomMessageBox(
                 self.dlg, tr('Select layer to remove from the mark layers.')
             ).button_ok()
@@ -699,6 +704,7 @@ class CompositionsAdder(object):
             for index in index_list:
                 self.model_warstw.removeRow(index.row())
             self.dlg.warstwy_table.selectionModel().clear()
+
 
     def move_down(self):
         table_sel_model = self.dlg.warstwy_table.selectionModel()
