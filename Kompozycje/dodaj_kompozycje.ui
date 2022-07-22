@@ -225,7 +225,7 @@ QTableView:item:hover {
         <number>0</number>
        </property>
        <item row="0" column="0">
-        <widget class="QFrame" name="frame_24">
+        <widget class="QFrame" name="frame_title">
          <property name="minimumSize">
           <size>
            <width>200</width>
@@ -295,7 +295,7 @@ QTableView:item:hover {
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QFrame" name="frame_23">
+        <widget class="QFrame" name="frame_main">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
@@ -992,7 +992,7 @@ QPushButton:disabled
        <number>5</number>
       </property>
       <item>
-       <widget class="QPushButton" name="pushButton_2">
+       <widget class="QPushButton" name="pushButton_side">
         <property name="styleSheet">
          <string notr="true">QPushButton{
 	background-color: transparent;
@@ -1035,7 +1035,7 @@ QPushButton:pressed{
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="zapisz">
+       <widget class="QPushButton" name="save">
         <property name="styleSheet">
          <string notr="true"/>
         </property>
@@ -1045,7 +1045,7 @@ QPushButton:pressed{
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="wczytaj">
+       <widget class="QPushButton" name="load">
         <property name="styleSheet">
          <string notr="true">color: #EDF6FC;</string>
         </property>
@@ -1056,9 +1056,9 @@ QPushButton:pressed{
       </item>
      </layout>
      <zorder>verticalSpacer_3</zorder>
-     <zorder>zapisz</zorder>
-     <zorder>wczytaj</zorder>
-     <zorder>pushButton_2</zorder>
+     <zorder>save</zorder>
+     <zorder>load</zorder>
+     <zorder>pushButton_side</zorder>
     </widget>
    </item>
   </layout>
@@ -1068,8 +1068,8 @@ QPushButton:pressed{
   <tabstop>komp_gora</tabstop>
   <tabstop>pushButton</tabstop>
   <tabstop>pushButton_3</tabstop>
-  <tabstop>zapisz</tabstop>
-  <tabstop>wczytaj</tabstop>
+  <tabstop>save</tabstop>
+  <tabstop>load</tabstop>
  </tabstops>
  <resources/>
  <connections>

@@ -5,7 +5,7 @@ from typing import List, Union, Set
 
 from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QModelIndex
-from qgis.PyQt.QtCore import QSortFilterProxyModel
+from qgis.PyQt.QtCore import QSortFilterProxyModel, QSettings
 from qgis.PyQt.QtGui import QStandardItemModel, QStandardItem
 from qgis.PyQt.QtWidgets import QDialog, QToolBar, QAction
 from qgis.utils import iface
@@ -13,6 +13,7 @@ from qgis.utils import iface
 from ..utils import STANDARD_TOOLS, unpack_nested_lists, Qt, tr, \
     icon_manager, CustomMessageBox, get_tool_label, GIAP_CUSTOM_TOOLS, get_action_from_toolbar, \
     find_widget_with_menu_in_toolbar
+from ..config import Config
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'UI/add_section_dialog.ui'))
@@ -26,6 +27,8 @@ class CustomSectionManager(QDialog, FORM_CLASS):
         self.main_qgs_widget = parent.parent
         self.mode = mode
         self.removed_idx = set()
+        if Config().setts['font_changed']:
+            self.set_font_custom_section_manager(QSettings().value("qgis/stylesheet/fontPointSize"))
         if mode != 'remove':
             self.add_available_tools_into_list()
             self.find_tool_searchbox.textChanged.connect(
@@ -35,6 +38,15 @@ class CustomSectionManager(QDialog, FORM_CLASS):
                 self.remove_from_selected)
             self.pushButton_save.clicked.connect(self.save_section)
             self.protected = False
+
+    def set_font_custom_section_manager(self, font_size) -> None:
+        attributes = [self.pushButton_save, self.pushButton_cancel, self.title_label]
+        for attr in attributes:
+            attr.setStyleSheet(f'{attr.styleSheet()} font: {font_size}pt;')
+        self.frame_main.setStyleSheet(
+            f'{self.frame_main.styleSheet()}QFrame, QTableView, QLabel, QLineEdit, '
+            f'QgsFilterLineEdit {{font: {font_size}pt;}}')
+
 
     def add_available_tools_into_list(self) -> None:
         self.availableToolTable_sort = QSortFilterProxyModel()

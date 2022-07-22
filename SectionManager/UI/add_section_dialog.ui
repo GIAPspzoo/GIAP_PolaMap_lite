@@ -212,7 +212,7 @@ QTreeView::branch {
          <property name="frameShadow">
           <enum>QFrame::Plain</enum>
          </property>
-         <widget class="QLabel" name="title_label_12">
+         <widget class="QLabel" name="title_label">
           <property name="geometry">
            <rect>
             <x>8</x>
@@ -240,7 +240,7 @@ QTreeView::branch {
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QFrame" name="frame_17">
+        <widget class="QFrame" name="frame_main">
          <property name="styleSheet">
           <string notr="true"/>
          </property>
