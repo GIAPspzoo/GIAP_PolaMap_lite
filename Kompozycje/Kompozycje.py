@@ -705,7 +705,6 @@ class CompositionsAdder(object):
                 self.model_warstw.removeRow(index.row())
             self.dlg.warstwy_table.selectionModel().clear()
 
-
     def move_down(self):
         table_sel_model = self.dlg.warstwy_table.selectionModel()
         rows = table_sel_model.selectedRows()
