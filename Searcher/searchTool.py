@@ -152,7 +152,7 @@ class SearcherTool:
 
     def add_chosen_border(self, mess: str) -> None:
         prg_dlg = QProgressDialog(self.dock,Qt.Dialog)
-        prg_dlg.setLabelText("Dodawanie warstw...")
+        prg_dlg.setLabelText(tr("Adding layers..."))
         prg_dlg.setCancelButton(None)
         prg_dlg.setAutoClose(True)
         prg_dlg.setMaximum(100)
@@ -166,26 +166,26 @@ class SearcherTool:
         if self.dock.comboBox_obr.currentIndex() != 0:
             jpt_kod_je = self.dock.comboBox_obr.currentText().split("|")[1]
             adres = "A06_Granice_obrebow_ewidencyjnych"
-            lay_name = 'obreby_ewidencyjne'
+            lay_name = 'Obręby_ewidencyjne'
 
 
         elif self.dock.comboBox_gmina.currentIndex() != 0:
             jpt_kod_je = self.dock.comboBox_gmina.currentText().split("|")[1]
             jpt_kod_je = jpt_kod_je.replace("_", "")
             adres = "A03_Granice_gmin"
-            lay_name = 'gminy'
+            lay_name = 'Gminy'
 
 
         elif self.dock.comboBox_pow.currentIndex() != 0:
             jpt_kod_je = self.dock.comboBox_pow.currentText().split("|")[1]
             adres = "A02_Granice_powiatow"
-            lay_name = 'powiaty'
+            lay_name = 'Powiaty'
 
 
         elif self.dock.comboBox_woj.currentIndex() != 0:
             jpt_kod_je = self.dock.comboBox_woj.currentText().split("|")[1]
             adres = "A01_Granice_wojewodztw"
-            lay_name = 'wojewodztwa'
+            lay_name = 'Województwa'
 
         else:
             CustomMessageBox(None,
@@ -194,15 +194,15 @@ class SearcherTool:
 
         url = f"https://mapy.geoportal.gov.pl/wss/service/PZGIK/PRG/WFS/AdministrativeBoundaries?SERVICE=WFS&REQUEST=GetFeature&VERSION=2.0.0&TYPENAME=ms:{adres}&TYPENAMES=ms:{adres}"
 
-        vlayer = QgsVectorLayer(url, "my wfs layer", "WFS")
+        vlayer = QgsVectorLayer(url, "wfs_lay", "WFS")
         vlayer.setSubsetString(f"""SELECT * FROM {adres}
                                    WHERE JPT_KOD_JE = '{jpt_kod_je}'""")
 
         prg_dlg.setValue(25)
         root = QgsProject.instance().layerTreeRoot()
-        granice_group = root.findGroup("Granice")
-        if not root.findGroup("Granice"):
-            granice_group = root.addGroup("Granice")
+        granice_group = root.findGroup("GRANICE")
+        if not root.findGroup("GRANICE"):
+            granice_group = root.addGroup("GRANICE")
 
         lay = None
 
@@ -217,7 +217,7 @@ class SearcherTool:
             attr = vlayer.dataProvider().fields().toList()
             lay.dataProvider().addAttributes(attr)
             lay.updateFields()
-            add_map_layer_to_group(lay, "Granice")
+            add_map_layer_to_group(lay, "GRANICE")
 
         prg_dlg.setValue(50)
 

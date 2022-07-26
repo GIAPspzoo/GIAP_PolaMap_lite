@@ -648,6 +648,11 @@ Proszę czekać...</translation>
         <translation>Puste pole adresu</translation>
     </message>
     <message>
+        <location filename="../Searcher/searchTool.py" line="155"/>
+        <source>Adding layers...</source>
+        <translation>Dodawanie warstwy...</translation>
+    </message>
+    <message>
         <location filename="../Searcher/searchTool.py" line="231"/>
         <source>Cadastral district</source>
         <translation>Obręb ewidencyjny</translation>
