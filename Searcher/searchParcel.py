@@ -2,6 +2,7 @@ import os.path
 import re
 import socket
 from http.client import IncompleteRead
+from typing import List
 from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
 
@@ -18,7 +19,7 @@ class FetchULDK:
         self.params = params
         self.responce = []
 
-    def fetch_list(self, area, teryt):
+    def fetch_list(self, area: str, teryt: str) -> bool:
         map(str, teryt)
         if area not in {'powiat', 'gmina', 'obreb'}:
             self.responce = []
@@ -26,11 +27,11 @@ class FetchULDK:
         self.params = f'obiekt={area}&wynik=nazwa%2Cteryt&teryt={teryt}&'
         return self.fetch()
 
-    def fetch_voivodeships(self):
+    def fetch_voivodeships(self) -> bool:
         self.params = 'obiekt=wojewodztwo&wynik=nazwa%2Cteryt&teryt=&'
         return self.fetch()
 
-    def fetch_parcel(self, teryt):
+    def fetch_parcel(self, teryt: str) -> bool:
         self.responce = []
         if not isinstance(teryt, str):
             return False
@@ -42,15 +43,15 @@ class FetchULDK:
         # TODO: Dodac pobieranie działki w pkt po kliknieciu
         pass
 
-    def fetch(self):
+    def fetch(self) -> bool:
         if '- gmina' in self.params or '- miasto' in self.params:
             flag = self.params.find('-')
             self.params = self.params[0:flag]
         url = f'https://uldk.gugik.gov.pl/?{self.params}'
         self.responce = []
         try:
-            with urlopen(url, timeout=19) as r:
-                content = r.read()
+            with urlopen(url, timeout=19) as url_handler:
+                content = url_handler.read()
         except IncompleteRead:
             CustomMessageBox(None,
                              f"{tr('Error!')} {tr('Service returned incomplete responce.')}").button_ok()
@@ -75,10 +76,10 @@ class FetchULDK:
                              f"{tr('Service did not find any matches, wrong plot number.')}").button_ok()
             return False
 
-        self.responce = self.natural_sort([x for x in res[1:] if x != ''])
+        self.responce = self.natural_sort([ter for ter in res[1:] if ter != ''])
         return True
 
-    def natural_sort(self, list):
+    def natural_sort(self, list: List[str]) -> List[str]:
         convert = lambda text: int(text) if text.isdigit() else text.lower()
         alpha_key = lambda key: [convert(c) for c in re.split('([0-9]+)', key)]
         return sorted(list, key=alpha_key)
@@ -97,7 +98,7 @@ class ParseResponce:
             self.lyr_name, 'memory'
         )
 
-    def get_layer(self):
+    def get_layer(self) -> None:
         lyr = QgsProject.instance().mapLayersByName(self.lyr_name)
         if len(lyr) > 0:
             self.lyr = lyr[0]
@@ -108,7 +109,7 @@ class ParseResponce:
         self.lyr.loadNamedStyle(
             os.path.join(direc, 'layer_style', 'dzialki.qml'))
 
-    def parse_responce(self, resp):
+    def parse_responce(self, resp: List[str]) -> None:
         feats = []
         for row in resp:
             ft = self._create_feature(row)
@@ -129,14 +130,14 @@ class ParseResponce:
                 Qgis.Warning
             )
 
-    def zoom_to_feature(self, layer):
+    def zoom_to_feature(self, layer: str) -> None:
         layer = QgsProject.instance().mapLayersByName(layer)[0]
         iface.mapCanvas().zoomScale(500)
         layer.selectByIds([len(layer)])
         iface.mapCanvas().zoomToSelected(layer)
         layer.removeSelection()
 
-    def _create_feature(self, row):
+    def _create_feature(self, row: str) -> QgsFeature:
         if row[:4].upper() == 'SRID':
             row = row[row.index(';') + 1:]
         feat = QgsFeature()

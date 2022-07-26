@@ -3,16 +3,18 @@ from urllib.parse import quote
 from urllib.request import urlopen
 
 import requests
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont, QFontMetrics
+from qgis.PyQt.QtCore import Qt
+from qgis.PyQt.QtGui import QFont, QFontMetrics, QKeySequence
 from qgis.PyQt.QtCore import QStringListModel
 from qgis.PyQt.QtCore import QTimer
-from qgis.PyQt.QtWidgets import QCompleter
+from qgis.PyQt.QtWidgets import QCompleter, QProgressDialog
+from qgis._core import QgsVectorLayer, QgsProject
 from qgis.utils import iface
+from typing import Union, Dict, List
 
 from .searchAddress import SearchAddress
 from .searchParcel import FetchULDK, ParseResponce
-from ..utils import tr, CustomMessageBox
+from ..utils import tr, CustomMessageBox, add_map_layer_to_group
 
 
 class SearcherTool:
@@ -53,10 +55,10 @@ class SearcherTool:
         self.font = QFont('Agency FB')
         self.fontm = QFontMetrics(self.font)
 
-    def textChanged(self):
+    def textChanged(self) -> None:
         self.typing_timer.start(300)
 
-    def tips(self):
+    def tips(self) -> None:
         address = self.dock.lineEdit_address.displayText()
         url_pref = 'http://services.gugik.gov.pl/uug/?request=GetAddress&address='
         quo_adr = quote(address)
@@ -87,7 +89,7 @@ class SearcherTool:
         except Exception:
             return
 
-    def getStreets(self, simc, city):
+    def getStreets(self, simc: str, city: str) -> None:
         try:
             data = json.loads(urlopen(
                 'https://services.gugik.gov.pl/uug/?request=GetStreet&simc=' + simc).read().decode())
@@ -97,14 +99,14 @@ class SearcherTool:
         except Exception:
             self.names.setStringList([])
 
-    def validateCity(self, obj):
+    def validateCity(self, obj: Dict[str, Dict[str, int]]) -> None:
         city = obj['1']['city']
         self.names.setStringList(
             [f"{city}, {obj[element]['simc']} {obj[element]['county']}" for
              element in obj])
         self.completer.popup().pressed.connect(lambda: self.userPick())
 
-    def userPick(self):
+    def userPick(self) -> None:
         line = self.dock.lineEdit_address.text().split()
         self.completer.popup().pressed.disconnect()
         if len(line) == 3:
@@ -116,7 +118,7 @@ class SearcherTool:
         else:
             return
 
-    def search_address(self):
+    def search_address(self) -> None:
         validate_address = self.validate_lineedit()
         if validate_address:
             lineedit = self.dock.lineEdit_address.text().split(',')
@@ -141,19 +143,102 @@ class SearcherTool:
             self.timer.timeout.connect(change_scale)
             self.timer.start(10)
 
-    def validate_lineedit(self):
+    def validate_lineedit(self) -> bool:
         if self.dock.lineEdit_address.text():
             return True
         else:
             CustomMessageBox(None,
                              f" {tr('Invalid')} {tr('Empty address field')}").button_ok()
 
-    def widthforview(self, result):
+    def add_chosen_border(self, mess: str) -> None:
+        prg_dlg = QProgressDialog(self.dock,Qt.Dialog)
+        prg_dlg.setLabelText("Dodawanie warstw...")
+        prg_dlg.setCancelButton(None)
+        prg_dlg.setAutoClose(True)
+        prg_dlg.setMaximum(100)
+        prg_dlg.setWindowFlags(
+            Qt.Dialog |
+            Qt.WindowTitleHint
+        )
+        prg_dlg.show()
+
+        prg_dlg.setValue(0)
+        if self.dock.comboBox_obr.currentIndex() != 0:
+            jpt_kod_je = self.dock.comboBox_obr.currentText().split("|")[1]
+            adres = "A06_Granice_obrebow_ewidencyjnych"
+            lay_name = 'obreby_ewidencyjne'
+
+
+        elif self.dock.comboBox_gmina.currentIndex() != 0:
+            jpt_kod_je = self.dock.comboBox_gmina.currentText().split("|")[1]
+            jpt_kod_je = jpt_kod_je.replace("_", "")
+            adres = "A03_Granice_gmin"
+            lay_name = 'gminy'
+
+
+        elif self.dock.comboBox_pow.currentIndex() != 0:
+            jpt_kod_je = self.dock.comboBox_pow.currentText().split("|")[1]
+            adres = "A02_Granice_powiatow"
+            lay_name = 'powiaty'
+
+
+        elif self.dock.comboBox_woj.currentIndex() != 0:
+            jpt_kod_je = self.dock.comboBox_woj.currentText().split("|")[1]
+            adres = "A01_Granice_wojewodztw"
+            lay_name = 'wojewodztwa'
+
+        else:
+            CustomMessageBox(None,
+                             mess).button_ok()
+            return
+
+        url = f"https://mapy.geoportal.gov.pl/wss/service/PZGIK/PRG/WFS/AdministrativeBoundaries?SERVICE=WFS&REQUEST=GetFeature&VERSION=2.0.0&TYPENAME=ms:{adres}&TYPENAMES=ms:{adres}"
+
+        vlayer = QgsVectorLayer(url, "my wfs layer", "WFS")
+        vlayer.setSubsetString(f"""SELECT * FROM {adres}
+                                   WHERE JPT_KOD_JE = '{jpt_kod_je}'""")
+
+        prg_dlg.setValue(25)
+        root = QgsProject.instance().layerTreeRoot()
+        granice_group = root.findGroup("Granice")
+        if not root.findGroup("Granice"):
+            granice_group = root.addGroup("Granice")
+
+        lay = None
+
+        if granice_group.children():
+            for child in granice_group.children():
+                if child.name() == lay_name:
+                    lay = child.layer()
+                    break
+
+        if not lay:
+            lay = QgsVectorLayer("Polygon", lay_name, "memory")
+            attr = vlayer.dataProvider().fields().toList()
+            lay.dataProvider().addAttributes(attr)
+            lay.updateFields()
+            add_map_layer_to_group(lay, "Granice")
+
+        prg_dlg.setValue(50)
+
+        vlayer.selectAll()
+        feat = vlayer.selectedFeatures()[0]
+
+        prg_dlg.setValue(75)
+
+        lay.dataProvider().addFeature(feat)
+        lay.updateExtents()
+        self.searchaddress_call.zoom_to_feature(lay.name())
+        prg_dlg.setValue(100)
+
+
+
+    def widthforview(self, result: List[str]) -> int:
         longest = max(result, key=len)
         width = 2 * self.fontm.width(longest)
         return width
 
-    def fetch_voivodeship(self):
+    def fetch_voivodeship(self) -> None:
         """Fetching voivodeship list from GUGiK"""
         voi_list = [
             'Dolnośląskie|02',
@@ -178,7 +263,7 @@ class SearcherTool:
         self.dock.comboBox_woj.blockSignals(False)
         self.clear_comboBoxes('voi')
 
-    def woj_changed(self):
+    def woj_changed(self) -> None:
         voi = self._get_voi_code()
         if not voi:
             return
@@ -191,7 +276,7 @@ class SearcherTool:
         self.dock.comboBox_pow.view().setFixedWidth(self.widthforview(result))
         self.dock.comboBox_pow.blockSignals(False)
 
-    def pow_changed(self):
+    def pow_changed(self) -> None:
         dis = self._get_dis_code()
         if not dis:
             return
@@ -200,7 +285,7 @@ class SearcherTool:
         fe.fetch_list('gmina', dis)
         self.dock.comboBox_gmina.blockSignals(True)
         result, communities = fe.responce, []
-        multiples = [e.split('|')[0] for e in result]
+        multiples = [powiat.split('|')[0] for powiat in result]
         for district in result:
             end = district[-2:]
             if multiples.count(district.split('|')[0]) > 1:
@@ -217,7 +302,7 @@ class SearcherTool:
             self.widthforview(communities))
         self.dock.comboBox_gmina.blockSignals(False)
 
-    def gmi_changed(self):
+    def gmi_changed(self) -> None:
         mun = self._get_mun_code()
         self.clear_comboBoxes('mun')
         if not mun:
@@ -230,7 +315,7 @@ class SearcherTool:
         self.dock.comboBox_obr.view().setFixedWidth(self.widthforview(result))
         self.dock.comboBox_obr.blockSignals(False)
 
-    def clear_comboBoxes(self, level=None):
+    def clear_comboBoxes(self, level:str = None) -> None:
         """Clear comboboxes to level where user change something"""
         self.dock.comboBox_obr.blockSignals(True)
         self.dock.comboBox_obr.clear()
@@ -251,34 +336,37 @@ class SearcherTool:
         self.dock.comboBox_pow.addItem(tr('District'))
         self.dock.comboBox_pow.blockSignals(False)
 
-    def _get_voi_code(self):
+    def _get_voi_code(self) -> Union[str,bool]:
         voi_txt = self.dock.comboBox_woj.currentText()
         if '|' not in voi_txt:
             self.clear_comboBoxes()
             return False
         return voi_txt.split('|')[1]
 
-    def _get_dis_code(self):
+    def _get_dis_code(self) -> Union[str,bool]:
         dis_txt = self.dock.comboBox_pow.currentText()
         if '|' not in dis_txt:
             self.clear_comboBoxes('dis')
             return False
         return dis_txt.split('|')[1]
 
-    def _get_mun_code(self):
+    def _get_mun_code(self) -> Union[str,bool]:
         mun_txt = self.dock.comboBox_gmina.currentText()
         if '|' not in mun_txt:
             self.clear_comboBoxes('mun')
             return False
         return mun_txt.split('|')[1]
 
-    def search_parcel(self):
+    def search_parcel(self) -> None:
         adr = ''  # ful address of parcel
         parc = self.dock.lineEdit_parcel.text()
         if '.' in parc and '_' in parc:  # user input whole address in parcel
             adr = parc
         else:
             comm = self.dock.comboBox_obr.currentText()
+            if not parc:
+                self.add_chosen_border(f"{tr('Address of parcel is not valid.')}")
+                return
             if '|' not in comm:
                 CustomMessageBox(None,
                                  f"{tr('Address of parcel is not valid.')}").button_ok()
@@ -286,9 +374,9 @@ class SearcherTool:
             comm = comm.split('|')[1]
             adr = f'{comm}.{parc}'
 
-        f = FetchULDK()
-        if not f.fetch_parcel(adr):
+        feULDK = FetchULDK()
+        if not feULDK.fetch_parcel(adr):
             return
         pr = ParseResponce()
         pr.get_layer()
-        pr.parse_responce(f.responce)
+        pr.parse_responce(feULDK.responce)
