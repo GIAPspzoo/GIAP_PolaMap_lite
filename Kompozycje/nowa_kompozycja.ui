@@ -45,11 +45,8 @@
     <normaloff>:/plugins/GIAP-giap_layout/icons/giap_logo.png</normaloff>:/plugins/GIAP-giap_layout/icons/giap_logo.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">* {
-	background-color: rgb(53, 85, 109);
-    font: 10pt &quot;Segoe UI&quot;; 
-	color: #EDF6FC;
-}
+   <string notr="true">
+
 QAbstractItemView
 {
 	alternate-background-color:  #e6e6e6;
@@ -114,27 +111,6 @@ QLineEdit
 	border: None;
     border-radius: 3px;
     background-color: #4f5a63;
-}
-
-QPushButton {
-	color: #0A0C0D;
-	border: 1px solid #0A0C0D;
-	background-color: #b7d3e8;
-	border-radius: 3px;
-	padding: 4px;
-}
-
-QPushButton:hover {
-	font-weight: bold;
-}
-QPushButton:pressed {
-   background-color: #5689b0;
-   border: 1px solid #6fb1e3;
-}
-
-QPushButton:disabled
-{
-	color: gray;
 }
 
 QGroupBox {
@@ -237,7 +213,7 @@ QListView:item:hover {
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="pushButton_save">
        <property name="minimumSize">
         <size>
          <width>120</width>
@@ -266,7 +242,7 @@ QListView:item:hover {
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="pushButton_cancel">
        <property name="minimumSize">
         <size>
          <width>120</width>
@@ -297,7 +273,7 @@ QListView:item:hover {
     </layout>
    </item>
    <item row="1" column="1">
-    <widget class="QFrame" name="frame">
+    <widget class="QFrame" name="frame_main">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -336,7 +312,7 @@ QAbstractScrollArea:corner{
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="1" column="1" rowspan="5">
-       <widget class="QFrame" name="frame_4">
+       <widget class="QFrame" name="frame_layers">
         <property name="styleSheet">
          <string notr="true">border: 1px solid #0A0C0D;
 border-radius: 10px;
@@ -550,7 +526,7 @@ QScrollBar:vertical{
        </widget>
       </item>
       <item row="1" column="0" rowspan="5">
-       <widget class="QFrame" name="frame_2">
+       <widget class="QFrame" name="frame_groups">
         <property name="styleSheet">
          <string notr="true">border: 1px solid #0A0C0D;
 border-radius: 10px;
@@ -737,27 +713,6 @@ QLineEdit
 	border: None;
     border-radius: 3px;
     background-color: #4f5a63;
-}
-
-QPushButton {
-	color: #0A0C0D;
-	border: 1px solid #0A0C0D;
-	background-color: #b7d3e8;
-	border-radius: 3px;
-	padding: 4px;
-}
-
-QPushButton:hover {
-	font-weight: bold;
-}
-QPushButton:pressed {
-   background-color: #5689b0;
-   border: 1px solid #6fb1e3;
-}
-
-QPushButton:disabled
-{
-	color: gray;
 }
 
 QGroupBox {
@@ -982,7 +937,7 @@ QListView:item:hover {
     </widget>
    </item>
    <item row="0" column="1">
-    <widget class="QFrame" name="frame_3">
+    <widget class="QFrame" name="frame_title">
      <property name="minimumSize">
       <size>
        <width>200</width>
@@ -1050,14 +1005,13 @@ QListView:item:hover {
      </property>
      <property name="styleSheet">
       <string notr="true">
-* {
-	font: 75 8pt &quot;Segoe UI Light&quot;;
-	color: #0A0C0D;
-}
-
-QFrame {
-	border-right: 2px solid #b7d3e8;
-}</string>
+          * {
+          color: #0A0C0D;
+          }
+          QFrame {
+          border-right: 2px solid #b7d3e8;
+          }
+      </string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="1" column="0">
@@ -1074,11 +1028,10 @@ QFrame {
        </spacer>
       </item>
       <item row="0" column="0">
-       <widget class="QLabel" name="label_3">
+       <widget class="QLabel" name="label_side">
         <property name="styleSheet">
          <string notr="true">   background-color: #b7d3e8;
    color: #0A0C0D;
-   font: 10pt &quot;Segoe UI&quot;; 
    font-weight: bold;
    padding-left: 5px;
    padding-right: 5px;</string>
@@ -1106,13 +1059,13 @@ QFrame {
   <tabstop>usun_warstwe</tabstop>
   <tabstop>wdol_warstwe</tabstop>
   <tabstop>wgore_warstwe</tabstop>
-  <tabstop>pushButton_2</tabstop>
-  <tabstop>pushButton</tabstop>
+  <tabstop>pushButton_save</tabstop>
+  <tabstop>pushButton_cancel</tabstop>
  </tabstops>
  <resources/>
  <connections>
   <connection>
-   <sender>pushButton</sender>
+   <sender>pushButton_cancel</sender>
    <signal>clicked()</signal>
    <receiver>KompozycjeDialog</receiver>
    <slot>reject()</slot>

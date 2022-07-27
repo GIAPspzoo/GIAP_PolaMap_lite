@@ -2,11 +2,12 @@
 
 from __future__ import absolute_import
 
-from qgis.PyQt.QtCore import QObject, pyqtSignal
+from qgis.PyQt.QtCore import QObject, pyqtSignal, QSettings
 from qgis.PyQt.QtWidgets import QToolButton, QMenu, QAction
 from qgis.core import QgsProject, QgsRasterLayer, QgsMessageLog
 
 from .utils import WMS_SERVERS, WMS_SERVERS_GROUPS, tr, CustomMessageBox
+from .config import Config
 
 
 class OrtoAddingTool(object):
@@ -99,7 +100,7 @@ class OrtoAddingTool(object):
                 node_parent.removeChildNode(node_layer)
             else:
                 CustomMessageBox(
-                    None, tr('Can\'t add layer') + name).button_ok()
+                    None, tr('Can\'t add layer ') + name).button_ok()
         else:
             lyr = QgsProject.instance().mapLayersByName(name)[0]
             lyrontree = QgsProject.instance().layerTreeRoot().findLayer(

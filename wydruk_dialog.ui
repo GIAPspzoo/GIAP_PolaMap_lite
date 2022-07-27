@@ -39,11 +39,12 @@
     <normaloff>:/plugins/giap_layout/icons/giap_logo.png</normaloff>:/plugins/giap_layout/icons/giap_logo.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">* {
-	background-color: rgb(53, 85, 109);
-    font: 10pt &quot;Segoe UI&quot;;
-	color: #EDF6FC;
-}
+   <string notr="true">
+<!--    * {-->
+<!--	background-color: rgb(53, 85, 109);-->
+<!--    font: 10pt &quot;Segoe UI&quot;;-->
+<!--	color: #EDF6FC;-->
+<!--}-->
 QComboBox
 {
 	selection-background-color: #6fb1e3;
@@ -95,28 +96,6 @@ QLineEdit
 
 QLineEdit:focus{
     border: 1px solid #5689B0;
-}
-
-QPushButton {
-	color:  #0A0C0D;
-	border: 1px solid  #0A0C0D;
-	background-color: #b7d3e8;
-	border-radius: 3px;
-	padding: 4px;
-}
-
-QPushButton:hover {
-
-	font-weight: bold;
-}
-QPushButton:pressed {
-   background-color: #5689b0;
-   border: 1px solid #6fb1e3;
-}
-
-QPushButton:disabled
-{
-	color: gray;
 }
 
 QGroupBox {
@@ -209,7 +188,7 @@ border: 1px solid #5689b0;
          <property name="frameShadow">
           <enum>QFrame::Plain</enum>
          </property>
-         <widget class="QLabel" name="title_label_7">
+         <widget class="QLabel" name="title_label">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -237,7 +216,7 @@ border: 1px solid #5689b0;
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QFrame" name="frame_4">
+        <widget class="QFrame" name="frame_main">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
@@ -267,7 +246,7 @@ border: 1px solid #5689b0;
              <item row="0" column="0">
               <widget class="QLineEdit" name="adnotacje_lineEdit">
                <property name="maxLength">
-                <number>100</number>
+                <number>700</number>
                </property>
               </widget>
              </item>
@@ -653,11 +632,11 @@ border: 1px solid #5689b0;
        <number>5</number>
       </property>
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="label_side">
         <property name="styleSheet">
          <string notr="true">   background-color: #b7d3e8;
    color:  #0A0C0D;
-   font: 10pt &quot;Segoe UI&quot;; 
+<!--   font: 10pt &quot;Segoe UI&quot;; -->
    font-weight: bold;
 </string>
         </property>
@@ -684,7 +663,7 @@ border: 1px solid #5689b0;
       </item>
      </layout>
      <zorder>verticalSpacer_3</zorder>
-     <zorder>label_2</zorder>
+     <zorder>label_side</zorder>
     </widget>
    </item>
   </layout>

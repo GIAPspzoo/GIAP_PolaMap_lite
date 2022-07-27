@@ -4,7 +4,11 @@ import os
 
 from qgis.PyQt import QtWidgets, uic, QtCore, QtGui
 
+from qgis.PyQt.QtCore import QSettings
+
 from ..utils import tr, CustomMessageBox
+
+from ..config import Config
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'nowa_kompozycja.ui'))
@@ -37,7 +41,7 @@ class NowaKompozycjaDialog(QtWidgets.QDialog, FORM_CLASS):
             if not model.rowCount():
                 raise AttributeError("No layers in 'select layer'")
         except AttributeError:
-            CustomMessageBox(table,
+            CustomMessageBox(None,
                              tr('No layers in select layers.')).button_ok()
 
     def uncheck(self):

@@ -6,7 +6,7 @@ from collections import OrderedDict
 from time import sleep
 
 from qgis.PyQt import QtCore
-from qgis.PyQt.QtCore import QObject, pyqtSignal, QItemSelectionModel
+from qgis.PyQt.QtCore import QObject, pyqtSignal, QItemSelectionModel, QSettings
 from qgis.PyQt.QtGui import QStandardItemModel, QStandardItem
 from qgis.PyQt.QtWidgets import QMessageBox, QApplication, QItemDelegate, \
     QCheckBox, QFileDialog, QProgressDialog, QToolButton, QGraphicsBlurEffect
@@ -29,6 +29,7 @@ from ..utils import get_project_config, SingletonModel, \
     set_project_config, identify_layer_by_id, ConfigSaveProgressDialog, \
     icon_manager
 from ..utils import tr, CustomMessageBox, Qt
+from ..config import Config
 
 LayersPanel = lsp
 
@@ -103,6 +104,12 @@ def get_user_compositions_gui():
             CustomMessageBox(None, tr('Failed to load settings.')).button_ok()
         progress.stop()
     return user_comp
+
+def config():
+    return Config()
+
+def font_size():
+    return QSettings().value("qgis/stylesheet/fontPointSize")
 
 
 class CompositionsTool(object):
@@ -200,11 +207,13 @@ class CompositionsConfig(QObject):
         self.dlg.dodaj_kompozycje.clicked.connect(self.dodaj)
         self.dlg.edytuj_kompozycje.clicked.connect(self.edytuj)
         self.dlg.usun_kompozycje.clicked.connect(self.usun)
-        self.dlg.zapisz.clicked.connect(self.write_file)
-        self.dlg.wczytaj.clicked.connect(self.read_file)
+        self.dlg.save.clicked.connect(self.write_file)
+        self.dlg.load.clicked.connect(self.read_file)
         self.dlg.komp_dol.clicked.connect(self.move_comp_down)
         self.dlg.komp_gora.clicked.connect(self.move_comp_up)
         self.model_kompozycji.rowsInserted.connect(self.comps_order_change)
+        if config().setts['font_changed']:
+            self.set_font_dodajkompozycje(font_size())
 
         self.check_for_changes_in_comps()
         self.create_table_model()
@@ -213,6 +222,15 @@ class CompositionsConfig(QObject):
             dialog = self.dlg.exec_()
             if dialog:
                 self.save()
+
+    def set_font_dodajkompozycje(self, font_size):
+        attributes = [self.dlg.pushButton_side, self.dlg.load, self.dlg.save,
+                      self.dlg.frame_main, self.dlg.frame_title]
+        for attr in attributes:
+            attr.setStyleSheet(
+                f'{attr.styleSheet()} QPushButton, QLabel, QTableView '
+                f'{{font: {font_size}pt;}}; font: {font_size}pt;')
+
 
     def write_file(self):
         blur = QGraphicsBlurEffect()
@@ -315,7 +333,7 @@ class CompositionsConfig(QObject):
 
     def check_comps_order(self):
         if self.order_changed:
-            stoper = CustomMessageBox(self.dlg,
+            stoper = CustomMessageBox(None,
                                       tr(
                                           'The order of the compositions has not been saved! Do you want to save it?')).button_yes_no()
             if stoper == QMessageBox.Yes:
@@ -487,10 +505,20 @@ class CompositionsSaver(object):
         self.dlg.tabela.setModel(self.model)
         self.dlg.tabela.horizontalHeader().hide()
         self.dlg.tabela.verticalHeader().hide()
+        if config().setts['font_changed']:
+            self.set_font_compositionsaver(font_size())
 
         result = self.dlg.exec_()
         if result:
             self.write()
+
+    def set_font_compositionsaver(self, font_size):
+        self.dlg.groupBox_main.setStyleSheet(
+            f'{self.dlg.groupBox_main.styleSheet()} QPushButton {{font: {font_size}pt;}}')
+        attributes = [self.dlg.label_side, self.dlg.pushButton_cancel,
+                      self.dlg.title_label, self.dlg.frame_compositions]
+        for attr in attributes:
+            attr.setStyleSheet(f'{attr.styleSheet()} font: {font_size}pt;')
 
 
 class CompositionsAdder(object):
@@ -512,7 +540,7 @@ class CompositionsAdder(object):
                 self.kompozycje.dock, tr('No layers in project!')).button_ok()
             return
         self.dlg = NowaKompozycjaDialog()
-        self.dlg.pushButton_2.clicked.connect(self.save)
+        self.dlg.pushButton_save.clicked.connect(self.save)
         self.dlg.dodaj_warstwe.clicked.connect(self.add_layer)
         self.dlg.usun_warstwe.clicked.connect(self.del_layer)
         self.dlg.wdol_warstwe.clicked.connect(self.move_down)
@@ -520,9 +548,19 @@ class CompositionsAdder(object):
         self.dlg.wdol_warstwe.hide()
         self.dlg.wgore_warstwe.hide()
         self.wczytaj_grupy()
+        if config().setts['font_changed']:
+            self.set_font_nowakompozycja(font_size())
         if not self.dlg.isActiveWindow():
             self.dlg.show()
             self.dlg.exec_()
+
+    def set_font_nowakompozycja(self, font_size):
+        self.dlg.frame_main.setStyleSheet(
+            f'{self.dlg.frame_main.styleSheet()} QFrame, QLabel, QWidget {{font: {font_size}pt;}}')
+        attributes = [self.dlg.frame_groups, self.dlg.frame_title, self.dlg.frame_layers,
+                      self.dlg.pushButton_cancel, self.dlg.pushButton_save, self.dlg.label_side]
+        for attr in attributes:
+            attr.setStyleSheet(f'{attr.styleSheet()} font: {font_size}pt;')
 
     def save(self):
         comp_name = self.dlg.nazwa_lineEdit.text()
@@ -646,13 +684,18 @@ class CompositionsAdder(object):
             ).button_ok()
 
     def del_layer(self):
+        msg_box = 'Select layer to remove from the mark layers.'
         table_sel_model = self.dlg.warstwy_table.selectionModel()
-        rows = table_sel_model.selectedRows()
-        if not rows:
+        if not table_sel_model:
             CustomMessageBox(
-                self.dlg, tr('Select layer to remove from the mark layers.')
+                self.dlg, tr(msg_box)
             ).button_ok()
         else:
+            rows = table_sel_model.selectedRows()
+            if not rows:
+                CustomMessageBox(
+                    self.dlg, tr(msg_box)
+                ).button_ok()
             index_list = []
             for model_index in rows:
                 index = QtCore.QPersistentModelIndex(model_index)
@@ -708,7 +751,7 @@ class CompositionsEditor(CompositionsAdder):
         self.root = QgsProject.instance().layerTreeRoot()
         self.dlg = NowaKompozycjaDialog()
         self.dlg.title_label_3.setText(tr('Edit'))
-        self.dlg.pushButton_2.clicked.connect(self.save)
+        self.dlg.pushButton_save.clicked.connect(self.save)
         self.dlg.dodaj_warstwe.clicked.connect(self.add_layer)
         self.dlg.usun_warstwe.clicked.connect(self.del_layer)
         self.dlg.wdol_warstwe.clicked.connect(self.move_down)
@@ -716,17 +759,27 @@ class CompositionsEditor(CompositionsAdder):
         self.dlg.wdol_warstwe.hide()
         self.dlg.wgore_warstwe.hide()
         self.wczytaj_grupy()
+        if config().setts['font_changed']:
+            self.set_font_nowakompozycja(font_size())
         if self.ustaw_okno():
             if not self.dlg.isActiveWindow():
                 self.dlg.show()
                 self.dlg.exec_()
+
+    def set_font_nowakompozycja(self, font_size):
+        self.dlg.frame_main.setStyleSheet(
+            f'{self.dlg.frame_main.styleSheet()} QFrame, QLabel, QWidget {{font: {font_size}pt;}}')
+        attributes = [self.dlg.frame_groups, self.dlg.frame_title, self.dlg.frame_layers,
+                      self.dlg.pushButton_cancel, self.dlg.pushButton_save, self.dlg.label_side]
+        for attr in attributes:
+            attr.setStyleSheet(f'{attr.styleSheet()} font: {font_size}pt;')
 
     def ustaw_okno(self):
         table = self.pokaz_kompozycje.dlg.tableView
         model = table.selectionModel()
         rows = model.selectedRows()
         if not rows:
-            CustomMessageBox(table,
+            CustomMessageBox(None,
                              tr('Select composition to edit')).button_ok()
             return False
         name = rows[0].data(0)
@@ -822,7 +875,7 @@ class CompositionsDeleter(object):
         rows = model.selectedRows()
         if not rows:
             CustomMessageBox(
-                table, tr('Select composition to remove:')
+                None, tr('Select composition to remove:')
             ).button_ok()
             return
 

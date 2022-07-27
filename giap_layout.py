@@ -26,12 +26,13 @@ from .Searcher.searchTool import SearcherTool
 from .Settings.settings_layout import SettingsDialog
 from .StyleManager.stylemanager import StyleManagerDialog
 from .config import Config
-from .giap_dynamic_layout import MainWidget
+from .giap_dynamic_layout import MainWidget, CustomLabel
 from .kompozycje_widget import kompozycjeWidget
 from .ribbon_config import RIBBON_DEFAULT
 from .tools import StyleManager
 from .utils import tr, Qt, icon_manager, CustomMessageBox, add_action_from_toolbar, GIAP_NEWS_WEB_PAGE
 from qgis.gui import QgsMapTool
+import re
 project = QgsProject.instance()
 
 
@@ -62,6 +63,42 @@ class MainTabQgsWidget:
         self.iface.newProjectCreated.connect(self.projekt_wczytany)
         self.iface.initializationCompleted.connect(self.load_ribbons)
         self.iface.newProjectCreated.connect(self.missingCorePlugins)
+        self.set_dlg = SettingsDialog()
+        self.set_dlg.adjustSize()
+        self.style_manager_dlg = StyleManagerDialog(self.style_manager)
+        self.font_size = QSettings().value("qgis/stylesheet/fontPointSize")
+        self.kompozycje = CompositionsTool(self.iface, self)
+        if self.config.setts['font_changed']:
+            CustomLabel(tr('New section')).setStyleSheet(f'font: {self.font_size}pt;')
+            self.kompozycje_widget.setStyleSheet(f'font: {self.font_size}pt;')
+            self.main_widget.pokaz_warstwy.setStyleSheet(f'font: {self.font_size}pt;')
+            self.setfont_settings_dialog()
+            self.setfont_styles_dialog()
+
+
+    def setfont_settings_dialog(self) -> None:
+        self.set_dlg.frame_main.setStyleSheet(
+            f'{self.set_dlg.frame_main.styleSheet()}'
+            f' QGroupBox, QPushButton, QSpinBox, QRadioButton {{font: {self.font_size}pt;}}')
+
+        attributes = [self.set_dlg.frame_title, self.set_dlg.label_side]
+        for attr in attributes:
+            attr.setStyleSheet(f'{attr.styleSheet()} font: {self.font_size}pt;')
+        attributes = [self.set_dlg.label_contact_left, self.set_dlg.label_contact_right]
+        for attr in attributes:
+            for repl in (re.findall(r'font-size:\d+', attr.text())):
+                replaced = attr.text().replace(f'{repl}', f'font-size: {self.font_size}')
+                attr.setText(replaced)
+
+    def setfont_styles_dialog(self) -> None:
+        attributes = [self.style_manager_dlg.title_label, self.style_manager_dlg.pushButton_cancel,
+                      self.style_manager_dlg.label_side]
+        for attr in attributes:
+            attr.setStyleSheet(f'font: {self.font_size}pt;')
+        self.style_manager_dlg.frame_main.setStyleSheet(
+            f'{self.style_manager_dlg.frame_main.styleSheet()} QLabel, QPushButton {{font: {self.font_size}pt;}}')
+        self.style_manager_dlg.frame_style.setStyleSheet(
+            f'{self.style_manager_dlg.frame_style.styleSheet()}font: {self.font_size}pt;')
 
     def missingCorePlugins(self) -> None:
         if len(iface.mainWindow().findChild(
@@ -80,7 +117,6 @@ class MainTabQgsWidget:
         self.save_default_user_layout()
         self.style_manager.run_last_style()
 
-        self.kompozycje = CompositionsTool(self.iface, self)
         self.toolbar = QToolBar('GiapToolBar', self.iface.mainWindow())
         self.toolbar.setObjectName('GiapToolBar')
         self.iface.mainWindow().addToolBar(self.toolbar)
@@ -527,14 +563,12 @@ class MainTabQgsWidget:
 
     def show_style_manager_dialog(self) -> None:
         """Show dialog to manage qgis styles"""
-        self.style_manager_dlg = StyleManagerDialog(self.style_manager)
         self.style_manager_dlg.setWindowFlags(
             Qt.Window | Qt.WindowCloseButtonHint
         )
         self.style_manager_dlg.exec_()
 
     def show_settings_dialog(self) -> None:
-        self.set_dlg = SettingsDialog()
         self.set_dlg.pushButton_restore.clicked.connect(
             self.restore_default_ribbon_settings)
         self.set_dlg.radioButton_pl.clicked.connect(self.set_polish)
@@ -546,6 +580,9 @@ class MainTabQgsWidget:
             self.set_dlg.radioButton_en.setChecked(True)
         elif str(QSettings().value('locale/userLocale')) == "pl_PL":
             self.set_dlg.radioButton_pl.setChecked(True)
+        self.set_dlg.spinBox_font.setValue(int(self.font_size))
+        self.set_dlg.spinBox_button.clicked.connect(self.set_size)
+        self.set_dlg.restart_button.clicked.connect(self.restart_font_size)
         self.set_dlg.exec_()
 
     def set_polish(self) -> None:
@@ -579,6 +616,31 @@ class MainTabQgsWidget:
             0
         )
         self.restart_qgis()
+
+    def set_size(self) -> None:
+        value = self.set_dlg.spinBox_font.value()
+        self.set_dlg.spinBox_font.setValue(value)
+        QSettings().setValue('qgis/stylesheet/fontPointSize', value)
+        self.config.set_value('font_changed', True)
+        self.iface.messageBar().pushMessage(
+            'GIAP-PolaMap(lite)',
+            tr('Please, restart QGIS!'),
+            Qgis.Info,
+            0
+        )
+        self.restart_qgis()
+
+    def restart_font_size(self):
+        QSettings().setValue('qgis/stylesheet/fontPointSize', 8)
+        self.config.set_value('font_changed', False)
+        self.iface.messageBar().pushMessage(
+            'GIAP-PolaMap(lite)',
+            tr('Please, restart QGIS!'),
+            Qgis.Info,
+            0
+        )
+        self.restart_qgis()
+
 
     def restore_default_ribbon_settings(self) -> None:
         self.set_dlg.pushButton_restore.clicked.disconnect()

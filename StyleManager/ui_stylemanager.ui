@@ -36,10 +36,7 @@
     <normaloff>:/plugins/GIAP-giap_layout/icons/giap_logo.png</normaloff>:/plugins/GIAP-giap_layout/icons/giap_logo.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">* {
-	background-color: rgb(53, 85, 109);
-    font: 10pt &quot;Segoe UI&quot;; 
-}
+   <string notr="true">
 
 QListWidget {
 	alternate-background-color:  #e7e7e7;
@@ -64,35 +61,8 @@ QAbstractItemView:selected
 	background-color: rgb(38, 60, 78);
 }
 
-QPushButton {
-	color: #0A0C0D;
-	border: 1px solid #0A0C0D;
-	background-color: #b7d3e8;
-	border-radius: 3px;
-	padding: 4px;
-}
-
-QPushButton:hover {
-
-	font-weight: bold;
-}
-QPushButton:pressed {
-   background-color: #5689b0;
-   border: 1px solid #6fb1e3;
-}
-
-QPushButton:disabled
-{
-	color: gray;
-}
-
 QToolButton {
 	color:  #0A0C0D;
-}
-
-QPushButton:disabled
-{
-	color: gray;
 }
 
 QHeaderView::section
@@ -187,7 +157,7 @@ QHeaderView::section
          <property name="frameShadow">
           <enum>QFrame::Plain</enum>
          </property>
-         <widget class="QLabel" name="title_label_12">
+         <widget class="QLabel" name="title_label">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -215,7 +185,7 @@ QHeaderView::section
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QFrame" name="frame_17">
+        <widget class="QFrame" name="frame_main">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
@@ -230,7 +200,7 @@ QHeaderView::section
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_2">
              <item>
-              <widget class="QFrame" name="frame_2">
+              <widget class="QFrame" name="frame_style">
                <property name="styleSheet">
                 <string notr="true">border: 1px solid #0A0C0D;
 border-radius: 10px;
@@ -434,7 +404,7 @@ padding: 2px;</string>
        <number>5</number>
       </property>
       <item>
-       <widget class="QLabel" name="label_3">
+       <widget class="QLabel" name="label_side">
         <property name="styleSheet">
          <string notr="true">   background-color: #b7d3e8;
    color: #0A0C0D;
@@ -465,7 +435,7 @@ padding: 2px;</string>
       </item>
      </layout>
      <zorder>verticalSpacer_3</zorder>
-     <zorder>label_3</zorder>
+     <zorder>label_side</zorder>
     </widget>
    </item>
   </layout>

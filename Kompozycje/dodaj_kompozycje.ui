@@ -39,11 +39,7 @@
     <normaloff>:/plugins/GIAP-giap_layout/icons/giap_logo.png</normaloff>:/plugins/GIAP-giap_layout/icons/giap_logo.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">* {
-	background-color: rgb(53, 85, 109);
-    font: 10pt &quot;Segoe UI&quot;; 
-	color: #EDF6FC;
-}
+   <string notr="true">
 QAbstractItemView
 {
 	alternate-background-color:  #e6e6e6;
@@ -110,27 +106,6 @@ QLineEdit
     background-color: #4f5a63;
 }
 
-QPushButton {
-	color: #0A0C0D;
-	border: 1px solid #0A0C0D;
-	background-color: #b7d3e8;
-	border-radius: 3px;
-	padding: 4px;
-}
-
-QPushButton:hover {
-	font-weight: bold;
-}
-QPushButton:pressed {
-   background-color: #5689b0;
-   border: 1px solid #6fb1e3;
-}
-
-QPushButton:disabled
-{
-	color: gray;
-}
-
 QGroupBox {
 border: 1px solid #5689b0;
 }
@@ -194,9 +169,8 @@ QTableView:item:hover {
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">* {
-	color:#0A0C0D;
-}</string>
+      <string notr="true">
+      </string>
      </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
@@ -225,7 +199,7 @@ QTableView:item:hover {
         <number>0</number>
        </property>
        <item row="0" column="0">
-        <widget class="QFrame" name="frame_24">
+        <widget class="QFrame" name="frame_title">
          <property name="minimumSize">
           <size>
            <width>200</width>
@@ -295,7 +269,7 @@ QTableView:item:hover {
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QFrame" name="frame_23">
+        <widget class="QFrame" name="frame_main">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
@@ -513,12 +487,7 @@ color: #0A0C0D;
                      </size>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">* {
-	background-color: rgb(53, 85, 109);
-    font: 10pt &quot;Segoe UI&quot;; 
-	color: #EDF6FC;
-
-}
+                     <string notr="true">
 QAbstractItemView
 {
 	alternate-background-color:  #e6e6e6;
@@ -583,27 +552,6 @@ QLineEdit
 	border: None;
     border-radius: 3px;
     background-color: #4f5a63;
-}
-
-QPushButton {
-	color: #0A0C0D;
-	border: 1px solid #0A0C0D;
-	background-color: #b7d3e8;
-	border-radius: 3px;
-	padding: 4px;
-}
-
-QPushButton:hover {
-	font-weight: bold;
-}
-QPushButton:pressed {
-   background-color: #5689b0;
-   border: 1px solid #6fb1e3;
-}
-
-QPushButton:disabled
-{
-	color: gray;
 }
 
 QGroupBox {
@@ -657,12 +605,8 @@ QListView:item:hover {
                      <bool>false</bool>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">* {
-	background-color: rgb(53, 85, 109);
-    font: 10pt &quot;Segoe UI&quot;; 
-	color: #EDF6FC;
+                     <string notr="true">
 
-}
 QAbstractItemView
 {
 	alternate-background-color:  #e6e6e6;
@@ -727,27 +671,6 @@ QLineEdit
 	border: None;
     border-radius: 3px;
     background-color: #4f5a63;
-}
-
-QPushButton {
-	color: #0A0C0D;
-	border: 1px solid #0A0C0D;
-	background-color: #b7d3e8;
-	border-radius: 3px;
-	padding: 4px;
-}
-
-QPushButton:hover {
-	font-weight: bold;
-}
-QPushButton:pressed {
-   background-color: #5689b0;
-   border: 1px solid #6fb1e3;
-}
-
-QPushButton:disabled
-{
-	color: gray;
 }
 
 QGroupBox {
@@ -942,7 +865,6 @@ QListView:item:hover {
      <property name="styleSheet">
       <string notr="true">
 * {
-	font: 75 8pt &quot;Segoe UI Light&quot;;
 	color: #EDF6FC;
 }
 
@@ -950,29 +872,6 @@ QFrame {
 	border-right: 2px solid #b7d3e8;
 }
 
-QPushButton {
-	font: 8pt &quot;Segoe UI&quot;;
-    color: #EDF6FC; 
-	border: 1px solid #5689b0;
-    background-color: #4f5a63;
-	border-radius: 3px;
-	padding: 4px;
-
-}
-
-QPushButton:hover {
-
-	font-weight: bold;
-}
-QPushButton:pressed {
-   background-color: #5689b0;
-   border: 1px solid #6fb1e3;
-}
-
-QPushButton:disabled
-{
-	color: gray;
-}
 </string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
@@ -992,32 +891,21 @@ QPushButton:disabled
        <number>5</number>
       </property>
       <item>
-       <widget class="QPushButton" name="pushButton_2">
+       <widget class="QLabel" name="pushButton_side">
         <property name="styleSheet">
-         <string notr="true">QPushButton{
-	background-color: transparent;
-    font: 8pt &quot;Segoe UI&quot;; 
-    padding-left: 5px;
-    padding-right: 5px;
-	border: None;
-	color: #EDF6FC;
-}
-QPushButton:hover{
-	background-color: #b7d3e8;
-	border-radius:0 ;
-	font-weight: bold;
-	color: #0A0C0D;
-}
-
-QPushButton:pressed{
-	background-color: #b7d3e8;
-	border-radius:0 ;
-	font-weight: bold;
-	color: #0A0C0D;
-}</string>
+         <string notr="true">
+          background-color: #b7d3e8;
+          color: #0A0C0D;
+          font-weight: bold;
+          padding-left: 5px;
+          padding-right: 5px;
+         </string>
         </property>
         <property name="text">
          <string>User compositions</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
@@ -1035,7 +923,7 @@ QPushButton:pressed{
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="zapisz">
+       <widget class="QPushButton" name="save">
         <property name="styleSheet">
          <string notr="true"/>
         </property>
@@ -1045,7 +933,7 @@ QPushButton:pressed{
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="wczytaj">
+       <widget class="QPushButton" name="load">
         <property name="styleSheet">
          <string notr="true">color: #EDF6FC;</string>
         </property>
@@ -1056,9 +944,9 @@ QPushButton:pressed{
       </item>
      </layout>
      <zorder>verticalSpacer_3</zorder>
-     <zorder>zapisz</zorder>
-     <zorder>wczytaj</zorder>
-     <zorder>pushButton_2</zorder>
+     <zorder>save</zorder>
+     <zorder>load</zorder>
+     <zorder>pushButton_side</zorder>
     </widget>
    </item>
   </layout>
@@ -1068,8 +956,8 @@ QPushButton:pressed{
   <tabstop>komp_gora</tabstop>
   <tabstop>pushButton</tabstop>
   <tabstop>pushButton_3</tabstop>
-  <tabstop>zapisz</tabstop>
-  <tabstop>wczytaj</tabstop>
+  <tabstop>save</tabstop>
+  <tabstop>load</tabstop>
  </tabstops>
  <resources/>
  <connections>

@@ -17,5 +17,5 @@ class DodajKompozycjeDialog(QDialog, FORM_CLASS):
 
         self.dodaj_kompozycje.show()
         self.usun_kompozycje.show()
-        self.wczytaj.show()
-        self.zapisz.show()
+        self.load.show()
+        self.save.show()
