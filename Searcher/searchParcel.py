@@ -7,11 +7,11 @@ from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
 
 from qgis.core import QgsGeometry, QgsFeature, \
-    QgsProject, QgsVectorLayer, Qgis
+     QgsVectorLayer, Qgis
 from qgis.utils import iface
 
 from ..utils import tr, CustomMessageBox, search_group_name, \
-    add_map_layer_to_group
+    add_map_layer_to_group, project
 
 
 class FetchULDK:
@@ -38,10 +38,6 @@ class FetchULDK:
         self.params = f'request=GetParcelById&id={teryt}&result=' + \
                       'geom_wkt,teryt,voivodeship,county,region,commune,parcel'
         return self.fetch()
-
-    def fetch_in_point(self, coords):
-        # TODO: Dodac pobieranie działki w pkt po kliknieciu
-        pass
 
     def fetch(self) -> bool:
         if '- gmina' in self.params or '- miasto' in self.params:
@@ -99,7 +95,7 @@ class ParseResponce:
         )
 
     def get_layer(self) -> None:
-        lyr = QgsProject.instance().mapLayersByName(self.lyr_name)
+        lyr = project.mapLayersByName(self.lyr_name)
         if len(lyr) > 0:
             self.lyr = lyr[0]
             return
@@ -131,7 +127,7 @@ class ParseResponce:
             )
 
     def zoom_to_feature(self, layer: str) -> None:
-        layer = QgsProject.instance().mapLayersByName(layer)[0]
+        layer = project.mapLayersByName(layer)[0]
         iface.mapCanvas().zoomScale(500)
         layer.selectByIds([len(layer)])
         iface.mapCanvas().zoomToSelected(layer)

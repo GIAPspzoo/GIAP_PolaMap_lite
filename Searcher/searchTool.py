@@ -1,20 +1,22 @@
 import json
+from json import JSONDecodeError
 from urllib.parse import quote
 from urllib.request import urlopen
 
 import requests
 from qgis.PyQt.QtCore import Qt
-from qgis.PyQt.QtGui import QFont, QFontMetrics, QKeySequence
+from qgis.PyQt.QtGui import QFont, QFontMetrics
 from qgis.PyQt.QtCore import QStringListModel
 from qgis.PyQt.QtCore import QTimer
-from qgis.PyQt.QtWidgets import QCompleter, QProgressDialog
-from qgis._core import QgsVectorLayer, QgsProject
+from qgis.PyQt.QtWidgets import QCompleter
+from qgis.core import QgsVectorLayer
 from qgis.utils import iface
 from typing import Union, Dict, List
 
 from .searchAddress import SearchAddress
 from .searchParcel import FetchULDK, ParseResponce
-from ..utils import tr, CustomMessageBox, add_map_layer_to_group
+from ..utils import tr, CustomMessageBox, add_map_layer_to_group, \
+    ProgressDialog, identify_layer_in_group, root, WFS_PRG
 
 
 class SearcherTool:
@@ -82,11 +84,11 @@ class SearcherTool:
             if obj_type == 'address':
                 self.names.setStringList([
                                              f"{obj['1']['city']}, {obj['1']['street']} {obj['1']['number']}"])
-            if limit == 0:
+            if not limit:
                 return
             self.completer.setCompletionPrefix(f"{address.split(',')[0]}, ")
             self.completer.complete()
-        except Exception:
+        except (JSONDecodeError, TypeError):
             return
 
     def getStreets(self, simc: str, city: str) -> None:
@@ -96,7 +98,7 @@ class SearcherTool:
             obj = data['results']
             self.names.setStringList(
                 [f"{city}, {obj[element]['street']}" for element in obj])
-        except Exception:
+        except TypeError:
             self.names.setStringList([])
 
     def validateCity(self, obj: Dict[str, Dict[str, int]]) -> None:
@@ -151,87 +153,47 @@ class SearcherTool:
                              f" {tr('Invalid')} {tr('Empty address field')}").button_ok()
 
     def add_chosen_border(self, mess: str) -> None:
-        prg_dlg = QProgressDialog(self.dock,Qt.Dialog)
-        prg_dlg.setLabelText(tr("Adding layers..."))
-        prg_dlg.setCancelButton(None)
-        prg_dlg.setAutoClose(True)
-        prg_dlg.setMaximum(100)
-        prg_dlg.setWindowFlags(
-            Qt.Dialog |
-            Qt.WindowTitleHint
-        )
-        prg_dlg.show()
-
-        prg_dlg.setValue(0)
-        if self.dock.comboBox_obr.currentIndex() != 0:
-            jpt_kod_je = self.dock.comboBox_obr.currentText().split("|")[1]
-            adres = "A06_Granice_obrebow_ewidencyjnych"
-            lay_name = 'Obręby_ewidencyjne'
-
-
-        elif self.dock.comboBox_gmina.currentIndex() != 0:
-            jpt_kod_je = self.dock.comboBox_gmina.currentText().split("|")[1]
-            jpt_kod_je = jpt_kod_je.replace("_", "")
-            adres = "A03_Granice_gmin"
-            lay_name = 'Gminy'
-
-
-        elif self.dock.comboBox_pow.currentIndex() != 0:
-            jpt_kod_je = self.dock.comboBox_pow.currentText().split("|")[1]
-            adres = "A02_Granice_powiatow"
-            lay_name = 'Powiaty'
-
-
-        elif self.dock.comboBox_woj.currentIndex() != 0:
-            jpt_kod_je = self.dock.comboBox_woj.currentText().split("|")[1]
-            adres = "A01_Granice_wojewodztw"
-            lay_name = 'Województwa'
-
-        else:
+        # lay_keys = ['Obręby_ewidencyjne', 'Gminy', 'Powiaty', 'Województwa']
+        lay_data = {'Obręby_ewidencyjne': ["A06_Granice_obrebow_ewidencyjnych", self.dock.comboBox_obr],
+                      'Gminy': ["A03_Granice_gmin", self.dock.comboBox_gmina],
+                      'Powiaty': ["A02_Granice_powiatow", self.dock.comboBox_pow],
+                      'Województwa': ["A01_Granice_wojewodztw", self.dock.comboBox_woj]}
+        for lay_key in lay_data:
+            if lay_data[lay_key][1].currentIndex() != 0:
+                _, jpt_kod_je = lay_data[lay_key][1].currentText().split("|")
+                if lay_key == "Gminy":
+                    jpt_kod_je = jpt_kod_je.replace("_", "")
+                adres = lay_data[lay_key][0]
+                lay_name = lay_key
+                break
+        if not jpt_kod_je or not adres or not lay_name:
             CustomMessageBox(None,
                              mess).button_ok()
             return
-
-        url = f"https://mapy.geoportal.gov.pl/wss/service/PZGIK/PRG/WFS/AdministrativeBoundaries?SERVICE=WFS&REQUEST=GetFeature&VERSION=2.0.0&TYPENAME=ms:{adres}&TYPENAMES=ms:{adres}"
-
+        prg_dlg = ProgressDialog()
+        prg_dlg.start_steped(tr("Adding layers..."))
+        prg_dlg.start()
+        url = f"{WFS_PRG}?SERVICE=WFS&REQUEST=GetFeature&VERSION=2.0.0&TYPENAME=ms:{adres}&TYPENAMES=ms:{adres}"
         vlayer = QgsVectorLayer(url, "wfs_lay", "WFS")
         vlayer.setSubsetString(f"""SELECT * FROM {adres}
                                    WHERE JPT_KOD_JE = '{jpt_kod_je}'""")
-
-        prg_dlg.setValue(25)
-        root = QgsProject.instance().layerTreeRoot()
-        granice_group = root.findGroup("GRANICE")
-        if not root.findGroup("GRANICE"):
-            granice_group = root.addGroup("GRANICE")
-
-        lay = None
-
-        if granice_group.children():
-            for child in granice_group.children():
-                if child.name() == lay_name:
-                    lay = child.layer()
-                    break
-
+        group_name = "GRANICE"
+        granice_group = root.findGroup(group_name)
+        if not granice_group:
+            root.addGroup(group_name)
+        lay = identify_layer_in_group(group_name, lay_name)
         if not lay:
             lay = QgsVectorLayer("Polygon", lay_name, "memory")
             attr = vlayer.dataProvider().fields().toList()
             lay.dataProvider().addAttributes(attr)
             lay.updateFields()
             add_map_layer_to_group(lay, "GRANICE")
-
-        prg_dlg.setValue(50)
-
         vlayer.selectAll()
         feat = vlayer.selectedFeatures()[0]
-
-        prg_dlg.setValue(75)
-
         lay.dataProvider().addFeature(feat)
         lay.updateExtents()
         self.searchaddress_call.zoom_to_feature(lay.name())
-        prg_dlg.setValue(100)
-
-
+        prg_dlg.stop()
 
     def widthforview(self, result: List[str]) -> int:
         longest = max(result, key=len)
@@ -358,7 +320,6 @@ class SearcherTool:
         return mun_txt.split('|')[1]
 
     def search_parcel(self) -> None:
-        adr = ''  # ful address of parcel
         parc = self.dock.lineEdit_parcel.text()
         if '.' in parc and '_' in parc:  # user input whole address in parcel
             adr = parc
