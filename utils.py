@@ -125,6 +125,7 @@ class CustomMessageBox(QMessageBox):
         self.stylesheet = f'*{{font: {value}pt;}} {self.stylesheet}'
         self.setStyleSheet(self.stylesheet)
 
+
 class SingletonModel:
     __instance = None
 
@@ -135,6 +136,7 @@ class SingletonModel:
                                      Qgis.Info)
             SingletonModel.__instance = object.__new__(cls, *args)
         return SingletonModel.__instance
+
 
 class ProgressDialog(QProgressDialog, SingletonModel):
 
@@ -185,6 +187,7 @@ class ProgressDialog(QProgressDialog, SingletonModel):
     def stop(self):
         self.setValue(100)
         self.close()
+
 
 def identify_layer(ls, layer_to_find):
     for layer in list(ls.values()):
@@ -1247,6 +1250,7 @@ custom_label_dict = {
 }
 
 max_ele_nazwy = 4
+
 
 def icon_manager(tool_list: List[str], main_qgs_widget: QObject = None) -> \
         Dict[str, Union[Optional[QIcon], Any]]:

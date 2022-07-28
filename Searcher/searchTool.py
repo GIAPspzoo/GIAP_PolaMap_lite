@@ -83,7 +83,7 @@ class SearcherTool:
                     self.getStreets(obj['1']['simc'], obj['1']['city'])
             if obj_type == 'address':
                 self.names.setStringList([
-                                             f"{obj['1']['city']}, {obj['1']['street']} {obj['1']['number']}"])
+                    f"{obj['1']['city']}, {obj['1']['street']} {obj['1']['number']}"])
             if not limit:
                 return
             self.completer.setCompletionPrefix(f"{address.split(',')[0]}, ")
@@ -154,10 +154,13 @@ class SearcherTool:
 
     def add_chosen_border(self, mess: str) -> None:
         # lay_keys = ['Obręby_ewidencyjne', 'Gminy', 'Powiaty', 'Województwa']
-        lay_data = {'Obręby_ewidencyjne': ["A06_Granice_obrebow_ewidencyjnych", self.dock.comboBox_obr],
-                      'Gminy': ["A03_Granice_gmin", self.dock.comboBox_gmina],
-                      'Powiaty': ["A02_Granice_powiatow", self.dock.comboBox_pow],
-                      'Województwa': ["A01_Granice_wojewodztw", self.dock.comboBox_woj]}
+        lay_data = {'Obręby_ewidencyjne': ["A06_Granice_obrebow_ewidencyjnych",
+                                           self.dock.comboBox_obr],
+                    'Gminy': ["A03_Granice_gmin", self.dock.comboBox_gmina],
+                    'Powiaty': ["A02_Granice_powiatow",
+                                self.dock.comboBox_pow],
+                    'Województwa': ["A01_Granice_wojewodztw",
+                                    self.dock.comboBox_woj]}
         for lay_key in lay_data:
             if lay_data[lay_key][1].currentIndex() != 0:
                 _, jpt_kod_je = lay_data[lay_key][1].currentText().split("|")
@@ -277,7 +280,7 @@ class SearcherTool:
         self.dock.comboBox_obr.view().setFixedWidth(self.widthforview(result))
         self.dock.comboBox_obr.blockSignals(False)
 
-    def clear_comboBoxes(self, level:str = None) -> None:
+    def clear_comboBoxes(self, level: str = None) -> None:
         """Clear comboboxes to level where user change something"""
         self.dock.comboBox_obr.blockSignals(True)
         self.dock.comboBox_obr.clear()
@@ -298,21 +301,21 @@ class SearcherTool:
         self.dock.comboBox_pow.addItem(tr('District'))
         self.dock.comboBox_pow.blockSignals(False)
 
-    def _get_voi_code(self) -> Union[str,bool]:
+    def _get_voi_code(self) -> Union[str, bool]:
         voi_txt = self.dock.comboBox_woj.currentText()
         if '|' not in voi_txt:
             self.clear_comboBoxes()
             return False
         return voi_txt.split('|')[1]
 
-    def _get_dis_code(self) -> Union[str,bool]:
+    def _get_dis_code(self) -> Union[str, bool]:
         dis_txt = self.dock.comboBox_pow.currentText()
         if '|' not in dis_txt:
             self.clear_comboBoxes('dis')
             return False
         return dis_txt.split('|')[1]
 
-    def _get_mun_code(self) -> Union[str,bool]:
+    def _get_mun_code(self) -> Union[str, bool]:
         mun_txt = self.dock.comboBox_gmina.currentText()
         if '|' not in mun_txt:
             self.clear_comboBoxes('mun')
@@ -326,7 +329,8 @@ class SearcherTool:
         else:
             comm = self.dock.comboBox_obr.currentText()
             if not parc:
-                self.add_chosen_border(f"{tr('Address of parcel is not valid.')}")
+                self.add_chosen_border(
+                    f"{tr('Address of parcel is not valid.')}")
                 return
             if '|' not in comm:
                 CustomMessageBox(None,

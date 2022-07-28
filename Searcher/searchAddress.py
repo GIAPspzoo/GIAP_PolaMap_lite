@@ -9,7 +9,7 @@ from urllib.request import urlopen
 
 from qgis.PyQt.QtCore import QVariant
 from qgis.core import QgsGeometry, QgsFeature, QgsField, QgsFields, \
-     QgsVectorLayer, QgsMessageLog, Qgis
+    QgsVectorLayer, QgsMessageLog, Qgis
 from qgis.utils import iface
 
 from ..utils import tr, add_map_layer_to_group, search_group_name, project
@@ -56,7 +56,7 @@ class SearchAddress:
             return
         self.res.decode()
 
-    def get_layer(self) -> Union[bool,Tuple[str]]:
+    def get_layer(self) -> Union[bool, Tuple[str]]:
         req_type = self.jres['type']
         if req_type in ['city', 'address']:
             org = 'MultiPoint?crs=epsg:2180&index=yes'
@@ -75,7 +75,8 @@ class SearchAddress:
             return False
         return org, obj_type, qml
 
-    def get_layer_data(self, org: str, obj_type: str, qml: str) -> QgsVectorLayer:
+    def get_layer_data(self, org: str, obj_type: str,
+                       qml: str) -> QgsVectorLayer:
         lyr = project.mapLayersByName(obj_type)
         if lyr:
             return lyr[0]
@@ -96,7 +97,8 @@ class SearchAddress:
         lyr.loadNamedStyle(os.path.join(direc, qml))
         return lyr
 
-    def process_results(self) -> Union[Tuple[bool,str], Tuple[bool,QgsFeature]]:
+    def process_results(self) -> Union[
+        Tuple[bool, str], Tuple[bool, QgsFeature]]:
         try:
             self.jres = json.loads(self.res)
         except JSONDecodeError:
@@ -154,7 +156,7 @@ class SearchAddress:
         iface.mapCanvas().zoomToSelected(layer)
         layer.removeSelection()
 
-    def add_feats(self, feats: QgsFeature) -> Union[bool,None]:
+    def add_feats(self, feats: QgsFeature) -> Union[bool, None]:
         if isinstance(feats, str):
             pass
         else:

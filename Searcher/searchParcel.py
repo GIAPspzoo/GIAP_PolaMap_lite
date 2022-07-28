@@ -7,7 +7,7 @@ from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
 
 from qgis.core import QgsGeometry, QgsFeature, \
-     QgsVectorLayer, Qgis
+    QgsVectorLayer, Qgis
 from qgis.utils import iface
 
 from ..utils import tr, CustomMessageBox, search_group_name, \
@@ -72,7 +72,8 @@ class FetchULDK:
                              f"{tr('Service did not find any matches, wrong plot number.')}").button_ok()
             return False
 
-        self.responce = self.natural_sort([ter for ter in res[1:] if ter != ''])
+        self.responce = self.natural_sort(
+            [ter for ter in res[1:] if ter != ''])
         return True
 
     def natural_sort(self, list: List[str]) -> List[str]:
