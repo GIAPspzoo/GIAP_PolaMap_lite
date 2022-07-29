@@ -4,7 +4,7 @@ from urllib.parse import quote
 from urllib.request import urlopen
 
 import requests
-from qgis.PyQt.QtCore import Qt
+from PyQt5.QtCore import Qt
 from qgis.PyQt.QtGui import QFont, QFontMetrics
 from qgis.PyQt.QtCore import QStringListModel
 from qgis.PyQt.QtCore import QTimer
@@ -153,7 +153,6 @@ class SearcherTool:
                              f" {tr('Invalid')} {tr('Empty address field')}").button_ok()
 
     def add_chosen_border(self, mess: str) -> None:
-        # lay_keys = ['Obręby_ewidencyjne', 'Gminy', 'Powiaty', 'Województwa']
         lay_data = {'Obręby_ewidencyjne': ["A06_Granice_obrebow_ewidencyjnych",
                                            self.dock.comboBox_obr],
                     'Gminy': ["A03_Granice_gmin", self.dock.comboBox_gmina],
@@ -162,18 +161,19 @@ class SearcherTool:
                     'Województwa': ["A01_Granice_wojewodztw",
                                     self.dock.comboBox_woj]}
         for lay_key in lay_data:
-            if lay_data[lay_key][1].currentIndex() != 0:
+            if lay_data[lay_key][1].currentIndex():
                 _, jpt_kod_je = lay_data[lay_key][1].currentText().split("|")
                 if lay_key == "Gminy":
                     jpt_kod_je = jpt_kod_je.replace("_", "")
                 adres = lay_data[lay_key][0]
                 lay_name = lay_key
                 break
-        if not jpt_kod_je or not adres or not lay_name:
-            CustomMessageBox(None,
+        if 'jpt_kod_je' not in locals() or 'adres' not in locals()\
+                or 'lay_name' not in locals():
+            CustomMessageBox(self.iface.mainWindow(),
                              mess).button_ok()
             return
-        prg_dlg = ProgressDialog()
+        prg_dlg = ProgressDialog(self.iface.mainWindow())
         prg_dlg.start_steped(tr("Adding layers..."))
         prg_dlg.start()
         url = f"{WFS_PRG}?SERVICE=WFS&REQUEST=GetFeature&VERSION=2.0.0&TYPENAME=ms:{adres}&TYPENAMES=ms:{adres}"

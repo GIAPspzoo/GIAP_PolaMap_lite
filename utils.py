@@ -149,7 +149,6 @@ class ProgressDialog(QProgressDialog, SingletonModel):
         self.setFixedHeight(100)
         self.setMaximum(100)
         self.setCancelButton(None)
-        # self.setStyleSheet(self.stylesheet)
         self.setWindowFlags(Qt.Dialog | Qt.WindowCloseButtonHint)
         self.rejected.connect(self.stop)
         self.setWindowModality(Qt.WindowModal)
