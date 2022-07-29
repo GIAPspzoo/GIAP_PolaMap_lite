@@ -1,16 +1,18 @@
 import json
 import os
 from http.client import IncompleteRead
+from json import JSONDecodeError
+from typing import Union, Tuple
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote
 from urllib.request import urlopen
 
 from qgis.PyQt.QtCore import QVariant
 from qgis.core import QgsGeometry, QgsFeature, QgsField, QgsFields, \
-    QgsProject, QgsVectorLayer, QgsMessageLog, Qgis
+    QgsVectorLayer, QgsMessageLog, Qgis
 from qgis.utils import iface
 
-from ..utils import tr, add_map_layer_to_group, search_group_name
+from ..utils import tr, add_map_layer_to_group, search_group_name, project
 
 
 class SearchAddress:
@@ -35,7 +37,7 @@ class SearchAddress:
             QgsField("y", QVariant.Double, "double", 10, 4),
         ]
 
-    def fetch_address(self, address):
+    def fetch_address(self, address: str) -> None:
         self.address = address
         uug = 'https://services.gugik.gov.pl/uug?request=GetAddress&address='
         url = uug + quote(self.address)
@@ -54,7 +56,7 @@ class SearchAddress:
             return
         self.res.decode()
 
-    def get_layer(self):
+    def get_layer(self) -> Union[bool, Tuple[str]]:
         req_type = self.jres['type']
         if req_type in ['city', 'address']:
             org = 'MultiPoint?crs=epsg:2180&index=yes'
@@ -73,8 +75,9 @@ class SearchAddress:
             return False
         return org, obj_type, qml
 
-    def get_layer_data(self, org, obj_type, qml):
-        lyr = QgsProject.instance().mapLayersByName(obj_type)
+    def get_layer_data(self, org: str, obj_type: str,
+                       qml: str) -> QgsVectorLayer:
+        lyr = project.mapLayersByName(obj_type)
         if lyr:
             return lyr[0]
 
@@ -94,10 +97,11 @@ class SearchAddress:
         lyr.loadNamedStyle(os.path.join(direc, qml))
         return lyr
 
-    def process_results(self):
+    def process_results(self) -> Union[
+        Tuple[bool, str], Tuple[bool, QgsFeature]]:
         try:
             self.jres = json.loads(self.res)
-        except Exception:
+        except JSONDecodeError:
             return False, tr('Cannot parse results.')
 
         if 'found objects' in self.jres:
@@ -145,14 +149,14 @@ class SearchAddress:
 
         return True, feats
 
-    def zoom_to_feature(self, layer):
-        layer = QgsProject.instance().mapLayersByName(layer)[0]
+    def zoom_to_feature(self, layer: str) -> None:
+        layer = project.mapLayersByName(layer)[0]
         iface.mapCanvas().zoomScale(500)
         layer.selectByIds([len(layer)])
         iface.mapCanvas().zoomToSelected(layer)
         layer.removeSelection()
 
-    def add_feats(self, feats):
+    def add_feats(self, feats: QgsFeature) -> Union[bool, None]:
         if isinstance(feats, str):
             pass
         else:

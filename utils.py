@@ -14,6 +14,7 @@ from qgis.core import QgsProject, QgsMessageLog, Qgis, QgsApplication, \
 from qgis.utils import iface
 
 project = QgsProject.instance()
+root = project.layerTreeRoot()
 
 
 class CustomMessageBox(QMessageBox):
@@ -124,6 +125,7 @@ class CustomMessageBox(QMessageBox):
         self.stylesheet = f'*{{font: {value}pt;}} {self.stylesheet}'
         self.setStyleSheet(self.stylesheet)
 
+
 class SingletonModel:
     __instance = None
 
@@ -134,6 +136,56 @@ class SingletonModel:
                                      Qgis.Info)
             SingletonModel.__instance = object.__new__(cls, *args)
         return SingletonModel.__instance
+
+
+class ProgressDialog(QProgressDialog, SingletonModel):
+
+    def __init__(self, parent=None, title='GIAP-PolaMap(lite)'):
+        super(ProgressDialog, self).__init__(parent)
+        self.setWindowTitle(title)
+        self.setWindowIcon(icon_manager(['window_icon'])['window_icon'])
+        self.setLabelText('Proszę czekać...')
+        self.setFixedWidth(300)
+        self.setFixedHeight(100)
+        self.setMaximum(100)
+        self.setCancelButton(None)
+        self.setWindowFlags(Qt.Dialog | Qt.WindowCloseButtonHint)
+        self.rejected.connect(self.stop)
+        self.setWindowModality(Qt.WindowModal)
+
+    def make_percent_step(self, step=100, new_text=None):
+        self.setStyleSheet(self.stylesheet)
+        if new_text:
+            self.setLabelText(new_text)
+            if "wczytywanie" in new_text:
+                for pos in range(100 - self.value()):
+                    QApplication.processEvents()
+                    self.setValue(self.value() + 1)
+                return
+        for pos in range(step):
+            QApplication.processEvents()
+            self.setValue(self.value() + 1)
+        QApplication.sendPostedEvents()
+        QApplication.processEvents()
+
+    def start_steped(self, title='Trwa ładowanie danych.\n  Proszę czekać...'):
+        self.setLabelText(title)
+        self.setValue(1)
+        self.show()
+        QApplication.sendPostedEvents()
+        QApplication.processEvents()
+
+    def start(self):
+        self.setFixedWidth(250)
+        self.setMaximum(0)
+        self.setCancelButton(None)
+        self.show()
+        QApplication.sendPostedEvents()
+        QApplication.processEvents()
+
+    def stop(self):
+        self.setValue(100)
+        self.close()
 
 
 def identify_layer(ls, layer_to_find):
@@ -257,6 +309,7 @@ class SectionHeaderDelegate(QStyledItemDelegate):
 
 
 GIAP_NEWS_WEB_PAGE = 'https://www.giap.pl/aktualnosci/'
+WFS_PRG = "https://mapy.geoportal.gov.pl/wss/service/PZGIK/PRG/WFS/AdministrativeBoundaries"
 
 # oba poniższe słowniki powinny być spójne
 WMS_SERVERS = {
@@ -1197,6 +1250,7 @@ custom_label_dict = {
 
 max_ele_nazwy = 4
 
+
 def icon_manager(tool_list: List[str], main_qgs_widget: QObject = None) -> \
         Dict[str, Union[Optional[QIcon], Any]]:
     dirnm = normalize_path(os.path.join(os.path.dirname(__file__), 'icons'))
@@ -1244,20 +1298,20 @@ def add_map_layer_to_group(
             f'Warstwa nieprawidłowa {layer.name()}. Wymagana interwencja.',
             "GIAP - PolaMap Lite",
             Qgis.Info)
-    root = project.layerTreeRoot()
     if main_group_name and root.findGroup(main_group_name):
         group = root.findGroup(main_group_name).findGroup(group_name)
     else:
         group = root.findGroup(group_name)
     if not group:
         if force_create:
-            group = project.layerTreeRoot().addGroup(group_name)
+            group = root.addGroup(group_name)
         else:
             project.addMapLayer(layer)
             return
     project.addMapLayer(layer, False)
     if group_name:
         group.insertLayer(position, layer)
+
 
 def find_widget_with_menu_in_toolbar(toolbar: QToolBar) -> List[QToolButton]:
     lista_widgets = toolbar.children()
@@ -1268,6 +1322,7 @@ def find_widget_with_menu_in_toolbar(toolbar: QToolBar) -> List[QToolButton]:
                 qmenu_list.append(widget)
     return qmenu_list
 
+
 def get_action_from_toolbar(toolbar: QToolBar) -> List[QAction]:
     lista_widgets = toolbar.children()
     act_list = []
@@ -1277,9 +1332,10 @@ def get_action_from_toolbar(toolbar: QToolBar) -> List[QAction]:
                 act_list.append(widget.actions()[0])
     return act_list
 
+
 def add_action_from_toolbar(iface: iface, sec, btn: list) -> None:
     if iface.mainWindow().findChild(QToolBar, btn[0].split('_')[0]):
-        dlu =  len(btn[0].split('_'))
+        dlu = len(btn[0].split('_'))
         if dlu == max_ele_nazwy:
             objname_toolbar, ind, typ, ind_menu = btn[0].split('_')
         else:
@@ -1298,22 +1354,23 @@ def add_action_from_toolbar(iface: iface, sec, btn: list) -> None:
 
             if dlu == max_ele_nazwy:
                 if widg.menu():
-                    #Wyciąganie i dodawanie pojdeynczej akcji z menu
+                    # Wyciąganie i dodawanie pojdeynczej akcji z menu
                     sel_act_from_menu = widg.menu().actions()[int(ind_menu)]
                     objname = sel_act_from_menu.objectName()
                     sel_act_from_menu.setObjectName(btn[0])
                     sec.add_action(sel_act_from_menu, btn[1], btn[2])
                     sel_act_from_menu.setObjectName(objname)
                 else:
-                    #Dodawanie wybranej akcji
+                    # Dodawanie wybranej akcji
                     sel_act = widg.actions()[int(ind_menu)]
                     objname = sel_act.objectName()
                     sel_act.setObjectName(btn[0])
                     sec.add_action(sel_act, btn[1], btn[2])
                     sel_act.setObjectName(objname)
             else:
-                #Dodawanie menu i domyślnej akcji
+                # Dodawanie menu i domyślnej akcji
                 objname = widg.defaultAction().objectName()
                 widg.defaultAction().setObjectName(btn[0])
-                sec.add_action(widg.defaultAction(), btn[1], btn[2], widg.menu())
+                sec.add_action(widg.defaultAction(), btn[1], btn[2],
+                               widg.menu())
                 widg.defaultAction().setObjectName(objname)
