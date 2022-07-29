@@ -140,10 +140,10 @@ class SingletonModel:
 
 class ProgressDialog(QProgressDialog, SingletonModel):
 
-    def __init__(self, parent=None, title='GIAP-PolaMap'):
+    def __init__(self, parent=None, title='GIAP-PolaMap(lite)'):
         super(ProgressDialog, self).__init__(parent)
         self.setWindowTitle(title)
-        self.setWindowIcon(QIcon(':/plugins/GIAP-PolaMap/icons/giap_logo.png'))
+        self.setWindowIcon(icon_manager(['window_icon'])['window_icon'])
         self.setLabelText('Proszę czekać...')
         self.setFixedWidth(300)
         self.setFixedHeight(100)
