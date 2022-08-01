@@ -408,7 +408,6 @@ padding: 2px;</string>
         <property name="styleSheet">
          <string notr="true">   background-color: #b7d3e8;
    color: #0A0C0D;
-   font: 10pt &quot;Segoe UI&quot;; 
    font-weight: bold;
 </string>
         </property>
