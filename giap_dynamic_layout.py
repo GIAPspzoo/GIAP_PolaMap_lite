@@ -151,7 +151,7 @@ class MainWidget(QWidget, FORM_CLASS):
         self.edit_session = not self.edit_session
         if not hasattr(self, 'conf'):
             self.conf = Config()
-        if ask and self.conf.setts[
+        if 'ribbons_config' in self.conf.setts and ask and self.conf.setts[
             'ribbons_config'] != self.generate_ribbon_config():
             self.save = CustomMessageBox(None, tr(
                 "Do you want to save your changes?")).button_yes_no()
@@ -206,8 +206,11 @@ class MainWidget(QWidget, FORM_CLASS):
             scrll = QScrollArea(self)
             scrll.setWidgetResizable(True)
             scrll.setWidget(self.instr)
-            value = QSettings().value("qgis/stylesheet/fontPointSize") if \
-                self.conf.setts["font_changed"] else 9
+            if 'font_changed' in self.conf.setts.keys():
+                value = QSettings().value("qgis/stylesheet/fontPointSize") if \
+                    self.conf.setts["font_changed"] else 9
+            else:
+                value = 9
             self.instr.setStyleSheet(
                 f"""QFrame, QLabel, QToolTip, QTextEdit{{
             font:{value}pt}}"""
@@ -1158,8 +1161,11 @@ class CustomLabel(QLabel):
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.setText(lab)
         self.conf = Config()
-        value = QSettings().value("qgis/stylesheet/fontPointSize") if \
-            self.conf.setts["font_changed"] else 10
+        if 'font_changed' in self.conf.setts.keys():
+            value = QSettings().value("qgis/stylesheet/fontPointSize") if \
+                self.conf.setts["font_changed"] else 10
+        else:
+            value = 10
         self.setStyleSheet(
             f'font:{value}pt "Segoe UI"; font-weight: normal; '
         )

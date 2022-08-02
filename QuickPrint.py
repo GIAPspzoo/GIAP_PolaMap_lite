@@ -93,10 +93,15 @@ class PrintMapTool:
         self.dialog.paperFormatComboBox.currentIndexChanged.connect(
             self.create_composer)
         self.setup_rubberband()
-        if Config().setts['font_changed']:
-            self.set_font_quickprint(QSettings().value("qgis/stylesheet/fontPointSize"))
+        self.conf = Config()
+        if 'font_changed' in self.conf.setts.keys():
+            if self.conf.setts['font_changed']:
+                self.set_font_quickprint(QSettings().value("qgis/stylesheet/fontPointSize"))
+        else:
+            self.conf.set_value('font_changed', False)
+            self.conf.save_config()
 
-    def set_font_quickprint(self, font_size):
+    def set_font_quickprint(self, font_size: str) -> None:
         attributes = [self.dialog.label_side, self.dialog.title_label,
                       self.dialog.cancelPushButton, self.dialog.previewPushButton,
                       self.dialog.savePushButton, self.dialog.calendar]
