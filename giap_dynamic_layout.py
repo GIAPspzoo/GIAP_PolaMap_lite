@@ -206,10 +206,10 @@ class MainWidget(QWidget, FORM_CLASS):
             scrll = QScrollArea(self)
             scrll.setWidgetResizable(True)
             scrll.setWidget(self.instr)
-            try:
+            if 'font_changed' in self.conf.setts.keys():
                 value = QSettings().value("qgis/stylesheet/fontPointSize") if \
                     self.conf.setts["font_changed"] else 9
-            except KeyError:
+            else:
                 value = 9
             self.instr.setStyleSheet(
                 f"""QFrame, QLabel, QToolTip, QTextEdit{{
@@ -1161,10 +1161,10 @@ class CustomLabel(QLabel):
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.setText(lab)
         self.conf = Config()
-        try:
+        if 'font_changed' in self.conf.setts.keys():
             value = QSettings().value("qgis/stylesheet/fontPointSize") if \
                 self.conf.setts["font_changed"] else 10
-        except KeyError:
+        else:
             value = 10
         self.setStyleSheet(
             f'font:{value}pt "Segoe UI"; font-weight: normal; '

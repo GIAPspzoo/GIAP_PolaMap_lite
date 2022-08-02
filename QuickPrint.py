@@ -94,10 +94,10 @@ class PrintMapTool:
             self.create_composer)
         self.setup_rubberband()
         self.conf = Config()
-        try:
+        if 'font_changed' in self.conf.setts.keys():
             if self.conf.setts['font_changed']:
                 self.set_font_quickprint(QSettings().value("qgis/stylesheet/fontPointSize"))
-        except KeyError:
+        else:
             self.conf.set_value('font_changed', False)
             self.conf.save_config()
 
