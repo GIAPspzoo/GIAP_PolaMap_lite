@@ -68,10 +68,16 @@ class MainTabQgsWidget:
         self.style_manager_dlg = StyleManagerDialog(self.style_manager)
         self.font_size = QSettings().value("qgis/stylesheet/fontPointSize")
         self.kompozycje = CompositionsTool(self.iface, self)
+        if "font_changed" not in self.config.setts:
+            self.config.set_value('font_changed', False)
+            self.config.save_config()
         if self.config.setts['font_changed']:
-            CustomLabel(tr('New section')).setStyleSheet(f'font: {self.font_size}pt;')
-            self.kompozycje_widget.setStyleSheet(f'font: {self.font_size}pt;')
-            self.main_widget.pokaz_warstwy.setStyleSheet(f'font: {self.font_size}pt;')
+            CustomLabel(tr('New section')).setStyleSheet(
+                f'font: {self.font_size}pt;')
+            self.kompozycje_widget.setStyleSheet(
+                f'font: {self.font_size}pt;')
+            self.main_widget.pokaz_warstwy.setStyleSheet(
+                f'font: {self.font_size}pt;')
             self.setfont_settings_dialog()
             self.setfont_styles_dialog()
 
