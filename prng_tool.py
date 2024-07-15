@@ -12,6 +12,7 @@ from qgis.utils import iface
 from qgis.PyQt.QtCore import QTimer
 from qgis.PyQt.QtWidgets import QApplication, QProgressDialog
 
+
 class PRNGTool(QtWidgets.QDialog):
     def __init__(self, parent=None) -> None:
         """Constructor."""
@@ -57,14 +58,30 @@ class PRNGTool(QtWidgets.QDialog):
             response.raise_for_status()
             data = response.json()
 
-            if data["found objects"] == 0:
-                progress_dialog.setValue(100)
-                QApplication.processEvents()
-                QtWidgets.QMessageBox.information(self, "Wynik", "Nie znaleziono obiektów.")
-                return
-
-            self.results_data = data["results"]
+            self.results_data.clear()
             model = QtCore.QStringListModel(self.listView)
+            model.setStringList([])
+            self.listView.setModel(model)
+
+            if data["found objects"] == 0:
+                url = f"http://services.gugik.gov.pl/uug/?request=GetAddress&location={location_name}"
+                response = requests.get(url)
+                response.raise_for_status()
+                data = response.json()
+                if data["found objects"] == 0:
+                    progress_dialog.setValue(100)
+                    QApplication.processEvents()
+                    QtWidgets.QMessageBox.information(self, "Wynik", "Nie znaleziono obiektów.")
+                    return
+
+                for key, value in data["results"].items():
+                    self.results_data[key] = {
+                        "name": value["city"], "type": "miasto", "voivodeship": value["voivodeship"], "county": value["county"],
+                        "commune": value["commune"], "class": "", "status": "", "x": value["x"], "y": value["y"], "geometry_wkt": value["geometry_wkt"]
+                    }
+            else:
+                self.results_data = data["results"]
+
             items = []
             for key, value in self.results_data.items():
                 items.append(f"{value['name']} ( {value['type']}, {value['voivodeship']}, {value['county']} )")
