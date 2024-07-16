@@ -28,6 +28,7 @@ class PRNGTool(QtWidgets.QDialog):
         self.SzukajButton.clicked.connect(self.search_location)
         self.ObiektButton.clicked.connect(self.add_selected_object_to_layer)
         self.results_data = {}
+        self.listView.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
 
     def run(self):
         self.show()
