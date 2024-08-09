@@ -290,7 +290,7 @@ class SectionHeaderDelegate(QStyledItemDelegate):
 
     def sizeHint(self, option, index):
         return QtCore.QSize(
-            QtGui.QTextDocument(index.model().data(index)).idealWidth(), 30)
+            int(QtGui.QTextDocument(index.model().data(index)).idealWidth()), 30)
 
     def paint(self, painter, option, index):
         painter.save()
@@ -532,6 +532,14 @@ STANDARD_TOOLS = [
             ['giapWMS', 0, 1],
             ['giapQuickPrint', 0, 2],
             ['giapAreaLength', 0, 3],
+        ]
+    },
+    {
+        'label': tr('Dodatki'),
+        'id': 'Dodatki',
+        'btn_size': 30,
+        'btns': [
+            ['giapgeokodowanie', 0, 0],
         ]
     },
 
@@ -950,7 +958,7 @@ DEFAULT_TABS = ['Main tools', 'Advanced tools', 'Vector', 'Raster']
 GIAP_CUSTOM_TOOLS = ['GIAP Tools', 'Vector digitization', 'Measurement',
                      'Project', 'Attributes', 'Advanced attributes',
                      'Selection', 'Navigation', 'Add Layer', 'Create Layer',
-                     'Prints']
+                     'Prints', 'Dodatki']
 TOOLS_HEADERS = [
     'Sections',
     'GIAP sections',
@@ -1237,7 +1245,8 @@ custom_icon_dict = {
     'mActionShowAlignRasterTool': 'mActionShowAlignRasterTool.png',
     'mActionNewMemoryLayer': 'mActionNewMemoryLayer.png',
     'mActionSaveProjectAs': 'mActionSaveProjectAs.png',
-    'window_icon': 'giap_logo.png'
+    'window_icon': 'giap_logo.png',
+    'giapgeokodowanie': 'giapgeokodowanie.png'
 }
 
 custom_label_dict = {
@@ -1245,7 +1254,8 @@ custom_label_dict = {
     'giapCompositions': "Composition settings",
     "giapQuickPrint": "Map quick print",
     "giapMyPrints": "My Prints",
-    "giapAreaLength": 'Area and length'
+    "giapAreaLength": 'Area and length',
+    "giapgeokodowanie": 'geokodowanie'
 }
 
 max_ele_nazwy = 4
