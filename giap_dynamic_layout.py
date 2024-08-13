@@ -15,6 +15,7 @@ from qgis.core import QgsApplication
 from qgis.utils import iface
 from qgis.gui import QgsMapTool
 
+from .InfoTools import InfoTool
 from .OrtoTools import OrtoAddingTool
 from .QuickPrint import PrintMapTool
 from .SectionManager.CustomSectionManager import CustomSectionManager
@@ -857,6 +858,10 @@ class CustomSection(QWidget):
                 self.tbut.setToolTip(tr("Map quick print"))
             if oname == "giapMyPrints":
                 self.tbut.setToolTip(tr("My Prints"))
+            if oname == 'giapInfoCard':
+                self.info_card = InfoTool(iface)
+                self.tbut.setToolTip(tr("Info card"))
+                self.tbut.clicked.connect(self.info_card.run)
             if oname == "giapAreaLength":
                 giap_tool_bar = iface.mainWindow().findChildren(QToolBar, 'GiapToolBar')[0]
                 main_widget = giap_tool_bar.findChildren(MainWidget)[0]

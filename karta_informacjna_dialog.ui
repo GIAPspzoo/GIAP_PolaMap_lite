@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>KompozycjeDialog</class>
+ <widget class="QDialog" name="KompozycjeDialog">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>521</width>
+    <height>734</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+    <horstretch>1</horstretch>
+    <verstretch>1</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>521</width>
+    <height>734</height>
+   </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>Segoe UI</family>
+    <pointsize>10</pointsize>
+    <weight>50</weight>
+    <italic>false</italic>
+    <bold>false</bold>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Karta informacyjna</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>:/plugins/GIAP-giap_layout/icons/giap_logo.png</normaloff>:/plugins/GIAP-giap_layout/icons/giap_logo.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">
+QAbstractItemView
+{
+	alternate-background-color:  #e6e6e6;
+}
+QComboBox
+{
+	selection-background-color: #b7d3e8;
+    background-color: #4f5a63;
+	border-style: solid;
+	border: 1px solid  #5689b0;
+	border-radius: 3px;
+	padding: 2px;
+	font: 9pt &quot;Segoe UI&quot;;
+    height: 20px;
+}
+
+QComboBox:on
+{
+	background-color: #4f5a63;
+	padding-top: 3px;
+	padding-left: 1px;
+	selection-background-color: #4a4a4a;
+}
+
+QComboBox QAbstractItemView
+{
+	background-color: #4f5a63;
+	border-radius: 4px;
+	border: 1px solid  #6fb1e3;
+	selection-background-color: #4f5a63;
+    padding: 4px 10px 4px 10px;
+    width: 1.9em;
+}
+
+QComboBox::drop-down
+{
+	subcontrol-origin: padding;
+	subcontrol-position: top right;
+	width: 15px;
+    background-color: #5689b0;
+	border-left-width: 0;
+	border-left-color:  #1a2936;
+	border-left-style: solid;
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+}
+
+QComboBox::down-arrow
+{
+	image: url(icons/down_arrow_disabled.png);
+}
+
+QComboBox::down-arrow:on,
+QComboBox::down-arrow:hover,
+QComboBox::down-arrow:focus
+{
+	image: url(icons/down_arrow.png);
+}
+
+QLineEdit
+{
+	border: 1px solid #5689b0;
+    border-radius: 3px;
+    background-color: #4f5a63;
+}
+
+QGroupBox {
+border: 1px solid #5689b0;
+}
+
+QToolButton {
+   border: 0px solid transparent;
+   color: #EDF6FC;
+
+}
+
+QToolButton:hover {
+   background-color: #b7d3e8;
+   border: 1px solid #0A0C0D;
+}
+
+QToolButton:pressed {
+   background-color: #b7d3e8;
+   border: 1px solid #0A0C0D;
+}
+
+QTableView:item:selected {
+   background-color: #6fb1e3;
+}
+
+QTableView:item:hover {
+   background-color: #6fb1e3;
+}
+   </string>
+  </property>
+  <property name="locale">
+   <locale language="English" country="UnitedKingdom"/>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>false</bool>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Identyfikuj obiekt</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLineEdit" name="lineEdit"/>
+      </item>
+      <item row="0" column="3" colspan="2">
+       <widget class="QPushButton" name="selectObjectPushButton">
+        <property name="text">
+         <string>Wskaż z mapy</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Tryb</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" colspan="4">
+       <widget class="QComboBox" name="comboBox">
+        <item>
+         <property name="text">
+          <string>Identyfikuj obiekty</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>3</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="5">
+       <widget class="QTableWidget" name="objectInfoTableWidget">
+        <column>
+         <property name="text">
+          <string>Obiekt</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Wartość</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QCheckBox" name="addGraphicCheckBox">
+        <property name="text">
+         <string>Dodaj załącznik graficzny</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Wybór formatu</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0" colspan="5">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="pdfRadioButton">
+          <property name="text">
+           <string>PDF</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="xlsRadioButton">
+          <property name="text">
+           <string>XLS</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="csvRadioButton">
+          <property name="text">
+           <string>CSV</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item row="6" column="2" colspan="2">
+       <widget class="QPushButton" name="previewPushButton">
+        <property name="text">
+         <string>Podgląd karty</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="4">
+       <widget class="QPushButton" name="savePushButton">
+        <property name="text">
+         <string>Zapisz...</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -513,6 +513,11 @@ Proszę czekać...</translation>
         <translation>Powierzchnia i długość</translation>
     </message>
     <message>
+        <location filename="../giap_layout.py" line="221"/>
+        <source>Info card</source>
+        <translation>info card</translation>
+    </message>
+    <message>
         <location filename="../giap_dynamic_layout.py" line="132"/>
         <source>Do you want to save your changes?</source>
         <translation>Czy chcesz zapisać zmiany?</translation>

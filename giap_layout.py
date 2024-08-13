@@ -219,9 +219,18 @@ class MainTabQgsWidget:
         area_length_tool.setAction(self.main_widget.area_length_action)
         self.main_widget.runArea.setDefaultAction(self.main_widget.area_length_action)
 
+        info_card_tool = QgsMapTool(self.iface.mapCanvas())
+        info_card_tool.setAction(self.main_widget.area_length_action)
+        self.main_widget.runArea.setDefaultAction(self.main_widget.area_length_action)
+
         orto_button = self.main_widget.runOrtoTool
         orto_button.setIcon(QIcon(os.path.join(self.plugin_dir, 'icons', 'orto_icon2.png')))
         self.orto = OrtoAddingTool(self.main_widget, orto_button)
+
+        # self.main_widget.infoCardButton.clicked.connect(
+        #     lambda: self.off_on_search_tool(self.visibility_search_tool))
+        # self.main_widget.infoCardButton.setIcon(
+        #     QIcon(os.path.join(self.plugin_dir, 'icons', 'karta_info.png')))
 
         self.visibility_search_tool = False
         self.main_widget.offOnSearchButton.clicked.connect(
@@ -266,6 +275,7 @@ class MainTabQgsWidget:
         if not ribbon_conf:
             ribbon_conf = RIBBON_DEFAULT
         for dtab in ribbon_conf:
+            # raise
             itab, tab = self.main_widget.add_tab(dtab['tab_name'])
             for dsec in dtab['sections']:
                 sec = self.main_widget.add_section(
