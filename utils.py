@@ -532,6 +532,7 @@ STANDARD_TOOLS = [
             ['giapWMS', 0, 1],
             ['giapQuickPrint', 0, 2],
             ['giapAreaLength', 0, 3],
+            ['giapInfoCard', 0, 4],
         ]
     },
 
@@ -1234,6 +1235,7 @@ custom_icon_dict = {
     "giapQuickPrint": 'quick_print.png',
     "giapMyPrints": 'my_prints.png',
     "giapAreaLength": 'measuring.png',
+    "giapInfoCard": 'karta_info.png',
     'mActionShowAlignRasterTool': 'mActionShowAlignRasterTool.png',
     'mActionNewMemoryLayer': 'mActionNewMemoryLayer.png',
     'mActionSaveProjectAs': 'mActionSaveProjectAs.png',
@@ -1245,10 +1247,11 @@ custom_label_dict = {
     'giapCompositions': "Composition settings",
     "giapQuickPrint": "Map quick print",
     "giapMyPrints": "My Prints",
-    "giapAreaLength": 'Area and length'
+    "giapAreaLength": 'Area and length',
+    "giapInfoCard": 'Info card'
 }
 
-max_ele_nazwy = 4
+max_ele_nazwy = 5
 
 
 def icon_manager(tool_list: List[str], main_qgs_widget: QObject = None) -> \
