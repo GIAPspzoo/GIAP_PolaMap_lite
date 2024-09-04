@@ -15,6 +15,7 @@ from qgis.core import QgsApplication
 from qgis.utils import iface
 from qgis.gui import QgsMapTool
 
+from .geocoding_tool import Geocoding
 from .OrtoTools import OrtoAddingTool
 from .QuickPrint import PrintMapTool
 from .SectionManager.CustomSectionManager import CustomSectionManager
@@ -865,6 +866,11 @@ class CustomSection(QWidget):
                 area_length_tool = QgsMapTool(iface.mapCanvas())
                 area_length_tool.setAction(main_widget.area_length_action)
                 self.tbut.setDefaultAction(main_widget.area_length_action)
+
+            if oname == "giapgeokodowanie":
+                self.tbut.setToolTip(tr("geocoding"))
+                self.geocoding_tool = Geocoding(self)
+                self.tbut.clicked.connect(self.geocoding_tool.run)
 
             self.tbut.setIcon(icon)
 
