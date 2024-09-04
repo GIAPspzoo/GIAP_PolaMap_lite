@@ -586,7 +586,7 @@ class MainTabQgsWidget:
             self.set_dlg.radioButton_en.setChecked(True)
         elif str(QSettings().value('locale/userLocale')) == "pl_PL":
             self.set_dlg.radioButton_pl.setChecked(True)
-        self.set_dlg.spinBox_font.setValue(int(self.font_size))
+        self.set_dlg.spinBox_font.setValue(int(self.font_size or 5))
         self.set_dlg.spinBox_button.clicked.connect(self.set_size)
         self.set_dlg.restart_button.clicked.connect(self.restart_font_size)
         self.set_dlg.exec_()

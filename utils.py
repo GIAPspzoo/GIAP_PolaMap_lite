@@ -290,7 +290,7 @@ class SectionHeaderDelegate(QStyledItemDelegate):
 
     def sizeHint(self, option, index):
         return QtCore.QSize(
-            QtGui.QTextDocument(index.model().data(index)).idealWidth(), 30)
+            int(QtGui.QTextDocument(index.model().data(index)).idealWidth()), 30)
 
     def paint(self, painter, option, index):
         painter.save()
