@@ -31,7 +31,7 @@ class AddFeatureEvent(BaseEventPrototype):
             x_pos = event.localPos().x()
             y_pos = event.localPos().y()
             return self.mapCanvas.getCoordinateTransform().toMapCoordinates(
-                x_pos, y_pos)
+                int(x_pos), int(y_pos))
 
         def show_measure() -> None:
             geom = self.geom_polygon.geometry(
