@@ -220,6 +220,13 @@ or fill in the previous fields and indicate the parcel number e.g. 17/2</string>
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="buttonParcelNr">
+       <property name="text">
+        <string>Wskaż z mapy</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="Line" name="line">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
@@ -244,6 +251,13 @@ for the street: Warszawa, Pasaż Ursynowski</string>
        </property>
        <property name="placeholderText">
         <string>Search address point</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonAdress">
+       <property name="text">
+        <string>Wskaż z mapy</string>
        </property>
       </widget>
      </item>

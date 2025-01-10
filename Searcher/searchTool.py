@@ -12,11 +12,21 @@ from qgis.PyQt.QtWidgets import QCompleter
 from qgis.core import QgsVectorLayer
 from qgis.utils import iface
 from typing import Union, Dict, List
+########################################################################
+from qgis.core import QgsField, QgsFeature, QgsGeometry, QgsPointXY, QgsMapLayer
+from PyQt5.QtCore import QVariant
+
+from qgis.gui import QgsMapToolEmitPoint
+from urllib.request import urlopen
+from qgis.core import Qgis
+import os
+########################################################################
 
 from .searchAddress import SearchAddress
 from .searchParcel import FetchULDK, ParseResponce
 from ..utils import tr, CustomMessageBox, add_map_layer_to_group, \
-    ProgressDialog, identify_layer_in_group, root, WFS_PRG
+    ProgressDialog, identify_layer_in_group, root, WFS_PRG, search_group_name, project
+
 
 
 class SearcherTool:
@@ -35,7 +45,18 @@ class SearcherTool:
             self.gmi_changed)
         self.dock.lineEdit_parcel.returnPressed.connect(
             self.search_parcel)
+################################################################################
+        self.dock.buttonParcelNr.clicked.connect(self.handle_parcel_button_click)
+        self.dock.buttonAdress.clicked.connect(self.handle_address_button_click)
+        self._pointTool = None
+        self._previousTool = None
+        self.clicked_x = None
+        self.clicked_y = None
+
+################################################################################
         self.fetch_voivodeship()
+        
+        
         # TIMER
         self.typing_timer = QTimer()
         self.typing_timer.setSingleShot(True)
@@ -345,3 +366,152 @@ class SearcherTool:
         pr = ParseResponce()
         pr.get_layer()
         pr.parse_responce(feULDK.responce)
+
+############################################################################
+    
+    def handle_parcel_button_click(self):
+        if self._pointTool is not None:
+            self.iface.mapCanvas().unsetMapTool(self._pointTool)
+            self._pointTool = None
+        # Store the previous tool in use by the user
+        canvas = self.iface.mapCanvas()  
+        self._previousTool = canvas.mapTool()
+        # Set the tool and onClick callback
+        self._pointTool = PrintClickedPoint(canvas, self)
+        canvas.setMapTool(self._pointTool)
+        
+    
+    def handle_address_button_click(self):
+        if self._pointTool is not None:
+            self.iface.mapCanvas().unsetMapTool(self._pointTool)
+            self._pointTool = None
+        canvas = self.iface.mapCanvas()
+        self._previousTool = canvas.mapTool()
+        self._pointTool = PrintClickedPoint(canvas, self, mode='address')
+        canvas.setMapTool(self._pointTool)
+    
+    
+
+    def on_point_callback(self, point, mode='parcel'):
+        self.clicked_x = round(point.x(), 2)
+        self.clicked_y = round(point.y(), 2)
+        if mode == 'parcel':
+            self.fetch_parcel_by_xy()
+        elif mode == 'address':
+            self.fetch_address_by_xy()
+
+
+    def fetch_address_by_xy(self):
+        if self.clicked_x is not None and self.clicked_y is not None:
+            url = f'https://services.gugik.gov.pl/uug/?request=GetAddressReverse&location=POINT({self.clicked_x} {self.clicked_y})&srid=2180'
+            print(url)
+            try:
+                response = requests.get(url, verify = False)
+                response.raise_for_status()
+                data = response.json()
+                if 'results' in data and data['results']:
+                    first_key = list(data['results'].keys())[0]
+                    address = data['results'][first_key]
+                    
+                    self.add_address_point(address)
+                    
+                else:
+                    self.iface.messageBar().pushMessage("Error", "No address found", level=Qgis.Warning)
+            except requests.RequestException as e:
+                self.iface.messageBar().pushMessage("Error", str(e), level=Qgis.Critical)
+        else:
+            self.iface.messageBar().pushMessage("Error", "Invalid coordinates", level=Qgis.Critical)
+
+    def add_address_point(self, address):
+        self.flds = [
+            QgsField('accuracy', QVariant.String, len=10),
+            QgsField("city", QVariant.String, len=150),
+            QgsField("city_accuracy", QVariant.String, len=10),
+            QgsField("citypart", QVariant.String, len=150),
+            QgsField("code", QVariant.String, len=6),
+            QgsField("jednostka", QVariant.String, len=250),
+            QgsField("number", QVariant.String, len=20),
+            QgsField("simc", QVariant.String, len=30),
+            QgsField("street", QVariant.String, len=250),
+            QgsField("street_accuracy", QVariant.String, len=10),
+            QgsField("teryt", QVariant.String, len=20),
+            QgsField("ulic", QVariant.String, len=30),
+            QgsField("x", QVariant.Double, "double", 10, 4),
+            QgsField("y", QVariant.Double, "double", 10, 4),
+        ]
+        # Check the existing layer
+        org = 'MultiPoint?crs=epsg:2180&index=yes'
+        obj_type = 'UUG_pkt'
+        qml = os.path.join('layer_style', 'PUNKT_ADRESOWY.qml')
+        layer = self.get_layer_data(org, obj_type, qml) 
+        
+
+        # Create a feature and set its attributes
+        fet = QgsFeature()
+        geometry = QgsGeometry.fromPointXY(QgsPointXY(self.clicked_x, self.clicked_y))
+        fet.setGeometry(geometry)
+        fet.setFields(layer.fields())
+
+        # Populate fields based on address data
+        for field in self.flds:
+            field_name = field.name()
+            if field_name in layer.fields().names():  # Ensure the field exists in the layer
+                if field_name in address:
+                    # Check if the value is "null" and replace it with "Null"
+                    value = address[field_name]
+                    if value == "null":
+                        value = None
+                    fet.setAttribute(field_name, value)
+                else:
+                    fet.setAttribute(field_name, None)  # Set default value to None
+
+        # Add the feature to the layer
+        pr = layer.dataProvider()
+        pr.addFeature(fet)
+        layer.updateExtents()
+        layer.triggerRepaint()
+
+        
+    def get_layer_data(self, org: str, obj_type: str,
+                       qml: str) -> QgsVectorLayer:
+        lyr = project.mapLayersByName(obj_type)
+        if lyr:
+            return lyr[0]
+
+        lyr = QgsVectorLayer(org, obj_type, 'memory')
+        
+        
+        lyr.dataProvider().addAttributes(self.flds)
+        lyr.updateFields()
+        # QgsProject.instance().addMapLayer(lyr)
+        add_map_layer_to_group(lyr, search_group_name, force_create=True)
+        direc = os.path.dirname(__file__)
+        lyr.loadNamedStyle(os.path.join(direc, qml))
+        return lyr
+    
+    def fetch_parcel_by_xy(self):
+        if self.clicked_x is not None and self.clicked_y is not None:
+            params = '&result=geom_wkt,teryt,voivodeship,county,region,commune,parcel'
+            url = f'https://uldk.gugik.gov.pl/?request=GetParcelByXY&xy={self.clicked_x},{self.clicked_y}{params}'
+            #print(url)
+            fetcher = FetchULDK()
+            if fetcher.fetch(url):
+                parser = ParseResponce()
+            parser.get_layer()  # Ensure the layer is initialized
+            parser.parse_responce(fetcher.responce)
+        else:
+            iface.messageBar().pushMessage("Error", "Failed to fetch parcel", level=Qgis.Critical)
+
+
+class PrintClickedPoint(QgsMapToolEmitPoint):
+    def __init__(self, canvas, searcher_tool, mode='parcel'):
+        super().__init__(canvas)
+        self.canvas = canvas
+        self.searcher_tool = searcher_tool
+        self.mode = mode
+
+    def canvasPressEvent(self, e):
+        point = self.toMapCoordinates(self.canvas.mouseLastXY())
+        self.searcher_tool.on_point_callback(point, self.mode)
+
+############################################################################

@@ -39,11 +39,14 @@ class FetchULDK:
                       'geom_wkt,teryt,voivodeship,county,region,commune,parcel'
         return self.fetch()
 
-    def fetch(self) -> bool:
-        if '- gmina' in self.params or '- miasto' in self.params:
-            flag = self.params.find('-')
-            self.params = self.params[0:flag]
-        url = f'https://uldk.gugik.gov.pl/?{self.params}'
+    def fetch(self, url=None) -> bool:
+        ################################
+        if url is None:
+        ################################
+            if '- gmina' in self.params or '- miasto' in self.params:
+                flag = self.params.find('-')
+                self.params = self.params[0:flag]
+            url = f'https://uldk.gugik.gov.pl/?{self.params}'
         self.responce = []
         try:
             with urlopen(url, timeout=19) as url_handler:
@@ -150,3 +153,4 @@ class ParseResponce:
         feat['pow_graf'] = geom.area()
 
         return feat
+################################################################
