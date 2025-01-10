@@ -57,6 +57,7 @@ class MainTabQgsWidget:
         self.searcher = SearcherTool(self.main_widget, self.iface)
         self.sett = QgsSettings()
 
+
         self.style_manager = StyleManager(self)
         self.print_map_tool = PrintMapTool(self.iface)
         self.iface.projectRead.connect(self.projekt_wczytany)
