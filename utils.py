@@ -536,6 +536,14 @@ STANDARD_TOOLS = [
     },
 
     {
+        'label': tr('Dodatki'),
+        'id': 'Dodatki',
+        'btn_size': 30,
+        'btns': [
+            ['giapPRNG', 0, 0],
+        ]
+    },
+    {
         'label': tr('Geoprocessing Tools'),
         'id': 'Geoprocessing Tools',
         'btn_size': 30,
@@ -623,7 +631,7 @@ STANDARD_TOOLS = [
     {
         'label': tr('Raster'),
         'id': 'Raster',
-        'btn_size': 60,
+        'btn_size': 30,
         'btns': [
             ['mActionShowRasterCalculator', 0, 0],
             ['mActionShowGeoreferencer', 0, 1],
@@ -950,7 +958,7 @@ DEFAULT_TABS = ['Main tools', 'Advanced tools', 'Vector', 'Raster']
 GIAP_CUSTOM_TOOLS = ['GIAP Tools', 'Vector digitization', 'Measurement',
                      'Project', 'Attributes', 'Advanced attributes',
                      'Selection', 'Navigation', 'Add Layer', 'Create Layer',
-                     'Prints']
+                     'Prints', 'Dodatki']
 TOOLS_HEADERS = [
     'Sections',
     'GIAP sections',
@@ -1237,7 +1245,8 @@ custom_icon_dict = {
     'mActionShowAlignRasterTool': 'mActionShowAlignRasterTool.png',
     'mActionNewMemoryLayer': 'mActionNewMemoryLayer.png',
     'mActionSaveProjectAs': 'mActionSaveProjectAs.png',
-    'window_icon': 'giap_logo.png'
+    'window_icon': 'giap_logo.png',
+    'giapPRNG': 'giapPRNG.png'
 }
 
 custom_label_dict = {
@@ -1245,7 +1254,8 @@ custom_label_dict = {
     'giapCompositions': "Composition settings",
     "giapQuickPrint": "Map quick print",
     "giapMyPrints": "My Prints",
-    "giapAreaLength": 'Area and length'
+    "giapAreaLength": 'Area and length',
+    'giapPRNG': 'PRNG Tool'
 }
 
 max_ele_nazwy = 4

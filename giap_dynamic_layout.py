@@ -15,6 +15,7 @@ from qgis.core import QgsApplication
 from qgis.utils import iface
 from qgis.gui import QgsMapTool
 
+from .prng_tool import PRNGTool
 from .OrtoTools import OrtoAddingTool
 from .QuickPrint import PrintMapTool
 from .SectionManager.CustomSectionManager import CustomSectionManager
@@ -865,6 +866,10 @@ class CustomSection(QWidget):
                 area_length_tool = QgsMapTool(iface.mapCanvas())
                 area_length_tool.setAction(main_widget.area_length_action)
                 self.tbut.setDefaultAction(main_widget.area_length_action)
+            if oname == "giapPRNG":
+                self.tbut.setToolTip(tr("PRNG Tool"))
+                self.prng_tool = PRNGTool(self)
+                self.tbut.clicked.connect(self.prng_tool.run)
 
             self.tbut.setIcon(icon)
 

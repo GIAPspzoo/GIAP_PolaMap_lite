@@ -25,8 +25,8 @@ class ChangeGeometryEvent(BaseEventPrototype):
 
     def disable_event(self) -> None:
         super().disable_event()
-        if self.layer:
-            self.layer.geometryChanged.disconnect(self.geometryChanged)
+        if self.layer and self.layer.type() == 0:
+                self.layer.geometryChanged.disconnect(self.geometryChanged)
 
     def change_layer(self, layer: QgsVectorLayer) -> None:
         self.layer.geometryChanged.disconnect(self.geometryChanged)
@@ -41,7 +41,7 @@ class ChangeGeometryEvent(BaseEventPrototype):
 
     @pyqtSlot(str)
     def layerWillBeRemoved(self, layer_id: int) -> None:
-        if not self.layer is None and layer_id == self.layer.id():
+        if not self.layer is None and layer_id == self.layer.id() and self.layer.type() == 0:
             self.layer.geometryChanged.disconnect(self.geometryChanged)
             self.layer = None
 
@@ -57,7 +57,7 @@ class ChangeGeometryEvent(BaseEventPrototype):
         self.annotation_handler.setText(msg, point_xy)
 
     def _config_layer(self):
-        if self.layer:
+        if self.layer and self.layer.type() == 0:
             self.layer.geometryChanged.connect(self.geometryChanged)
             self.coordinate_transform_geometry = QgsCoordinateTransform(
                 self.layer.sourceCrs(), self.measure.sourceCrs(), self.project)
