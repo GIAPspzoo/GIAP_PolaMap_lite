@@ -202,9 +202,49 @@ QHeaderView::section
              <item>
               <widget class="QFrame" name="frame_style">
                <property name="styleSheet">
-                <string notr="true">border: 1px solid #0A0C0D;
-border-radius: 10px;
-background-color: #EDF6FC;</string>
+                <string notr="true">QFrame {
+background-color: #365871;
+selection-background-color:  #5589B0;
+font: 10pt &quot;Segoe UI&quot;;
+padding: 2px;
+border: 1px solid #5589B0;
+}
+QLabel{
+font: 12pt &quot;Segoe UI&quot;;
+color:#E0DECF;
+}
+
+QScrollBar:horizontal {
+    height: 15px;
+}
+QScrollBar::handle:horizontal {
+    background: #5589B0;
+    border-radius: 5px;
+    width: 10px;
+    margin: 2px 0 2px 0;
+}
+
+ QScrollBar:vertical {
+     width: 15px;
+ }
+ QScrollBar::handle:vertical {
+     background: #5589B0;
+     height: 10px;
+     border-radius: 5px;
+	 margin: 0px 2px 0px 2px;
+ }
+ QScrollBar::add-line:vertical{
+border: 1px solid #365871;
+     background:#365871;
+     height: 12px;
+ }
+
+ QScrollBar::sub-line:vertical {
+border: 1px solid #365871;
+     background: #365871;
+     height: 12px;
+ }
+</string>
                </property>
                <property name="frameShape">
                 <enum>QFrame::StyledPanel</enum>
@@ -406,10 +446,10 @@ padding: 2px;</string>
       <item>
        <widget class="QLabel" name="label_side">
         <property name="styleSheet">
-         <string notr="true">   background-color: #b7d3e8;
-   color: #0A0C0D;
-   font-weight: bold;
-</string>
+         <string notr="true">background-color: #5589B0;
+border: solid;
+border-width: 1px;
+border-color:#5589B0;</string>
         </property>
         <property name="text">
          <string>Change style</string>
