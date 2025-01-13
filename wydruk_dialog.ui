@@ -40,11 +40,6 @@
   </property>
   <property name="styleSheet">
    <string notr="true">
-<!--    * {-->
-<!--	background-color: rgb(53, 85, 109);-->
-<!--    font: 10pt &quot;Segoe UI&quot;;-->
-<!--	color: #EDF6FC;-->
-<!--}-->
 QComboBox
 {
 	selection-background-color: #6fb1e3;
@@ -285,6 +280,13 @@ border: 1px solid #5689b0;
                </property>
               </widget>
              </item>
+             <item row="0" column="2">
+              <widget class="QRadioButton" name="jpgRadioButton">
+               <property name="text">
+                <string>JPG</string>
+               </property>
+              </widget>
+             </item>
              <item row="0" column="1">
               <widget class="QRadioButton" name="pngRadioButton">
                <property name="text">
@@ -292,10 +294,17 @@ border: 1px solid #5689b0;
                </property>
               </widget>
              </item>
-             <item row="0" column="2">
-              <widget class="QRadioButton" name="jpgRadioButton">
+             <item row="0" column="3">
+              <widget class="QRadioButton" name="shpRadioButton">
                <property name="text">
-                <string>JPG</string>
+                <string>SHP</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="4">
+              <widget class="QRadioButton" name="tiffRadioButton">
+               <property name="text">
+                <string>GEOTIFF</string>
                </property>
               </widget>
              </item>
@@ -399,7 +408,7 @@ border: 1px solid #5689b0;
                 <number>2000</number>
                </property>
                <property name="value">
-                <number>600</number>
+                <number>300</number>
                </property>
               </widget>
              </item>
@@ -636,7 +645,7 @@ border: 1px solid #5689b0;
         <property name="styleSheet">
          <string notr="true">   background-color: #b7d3e8;
    color:  #0A0C0D;
-<!--   font: 10pt &quot;Segoe UI&quot;; -->
+
    font-weight: bold;
 </string>
         </property>
