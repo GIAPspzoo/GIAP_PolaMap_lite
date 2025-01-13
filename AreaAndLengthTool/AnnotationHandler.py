@@ -25,7 +25,7 @@ class AnnotationHandler(QObject):
         text_document = QTextDocument(text)
         text_document.setDefaultFont(font)
         self.annot.setFrameOffsetFromReferencePointMm(QPointF(0, 0))
-        self.annot.setFrameSize(text_document.size())
+        self.annot.setFrameSizeMm(text_document.size())
         self.annot.setDocument(text_document)
 
         self.annot.setVisible(True)
