@@ -58,6 +58,7 @@ QProgressBar {
 QCheckBox::indicator:disabled {
 background-color: #465A68;}
 
+
 QLineEdit, QTextEdit{
 color:#E0DECF;
 min-height: 20px;
@@ -260,18 +261,19 @@ QTabWidget::tab-bar {
     left: 5px;
 }
 QTabWidget::pane {
+background: yellow;
 border: 1px solid #365871;
-border-top: 1px solid #5589B0;
+border-top: 1px solid #E0DECF;
+  margin-top: -1px;
 }
 
 QTabBar::tab:selected, QTabBar::tab:hover, QTabBar::tab:!selected:hover {
 font-weight: 450;
 padding: 3px;
-border-top: 1px solid #365871;
+border-top: 2px solid #365871;
 border-right: 0px solid #E0DECF;
 border-left: 0px solid #E0DECF;
 border-bottom: 3px solid #E0DECF;
-margin-bottom: 2px;
 background: #5589B0;
 }
 
@@ -279,13 +281,12 @@ QTabBar::tab:!selected {
 font-weight: 450;
 color: #E0DECF;
 border: 2px solid #365871;
-margin-bottom: 2px;
-padding: 3px;
+border-bottom: 1px solid #E0DECF;
 }
 
 QTreeView {
     border: 1px solid;
-    border-color: #5589B0;
+    border-color: #4F5A63;
     margin: 2px;
    show-decoration-selected: 1;
 }
