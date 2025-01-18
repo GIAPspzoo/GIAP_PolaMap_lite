@@ -5,9 +5,8 @@ from __future__ import unicode_literals
 import os
 
 import requests
-import json
 from qgis.PyQt import QtWidgets, uic, QtCore
-from qgis.core import QgsVectorLayer, QgsProject, QgsFeature, QgsGeometry, QgsPointXY, QgsFields, QgsField
+from qgis.core import QgsVectorLayer, QgsProject, QgsFeature, QgsGeometry, QgsFields, QgsField
 from qgis.utils import iface
 from qgis.PyQt.QtCore import QTimer
 from qgis.PyQt.QtWidgets import QApplication, QProgressDialog
