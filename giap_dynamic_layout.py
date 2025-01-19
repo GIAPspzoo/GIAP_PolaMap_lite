@@ -127,24 +127,18 @@ class MainWidget(QWidget, FORM_CLASS):
         cwidget = self.tabWidget.widget(itab)
         if str(lab) in ['', 'False', 'None']:
             lab = tr('New section')
-        section = CustomSection(str(lab), self.tabWidget)
-        section.installEventFilter(self)
+        self.section = CustomSection(str(lab), self.tabWidget, self)
+        self.section.installEventFilter(self)
         if size > 30:
-            section.set_size(size)
+            self.section.set_size(size)
 
         self._section_control_remove(itab)
-        cwidget.lay.addWidget(section)
+        cwidget.lay.addWidget(self.section)
 
-        # sep = QFrame()
-        # sep.setFrameShape(QFrame.VLine)
-        # sep.setFrameShadow(QFrame.Raised)
-        # sep.setObjectName('giapLine')
-        # sep.setMinimumSize(QSize(6, 100))
-        # cwidget.lay.addWidget(sep)
-        section.setVisible(True)
+        self.section.setVisible(True)
         self._section_control(itab)
 
-        return section
+        return self.section
 
     def edit_session_toggle(self, ask: bool=False) -> None:
         """Show controls for edti session"""
@@ -622,10 +616,11 @@ class CustomTab(QWidget):
 
 
 class CustomSection(QWidget):
-    def __init__(self, name: str ='New Section', parent: QtWidgets =None) -> None:
+    def __init__(self, name: str ='New Section', parent: QtWidgets =None, main_widgets=None) -> None:
         super(CustomSection, self).__init__(parent)
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.edit = True
+        self.main_widgets = main_widgets
         self.setAcceptDrops(True)
         self.setMaximumSize(QSize(99999, 110))
         self.setMinimumSize(QSize(70, 110))
@@ -666,6 +661,7 @@ class CustomSection(QWidget):
 
         self.horizontalLayout_2.addWidget(self.clabel)
         self.horizontalLayout_2.addWidget(self.pushButton_close_sec)
+
         self.sep = QFrame()
         self.sep.setFrameShape(QFrame.VLine)
         self.sep.setFrameShadow(QFrame.Raised)
@@ -846,7 +842,7 @@ class CustomSection(QWidget):
         if 'giap' in oname:
             icon = icon_manager([tool], self.parent())[tool]
             if oname == 'giapWMS':
-                self.orto_add = OrtoAddingTool(self, self.tbut)
+                self.orto_add = OrtoAddingTool(self, self.tbut, iface)
                 connect_orto = self.orto_add.connect_ortofotomapa_group
                 for service in self.orto_add.services:
                     service.orto_group_added.connect(connect_orto)
