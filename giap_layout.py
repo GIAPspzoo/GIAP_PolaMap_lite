@@ -150,11 +150,13 @@ class MainTabQgsWidget:
         self.styleButton.setBaseSize(QSize(25, 25))
         self.styleButton.clicked.connect(self.show_style_manager_dialog)
         self.styleButton.setObjectName('ThemeButton')
+
         self.settingsButton = QToolButton()
         self.settingsButton.setText(tr("Settings"))
         self.settingsButton.setBaseSize(QSize(25, 25))
         self.settingsButton.clicked.connect(self.show_settings_dialog)
         self.settingsButton.setObjectName('SettingsButton')
+
         corner_widget = QWidget(self.main_widget.tabWidget)
         corner_layout = QHBoxLayout()
         corner_layout.setContentsMargins(0, 0, 0, 0)
@@ -181,15 +183,15 @@ class MainTabQgsWidget:
         )
         gbut.setIconSize(QSize(153, 50))
 
-        self.logo_toolbar = QToolBar('GiapLogoBar', self.iface.mainWindow())
-        self.logo_toolbar.setObjectName('GiapLogoBar')
-        self.iface.mainWindow().addToolBar(self.logo_toolbar)
-        self.logo_toolbar.setMovable(False)
-        self.logo_toolbar.setFloatable(True)
-        self.logo_toolbar.addWidget(gbut)
-        self.logo_toolbar.visibilityChanged.connect(self.lock_logo_Toolbar)
-        self.toolbar.visibilityChanged.connect(self.visible_logo_giap_toolbar)
-        self.logo_toolbar.setLayoutDirection(Qt.RightToLeft)
+        # self.logo_toolbar = QToolBar('GiapLogoBar', self.iface.mainWindow())
+        # self.logo_toolbar.setObjectName('GiapLogoBar')
+        # self.iface.mainWindow().addToolBar(self.logo_toolbar)
+        # self.logo_toolbar.setMovable(False)
+        # self.logo_toolbar.setFloatable(True)
+        # self.logo_toolbar.addWidget(gbut)
+        # self.logo_toolbar.visibilityChanged.connect(self.lock_logo_Toolbar)
+        # self.toolbar.visibilityChanged.connect(self.visible_logo_giap_toolbar)
+        # self.logo_toolbar.setLayoutDirection(Qt.RightToLeft)
 
         corner_widget.setLayout(corner_layout)
         self.main_widget.tabWidget.setCornerWidget(corner_widget)
@@ -230,7 +232,6 @@ class MainTabQgsWidget:
         self.main_widget.offOnSearchButton.setIcon(
             QIcon(os.path.join(self.plugin_dir, 'styles', 'GIAP Navy Blue', 'icons', 'close.png')))
 
-        # self.searcher.run()
         self.main_widget.setFocusPolicy(Qt.StrongFocus)
 
         new = self.html_div_from_url(GIAP_NEWS_WEB_PAGE)
@@ -366,12 +367,13 @@ class MainTabQgsWidget:
             if edited:
                 self.sett.setValue('core/NewsFeed/httpsfeedqgisorg/lastFetchTime', 0)
 
-    def visible_logo_giap_toolbar(self, visible: bool) -> None:
-        self.logo_toolbar.setVisible(not visible)
+    # def visible_logo_giap_toolbar(self, visible: bool) -> None:
+    #     self.logo_toolbar.setVisible(not visible)
 
-    def lock_logo_Toolbar(self) -> None:
-        if not self.logo_toolbar.isVisible() and not self.toolbar.isVisible():
-            self.logo_toolbar.setVisible(True)
+    # def lock_logo_Toolbar(self) -> None:
+    #     pass
+    #     if not self.logo_toolbar.isVisible() and not self.toolbar.isVisible():
+    #         self.logo_toolbar.setVisible(True)
 
     def off_on_search_tool(self, visibility) -> None:
         elements = ['comboBox_woj', 'comboBox_pow', 'comboBox_gmina',

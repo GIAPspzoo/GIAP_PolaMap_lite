@@ -2,15 +2,15 @@ import os
 import re
 from typing import List, Any, Dict, Optional, Union
 
-from PyQt5.QtCore import Qt
+from qgis.gui import QgsMapToolIdentify
 from qgis.PyQt import QtCore, QtGui
-from qgis.PyQt.QtCore import QThread, QObject, QSettings
+from qgis.PyQt.QtCore import QThread, QObject, QSettings, Qt, pyqtSignal
 from qgis.PyQt.QtGui import QPen, QBrush, QIcon, QPixmap
 from qgis.PyQt.QtWidgets import QApplication, QProgressDialog, \
     QStyledItemDelegate, QAction, QMessageBox, QScrollArea, QWidget, \
     QGridLayout, QLabel, QDialogButtonBox, QToolButton, QToolBar
 from qgis.core import QgsProject, QgsMessageLog, Qgis, QgsApplication, \
-    QgsVectorLayer, QgsMapLayer
+    QgsVectorLayer, QgsMapLayer, QgsCoordinateTransform, QgsGeometry, QgsPointXY, QgsRectangle
 from qgis.utils import iface
 
 project = QgsProject.instance()
@@ -208,17 +208,47 @@ def identify_layer_in_group(group_name, layer_to_find):
 
 
 def identify_layer_in_group_by_parts(group_name, layer_to_find):
-    """
-    Identyfikuje warstwę gdy nie mamy jej pełnej nazwy.
-
-    :param group_name: string
-    :param layer_to_find: string, początek nazwy warstwy
-    :return: QgsVectorLayer
-    """
     for lr in project.layerTreeRoot().findLayers():
         if lr.parent().name() == group_name \
                 and lr.name().startswith(layer_to_find):
             return lr.layer()
+
+class IdentifyGeometryByType(QgsMapToolIdentify):
+    geomIdentified = pyqtSignal(list)
+
+    def __init__(self, canvas, wkb_type_list, get_only_visible_layers=False):
+        QgsMapToolIdentify.__init__(self, canvas)
+        self.wkb_types = wkb_type_list
+        self.get_only_visible_layers = get_only_visible_layers
+
+    def canvasReleaseEvent(self, mouseEvent):
+        if self.get_only_visible_layers:
+            layers = iface.mapCanvas().layers()
+        else:
+            layers = project.mapLayers().values()
+        layerList = []
+        for layer in layers:
+            if layer.type().value == 0 and layer.wkbType() in self.wkb_types:
+                layerList.append(layer)
+        results = self.identify(mouseEvent.x(), mouseEvent.y(),
+                                layerList=layerList, mode=self.LayerSelection)
+        self.geomIdentified.emit(results)
+
+def identify_layer_by_name(layername_to_find):
+    for layer in list(project.mapLayers().values()):
+        if layer.name() == layername_to_find:
+            return layer
+
+def transform_geometry(geometry, geom_layer):
+    geom_layer_crs = geom_layer.crs()
+    destination_crs = iface.mapCanvas().mapSettings().destinationCrs()
+    xform = QgsCoordinateTransform(geom_layer_crs, destination_crs, project)
+    if isinstance(geometry, (QgsPointXY, QgsRectangle)):
+        geom_in_dest_crs = xform.transform(geometry)
+    else:
+        geom_in_dest_crs = QgsGeometry(geometry)
+        geom_in_dest_crs.transform(xform)
+    return geom_in_dest_crs
 
 
 def set_project_config(parameter, key, value):
