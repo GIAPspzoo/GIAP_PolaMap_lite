@@ -856,12 +856,14 @@ class CustomSection(QWidget):
                 self.tbut.setToolTip(tr("My Prints"))
             if oname == "giapAreaLength":
                 giap_tool_bar = iface.mainWindow().findChildren(QToolBar, 'GiapToolBar')[0]
-                main_widget = giap_tool_bar.findChildren(MainWidget)[0]
-
-                iface.mapCanvas().refresh()
-                area_length_tool = QgsMapTool(iface.mapCanvas())
-                area_length_tool.setAction(main_widget.area_length_action)
-                self.tbut.setDefaultAction(main_widget.area_length_action)
+                try:
+                    main_widget = giap_tool_bar.findChildren(MainWidget)[0]
+                    iface.mapCanvas().refresh()
+                    area_length_tool = QgsMapTool(iface.mapCanvas())
+                    area_length_tool.setAction(main_widget.area_length_action)
+                    self.tbut.setDefaultAction(main_widget.area_length_action)
+                except IndexError:
+                    pass
             if oname == "giapPRNG":
                 self.tbut.setToolTip(tr("PRNG Tool"))
                 self.prng_tool = PRNGTool(self)
@@ -961,8 +963,6 @@ class CustomSection(QWidget):
                 event.source().drag_state = False
                 return
 
-            # swap toolbuttons
-            # get origin button
             source = self.get_toolbutton_layout_index_from_pos(gpos)
             glay = event.source().parent().gridLayout
             self.target = None
@@ -980,7 +980,6 @@ class CustomSection(QWidget):
                 return
 
             if None not in [source, self.target] and not move:
-                # swap qtoolbuttons
                 max_ind, min_ind, = max(self.target, source), min(self.target, source)
                 pos1 = self.gridLayout.getItemPosition(max_ind)
                 pos2 = self.gridLayout.getItemPosition(min_ind)
@@ -992,12 +991,6 @@ class CustomSection(QWidget):
                 it2.widget().drag_state = False
                 self.gridLayout.addItem(it1, *pos2)
                 self.gridLayout.addItem(it2, *pos1)
-            # elif move:
-            #     i = self.target
-            #     it1 = self.gridLayout.takeAt(i)
-            #     it1.widget().setDown(False)
-            #     it1.widget().drag_state = False
-            #     self.gridLayout.addWidget(event.source())
 
         if isinstance(event.source(), CustomSection):
             lay = self.parent().lay
