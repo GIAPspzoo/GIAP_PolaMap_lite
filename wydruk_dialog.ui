@@ -12,8 +12,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>701</width>
-    <height>650</height>
+    <width>753</width>
+    <height>721</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -271,7 +271,7 @@
              <item row="1" column="0" colspan="5">
               <widget class="QCheckBox" name="dodaj_warstwy_checkBox">
                <property name="text">
-                <string>Dodaj utworzone warstwy do drzewka warstw</string>
+                <string>Add layers to tree layer view</string>
                </property>
               </widget>
              </item>
@@ -362,59 +362,46 @@
           <item row="7" column="0">
            <widget class="QGroupBox" name="groupBox_8">
             <property name="title">
-             <string>Zakres wydruku</string>
+             <string>Print range</string>
             </property>
             <layout class="QGridLayout" name="gridLayout_12">
              <item row="1" column="0">
               <widget class="QRadioButton" name="biezacy_widok_rb">
                <property name="text">
-                <string>Bieżący widok</string>
+                <string>Current View</string>
                </property>
               </widget>
              </item>
              <item row="2" column="5">
               <widget class="QPushButton" name="wskaz_z_mapy_pb">
                <property name="text">
-                <string>Wskaż z mapy</string>
+                <string>Select from map</string>
                </property>
               </widget>
-             </item>
-             <item row="2" column="0" colspan="5">
-              <widget class="QLineEdit" name="lineEdit_maska"/>
              </item>
              <item row="1" column="2">
               <widget class="QRadioButton" name="maska_rb">
                <property name="text">
-                <string>Maska przycięcia</string>
+                <string>Crop mask</string>
                </property>
               </widget>
              </item>
              <item row="1" column="1">
               <widget class="QRadioButton" name="caly_zasieg_rb">
                <property name="text">
-                <string>Cały zasięg</string>
+                <string>Full coverage</string>
                </property>
               </widget>
              </item>
-             <item row="1" column="4" colspan="2">
-              <spacer name="horizontalSpacer_5">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="1" column="3">
+             <item row="1" column="3" colspan="3">
               <widget class="QRadioButton" name="skala_projektu_rb">
                <property name="text">
-                <string>Wydruk w skali projektu</string>
+                <string>Print in the scale of the project</string>
                </property>
               </widget>
+             </item>
+             <item row="2" column="0" colspan="5">
+              <widget class="QLineEdit" name="lineEdit_maska"/>
              </item>
             </layout>
            </widget>
