@@ -224,7 +224,7 @@ class MainTabQgsWidget:
 
         orto_button = self.main_widget.runOrtoTool
         orto_button.setIcon(QIcon(os.path.join(self.plugin_dir, 'icons', 'orto_icon2.png')))
-        self.orto = OrtoAddingTool(self.main_widget, orto_button)
+        self.orto_add = OrtoAddingTool(self.main_widget, orto_button, self.iface)
 
         self.visibility_search_tool = False
         self.main_widget.offOnSearchButton.clicked.connect(
@@ -371,13 +371,12 @@ class MainTabQgsWidget:
     #     self.logo_toolbar.setVisible(not visible)
 
     # def lock_logo_Toolbar(self) -> None:
-    #     pass
     #     if not self.logo_toolbar.isVisible() and not self.toolbar.isVisible():
     #         self.logo_toolbar.setVisible(True)
 
     def off_on_search_tool(self, visibility) -> None:
         elements = ['comboBox_woj', 'comboBox_pow', 'comboBox_gmina',
-                    'comboBox_obr',
+                    'comboBox_obr', 'buttonParcelNr', 'buttonAdress',
                     'lineEdit_parcel', 'lineEdit_address', 'line']
 
         for elem in elements:

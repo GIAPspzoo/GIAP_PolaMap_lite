@@ -367,16 +367,12 @@ class SearcherTool:
         pr.get_layer()
         pr.parse_responce(feULDK.responce)
 
-############################################################################
-    
     def handle_parcel_button_click(self):
         if self._pointTool is not None:
             self.iface.mapCanvas().unsetMapTool(self._pointTool)
             self._pointTool = None
-        # Store the previous tool in use by the user
-        canvas = self.iface.mapCanvas()  
+        canvas = self.iface.mapCanvas()
         self._previousTool = canvas.mapTool()
-        # Set the tool and onClick callback
         self._pointTool = PrintClickedPoint(canvas, self)
         canvas.setMapTool(self._pointTool)
         
@@ -404,7 +400,6 @@ class SearcherTool:
     def fetch_address_by_xy(self):
         if self.clicked_x is not None and self.clicked_y is not None:
             url = f'https://services.gugik.gov.pl/uug/?request=GetAddressReverse&location=POINT({self.clicked_x} {self.clicked_y})&srid=2180'
-            print(url)
             try:
                 response = requests.get(url, verify = False)
                 response.raise_for_status()
@@ -416,11 +411,11 @@ class SearcherTool:
                     self.add_address_point(address)
                     
                 else:
-                    self.iface.messageBar().pushMessage("Error", "No address found", level=Qgis.Warning)
+                    CustomMessageBox(None, tr('No address found.')).button_ok()
             except requests.RequestException as e:
-                self.iface.messageBar().pushMessage("Error", str(e), level=Qgis.Critical)
+                CustomMessageBox(None, tr('Error.')).button_ok()
         else:
-            self.iface.messageBar().pushMessage("Error", "Invalid coordinates", level=Qgis.Critical)
+            CustomMessageBox(None, tr('Error. Invalid coordinates.')).button_ok()
 
     def add_address_point(self, address):
         self.flds = [
@@ -444,15 +439,12 @@ class SearcherTool:
         obj_type = 'UUG_pkt'
         qml = os.path.join('layer_style', 'PUNKT_ADRESOWY.qml')
         layer = self.get_layer_data(org, obj_type, qml) 
-        
 
-        # Create a feature and set its attributes
         fet = QgsFeature()
         geometry = QgsGeometry.fromPointXY(QgsPointXY(self.clicked_x, self.clicked_y))
         fet.setGeometry(geometry)
         fet.setFields(layer.fields())
 
-        # Populate fields based on address data
         for field in self.flds:
             field_name = field.name()
             if field_name in layer.fields().names():  # Ensure the field exists in the layer
@@ -465,7 +457,6 @@ class SearcherTool:
                 else:
                     fet.setAttribute(field_name, None)  # Set default value to None
 
-        # Add the feature to the layer
         pr = layer.dataProvider()
         pr.addFeature(fet)
         layer.updateExtents()
@@ -483,7 +474,6 @@ class SearcherTool:
         
         lyr.dataProvider().addAttributes(self.flds)
         lyr.updateFields()
-        # QgsProject.instance().addMapLayer(lyr)
         add_map_layer_to_group(lyr, search_group_name, force_create=True)
         direc = os.path.dirname(__file__)
         lyr.loadNamedStyle(os.path.join(direc, qml))
@@ -493,12 +483,11 @@ class SearcherTool:
         if self.clicked_x is not None and self.clicked_y is not None:
             params = '&result=geom_wkt,teryt,voivodeship,county,region,commune,parcel'
             url = f'https://uldk.gugik.gov.pl/?request=GetParcelByXY&xy={self.clicked_x},{self.clicked_y}{params}'
-            #print(url)
             fetcher = FetchULDK()
             if fetcher.fetch(url):
                 parser = ParseResponce()
-            parser.get_layer()  # Ensure the layer is initialized
-            parser.parse_responce(fetcher.responce)
+                parser.get_layer()  # Ensure the layer is initialized
+                parser.parse_responce(fetcher.responce)
         else:
             iface.messageBar().pushMessage("Error", "Failed to fetch parcel", level=Qgis.Critical)
 
@@ -514,4 +503,3 @@ class PrintClickedPoint(QgsMapToolEmitPoint):
         point = self.toMapCoordinates(self.canvas.mouseLastXY())
         self.searcher_tool.on_point_callback(point, self.mode)
 
-############################################################################

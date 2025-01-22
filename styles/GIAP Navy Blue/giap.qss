@@ -61,7 +61,7 @@ background-color: #465A68;}
 
 QLineEdit, QTextEdit{
 color:#E0DECF;
-min-height: 20px;
+min-height: 24px;
 border: 1px solid;
 border-radius: 3px;
 border-color: #263c4e;
@@ -226,7 +226,7 @@ background-color: #263c4e;
 }
 
 QComboBox::down-arrow {
-        image:  url(:/plugins/GIAP-PolaMap/icons/branch-open.png);
+    image: url(icons/branch_open.png);
     width: 18px;
     height: 28px;
 }
@@ -313,13 +313,13 @@ QTreeView:item:selected
 QTreeView::branch:has-children:!has-siblings:closed,
 QTreeView::branch:closed:has-children:has-siblings {
         border-image: none;
-        image: url(:/plugins/GIAP-PolaMap/icons/branch-closed.png);
+        image: url(icons/branch_closed.png);
 }
 
 QTreeView::branch:open:has-children:!has-siblings,
 QTreeView::branch:open:has-children:has-siblings  {
         border-image: none;
-        image:  url(:/plugins/GIAP-PolaMap/icons/branch-open.png);
+        image: url(icons/branch_open.png);
 }
 
 QProgressBar {
@@ -333,6 +333,7 @@ QProgressBar {
 QProgressBar::chunk {
     background-color: #5589B0;
 }
+
 QSpinBox, QDoubleSpinBox,
 QSpinBox:editable,
 QSpinBox:hover,
@@ -363,6 +364,7 @@ QSpinBox::up-button, QDoubleSpinBox::up-button{
   border: 0px solid #E0DECF;
   border-radius: 3;
   background: #263c4e;
+  image: url(icons/up_arrow.png);
 }
 
 QSpinBox::down-button, QDoubleSpinBox::down-button {
@@ -371,6 +373,7 @@ QSpinBox::down-button, QDoubleSpinBox::down-button {
   border: 0px solid #E0DECF;
   border-radius: 3;
   background: #263c4e;
+  image: url(icons/down_arrow.png);
 }
 QSpinBox::down-button:hover, QDoubleSpinBox::down-button:hover, QSpinBox::up-button:hover, QDoubleSpinBox::up-button:hover {
 border: solid;
@@ -436,3 +439,5 @@ QTableView::item:selected, QListView::item:selected
             color: #E0DECF;
             background-color: #5589B0;
         }
+
+

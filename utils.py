@@ -2,9 +2,11 @@ import os
 import re
 from typing import List, Any, Dict, Optional, Union
 
+from PyQt5.QtCore import Qt, QSortFilterProxyModel
+from PyQt5.QtWidgets import QPushButton
 from qgis.gui import QgsMapToolIdentify
 from qgis.PyQt import QtCore, QtGui
-from qgis.PyQt.QtCore import QThread, QObject, QSettings, Qt, pyqtSignal
+from qgis.PyQt.QtCore import QThread, QObject, QSettings, Qt, pyqtSignal, NULL
 from qgis.PyQt.QtGui import QPen, QBrush, QIcon, QPixmap
 from qgis.PyQt.QtWidgets import QApplication, QProgressDialog, \
     QStyledItemDelegate, QAction, QMessageBox, QScrollArea, QWidget, \
@@ -12,6 +14,8 @@ from qgis.PyQt.QtWidgets import QApplication, QProgressDialog, \
 from qgis.core import QgsProject, QgsMessageLog, Qgis, QgsApplication, \
     QgsVectorLayer, QgsMapLayer, QgsCoordinateTransform, QgsGeometry, QgsPointXY, QgsRectangle
 from qgis.utils import iface
+import qgis
+
 
 project = QgsProject.instance()
 root = project.layerTreeRoot()
@@ -19,9 +23,44 @@ root = project.layerTreeRoot()
 
 class CustomMessageBox(QMessageBox):
     stylesheet = """
+        * {
+            background-color: rgb(53, 85, 109, 220);
+            color: rgb(255, 255, 255);
+            font: 10pt "Segoe UI";
+            border: 0px;
+        }
+
         QAbstractItemView {
             selection-background-color:  rgb(87, 131, 167);
         }
+
+QPushButton {
+border: none;
+border-width: 1px;
+border-radius:3px;
+background-color: #5589B0;
+}
+QPushButton:checked {
+background-color: #5589B0;
+border: solid;
+border-width: 1px;
+border-color: #5589B0;
+}
+
+QPushButton:pressed {
+background-color: #5589B0;
+border: solid;
+border-width: 1px;
+border-color:#5589B0;
+}
+QPushButton:hover {
+background-color: #5589B0;
+border-radius: 3px;
+border: solid;
+border-style: solid;
+border-width: 1px;
+border-color: #E0DECF;
+} 
     """
 
     def __init__(self, parent=None, text='', image=''):
@@ -31,7 +70,6 @@ class CustomMessageBox(QMessageBox):
         self.rebuild_layout(text, image)
 
     def rebuild_layout(self, text, image):
-        self.stylesheet = f'*{{font: {QSettings().value("qgis/stylesheet/fontPointSize")}pt;}} {self.stylesheet}'
         self.setStyleSheet(self.stylesheet)
 
         scrll = QScrollArea(self)
@@ -63,8 +101,8 @@ class CustomMessageBox(QMessageBox):
         grd.addWidget(scrll, 0, 1)
         self.layout().removeItem(self.layout().itemAt(0))
         self.layout().removeItem(self.layout().itemAt(0))
-        self.setWindowTitle('GIAP-PolaMap(lite)')
-        self.setWindowIcon(icon_manager(['window_icon'])['window_icon'])
+        self.setWindowTitle('GIAP-PolaMap')
+        self.setWindowIcon(QIcon(':/plugins/GIAP-PolaMap/icons/giap_logo.png'))
 
     def button_ok(self):
         self.setStandardButtons(QMessageBox.Ok)
@@ -72,9 +110,21 @@ class CustomMessageBox(QMessageBox):
         self.set_proper_size()
         QMessageBox.exec_(self)
 
+    def button_yes_no_cancel(self):
+        self.setStandardButtons(QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
+        self.setDefaultButton(QMessageBox.No)
+        self.set_proper_size()
+        return QMessageBox.exec_(self)
+
     def button_yes_no(self):
         self.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         self.setDefaultButton(QMessageBox.No)
+        self.set_proper_size()
+        return QMessageBox.exec_(self)
+
+    def custom_buttons(self, button_names: Dict[str, QMessageBox.ButtonRole]):
+        for button_name, role in button_names.items():
+            self.addButton(button_name, role)
         self.set_proper_size()
         return QMessageBox.exec_(self)
 
@@ -114,6 +164,10 @@ class CustomMessageBox(QMessageBox):
                 new_size.setWidth(self.qwdt.sizeHint().width())
             else:
                 new_size.setWidth(btn_box_width)
+        for child in self.findChild(QDialogButtonBox).children():
+            if isinstance(child, QPushButton):
+                child.setMinimumHeight(25)
+                child.setMinimumWidth(50)
         scrll.setFixedSize(new_size)
         scrll.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         scrll.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
@@ -121,9 +175,92 @@ class CustomMessageBox(QMessageBox):
         scrll.horizontalScrollBar().setValue(
             int(scrll.horizontalScrollBar().maximum() / 2))
 
-    def set_size(self, value: int) -> None:
-        self.stylesheet = f'*{{font: {value}pt;}} {self.stylesheet}'
-        self.setStyleSheet(self.stylesheet)
+
+
+def get_simple_progressbar(max_len, title='Proszę czekać',
+                           txt='Trwa przetwarzanie danych.', parent = None,
+                           window_width: int = 500):
+    progress = QProgressDialog(parent)
+    progress.setFixedWidth(window_width)
+    progress.setWindowTitle(title)
+    progress.setLabelText(txt)
+    progress.setMaximum(max_len)
+    progress.setValue(0)
+    progress.setAutoClose(True)
+    progress.setCancelButton(None)
+    progress.setWindowIcon(QIcon(':/plugins/GIAP-PolaMap/icons/giap_logo.png'))
+    QApplication.processEvents()
+    return progress
+
+
+class ProperSortFilterProxyModel(QSortFilterProxyModel):
+
+    SORTING_AS_NUMBERS = []
+    SORTING_AS_NAME = []
+
+    def __init__(self):
+        QSortFilterProxyModel.__init__(self)
+        self.sorting_functions = {
+            'SORTING_AS_NUMBERS': self._less_than_numbers,
+            'SORTING_AS_NAME': self._less_than_name
+        }
+        self.setFilterCaseSensitivity(Qt.CaseInsensitive)
+        self.sortOrder()
+
+    def lessThan(self, left, right):
+        col_num = left.column()
+        for sorting_cat in self.sorting_functions:
+            if col_num in getattr(self, sorting_cat):
+                return self.sorting_functions[sorting_cat](left, right)
+        return QSortFilterProxyModel.lessThan(self, left, right)
+
+    def _less_than_name(self, left, right):
+        try:
+            lvalue = left.data()
+            rvalue = right.data()
+
+            if lvalue in (NULL, 'NULL', ''):
+                lvalue = ''
+            if rvalue in (NULL, 'NULL', ''):
+                rvalue = ''
+            if not str(lvalue).lower():
+                if self.sortOrder():
+                    return True
+                else:
+                    return False
+            elif not str(rvalue).lower():
+                if self.sortOrder():
+                    return False
+                else:
+                    return True
+            else:
+                return str(lvalue).lower() < str(rvalue).lower()
+        except (ValueError, TypeError):
+            return QSortFilterProxyModel.lessThan(self, left, right)
+
+    def _less_than_numbers(self, left, right):
+        try:
+            lvalue = left.data()
+            rvalue = right.data()
+            if lvalue in (NULL, 'NULL', ''):
+                lvalue = ''
+            if rvalue in (NULL, 'NULL', ''):
+                rvalue = ''
+            if not lvalue:
+                if self.sortOrder():
+                    return True
+                else:
+                    return False
+            elif not rvalue:
+                if self.sortOrder():
+                    return False
+                else:
+                    return True
+            lvalue = float(lvalue)
+            rvalue = float(rvalue)
+            return lvalue < rvalue
+        except (ValueError, TypeError) as e:
+            return QSortFilterProxyModel.lessThan(self, left, right)
 
 
 class SingletonModel:

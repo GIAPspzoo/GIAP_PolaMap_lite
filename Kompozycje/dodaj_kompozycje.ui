@@ -13,7 +13,7 @@
     <x>0</x>
     <y>0</y>
     <width>984</width>
-    <height>486</height>
+    <height>488</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -39,443 +39,7 @@
     <normaloff>:/plugins/GIAP-giap_layout/icons/giap_logo.png</normaloff>:/plugins/GIAP-giap_layout/icons/giap_logo.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">* {
-background-color: #365871;
-selection-background-color:  #5589B0;
-color:#E0DECF;
-font: 10pt &quot;Segoe UI&quot;;
-}
-QLabel{
-font: 10pt &quot;Segoe UI&quot;;
-color:#E0DECF;
-}
-
-
-QScrollBar:horizontal {
-    height: 15px;
-}
-QScrollBar::handle:horizontal {
-    background: #5589B0;
-    border-radius: 5px;
-    width: 10px;
-    margin: 2px 0 2px 0;
-}
-QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal  {
-    border: 1px solid #365871;
-    background: #365871;
-    width: 12px;
-}
- QScrollBar:vertical {
-     width: 15px;
- }
- QScrollBar::handle:vertical {
-     background: #5589B0;
-     height: 10px;
-     border-radius: 5px;
-         margin: 0px 2px 0px 2px;
- }
- QScrollBar::add-line:vertical{
-    border: 1px solid #365871;
-     background: #365871;
-     height: 12px;
- }
-
- QScrollBar::sub-line:vertical {
-      border: 1px solid #365871;
-     background: #365871;
-     height: 12px;
- }
-
-QAbstractScrollArea::corner {
- border: 1px solid #365871;
-width: 0px;
-height: 0px;
-}
-QProgressBar {
-    border: 2px solid #263B4E;
-    border-radius: 5px;
-}
-
-QCheckBox::indicator:disabled {
-background-color: #465A68;}
-
-QLineEdit, QTextEdit{
-color:#E0DECF;
-min-height: 20px;
-border: 1px solid;
-border-radius: 3px;
-border-color: #263c4e;
-background-color: #263c4e;
-}
-
-QLineEdit:focus{
-border: solid;
-border-style: solid;
-border-width: 1px;
-border-color: #E0DECF;
-}
-
-QPushButton {
-padding: 5px;
-border: none;
-border-width: 1px;
-border-radius: 3px;
-background-color: #5589B0;
-}
-QPushButton:checked {
-background-color: #5589B0;
-border: solid;
-border-width: 1px;
-border-color: #5589B0;
-}
-
-QPushButton:pressed {
-background-color: #5589B0;
-border: solid;
-border-width: 1px;
-border-color:#5589B0;
-}
-QPushButton:hover {
-background-color: #5589B0;
-border-radius: 3px;
-border: solid;
-border-style: solid;
-border-width: 1px;
-border-color: #E0DECF;
-}
-
-QToolButton {
-border: none;
-border-width: 0px;
-border-radius: 3px;
-background-color: none;
-}
-
-QToolButton:checked {
-background-color:#5589B0;
-border-radius: 3px;
-border: solid;
-border-width: 1px;
-border-color: #5589B0;
-}
-QToolButton:hover {
-background-color: #5589B0;
-border-radius: 3px;
-border: solid;
-border-width: 1px;
-border-color: #E0DECF;
-}
-
-
-QToolButton:pressed {
-background-color:#5589B0;
-border: solid;
-border-width: 1px;
-border-color: #5589B0;
-}
-
-QToolButton::menu, QToolButton::menu-button {
-background-color: #263C4E;
-border: solid;
-border-width: 1px;
-border-color: #5589B0;
-}
-QMenuBar {
-selection-background-color:  #5589B0;
-}
-QMenu{
-border: 1px solid #263c4e;
-
-}
-
-QMenu::item:selected {
-background-color:  #5589B0;
-}
-
-QHeaderView::section {
-    background-color: #5589B0;
-    color: #E0DECF;
-    padding-left: 4px;
-    border: 1px solid #4F5A63;
-}
-
-QHeaderView::section:checked
-{
-    background-color: #5589B0;
-}
-
-QComboBox{
-min-height: 26px;
-}
-
-QComboBox QListView{
-selection-background-color:  #5589B0;
-    color: #E0DECF;
-     border: 1px solid #263c4e;
-}
-
-QComboBox:disabled {
-background-color: #465A68;
-color: black;
-}
-
-QComboBox:editable {
-border: 0px solid #5589B0;
-border-radius: 3px;
-background-color: #263c4e;
-padding: 0px 0px 0px 3px;
-}
-
-QComboBox:editable:focus{
-border: solid;
-border-style: solid;
-border-width: 1px;
-border-color: #E0DECF;
-}
-
-QComboBox:!editable {
-border: 0px solid #5589B0;
-border-radius: 3px;
-background-color: #263c4e;
-padding:0px 3px 0px 3px;
-}
-
-QComboBox:!editable:on {
-background-color: #263c4e;
-border: solid;
-border-width: 1px;
-border-color: #365871;
-padding:0px 5px 0px 3px;
-}
-
-QComboBox::drop-down {
-border-left: solid;
-border-width: 0px;
-background-color: #263c4e;
-border-radius: 3px;
-}
-QComboBox::drop-down:editable:on {
-background-color:#263c4e;
-border: solid;
-border-width: 1px;
-border-color: #263c4e;
-}
-
-QComboBox::drop-down:!editable:on {
-background-color: #263c4e;
-}
-
-QComboBox::down-arrow {
-        image:  url(:/plugins/GIAP-PolaMap/icons/branch-open.png);
-    width: 18px;
-    height: 28px;
-}
-
-QComboBox::down-arrow:hover, QComboBox::down-arrow:pressed{
-border: solid;
-border-width: 0px;
-border-color: #E0DECF;
-border-radius: 3px;
-margin:0px 3px 0px -1px;
-}
-
-QToolTip {
-color:#E0DECF;
-	font: 10pt &quot;Segoe UI&quot;;
-font-weight: normal;
-border-style: double;
-border: 1px;
-border-radius: 3px;
-background-color:#4F5A63;
-}
-
-Line{
-color: 1px solid #E0DECF;
-}
-
-QTabBar::tab {
-padding: 2px;
-color: #E0DECF;
-}
-QTabWidget::tab-bar {
-    left: 5px;
-}
-QTabWidget::pane {
-border: 1px solid #365871;
-border-top: 1px solid #5589B0;
-}
-
-QTabBar::tab:selected, QTabBar::tab:hover, QTabBar::tab:!selected:hover {
-font-weight: 450;
-padding: 3px;
-border-top: 1px solid #365871;
-border-right: 0px solid #E0DECF;
-border-left: 0px solid #E0DECF;
-border-bottom: 3px solid #E0DECF;
-margin-bottom: 2px;
-background: #5589B0;
-}
-
-QTabBar::tab:!selected {
-font-weight: 450;
-color: #E0DECF;
-border: 2px solid #365871;
-margin-bottom: 2px;
-padding: 3px;
-}
-
-QTreeView {
-    border: 1px solid;
-    border-color: #5589B0;
-    margin: 2px;
-   show-decoration-selected: 1;
-}
-
-QTreeView::item,
-QTreeView::branch {
-    color: #E0DECF;
-     padding: 2px;
-}
-
-QTreeView:branch:hover,
-QTreeView:item:hover
-{
-    background-color: #5589B0;
-}
-
-QTreeView:branch:selected,
-QTreeView:item:selected
-{
-    background-color: #5589B0;
-    color: #E0DECF;
-}
-
-QTreeView::branch:has-children:!has-siblings:closed,
-QTreeView::branch:closed:has-children:has-siblings {
-        border-image: none;
-        image: url(:/plugins/GIAP-PolaMap/icons/branch-closed.png);
-}
-
-QTreeView::branch:open:has-children:!has-siblings,
-QTreeView::branch:open:has-children:has-siblings  {
-        border-image: none;
-        image:  url(:/plugins/GIAP-PolaMap/icons/branch-open.png);
-}
-
-QProgressBar {
-    border: 2px solid #365871;
-    background-color: #365871;
-    border-radius: 3px;
-    text-align: center;
-    color: #E0DECF;
-}
-
-QProgressBar::chunk {
-    background-color: #5589B0;
-}
-QSpinBox, QDoubleSpinBox,
-QSpinBox:editable,
-QSpinBox:hover,
-QSpinBox:pressed,
-QDoubleSpinBox:editable,
-QDoubleSpinBox:hover,
-QDoubleSpinBox:pressed {
-    border: 1px solid;
-    border-radius: 3px;
-    border-color: #263c4e;
-background-color: #263c4e;
-}
-QSpinBox:focus, QDoubleSpinBox:focus {
-border-style: solid;
-border-width: 0px;
-border-color: #E0DECF;
-}
-QSpinBox:disabled, QDoubleSpinBox:disabled {
-  border: none;
-  border-bottom: 1px solid #263c4e;
-  border-radius: 0;
-  background: #263c4e;
-  color: #000000;
-}
-QSpinBox::up-button, QDoubleSpinBox::up-button{
-  subcontrol-origin: border;
-  subcontrol-position: top right;
-  border: 0px solid #E0DECF;
-  border-radius: 3;
-  background: #263c4e;
-}
-
-QSpinBox::down-button, QDoubleSpinBox::down-button {
-  subcontrol-origin: border;
-  subcontrol-position: bottom right;
-  border: 0px solid #E0DECF;
-  border-radius: 3;
-  background: #263c4e;
-}
-QSpinBox::down-button:hover, QDoubleSpinBox::down-button:hover, QSpinBox::up-button:hover, QDoubleSpinBox::up-button:hover {
-border: solid;
-border-width: 1px;
-border-color: #E0DECF;
-}
-
-QSpinBox::up-arrow:disabled,
-QSpinBox::up-arrow:off {
-  image: none;
-}
-
-QSpinBox::down-arrow:disabled,
-QSpinBox::down-arrow:off,
- QDoubleSpinBox::down-arrow:disabled,
-QDoubleSpinBox::down-arrow:off{
-  image: none;
-}
-
-QTableView {
-    selection-background-color: #5589B0;
-}
-
-QGroupBox {
-    border-top: 1px solid #E0DECF;
-    margin-top: 5ex;
-}
-QGroupBox::title {
-    subcontrol-origin: margin;
-    padding: 0 5px;
-    }
-
-QDockWidget {
-    border: 10px solid lightgray;
-
-}
-
-QTableView, QListView
-        {
-            gridline-color:#4F5A63;
-            color: #E0DECF;
-            alternate-background-color: #4F5A63;
-            selection-background-color: #5589B0;
-            border: 1px solid #5589B0;
-        }
-QTableView::item, QListView::item
-        {
-            color: #E0DECF;
-        }
-QTableView::item:hover, QListView::item:hover
-        {
-            color: #E0DECF;
-            background: #5589B0;
-            selection-background-color: #5589B0;
-        }
-QTableView::item:focus, QListView::item:focus
-        {
-            color: #E0DECF;
-            background: #263B4E;
-        }
-QTableView::item:selected, QListView::item:selected
-        {
-            color: #E0DECF;
-            background-color: #5589B0;
-        }</string>
+   <string notr="true"/>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedKingdom"/>
@@ -618,22 +182,9 @@ QTableView::item:selected, QListView::item:selected
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout_44">
-          <item row="2" column="0">
-           <spacer name="verticalSpacer">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>0</width>
-              <height>15</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
           <item row="0" column="0">
            <widget class="QFrame" name="frame_6">
             <property name="frameShape">
@@ -731,52 +282,15 @@ QTableView::item:selected, QListView::item:selected
                 <bool>false</bool>
                </property>
                <layout class="QGridLayout" name="gridLayout_43">
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
                 <item row="0" column="0">
                  <widget class="QFrame" name="frame_2">
                   <property name="styleSheet">
                    <string notr="true">QFrame {
-background-color: #365871;
-selection-background-color:  #5589B0;
-font: 10pt &quot;Segoe UI&quot;;
-padding: 2px;
-border: 1px solid #5589B0;
-}
-QLabel{
-font: 12pt &quot;Segoe UI&quot;;
-color:#E0DECF;
-}
-
-QScrollBar:horizontal {
-    height: 15px;
-}
-QScrollBar::handle:horizontal {
-    background: #5589B0;
-    border-radius: 5px;
-    width: 10px;
-    margin: 2px 0 2px 0;
-}
-
- QScrollBar:vertical {
-     width: 15px;
- }
- QScrollBar::handle:vertical {
-     background: #5589B0;
-     height: 10px;
-     border-radius: 5px;
-	 margin: 0px 2px 0px 2px;
- }
- QScrollBar::add-line:vertical{
-border: 1px solid #365871;
-     background:#365871;
-     height: 12px;
- }
-
- QScrollBar::sub-line:vertical {
-border: 1px solid #365871;
-     background: #365871;
-     height: 12px;
- }
-</string>
+border: 0px solid #5589B0;
+}</string>
                   </property>
                   <property name="frameShape">
                    <enum>QFrame::StyledPanel</enum>
@@ -813,10 +327,14 @@ border-top: none;</string>
                    <item>
                     <widget class="QTableView" name="tableView">
                      <property name="styleSheet">
-                      <string notr="true">QTableView {
-border: 0px;
-color: #0A0C0D;
-}</string>
+                      <string notr="true">QTableView, QListView
+        {
+            gridline-color:#4F5A63;
+            color: #E0DECF;
+            alternate-background-color: #4F5A63;
+            selection-background-color: #5589B0;
+            border: 0px solid #5589B0;
+        }</string>
                      </property>
                      <property name="editTriggers">
                       <set>QAbstractItemView::NoEditTriggers</set>
@@ -1089,10 +607,11 @@ QFrame {
       <item>
        <widget class="QLabel" name="pushButton_side">
         <property name="styleSheet">
-         <string notr="true">background-color: #5589B0;
-border: solid;
-border-width: 1px;
-border-color:#5589B0;</string>
+         <string notr="true">   background-color: #b7d3e8;
+   color: #0A0C0D;
+   font-weight: bold;
+   padding-left: 5px;
+   padding-right: 5px;</string>
         </property>
         <property name="text">
          <string>User compositions</string>
