@@ -232,7 +232,6 @@ class MainTabQgsWidget:
         self.main_widget.offOnSearchButton.setIcon(
             QIcon(os.path.join(self.plugin_dir, 'styles', 'GIAP Navy Blue', 'icons', 'close.png')))
 
-        # self.searcher.run()
         self.main_widget.setFocusPolicy(Qt.StrongFocus)
 
         new = self.html_div_from_url(GIAP_NEWS_WEB_PAGE)

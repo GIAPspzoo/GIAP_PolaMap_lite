@@ -17,12 +17,14 @@ from qgis.core import QgsLayoutExporter, QgsWkbTypes, QgsLayoutItemMap, \
     QgsVectorLayer, QgsFeature, QgsSymbol, QgsSimpleFillSymbolLayer, \
     QgsLayoutItemLabel, QgsLayoutItemScaleBar, QgsRasterLayer, \
     QgsRasterFileWriter, QgsVectorFileWriter, QgsCoordinateTransform, QgsCoordinateReferenceSystem, QgsRectangle, \
-    QgsProcessingContext, QgsMessageLog, QgsPointXY, Qgis, QgsTextFormat
+    QgsProcessingContext, QgsMessageLog, QgsPointXY, Qgis, QgsTextFormat, QgsFillSymbol, QgsLayoutItemShape, \
+    QgsLayoutMeasurement, QgsMapLayer
 from qgis.gui import QgsRubberBand, QgisInterface
 from qgis.utils import iface
 from typing import Union
 
-from .utils import tr, CustomMessageBox, normalize_path
+from .utils import tr, CustomMessageBox, normalize_path, IdentifyGeometryByType, transform_geometry, \
+    identify_layer_by_name
 from .wydruk_dialog import WydrukDialog
 from .config import Config
 
@@ -89,6 +91,7 @@ class PrintMapTool:
         'A4': (210, 297),
         'A5': (148, 210)
     }
+
     dict_width = {148: 50,
                   210: 90,
                   297: 145,
@@ -124,6 +127,153 @@ class PrintMapTool:
         else:
             self.conf.set_value('font_changed', False)
             self.conf.save_config()
+
+        self.white_mask = None
+        self.dialog.lineEdit_maska.hide()
+        self.dialog.lineEdit_maska.setEnabled(False)
+        self.dialog.wskaz_z_mapy_pb.hide()
+        self.dialog.dodaj_warstwy_checkBox.hide()
+        self.dialog.biezacy_widok_rb.setChecked(True)
+
+        radioButtons = [self.dialog.maska_rb, self.dialog.pdfRadioButton, self.dialog.pngRadioButton,
+                        self.dialog.jpgRadioButton, self.dialog.shpRadioButton,
+                        self.dialog.tiffRadioButton]
+        for btn in radioButtons:
+            btn.toggled.connect(self.show_hide_items)
+
+        self.dialog.biezacy_widok_rb.toggled.connect(self.zoom_to_frame)
+        self.dialog.caly_zasieg_rb.toggled.connect(self.zoom_to_frame)
+        self.dialog.maska_rb.toggled.connect(self.zoom_to_frame)
+
+        self.dialog.wskaz_z_mapy_pb.clicked.connect(self.draw_polygon_object_from_other_layer)
+
+    def check_if_vector_format(self):
+        return self.dialog.shpRadioButton.isChecked()
+
+    def show_hide_items(self):
+        if self.dialog.maska_rb.isChecked():
+            self.dialog.lineEdit_maska.show()
+            self.dialog.wskaz_z_mapy_pb.show()
+        else:
+            self.dialog.lineEdit_maska.hide()
+            self.dialog.wskaz_z_mapy_pb.hide()
+        if self.check_if_vector_format():
+            self.dialog.groupBox.hide()
+            self.dialog.groupBox_2.hide()
+            self.dialog.groupBox_4.hide()
+            self.dialog.groupBox_6.hide()
+            self.dialog.groupBox_5.hide()
+            self.dialog.groupBox_7.hide()
+            self.dialog.previewPushButton.hide()
+            self.dialog.dodaj_warstwy_checkBox.show()
+            if self.dialog.skala_projektu_rb.isChecked():
+                self.dialog.biezacy_widok_rb.setChecked(True)
+            self.dialog.skala_projektu_rb.hide()
+        else:
+            self.dialog.groupBox.show()
+            self.dialog.groupBox_2.show()
+            self.dialog.groupBox_4.show()
+            self.dialog.groupBox_6.show()
+            self.dialog.groupBox_5.show()
+            self.dialog.groupBox_7.show()
+            self.dialog.previewPushButton.show()
+            self.dialog.dodaj_warstwy_checkBox.hide()
+            self.dialog.skala_projektu_rb.show()
+
+    def draw_polygon_object_from_other_layer(self):
+        wkb_types_list = [QgsWkbTypes.Polygon, QgsWkbTypes.MultiPolygon]
+        self.old_tool = self.iface.mapCanvas().mapTool()
+        self.mapTool = IdentifyGeometryByType(self.iface.mapCanvas(), wkb_types_list)
+        self.iface.mainWindow().activateWindow()
+        self.mapTool.identifyMenu().setAllowMultipleReturn(False)
+        self.mapTool.identifyMenu().setMaxLayerDisplay(30)
+        self.mapTool.geomIdentified.connect(self.fill_lineEdit)
+        self.iface.mapCanvas().unsetMapTool(self.old_tool)
+        self.iface.mapCanvas().setMapTool(self.mapTool)
+        self.dialog.rejected.connect(self.set_unset_map_tool)
+
+    def fill_lineEdit(self, results):
+        self.layer_list = []
+        for result in results:
+            copy_layer = result.mLayer
+            feature = result.mFeature
+            if feature:
+                self.dialog.lineEdit_maska.setText(f"{copy_layer.name()}: {feature.id()}")
+                self.frame_composer()
+                self.zoom_to_frame()
+        self.set_unset_map_tool()
+        self.run()
+
+    def frame_composer(self):
+        self.create_composer()
+        if not self.dialog.biezacy_widok_rb.isChecked():
+            self.zoom_to_frame()
+            if self.dialog.maska_rb.isChecked():
+                try:
+                    layer, feature = self.get_feature_from_lineedit(True)
+                    geom = transform_geometry(feature.geometry(), layer)
+                    self.white_mask = self.create_inverted_layer(layer, geom)
+                except:
+                    pass
+
+    def get_feature_from_lineedit(self, return_layer=False):
+        text = self.dialog.lineEdit_maska.text().split(": ")
+        layer = identify_layer_by_name(text[0])
+        if layer:
+            feature_id = text[1]
+            feature = layer.getFeature(int(feature_id))
+            if feature:
+                if return_layer:
+                    return layer, feature
+                else:
+                    return feature
+            else:
+                CustomMessageBox(self.dialog, "Nie udało się stworzyć maski, wybierz inny obiekt").button_ok()
+        else:
+            CustomMessageBox(self.dialog, "Nie udało się stworzyć maski, wybierz inny obiekt").button_ok()
+
+    def create_inverted_layer(self, layer, geometry):
+        if not check_if_value_empty(self.rect):
+            rect = QgsGeometry.fromRect(self.rect)
+            inverted_geometry = rect.difference(geometry)
+            layer = QgsVectorLayer(
+                f"{QgsWkbTypes.displayString(layer.wkbType())}?crs={self.iface.mapCanvas().mapSettings().destinationCrs()}",
+                "tmp_mask", "memory")
+            feat = QgsFeature()
+            feat.setGeometry(inverted_geometry)
+            layer.startEditing()
+            layer.addFeatures([feat])
+            fill_symbol = QgsFillSymbol.createSimple({'color': '255,255,255,255'})
+            fill_symbol.setOpacity(100)
+            layer.renderer().setSymbol(fill_symbol)
+            layer.commitChanges()
+            return layer
+
+    def set_unset_map_tool(self):
+        self.iface.mapCanvas().unsetMapTool(self.mapTool)
+        self.iface.mapCanvas().setMapTool(self.old_tool)
+
+    def zoom_to_frame(self):
+        self.create_composer()
+        feature = False
+        layer = False
+        if self.dialog.caly_zasieg_rb.isChecked():
+            layer = self.get_largest_extent_layer()
+        if self.dialog.maska_rb.isChecked():
+            if self.dialog.lineEdit_maska.text():
+                layer, feature = self.get_feature_from_lineedit(True)
+                geom = transform_geometry(feature.geometry(), layer)
+        if layer:
+            self.iface.layerTreeView().setLayerVisible(layer, True)
+            if feature:
+                mapExtent = geom.boundingBox()
+            else:
+                mapExtent = layer.extent()
+            self.canvas_extent = QgsRectangle(mapExtent.xMinimum(), mapExtent.yMinimum(),
+                                              mapExtent.xMaximum(), mapExtent.yMaximum()).buffered(
+                (mapExtent.height() + mapExtent.width()) * 0.01)
+            self.iface.mapCanvas().setExtent(self.band.buffered((mapExtent.height() + mapExtent.width()) * 0.1))
+            self.iface.mapCanvas().refresh()
 
     def set_font_quickprint(self, font_size: str) -> None:
         attributes = [self.dialog.label_side, self.dialog.title_label,
@@ -189,12 +339,32 @@ class PrintMapTool:
                 item.setPos(pos_x, pos_y)
                 item.setFrameEnabled(True)
             map_item.setLayers(project.mapThemeCollection().masterVisibleLayers())
-            self.canvas_extent = self.iface.mapCanvas().extent()
-            self.scale = self.iface.mapCanvas().scale()
-            map_item.setRect(a4_rect)
-            map_item.setExtent(self.canvas_extent)
-            map_item.setScale(round(self.scale))
-            map_item.attemptSetSceneRect(current_rect, True)
+            if self.dialog.biezacy_widok_rb.isChecked():
+                self.canvas_extent = self.iface.mapCanvas().extent()
+                self.scale = self.iface.mapCanvas().scale()
+                map_item.setRect(a4_rect)
+                map_item.setExtent(self.canvas_extent)
+                map_item.setScale(round(self.scale))
+                map_item.attemptSetSceneRect(current_rect, True)
+
+            if self.dialog.skala_projektu_rb.isChecked():
+                self.canvas_extent = self.iface.mapCanvas().extent()
+                self.scale = self.iface.mapCanvas().scale()
+                map_item.setRect(a4_rect)
+                map_item.setExtent(self.canvas_extent)
+                map_item.attemptSetSceneRect(current_rect, True)
+                map_item.setScale(round(self.scale))
+            else:
+                map_item.attemptSetSceneRect(current_rect, True)
+                if not self.dialog.biezacy_widok_rb.isChecked():
+                    map_item.zoomToExtent(self.canvas_extent)
+                if self.dialog.maska_rb.isChecked():
+                    if not check_if_value_empty(self.white_mask):
+                        map_item2.zoomToExtent(self.canvas_extent)
+                        map_item2.setLayers([self.white_mask])
+                        map_item2.attemptSetSceneRect(current_rect, True)
+                        map_item2.setBackgroundColor(QColor(0, 0, 0, 0))
+                        self.layout.addItem(map_item2)
             rubber_band_extent = self.get_rubber_band_extent(map_item.extent())
             self.band = rubber_band_extent
             self.rect = map_item.extent()
@@ -242,15 +412,36 @@ class PrintMapTool:
             self.dialog.activateWindow()
 
     def save(self) -> None:
-        filename, __ = QFileDialog.getSaveFileName(
-            self.dialog, tr("Save file"))
-        tmp_layer = self.create_tmp_layer()
-        self.create_composer()
-        self.save_file(filename)
-        if isinstance(tmp_layer, str):
-            QgsProject.instance().removeMapLayers(tmp_layer)
+        if self.dialog.maska_rb.isChecked():
+            if not self.dialog.lineEdit_maska.text():
+                CustomMessageBox(self.dialog, 'Sprawdz maskę przycięcia!').button_ok()
+                return
+        file_dialog = QFileDialog()
+        dialog_text = "Zapisz Plik"
+        dir_path = os.path.dirname(os.path.dirname(os.path.abspath(project.fileName())))
+        if self.check_if_vector_format():
+            dir_path = os.path.dirname(os.path.dirname(os.path.abspath(project.fileName())))
+            dialog_text = "Wybierz folder"
+            filename = file_dialog.getExistingDirectory(self.dialog, caption=dialog_text, directory=dir_path)
+        else:
+            filename, __ = file_dialog.getSaveFileName(self.dialog, caption=dialog_text, directory=dir_path)
+        if filename:
+            self.dialog.progressBar.show()
+            self.dialog.progressBar.setValue(10)
+            tmp_layer = self.create_tmp_layer()
+            self.create_composer()
+            self.dialog.progressBar.setValue(20)
+            self.save_file(filename)
+            root = QgsProject.instance().layerTreeRoot()
+            for layer in tmp_layer:
+                root.removeLayer(layer)
+            self.dialog.close()
 
     def preview(self) -> None:
+        if self.dialog.maska_rb.isChecked():
+            if not self.dialog.lineEdit_maska.text():
+                CustomMessageBox(self.dialog, 'Sprawdz maskę przycięcia!').button_ok()
+                return
         file_handle, filename = tempfile.mkstemp(suffix='quick_print')
         os.close(file_handle)
         tmp_layer = self.create_tmp_layer()
@@ -333,12 +524,18 @@ class PrintMapTool:
             title = QgsLayoutItemLabel(self.layout)
             current_text = ' '
             title.setText(self.dialog.titleLineEdit.text() + current_text)
-            text_format = QgsTextFormat()
-            item_font = QFont('Arial')
-            text_format.setFont(item_font)
-            text_format.setSize(20)
-            text_format.setForcedBold(True)
-            title.setTextFormat(text_format)
+            if Qgis.QGIS_VERSION_INT < QGIS_LTR_VERSION:
+                title_font = QFont()
+                title_font.setPointSize(20)
+                title_font.setWeight(75)
+                title.setFont(title_font)
+            else:
+                text_format = QgsTextFormat()
+                item_font = QFont('Arial')
+                text_format.setFont(item_font)
+                text_format.setSize(20)
+                text_format.setForcedBold(True)
+                title.setTextFormat(text_format)
             title.adjustSizeToText()
             title.setPos((width / 2) - (len(self.dialog.titleLineEdit.text()) * 2),
                          3)
@@ -366,7 +563,7 @@ class PrintMapTool:
                 ext = '.tif'
                 function = self.save_raster_layer
             elif self.dialog.shpRadioButton.isChecked():
-                ext = '.shp'
+                ext = ''
                 function = self.save_vector_layer
             if not filename.endswith(ext):
                 filename += ext
@@ -375,11 +572,28 @@ class PrintMapTool:
         progress.setValue(100)
         progress.hide()
 
+    def get_largest_extent_layer(self):
+        layers = root.findLayers()
+        max_area = 0
+        largest_layer = None
+        for layer_node in layers:
+            layer = layer_node.layer()
+            if layer and layer.type() == QgsMapLayer.VectorLayer and layer.isValid():
+                extent = layer.extent()
+                area = extent.width() * extent.height()
+                if area > max_area:
+                    if not layer.extent().isEmpty():
+                        max_area = area
+                        largest_layer = layer
+        return largest_layer
+
     def layer_list_generator(self, mode='current_view', selected_layers=False):
         self.layer_list = []
         if not selected_layers:
             selected_layers = project.mapThemeCollection().masterVisibleLayers()
         overlay = None
+        if mode == 'comm_view':
+            overlay = self.get_largest_extent_layer()
         if mode == 'current_view':
             self.create_composer()
             if not check_if_value_empty(self.rect):
@@ -416,7 +630,12 @@ class PrintMapTool:
     def save_vector_layer(self, filename):
         paths_list = []
         ext = '.shp'
-        self.layer_list_generator(mode='current_view')
+        if self.dialog.biezacy_widok_rb.isChecked():
+            self.layer_list_generator(mode='current_view')
+        elif self.dialog.caly_zasieg_rb.isChecked():
+            self.layer_list_generator(mode='comm_view')
+        elif self.dialog.maska_rb.isChecked():
+            self.layer_list_from_mask(project.mapThemeCollection().masterVisibleLayers())
         now = datetime.now()
         time_str = now.strftime("%d_%m_%Y_%H_%M_%S")
         date_formatted = datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')
@@ -435,7 +654,7 @@ class PrintMapTool:
             if drvName:
                 options.driverName = drvName
             else:
-                CustomMessageBox("Błąd przy zapisie warstw.").button_ok()
+                CustomMessageBox(self.dialog, "Błąd przy zapisie warstw.").button_ok()
             options.fileEncoding = 'utf-8'
             options.actionOnExistingFile = QgsVectorFileWriter.CreateOrOverwriteFile
             options.ct = QgsCoordinateTransform(QgsCoordinateReferenceSystem(vector_layer.crs().toWkt()),
@@ -446,7 +665,7 @@ class PrintMapTool:
             symbolization_path = layer_path.replace(ext, '.qml')
             vector_layer.saveNamedStyle(symbolization_path)
             path_list.append([layer_path, symbolization_path, vector_layer.name()])
-        if not check_if_value_empty(path_list):
+        if self.dialog.dodaj_warstwy_checkBox.isChecked() and not check_if_value_empty(path_list):
             vector_group = project.layerTreeRoot().findGroup('PLIKI WEKTOROWE')
             if not vector_group:
                 project.layerTreeRoot().addGroup('PLIKI WEKTOROWE')
@@ -458,6 +677,41 @@ class PrintMapTool:
                 layer_from_path.loadNamedStyle(symbolization_path)
                 project.addMapLayer(layer_from_path, False)
                 time_group.addLayer(layer_from_path)
+
+    def layer_list_from_mask(self, selected_layers):
+        feature = None
+        self.layer_list = []
+        if self.dialog.lineEdit_maska.text():
+            mask_layer, feature = self.get_feature_from_lineedit(True)
+        for layer in selected_layers:
+            if feature and layer.type().value == 0 and root.findLayer(layer.id()).isVisible():
+                overlay = QgsVectorLayer(f"Polygon?crs={mask_layer.crs().toWkt()}",
+                                         f"overlay_layer_{random.random()}", "memory")
+                overlay.dataProvider().addAttributes(mask_layer.fields())
+                overlay.updateFields()
+                overlay.startEditing()
+                overlay.addFeature(feature)
+                overlay.commitChanges()
+                params = {
+                    'INPUT': layer,
+                    'OVERLAY': overlay,
+                    'OUTPUT': f'memory:temp_{layer.name()}',
+                    'OUTPUT_GEOMETRY': layer.wkbType()
+                }
+                context = QgsProcessingContext()
+                context.setInvalidGeometryCheck(False)
+                try:
+                    result = processing.run('native:intersection', params, context=context)
+                except Exception as err:
+                    QgsMessageLog.logMessage(
+                        f'SZYBKI WYDRUK - Wystąpił błąd podczas dodawania warstwy {layer.name()}: \n {str(err)}',
+                        "GIAP-PolaMap",
+                        Qgis.Warning)
+                temp_layer = result['OUTPUT']
+                fixed_layer = processing.run('native:fixgeometries',
+                                             {'INPUT': temp_layer, 'OUTPUT': f'memory:tmp_{layer.name()}'})['OUTPUT']
+                copy_symbolization(layer, fixed_layer)
+                self.layer_list.append(fixed_layer)
 
     def save_raster_layer(self, filename):
         file_handle, path_to_temp_file = tempfile.mkstemp(suffix='_QGIS_image_file.tif')
