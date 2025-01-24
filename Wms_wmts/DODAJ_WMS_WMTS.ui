@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>701</width>
-    <height>167</height>
+    <height>169</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -29,7 +29,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>UTWÓRZ NOWE POŁĄCZENIE WMS/WMTS</string>
+   <string>Create WMS/WMTS connection</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -83,14 +83,14 @@
         <enum>Qt::LeftToRight</enum>
        </property>
        <property name="text">
-        <string>Dodaj</string>
+        <string>Add</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="close_btn">
        <property name="text">
-        <string>Anuluj</string>
+        <string>Cancel</string>
        </property>
       </widget>
      </item>
@@ -145,7 +145,7 @@
           <item row="0" column="0">
            <widget class="QGroupBox" name="DodajWMS_WMTS">
             <property name="title">
-             <string>SZCZEGÓŁY POŁĄCZENIA</string>
+             <string>CONNECTION DETAILS</string>
             </property>
             <layout class="QGridLayout" name="gridLayout_3">
              <item row="0" column="1">
@@ -158,14 +158,14 @@
              <item row="0" column="0">
               <widget class="QLabel" name="label_17">
                <property name="text">
-                <string>Nazwa</string>
+                <string>Name</string>
                </property>
               </widget>
              </item>
              <item row="1" column="0">
               <widget class="QLabel" name="label_15">
                <property name="text">
-                <string>Adres URL</string>
+                <string>URL address</string>
                </property>
               </widget>
              </item>
@@ -179,7 +179,7 @@
              <item row="2" column="0">
               <widget class="QLabel" name="label_group">
                <property name="text">
-                <string>Nazwa grupy (opcjonalnie)</string>
+                <string>Group name (optional)</string>
                </property>
               </widget>
              </item>
@@ -269,7 +269,7 @@
    padding-right: 5px;</string>
         </property>
         <property name="text">
-         <string>Utwórz połączenie WMS/WMTS</string>
+         <string>Create WMS/WMTS connection</string>
         </property>
        </widget>
       </item>

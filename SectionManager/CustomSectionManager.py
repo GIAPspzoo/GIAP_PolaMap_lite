@@ -47,7 +47,6 @@ class CustomSectionManager(QDialog, FORM_CLASS):
             f'{self.frame_main.styleSheet()}QFrame, QTableView, QLabel, QLineEdit, '
             f'QgsFilterLineEdit {{font: {font_size}pt;}}')
 
-
     def add_available_tools_into_list(self) -> None:
         self.availableToolTable_sort = QSortFilterProxyModel()
         model = QStandardItemModel()
@@ -80,7 +79,7 @@ class CustomSectionManager(QDialog, FORM_CLASS):
 
     def get_all_actions_from_qgis_toolbars(self) -> List[QAction]:
         qgis_toolbars = [toolbar for toolbar in iface.mainWindow().findChildren(QToolBar)
-            if "toolbar" in toolbar.objectName().lower() and "giap" not in toolbar.objectName().lower()]
+                         if "toolbar" in toolbar.objectName().lower() and "giap" not in toolbar.objectName().lower()]
         actions = []
         for toolbar in qgis_toolbars:
             acts = get_action_from_toolbar(toolbar)
@@ -132,7 +131,6 @@ class CustomSectionManager(QDialog, FORM_CLASS):
             except:
                 item = QStandardItem(tr(get_tool_label(tool, self.main_qgs_widget)))
                 item.setData(icon_manager([tool], self.main_qgs_widget)[tool.replace(":", "_")], Qt.DecorationRole)
-
 
             self.selected_model.appendRow([QStandardItem(tool), item])
         self.selectedToolTable.setModel(self.selected_model)

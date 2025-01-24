@@ -548,8 +548,7 @@ QScrollBar:vertical{
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: #5589B0;
-border: solid;
+           <string notr="true">border: solid;
 border-width: 1px;
 border-color:#5589B0;</string>
           </property>
@@ -570,8 +569,7 @@ border-color:#5589B0;</string>
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: #5589B0;
-border: solid;
+           <string notr="true">border: solid;
 border-width: 1px;
 border-color:#5589B0;</string>
           </property>

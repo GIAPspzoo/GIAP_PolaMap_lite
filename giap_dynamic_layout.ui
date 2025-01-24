@@ -262,7 +262,7 @@ or fill in the previous fields and indicate the parcel number e.g. 17/2</string>
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wskaż punkt na mapie, aby pobrać działkę&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>Wskaż z mapy</string>
+        <string>Select from map</string>
        </property>
       </widget>
      </item>
@@ -318,7 +318,7 @@ for the street: Warszawa, Pasaż Ursynowski</string>
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wskaż punkt na mapie, aby pobrać punkt adresowy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>Wskaż z mapy</string>
+        <string>Select from map</string>
        </property>
       </widget>
      </item>

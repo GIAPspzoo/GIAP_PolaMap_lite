@@ -171,7 +171,7 @@ class MainTabQgsWidget:
         # logo icon
         plug_dir = os.path.dirname(__file__)
         gbut = QPushButton()
-        gbut.clicked.connect(lambda: webbrowser.open('www.giap.pl'))
+        gbut.clicked.connect(lambda: webbrowser.open('https://giap.pl/'))
         gbut.setIcon(
             QIcon(os.path.join(plug_dir, 'icons', 'giap.png'))
         )
@@ -669,9 +669,7 @@ class MainTabQgsWidget:
         if project.write():
             res = CustomMessageBox(
                 None,
-                "The program must be restarted for the changes to take effect. Restart now?\n"
-                "Aby zachować zmiany, program musi zostać uruchomiony ponownie. Czy uruchomić ponownie?"
-            ).button_yes_no()
+                tr("The program must be restarted for the changes to take effect. Restart now?")).button_yes_no()
             if res == QMessageBox.Yes:
                 project.setDirty(
                     False)  # workaround - mimo poprawnego zapisu nadal pyta o zapis

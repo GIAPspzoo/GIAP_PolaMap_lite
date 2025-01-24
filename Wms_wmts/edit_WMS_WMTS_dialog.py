@@ -4,6 +4,7 @@ import qgis
 
 from qgis.PyQt.uic import loadUiType
 from qgis.PyQt.QtWidgets import QDialog
+from ..utils import tr
 
 FORM_CLASS, _ = loadUiType(os.path.join(
     os.path.dirname(__file__), 'DODAJ_WMS_WMTS.ui'))
@@ -14,9 +15,7 @@ class EditConnection(QDialog, FORM_CLASS):
         self.setupUi(self)
         self.parent = parent
         self.json_file = self.parent.json_file
-        self.setWindowTitle('EDYTUJ ISTNIEJĄCE POŁĄCZENIE WMS/WMTS')
-        self.add_btn.setText('Zatwierdź')
-        self.dodaj_wms_wmts.setText('Edytuj istniejące połączenie WMS/WMTS')
+        self.add_btn.setText(tr('Confirm'))
         self.close_btn.clicked.connect(self.accept)
         self.add_btn.clicked.connect(self.edit_wms_wmts)
         self.plugins = qgis.utils.plugins['GIAP-PolaMap(lite)']

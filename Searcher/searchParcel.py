@@ -40,9 +40,7 @@ class FetchULDK:
         return self.fetch()
 
     def fetch(self, url=None) -> bool:
-        ################################
         if url is None:
-        ################################
             if '- gmina' in self.params or '- miasto' in self.params:
                 flag = self.params.find('-')
                 self.params = self.params[0:flag]
@@ -103,7 +101,6 @@ class ParseResponce:
         if len(lyr) > 0:
             self.lyr = lyr[0]
             return
-        # QgsProject.instance().addMapLayer(self.lyr)
         add_map_layer_to_group(self.lyr, search_group_name, force_create=True)
         direc = os.path.dirname(__file__)
         self.lyr.loadNamedStyle(
@@ -153,4 +150,3 @@ class ParseResponce:
         feat['pow_graf'] = geom.area()
 
         return feat
-################################################################

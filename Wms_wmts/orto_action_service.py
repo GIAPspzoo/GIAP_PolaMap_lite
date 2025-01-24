@@ -12,7 +12,7 @@ from owslib.wmts import WebMapTileService, ServiceException
 from qgis.core import QgsLayerTreeGroup, QgsLayerTree, QgsRasterLayer, QgsVectorLayer, QgsProject
 from . import online_layers_dialog
 
-from ..utils import CustomMessageBox, get_simple_progressbar
+from ..utils import CustomMessageBox, get_simple_progressbar, tr
 
 WFS_EXAMPLE_SRC = "pagingEnabled='true' preferCoordinatesForWfsT11='false' " \
                   "srsname='{crs}' typename='{table_name}' url='{url}' version='auto' OGC WFS (Web Feature Service)"
@@ -49,7 +49,7 @@ class OrtoActionService(QObject):
             self.group_name = self.data[self.name][1]
         except KeyError:
             self.group_name = None
-            CustomMessageBox(None, 'Nie udało się wczytać warstwy.')
+            CustomMessageBox(None, tr('Failed to load layer'))
         self.button.triggered.connect(self.add_to_map)
 
     def __add_orto_group(self, parent_group: QgsLayerTreeGroup or QgsLayerTree = root) -> QgsLayerTreeGroup:
@@ -82,7 +82,7 @@ class OrtoActionService(QObject):
 
     def open_online_layers_dialog(self, layers_list: list) -> None:
         progress = get_simple_progressbar(
-            0, txt=f'Trwa wczytywanie warstw...')
+            0, txt=tr('Loading layers...'))
         progress.show()
         online_layers = None
         if 'wfs' in self.url.lower():
@@ -100,7 +100,7 @@ class OrtoActionService(QObject):
         if not online_layers:
             progress.close()
             CustomMessageBox(
-                None, f'Nie można dodać {self.name}.').button_ok()
+                None, f'{tr('Cannot be added')} {self.name}.').button_ok()
             return
         group = root.findGroup(self.name)
         if not group:
@@ -196,9 +196,9 @@ def get_wfs_layers(wfs_url: str, wfs_version: str = '2.0.0') -> \
             return layer_names
     except Exception as e:
         if isinstance(e, requests.exceptions.MissingSchema) or isinstance(e, requests.exceptions.InvalidSchema):
-            CustomMessageBox(None, 'Nieprawidłowy adres usługi.')
+            CustomMessageBox(None, tr('Invalid service address.'))
         else:
-            CustomMessageBox(None, 'Wystąpił błąd podczas połączenia z serwerem.')
+            CustomMessageBox(None, tr('An error occurred while connecting to the server.'))
 
 
 def get_wms_layers(wms_url: str, wms_version: str = '1.3.0') -> \
@@ -228,9 +228,9 @@ def get_wms_layers(wms_url: str, wms_version: str = '1.3.0') -> \
             return layer_names
     except Exception as e:
         if isinstance(e, requests.exceptions.MissingSchema) or isinstance(e, requests.exceptions.InvalidSchema):
-            CustomMessageBox(None, 'Nieprawidłowy adres usługi.')
+            CustomMessageBox(None, tr('Invalid service address.'))
         else:
-            CustomMessageBox(None, 'Wystąpił błąd podczas połączenia z serwerem.')
+            CustomMessageBox(None, tr('An error occurred while connecting to the server.'))
 
 
 def get_wmts_layers(wmts_url: str, wmts_version: str = '1.3.0') -> \
@@ -264,9 +264,9 @@ def get_wmts_layers(wmts_url: str, wmts_version: str = '1.3.0') -> \
             return layer_names
     except Exception as e:
         if isinstance(e, requests.exceptions.MissingSchema) or isinstance(e, requests.exceptions.InvalidSchema):
-            CustomMessageBox(None, 'Nieprawidłowy adres usługi.')
+            CustomMessageBox(None, 'Invalid service address..')
         else:
-            CustomMessageBox(None, 'Wystąpił błąd podczas połączenia z serwerem.')
+            CustomMessageBox(None, 'An error occurred while connecting to the server..')
 
 
 def get_wmts_arc_layers(wmts_url: str, wmts_version: str = '1.0.0') -> \

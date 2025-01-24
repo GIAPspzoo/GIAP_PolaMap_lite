@@ -8,6 +8,7 @@ from qgis.PyQt.QtWidgets import QToolButton, QMenu, QAction
 
 from .Wms_wmts import WMS_WMTS
 from .Wms_wmts import orto_action_service
+from .utils import tr
 
 def check_if_value_empty(value: Union[str, None, QVariant]) -> bool:
     return value in [None, NULL, 'NULL', 'None', '']
@@ -17,7 +18,7 @@ class OrtoAddingTool(object):
         self.parent = parent
         self.button = button
         self.iface = iface
-        self.button.setToolTip("Dodaj zdefiniowane adresy WMS/WMTS")
+        self.button.setToolTip(tr("Add defined WMS/WMTS addresses"))
         self.button.setPopupMode(QToolButton.InstantPopup)
         self.group_names = group_names
         self.layer_actions_dict = {}
@@ -33,10 +34,6 @@ class OrtoAddingTool(object):
         return set([value[1] for value in self.data.values() if value])
 
     def connect_ortofotomapa_group(self) -> None:
-        """
-        Łączy sygnał wywoływany podczas zmiany widoczności w grupie o nazwie
-         self.group_name z funkcją self.create_menu.
-        """
         for group_name in self.get_group_names():
             group = orto_action_service.root.findGroup(group_name)
             if group:
@@ -45,10 +42,6 @@ class OrtoAddingTool(object):
                 group.removedChildren.connect(self.my_refresh_menu)
 
     def disconnect_ortofotomapa_group(self) -> None:
-        """
-        Odłącza sygnał wywoływany podczas zmiany widoczności w grupie o nazwie
-         self.group_name z funkcją self.create_menu.
-        """
         for group_name in self.get_group_names():
             group = orto_action_service.root.findGroup(group_name)
             if group:
@@ -60,9 +53,6 @@ class OrtoAddingTool(object):
                     pass
 
     def action_clicked(self, item: QAction) -> None:
-        """
-        Uaktualnia widoczność warstw na podstawie akcji z menu przycisku.
-        """
         self.layer_name = item.text()
         source, group_name = self.return_orto_data(item)
         identified_layers_list = orto_action_service.project.mapLayersByName(self.layer_name)
@@ -145,7 +135,7 @@ class OrtoAddingTool(object):
 
         menu.addSeparator()
 
-        setts = QAction('USTAWIENIA LISTY', self.iface.mainWindow())
+        setts = QAction(tr('LIST SETTINGS'), self.iface.mainWindow())
         setts.triggered.connect(self.setts)
         menu.addAction(setts)
         if but not in [None, NULL]:
@@ -160,7 +150,7 @@ class OrtoAddingTool(object):
 
     def ortocheck(self) -> None:
         for orto in self.ortomenu.actions():
-            if orto.text() not in ['', 'USTAWIENIA LISTY']:
+            if orto.text() not in ['', 'USTAWIENIA LISTY', 'LIST SETTINGS']:
                 source, group_name = self.return_orto_data(orto)
                 orto_layers = orto_action_service.project.mapLayersByName(orto.text())
                 group = orto_action_service.root.findGroup(orto.text())
@@ -190,6 +180,3 @@ class OrtoAddingTool(object):
                 orto_action_service.project.removeMapLayer(child)
         group.removeAllChildren()
         orto_action_service.root.removeChildNode(group)
-        self.iface.messageBar().pushMessage(
-            f"Grupa warstw tymczasowych <b>'{orto_action_service.temp_group_name}'</b> została usunięta z projektu",
-            level=Qgis.Info, duration=0)

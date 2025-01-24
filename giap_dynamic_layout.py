@@ -238,7 +238,7 @@ class MainWidget(QWidget, FORM_CLASS):
             self.tabWidget.widget(tabind).lay.addStretch()
             if not isinstance(lay.itemAt(cnt - 1), QPushButton):
                 gbut = QPushButton()
-                gbut.clicked.connect(lambda x: webbrowser.open('www.giap.pl'))
+                gbut.clicked.connect(lambda x: webbrowser.open('https://giap.pl/'))
                 gbut.setIcon(
                     QIcon(os.path.join(plug_dir, 'icons', 'giap.png'))
                 )

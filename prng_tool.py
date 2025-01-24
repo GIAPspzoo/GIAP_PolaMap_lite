@@ -11,6 +11,8 @@ from qgis.utils import iface
 from qgis.PyQt.QtCore import QTimer
 from qgis.PyQt.QtWidgets import QApplication, QProgressDialog
 
+from .utils import CustomMessageBox, tr
+
 
 class PRNGTool(QtWidgets.QDialog):
     def __init__(self, parent=None) -> None:
@@ -37,13 +39,13 @@ class PRNGTool(QtWidgets.QDialog):
     def search_location(self):
         location_name = self.lineEdit.text()
         if not location_name:
-            QtWidgets.QMessageBox.warning(self, "Błąd", "Proszę podać nazwę lokalizacji.")
+            CustomMessageBox(self, tr('Please enter a location name!')).button_ok()
             return
 
         url = f"http://services.gugik.gov.pl/uug/?request=GetLocation&location={location_name}"
 
-        progress_dialog = QProgressDialog("Łączenie", "Anuluj", 0, 100, self)
-        progress_dialog.setWindowTitle("Proszę czekać")
+        progress_dialog = QProgressDialog(tr("Connection"), tr("Cancel"), 0, 100, self)
+        progress_dialog.setWindowTitle(tr("Please wait"))
         progress_dialog.setWindowModality(QtCore.Qt.WindowModal)
         progress_dialog.setFixedWidth(300)
         progress_dialog.setFixedHeight(100)
@@ -71,7 +73,7 @@ class PRNGTool(QtWidgets.QDialog):
                 if data["found objects"] == 0:
                     progress_dialog.setValue(100)
                     QApplication.processEvents()
-                    QtWidgets.QMessageBox.information(self, "Wynik", "Nie znaleziono obiektów.")
+                    CustomMessageBox(self, tr('No objects found!')).button_ok()
                     return
 
                 for key, value in data["results"].items():
@@ -94,16 +96,16 @@ class PRNGTool(QtWidgets.QDialog):
         except requests.RequestException as e:
             progress_dialog.setValue(100)
             QApplication.processEvents()
-            QtWidgets.QMessageBox.critical(self, "Błąd", f"Błąd w zapytaniu: {e}")
+            CustomMessageBox(self, tr('Error in query!')).button_ok()
         except ValueError:
             progress_dialog.setValue(100)
             QApplication.processEvents()
-            QtWidgets.QMessageBox.critical(self, "Błąd", "Nieprawidłowa odpowiedź serwera.")
+            CustomMessageBox(self, tr('Invalid server response!')).button_ok()
 
     def add_selected_object_to_layer(self):
         selected_index = self.listView.currentIndex()
         if not selected_index.isValid():
-            QtWidgets.QMessageBox.warning(self, "Błąd", "Proszę wybrać obiekt z listy.")
+            CustomMessageBox(self, tr('Please select an object from the list.')).button_ok()
             return
 
         selected_text = selected_index.data()
@@ -135,7 +137,7 @@ class PRNGTool(QtWidgets.QDialog):
             self.zoom_to_feature(feature)
             self.close()
         else:
-            QtWidgets.QMessageBox.warning(self, "Błąd", "Nie udało się uzyskać koordynatów.")
+            CustomMessageBox(self, tr('Could not obtain coordinates.')).button_ok()
 
     def get_layer(self, org: str, obj_type: str, qml: str) -> QgsVectorLayer:
         layer = QgsProject.instance().mapLayersByName(obj_type)

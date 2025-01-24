@@ -8,6 +8,7 @@ from qgis.PyQt.QtWidgets import QDialog
 FORM_CLASS, _ = loadUiType(os.path.join(
     os.path.dirname(__file__), 'DODAJ_WMS_WMTS.ui'))
 
+
 class CreateConnection(QDialog, FORM_CLASS):
     def __init__(self, parent=None):
         super(CreateConnection, self).__init__(parent)

@@ -7,7 +7,7 @@ from qgis.PyQt.QtWidgets import QDialog, QMessageBox
 
 from .add_WMS_WMTS_dialog import CreateConnection
 from .edit_WMS_WMTS_dialog import EditConnection
-from ..utils import CustomMessageBox
+from ..utils import CustomMessageBox, tr
 
 FORM_CLASS, _ = loadUiType(os.path.join(
     os.path.dirname(__file__), 'WMS_WMTS.ui'))
@@ -48,13 +48,13 @@ class WMS_WMTS_dialog(QDialog, FORM_CLASS):
             self.edit_wms_wmts_dialog.fill_data()
             self.edit_wms_wmts_dialog.run()
         else:
-            CustomMessageBox(None, 'Nie wybrano połączenia z listy!').button_ok()
+            CustomMessageBox(None, tr('No connection selected from the list !')).button_ok()
 
     def remove_selected(self) -> None:
         self.selected = self.listWidget.selectedItems()
         if not self.selected:
             return
-        msg_box = CustomMessageBox(None, 'Czy chcesz usunąć wybraną warstwę?').button_yes_no()
+        msg_box = CustomMessageBox(None, tr('Do you want to delete the selected layer?')).button_yes_no()
         if msg_box == QMessageBox.No:
             return
         for item in self.selected:
@@ -71,13 +71,13 @@ class WMS_WMTS_dialog(QDialog, FORM_CLASS):
         with open(self.json_file, "r+") as json_read:
             data = json.load(json_read)
             if wms_name in data.keys():
-                CustomMessageBox(None, 'Nazwa już istnieje. Proszę wybrać inną nazwę!').button_ok()
+                CustomMessageBox(None, tr('Name already exists. Please choose another name!')).button_ok()
                 return
         return True
 
     def check_if_empty_lineedits(self, name: str, url: str) -> bool or None:
         if not name or not url:
-            CustomMessageBox(None, 'Pola nazwy i adresu URL nie mogą być puste!').button_ok()
+            CustomMessageBox(None, tr('The name and URL fields cannot be empty!')).button_ok()
             return
         return True
 

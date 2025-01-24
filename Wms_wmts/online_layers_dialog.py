@@ -5,7 +5,7 @@ from qgis.PyQt.QtWidgets import QDialog
 from qgis.PyQt.QtGui import QStandardItemModel, QStandardItem
 from qgis.PyQt.uic import loadUiType
 from qgis.PyQt.QtCore import Qt
-from ..utils import CustomMessageBox, ProperSortFilterProxyModel
+from ..utils import CustomMessageBox, ProperSortFilterProxyModel, tr
 
 FORM_CLASS, _ = loadUiType(os.path.join(
     os.path.dirname(__file__), 'online_layers_dialog.ui'))
@@ -33,7 +33,7 @@ class OnlineLayersDialog(QDialog, FORM_CLASS):
         if self.checked_list:
             self.accept()
         else:
-            CustomMessageBox(self, 'Nie wybrano żadnej warstwy.').button_ok()
+            CustomMessageBox(self, tr('No layer left.')).button_ok()
 
     def select_deselect(self) -> None:
         if hasattr(self, 'select_state') and self.select_state:

@@ -42,9 +42,6 @@ FILE_CONFIG_EXTENSION = '.giapconfig'
 USER_COMPOSITIONS_EXTENSION = '.giapcomp'
 
 
-# COMPOSITIONS_SCOPE = "Kompozycje"
-
-
 def write_user_compositions(comp, filename):
     text = comp
     with open(filename, 'wb') as f:
@@ -124,9 +121,7 @@ class CompositionsTool(object):
         self.update_buttons()
 
     def update_buttons(self):
-        # self.dock.toolButton_compositions.clicked.connect(self.config)
         ctools = self.dock.findChildren(QToolButton, 'giapCompositions')
-        # we need only one signal
         for button in ctools:
             try:
                 button.clicked.disconnect()
@@ -202,8 +197,6 @@ class CompositionsConfig(QObject):
 
     def run(self):
         self.dlg = DodajKompozycjeDialog()
-
-        # self.dlg.radioButton_1.clicked.connect(self.create_table_model)
         self.dlg.dodaj_kompozycje.clicked.connect(self.dodaj)
         self.dlg.edytuj_kompozycje.clicked.connect(self.edytuj)
         self.dlg.usun_kompozycje.clicked.connect(self.usun)
@@ -297,7 +290,6 @@ class CompositionsConfig(QObject):
             item = QStandardItem(str(comp_name))
             item.setEditable(False)
             self.model_kompozycji.appendRow(item)
-        # self.model_kompozycji.setHorizontalHeaderLabels([tr("Compositions")])
         self.dlg.tableView.setModel(self.model_kompozycji)
         self.dlg.tableView.horizontalHeader().hide()
         self.dlg.tableView.verticalHeader().hide()

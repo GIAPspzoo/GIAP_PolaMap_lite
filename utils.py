@@ -16,7 +16,6 @@ from qgis.core import QgsProject, QgsMessageLog, Qgis, QgsApplication, \
 from qgis.utils import iface
 import qgis
 
-
 project = QgsProject.instance()
 root = project.layerTreeRoot()
 
@@ -34,34 +33,33 @@ class CustomMessageBox(QMessageBox):
             selection-background-color:  rgb(87, 131, 167);
         }
 
-QPushButton {
-border: none;
-border-width: 1px;
-border-radius:3px;
-background-color: #5589B0;
-}
-QPushButton:checked {
-background-color: #5589B0;
-border: solid;
-border-width: 1px;
-border-color: #5589B0;
-}
-
-QPushButton:pressed {
-background-color: #5589B0;
-border: solid;
-border-width: 1px;
-border-color:#5589B0;
-}
-QPushButton:hover {
-background-color: #5589B0;
-border-radius: 3px;
-border: solid;
-border-style: solid;
-border-width: 1px;
-border-color: #E0DECF;
-} 
-    """
+        QPushButton {
+            border: none;
+            border-width: 1px;
+            border-radius:3px;
+            background-color: #5589B0;
+        }
+        QPushButton:checked {
+            background-color: #5589B0;
+            border: solid;
+            border-width: 1px;
+            border-color: #5589B0;
+        }
+        
+        QPushButton:pressed {
+            background-color: #5589B0;
+            border: solid;
+            border-width: 1px;
+            border-color:#5589B0;
+        }
+        QPushButton:hover {
+            background-color: #5589B0;
+            border-radius: 3px;
+            border: solid;
+            border-style: solid;
+            border-width: 1px;
+            border-color: #E0DECF;
+        }"""
 
     def __init__(self, parent=None, text='', image=''):
         super(CustomMessageBox, self).__init__(parent)
@@ -101,8 +99,9 @@ border-color: #E0DECF;
         grd.addWidget(scrll, 0, 1)
         self.layout().removeItem(self.layout().itemAt(0))
         self.layout().removeItem(self.layout().itemAt(0))
-        self.setWindowTitle('GIAP-PolaMap')
-        self.setWindowIcon(QIcon(':/plugins/GIAP-PolaMap/icons/giap_logo.png'))
+        self.setWindowTitle('GIAP-PolaMap(lite)')
+        plug_dir = os.path.dirname(__file__)
+        self.setWindowIcon(QIcon(os.path.join(plug_dir, 'giap.ico')))
 
     def button_ok(self):
         self.setStandardButtons(QMessageBox.Ok)
@@ -110,41 +109,9 @@ border-color: #E0DECF;
         self.set_proper_size()
         QMessageBox.exec_(self)
 
-    def button_yes_no_cancel(self):
-        self.setStandardButtons(QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
-        self.setDefaultButton(QMessageBox.No)
-        self.set_proper_size()
-        return QMessageBox.exec_(self)
-
     def button_yes_no(self):
         self.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         self.setDefaultButton(QMessageBox.No)
-        self.set_proper_size()
-        return QMessageBox.exec_(self)
-
-    def custom_buttons(self, button_names: Dict[str, QMessageBox.ButtonRole]):
-        for button_name, role in button_names.items():
-            self.addButton(button_name, role)
-        self.set_proper_size()
-        return QMessageBox.exec_(self)
-
-    def button_yes_no_open(self):
-        self.setStandardButtons(
-            QMessageBox.Yes | QMessageBox.No | QMessageBox.Open)
-        self.setDefaultButton(QMessageBox.No)
-        self.set_proper_size()
-        return QMessageBox.exec_(self)
-
-    def button_ok_open(self):
-        self.setStandardButtons(QMessageBox.Ok | QMessageBox.Open)
-        self.setDefaultButton(QMessageBox.Open)
-        self.set_proper_size()
-        return QMessageBox.exec_(self)
-
-    def button_editr_close(self):
-        self.setStandardButtons(
-            QMessageBox.Save | QMessageBox.Cancel | QMessageBox.Discard)
-        self.setDefaultButton(QMessageBox.Discard)
         self.set_proper_size()
         return QMessageBox.exec_(self)
 
@@ -176,9 +143,8 @@ border-color: #E0DECF;
             int(scrll.horizontalScrollBar().maximum() / 2))
 
 
-
 def get_simple_progressbar(max_len, title='Proszę czekać',
-                           txt='Trwa przetwarzanie danych.', parent = None,
+                           txt='Trwa przetwarzanie danych.', parent=None,
                            window_width: int = 500):
     progress = QProgressDialog(parent)
     progress.setFixedWidth(window_width)
@@ -194,7 +160,6 @@ def get_simple_progressbar(max_len, title='Proszę czekać',
 
 
 class ProperSortFilterProxyModel(QSortFilterProxyModel):
-
     SORTING_AS_NUMBERS = []
     SORTING_AS_NAME = []
 
@@ -350,6 +315,7 @@ def identify_layer_in_group_by_parts(group_name, layer_to_find):
                 and lr.name().startswith(layer_to_find):
             return lr.layer()
 
+
 class IdentifyGeometryByType(QgsMapToolIdentify):
     geomIdentified = pyqtSignal(list)
 
@@ -371,10 +337,12 @@ class IdentifyGeometryByType(QgsMapToolIdentify):
                                 layerList=layerList, mode=self.LayerSelection)
         self.geomIdentified.emit(results)
 
+
 def identify_layer_by_name(layername_to_find):
     for layer in list(project.mapLayers().values()):
         if layer.name() == layername_to_find:
             return layer
+
 
 def transform_geometry(geometry, geom_layer):
     geom_layer_crs = geom_layer.crs()
@@ -462,11 +430,11 @@ class SectionHeaderDelegate(QStyledItemDelegate):
     def paint(self, painter, option, index):
         painter.save()
         painter.setPen(
-            QPen(QBrush(Qt.black), 1, Qt.SolidLine, Qt.SquareCap,
+            QPen(QBrush(Qt.white), 1, Qt.SolidLine, Qt.SquareCap,
                  Qt.BevelJoin))
         painter.setClipRect(option.rect)
         painter.drawLine(option.rect.bottomLeft(), option.rect.bottomRight())
-        painter.setPen(QPen(Qt.black))
+        painter.setPen(QPen(Qt.white))
         font = painter.font()
         font.setPointSize(10)
         painter.setFont(font)
@@ -477,30 +445,6 @@ class SectionHeaderDelegate(QStyledItemDelegate):
 
 GIAP_NEWS_WEB_PAGE = 'https://www.giap.pl/aktualnosci/'
 WFS_PRG = "https://mapy.geoportal.gov.pl/wss/service/PZGIK/PRG/WFS/AdministrativeBoundaries"
-
-# oba poniższe słowniki powinny być spójne
-WMS_SERVERS = {
-    'ORTOFOTOMAPA - WMTS': 'contextualWMSLegend=0&crs=EPSG:2180&dpiMode=0&featureCount=10&format=image/jpeg&layers=ORTOFOTOMAPA&styles=default&tileMatrixSet=EPSG:2180&url=https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMTS/StandardResolution?service%3DWMTS%26request%3DgetCapabilities',
-    'Wizualizacja BDOT10k - WMS': 'contextualWMSLegend=0&crs=EPSG:2180&dpiMode=7&featureCount=10&format=image/png8&layers=RZab&layers=TPrz&layers=SOd2&layers=SOd1&layers=GNu2&layers=GNu1&layers=TKa2&layers=TKa1&layers=TPi2&layers=TPi1&layers=UTrw&layers=TLes&layers=RKr&layers=RTr&layers=ku7&layers=ku6&layers=ku5&layers=ku4&layers=ku3&layers=ku2&layers=ku1&layers=Mo&layers=Szu&layers=Pl3&layers=Pl2&layers=Pl1&layers=kanOkr&layers=rzOk&layers=row&layers=kan&layers=rz&layers=RowEt&layers=kanEt&layers=rzEt&layers=WPow&layers=LBrzN&layers=LBrz&layers=WPowEt&layers=GrPol&layers=Rez&layers=GrPK&layers=GrPN&layers=GrDz&layers=GrGm&layers=GrPo&layers=GrWo&layers=GrPns&layers=PRur&layers=ZbTA&layers=BudCm&layers=TerCm&layers=BudSp&layers=Szkl&layers=Kap&layers=SwNch&layers=SwCh&layers=BudZr&layers=BudGo&layers=BudPWy&layers=BudP2&layers=BudP1&layers=BudUWy&layers=BudU&layers=BudMWy&layers=BudMJ&layers=BudMW&layers=Bzn&layers=BHydA&layers=BHydL&layers=wyk&layers=wa6&layers=wa5&layers=wa4&layers=wa3&layers=wa2&layers=wa1&layers=IUTA&layers=ObOrA&layers=ObPL&layers=Prom&layers=PomL&layers=MurH&layers=PerA&layers=PerL&layers=Tryb&layers=UTrL&layers=LTra&layers=LKNc&layers=LKBu&layers=LKWs&layers=TSt&layers=LKNelJ&layers=LKNelD&layers=LKNelW&layers=LKZelJ&layers=LKZelD&layers=LKZelW&layers=Scz&layers=Al&layers=AlEt&layers=Sch2&layers=Sch1&layers=DrDGr&layers=DrLGr&layers=JDrLNUt&layers=JDLNTw&layers=JDrZTw&layers=JDrG&layers=DrEk&layers=JDrEk&layers=AuBud&layers=JAu&layers=NazDr&layers=NrDr&layers=Umo&layers=PPdz&layers=Prze&layers=TunK&layers=TunD&layers=Klad&layers=MosK&layers=MosD&layers=UTrP&layers=ObKom&layers=InUTP&layers=ZbTP&layers=NazUl&layers=ObOrP&layers=WyBT&layers=LTel&layers=LEle&layers=ObPP&layers=DrzPomP&layers=e13&layers=e12&layers=e11&layers=e10&layers=e9&layers=e8&layers=e7&layers=e6&layers=e5&layers=e4&layers=e3&layers=e2&layers=e1&layers=s19&layers=s18&layers=s17&layers=s16&layers=s15&layers=s14&layers=s13&layers=s12&layers=s11&layers=s10&layers=s9&layers=s8&layers=s7&layers=s6&layers=s5&layers=s4&layers=s3&layers=s2&layers=s1&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&url=http://mapy.geoportal.gov.pl/wss/service/pub/guest/kompozycja_BDOT10k_WMS/MapServer/WMSServer',
-    'Mapa topograficzna - WMTS': 'contextualWMSLegend=0&crs=EPSG:2180&dpiMode=7&featureCount=10&format=image/jpeg&layers=MAPA%20TOPOGRAFICZNA&styles=default&tileMatrixSet=EPSG:2180&url=http://mapy.geoportal.gov.pl/wss/service/WMTS/guest/wmts/TOPO?SERVICE%3DWMTS%26REQUEST%3DGetCapabilities',
-    'Krajowa Integracja Ewidencji Gruntów - WMS': 'contextualWMSLegend=0&crs=EPSG:2180&dpiMode=7&featureCount=10&format=image/png&layers=dzialki&layers=geoportal&layers=powiaty&layers=ekw&layers=zsin&layers=obreby&layers=numery_dzialek&layers=budynki&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&url=http://integracja.gugik.gov.pl/cgi-bin/KrajowaIntegracjaEwidencjiGruntow',
-    'Bank Danych o Lasach - WMS': 'contextualWMSLegend=0&crs=EPSG:2180&dpiMode=7&featureCount=10&format=image/jpeg&layers=0&layers=1&layers=2&layers=3&layers=4&layers=5&styles=&styles=&styles=&styles=&styles=&styles=&url=http://mapserver.bdl.lasy.gov.pl/ArcGIS/services/WMS_BDL/mapserver/WMSServer',
-    'Wody Polskie - mapa zagrożenia powodziowego': 'contextualWMSLegend=0&crs=EPSG:2180&dpiMode=7&featureCount=10&format=image/png&layers=OSZP1m&layers=OSZP1&layers=OSZP10&styles=&styles=&styles=&url=http://integracja.gugik.gov.pl/cgi-bin/MapaZagrozeniaPowodziowego?',
-    'Monitoring Warunków Glebowych': 'contextualWMSLegend=0&crs=EPSG:2180&dpiMode=7&featureCount=10&format=image/png&layers=smois_2021_11_13_12_00_00&layers=smois_2021_11_14_12_00_00&layers=smois_2021_11_15_12_00_00&layers=smois_2021_11_16_12_00_00&layers=smois_2021_11_17_12_00_00&layers=punkty&layers=wojewodztwa&styles&styles&styles&styles&styles&styles&styles&url=https://integracja.gugik.gov.pl/cgi-bin/MonitoringWarunkowGlebowych',
-    'Uzbrojenie terenu': 'contextualWMSLegend=0&crs=EPSG:2180&dpiMode=7&featureCount=10&format=image/png&layers=gesut&layers=kgesut&layers=kgesut_dane&layers=przewod_urzadzenia&layers=przewod_niezidentyfikowany&layers=przewod_specjalny&layers=przewod_telekomunikacyjny&layers=przewod_cieplowniczy&layers=przewod_gazowy&layers=przewod_elektroenergetyczny&layers=przewod_kanalizacyjny&layers=przewod_wodociagowy&styles&styles&styles&styles&styles&styles&styles&styles&styles&styles&styles&styles&url=https://integracja.gugik.gov.pl/cgi-bin/KrajowaIntegracjaUzbrojeniaTerenu'
-}
-
-group_name = "WMS/WMTS"
-WMS_SERVERS_GROUPS = {
-    'ORTOFOTOMAPA - WMTS': group_name,
-    'Wizualizacja BDOT10k - WMS': group_name,
-    'Mapa topograficzna - WMTS': group_name,
-    'Krajowa Integracja Ewidencji Gruntów - WMS': group_name,
-    'Bank Danych o Lasach - WMS': group_name,
-    'Wody Polskie - mapa zagrożenia powodziowego': group_name,
-    'Monitoring Warunków Glebowych': group_name,
-    'Uzbrojenie terenu': group_name
-}
 
 search_group_name = 'WYNIKI WYSZUKIWANIA'
 
@@ -703,8 +647,8 @@ STANDARD_TOOLS = [
     },
 
     {
-        'label': tr('Dodatki'),
-        'id': 'Dodatki',
+        'label': tr('Extras'),
+        'id': 'Extras',
         'btn_size': 30,
         'btns': [
             ['giapPRNG', 0, 0],
@@ -1125,7 +1069,7 @@ DEFAULT_TABS = ['Main tools', 'Advanced tools', 'Vector', 'Raster']
 GIAP_CUSTOM_TOOLS = ['GIAP Tools', 'Vector digitization', 'Measurement',
                      'Project', 'Attributes', 'Advanced attributes',
                      'Selection', 'Navigation', 'Add Layer', 'Create Layer',
-                     'Prints', 'Dodatki']
+                     'Prints', 'Extras']
 TOOLS_HEADERS = [
     'Sections',
     'GIAP sections',

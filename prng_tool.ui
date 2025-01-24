@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Wyszukaj obiekt z PRNG</string>
+   <string>Search for object with PRNG</string>
   </property>
   <property name="windowOpacity">
    <double>0.000000000000000</double>
@@ -33,7 +33,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Podaj nazwę:</string>
+          <string>Enter name:</string>
          </property>
         </widget>
        </item>
@@ -43,7 +43,7 @@
        <item>
         <widget class="QPushButton" name="SzukajButton">
          <property name="text">
-          <string>Szukaj</string>
+          <string>Search</string>
          </property>
         </widget>
        </item>
@@ -52,7 +52,7 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Wyniki:</string>
+        <string>Results:</string>
        </property>
       </widget>
      </item>
@@ -72,7 +72,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Przybliż do obiektu</string>
+        <string>Zoom in to the object</string>
        </property>
       </widget>
      </item>

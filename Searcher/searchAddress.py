@@ -8,14 +8,11 @@ from urllib.parse import quote
 from urllib.request import urlopen
 
 from qgis.PyQt.QtCore import QVariant
-from qgis.core import QgsGeometry, QgsFeature, QgsField, QgsFields, \
-    QgsVectorLayer, QgsMessageLog, Qgis
+from qgis.core import QgsFields, QgsVectorLayer, QgsMessageLog, Qgis
 from qgis.utils import iface
 
 from ..utils import tr, add_map_layer_to_group, search_group_name, project
-################################################################
 from qgis.core import QgsField, QgsFeature, QgsGeometry
-################################################################
 
 
 class SearchAddress:
@@ -94,7 +91,6 @@ class SearchAddress:
                 flds.append(fld)
         lyr.dataProvider().addAttributes(flds)
         lyr.updateFields()
-        # QgsProject.instance().addMapLayer(lyr)
         add_map_layer_to_group(lyr, search_group_name, force_create=True)
         direc = os.path.dirname(__file__)
         lyr.loadNamedStyle(os.path.join(direc, qml))

@@ -35,7 +35,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>GIAP-PolaMap - Wczytywanie warstw z zasobów online</string>
+   <string>Loading layers from online resources</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -166,7 +166,7 @@
              <string notr="true">color : #EDF6FC;	font-weight: bold;</string>
             </property>
             <property name="text">
-             <string>Wczytywanie warstw z zasobów online</string>
+             <string>Loading layers from online resources</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -227,7 +227,7 @@
                 </size>
                </property>
                <property name="text">
-                <string>Wczytaj</string>
+                <string>Load</string>
                </property>
               </widget>
              </item>
@@ -253,7 +253,7 @@
                 </size>
                </property>
                <property name="text">
-                <string>Zaznacz/Odznacz wszystko</string>
+                <string>Select/Unselect all</string>
                </property>
               </widget>
              </item>
@@ -294,7 +294,7 @@
                 </font>
                </property>
                <property name="text">
-                <string>Anuluj</string>
+                <string>Cancel</string>
                </property>
               </widget>
              </item>
@@ -338,7 +338,7 @@
                 </size>
                </property>
                <property name="placeholderText">
-                <string>Wyszukiwany tekst</string>
+                <string/>
                </property>
               </widget>
              </item>
@@ -402,8 +402,8 @@
    padding-right: 5px;</string>
         </property>
         <property name="text">
-         <string>Wczytywanie warstw
-z zasobów online</string>
+         <string>Loading layers from
+online resources</string>
         </property>
        </widget>
       </item>

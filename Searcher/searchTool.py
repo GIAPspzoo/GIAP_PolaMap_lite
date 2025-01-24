@@ -12,7 +12,6 @@ from qgis.PyQt.QtWidgets import QCompleter
 from qgis.core import QgsVectorLayer
 from qgis.utils import iface
 from typing import Union, Dict, List
-########################################################################
 from qgis.core import QgsField, QgsFeature, QgsGeometry, QgsPointXY, QgsMapLayer
 from PyQt5.QtCore import QVariant
 
@@ -20,7 +19,6 @@ from qgis.gui import QgsMapToolEmitPoint
 from urllib.request import urlopen
 from qgis.core import Qgis
 import os
-########################################################################
 
 from .searchAddress import SearchAddress
 from .searchParcel import FetchULDK, ParseResponce
@@ -28,9 +26,7 @@ from ..utils import tr, CustomMessageBox, add_map_layer_to_group, \
     ProgressDialog, identify_layer_in_group, root, WFS_PRG, search_group_name, project
 
 
-
 class SearcherTool:
-
     def __init__(self, dock, iface):
         self.iface = iface
         self.dock = dock
@@ -45,23 +41,18 @@ class SearcherTool:
             self.gmi_changed)
         self.dock.lineEdit_parcel.returnPressed.connect(
             self.search_parcel)
-################################################################################
         self.dock.buttonParcelNr.clicked.connect(self.handle_parcel_button_click)
         self.dock.buttonAdress.clicked.connect(self.handle_address_button_click)
         self._pointTool = None
         self._previousTool = None
         self.clicked_x = None
         self.clicked_y = None
-
-################################################################################
         self.fetch_voivodeship()
-        
-        
-        # TIMER
+
         self.typing_timer = QTimer()
         self.typing_timer.setSingleShot(True)
         self.typing_timer.timeout.connect(self.tips)
-        # COMPLETER SETUP
+
         self.names = QStringListModel()
         self.completer = QCompleter(self.names)
         self.completer.setModel(self.names)
@@ -189,7 +180,7 @@ class SearcherTool:
                 adres = lay_data[lay_key][0]
                 lay_name = lay_key
                 break
-        if 'jpt_kod_je' not in locals() or 'adres' not in locals()\
+        if 'jpt_kod_je' not in locals() or 'adres' not in locals() \
                 or 'lay_name' not in locals():
             CustomMessageBox(self.iface.mainWindow(),
                              mess).button_ok()
@@ -375,8 +366,7 @@ class SearcherTool:
         self._previousTool = canvas.mapTool()
         self._pointTool = PrintClickedPoint(canvas, self)
         canvas.setMapTool(self._pointTool)
-        
-    
+
     def handle_address_button_click(self):
         if self._pointTool is not None:
             self.iface.mapCanvas().unsetMapTool(self._pointTool)
@@ -385,8 +375,6 @@ class SearcherTool:
         self._previousTool = canvas.mapTool()
         self._pointTool = PrintClickedPoint(canvas, self, mode='address')
         canvas.setMapTool(self._pointTool)
-    
-    
 
     def on_point_callback(self, point, mode='parcel'):
         self.clicked_x = round(point.x(), 2)
@@ -396,20 +384,19 @@ class SearcherTool:
         elif mode == 'address':
             self.fetch_address_by_xy()
 
-
     def fetch_address_by_xy(self):
         if self.clicked_x is not None and self.clicked_y is not None:
             url = f'https://services.gugik.gov.pl/uug/?request=GetAddressReverse&location=POINT({self.clicked_x} {self.clicked_y})&srid=2180'
             try:
-                response = requests.get(url, verify = False)
+                response = requests.get(url, verify=False)
                 response.raise_for_status()
                 data = response.json()
                 if 'results' in data and data['results']:
                     first_key = list(data['results'].keys())[0]
                     address = data['results'][first_key]
-                    
+
                     self.add_address_point(address)
-                    
+
                 else:
                     CustomMessageBox(None, tr('No address found.')).button_ok()
             except requests.RequestException as e:
@@ -438,7 +425,7 @@ class SearcherTool:
         org = 'MultiPoint?crs=epsg:2180&index=yes'
         obj_type = 'UUG_pkt'
         qml = os.path.join('layer_style', 'PUNKT_ADRESOWY.qml')
-        layer = self.get_layer_data(org, obj_type, qml) 
+        layer = self.get_layer_data(org, obj_type, qml)
 
         fet = QgsFeature()
         geometry = QgsGeometry.fromPointXY(QgsPointXY(self.clicked_x, self.clicked_y))
@@ -462,23 +449,19 @@ class SearcherTool:
         layer.updateExtents()
         layer.triggerRepaint()
 
-        
     def get_layer_data(self, org: str, obj_type: str,
                        qml: str) -> QgsVectorLayer:
         lyr = project.mapLayersByName(obj_type)
         if lyr:
             return lyr[0]
-
         lyr = QgsVectorLayer(org, obj_type, 'memory')
-        
-        
         lyr.dataProvider().addAttributes(self.flds)
         lyr.updateFields()
         add_map_layer_to_group(lyr, search_group_name, force_create=True)
         direc = os.path.dirname(__file__)
         lyr.loadNamedStyle(os.path.join(direc, qml))
         return lyr
-    
+
     def fetch_parcel_by_xy(self):
         if self.clicked_x is not None and self.clicked_y is not None:
             params = '&result=geom_wkt,teryt,voivodeship,county,region,commune,parcel'
@@ -502,4 +485,3 @@ class PrintClickedPoint(QgsMapToolEmitPoint):
     def canvasPressEvent(self, e):
         point = self.toMapCoordinates(self.canvas.mouseLastXY())
         self.searcher_tool.on_point_callback(point, self.mode)
-
