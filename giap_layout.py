@@ -57,6 +57,7 @@ class MainTabQgsWidget:
         self.searcher = SearcherTool(self.main_widget, self.iface)
         self.sett = QgsSettings()
 
+
         self.style_manager = StyleManager(self)
         self.print_map_tool = PrintMapTool(self.iface)
         self.iface.projectRead.connect(self.projekt_wczytany)
@@ -149,11 +150,13 @@ class MainTabQgsWidget:
         self.styleButton.setBaseSize(QSize(25, 25))
         self.styleButton.clicked.connect(self.show_style_manager_dialog)
         self.styleButton.setObjectName('ThemeButton')
+
         self.settingsButton = QToolButton()
         self.settingsButton.setText(tr("Settings"))
         self.settingsButton.setBaseSize(QSize(25, 25))
         self.settingsButton.clicked.connect(self.show_settings_dialog)
         self.settingsButton.setObjectName('SettingsButton')
+
         corner_widget = QWidget(self.main_widget.tabWidget)
         corner_layout = QHBoxLayout()
         corner_layout.setContentsMargins(0, 0, 0, 0)
@@ -168,7 +171,7 @@ class MainTabQgsWidget:
         # logo icon
         plug_dir = os.path.dirname(__file__)
         gbut = QPushButton()
-        gbut.clicked.connect(lambda: webbrowser.open('www.giap.pl'))
+        gbut.clicked.connect(lambda: webbrowser.open('https://giap.pl/'))
         gbut.setIcon(
             QIcon(os.path.join(plug_dir, 'icons', 'giap.png'))
         )
@@ -180,15 +183,15 @@ class MainTabQgsWidget:
         )
         gbut.setIconSize(QSize(153, 50))
 
-        self.logo_toolbar = QToolBar('GiapLogoBar', self.iface.mainWindow())
-        self.logo_toolbar.setObjectName('GiapLogoBar')
-        self.iface.mainWindow().addToolBar(self.logo_toolbar)
-        self.logo_toolbar.setMovable(False)
-        self.logo_toolbar.setFloatable(True)
-        self.logo_toolbar.addWidget(gbut)
-        self.logo_toolbar.visibilityChanged.connect(self.lock_logo_Toolbar)
-        self.toolbar.visibilityChanged.connect(self.visible_logo_giap_toolbar)
-        self.logo_toolbar.setLayoutDirection(Qt.RightToLeft)
+        # self.logo_toolbar = QToolBar('GiapLogoBar', self.iface.mainWindow())
+        # self.logo_toolbar.setObjectName('GiapLogoBar')
+        # self.iface.mainWindow().addToolBar(self.logo_toolbar)
+        # self.logo_toolbar.setMovable(False)
+        # self.logo_toolbar.setFloatable(True)
+        # self.logo_toolbar.addWidget(gbut)
+        # self.logo_toolbar.visibilityChanged.connect(self.lock_logo_Toolbar)
+        # self.toolbar.visibilityChanged.connect(self.visible_logo_giap_toolbar)
+        # self.logo_toolbar.setLayoutDirection(Qt.RightToLeft)
 
         corner_widget.setLayout(corner_layout)
         self.main_widget.tabWidget.setCornerWidget(corner_widget)
@@ -221,7 +224,7 @@ class MainTabQgsWidget:
 
         orto_button = self.main_widget.runOrtoTool
         orto_button.setIcon(QIcon(os.path.join(self.plugin_dir, 'icons', 'orto_icon2.png')))
-        self.orto = OrtoAddingTool(self.main_widget, orto_button)
+        self.orto_add = OrtoAddingTool(self.main_widget, orto_button, self.iface)
 
         self.visibility_search_tool = False
         self.main_widget.offOnSearchButton.clicked.connect(
@@ -229,7 +232,6 @@ class MainTabQgsWidget:
         self.main_widget.offOnSearchButton.setIcon(
             QIcon(os.path.join(self.plugin_dir, 'styles', 'GIAP Navy Blue', 'icons', 'close.png')))
 
-        # self.searcher.run()
         self.main_widget.setFocusPolicy(Qt.StrongFocus)
 
         new = self.html_div_from_url(GIAP_NEWS_WEB_PAGE)
@@ -365,16 +367,16 @@ class MainTabQgsWidget:
             if edited:
                 self.sett.setValue('core/NewsFeed/httpsfeedqgisorg/lastFetchTime', 0)
 
-    def visible_logo_giap_toolbar(self, visible: bool) -> None:
-        self.logo_toolbar.setVisible(not visible)
+    # def visible_logo_giap_toolbar(self, visible: bool) -> None:
+    #     self.logo_toolbar.setVisible(not visible)
 
-    def lock_logo_Toolbar(self) -> None:
-        if not self.logo_toolbar.isVisible() and not self.toolbar.isVisible():
-            self.logo_toolbar.setVisible(True)
+    # def lock_logo_Toolbar(self) -> None:
+    #     if not self.logo_toolbar.isVisible() and not self.toolbar.isVisible():
+    #         self.logo_toolbar.setVisible(True)
 
     def off_on_search_tool(self, visibility) -> None:
         elements = ['comboBox_woj', 'comboBox_pow', 'comboBox_gmina',
-                    'comboBox_obr',
+                    'comboBox_obr', 'buttonParcelNr', 'buttonAdress',
                     'lineEdit_parcel', 'lineEdit_address', 'line']
 
         for elem in elements:
@@ -586,7 +588,7 @@ class MainTabQgsWidget:
             self.set_dlg.radioButton_en.setChecked(True)
         elif str(QSettings().value('locale/userLocale')) == "pl_PL":
             self.set_dlg.radioButton_pl.setChecked(True)
-        self.set_dlg.spinBox_font.setValue(int(self.font_size))
+        self.set_dlg.spinBox_font.setValue(int(self.font_size or 5))
         self.set_dlg.spinBox_button.clicked.connect(self.set_size)
         self.set_dlg.restart_button.clicked.connect(self.restart_font_size)
         self.set_dlg.exec_()
@@ -667,9 +669,7 @@ class MainTabQgsWidget:
         if project.write():
             res = CustomMessageBox(
                 None,
-                "The program must be restarted for the changes to take effect. Restart now?\n"
-                "Aby zachować zmiany, program musi zostać uruchomiony ponownie. Czy uruchomić ponownie?"
-            ).button_yes_no()
+                tr("The program must be restarted for the changes to take effect. Restart now?")).button_yes_no()
             if res == QMessageBox.Yes:
                 project.setDirty(
                     False)  # workaround - mimo poprawnego zapisu nadal pyta o zapis

@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>923</width>
-    <height>428</height>
+    <height>429</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -36,85 +36,7 @@
     <normaloff>:/plugins/GIAP-giap_layout/icons/giap_logo.png</normaloff>:/plugins/GIAP-giap_layout/icons/giap_logo.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">
-QAbstractItemView
-{
-	alternate-background-color:  #e6e6e6;
-}
-QComboBox
-{
-	selection-background-color: #b7d3e8;
-    background-color: #4f5a63;
-	border-style: solid;
-	border: 1px solid  #5689b0;
-	border-radius: 3px;
-	padding: 2px;
-	font: 9pt &quot;Segoe UI&quot;;
-    height: 20px;
-}
-
-QComboBox:on
-{
-	background-color: #4f5a63;
-	padding-top: 3px;
-	padding-left: 1px;
-	selection-background-color: #4a4a4a;
-}
-
-QComboBox QAbstractItemView
-{
-	background-color: #4f5a63;
-	border-radius: 4px;
-	border: 1px solid  #6fb1e3;
-	selection-background-color: #4f5a63;
-    padding: 4px 10px 4px 10px;
-    width: 1.9em;
-}
-
-QComboBox::drop-down
-{
-	subcontrol-origin: padding;
-	subcontrol-position: top right;
-	width: 15px;
-    background-color: #5689b0;
-	border-left-width: 0;
-	border-left-color:  #1a2936;
-	border-left-style: solid;
-	border-top-right-radius: 3px;
-	border-bottom-right-radius: 3px;
-}
-
-QComboBox::down-arrow
-{
-	image: url(icons/down_arrow_disabled.png);
-}
-
-QComboBox::down-arrow:on,
-QComboBox::down-arrow:hover,
-QComboBox::down-arrow:focus
-{
-	image: url(icons/down_arrow.png);
-}
-
-QLineEdit
-{
-	border: 1px solid #5689b0;
-    border-radius: 3px;
-    background-color: #4f5a63;
-}
-
-QTableView:item:selected {
-   background-color: #6fb1e3;
-}
-
-QTableView:item:hover {
-   background-color: #6fb1e3;
-}
-
-QGroupBox {
-border: 1px solid #5689b0;
-}
-   </string>
+   <string notr="true"/>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedKingdom"/>
@@ -253,9 +175,48 @@ border: 1px solid #5689b0;
              <item row="1" column="0">
               <widget class="QFrame" name="frame_compositions">
                <property name="styleSheet">
-                <string notr="true">border: 1px solid #0A0C0D;
-border-radius: 10px;
-background-color: #EDF6FC;</string>
+                <string notr="true">QListView {
+background-color: #365871;
+selection-background-color:  #5589B0;
+font: 10pt &quot;Segoe UI&quot;;
+padding: 2px;
+}
+QLabel{
+font: 12pt &quot;Segoe UI&quot;;
+color:#E0DECF;
+}
+
+QScrollBar:horizontal {
+    height: 15px;
+}
+QScrollBar::handle:horizontal {
+    background: #5589B0;
+    border-radius: 5px;
+    width: 10px;
+    margin: 2px 0 2px 0;
+}
+
+ QScrollBar:vertical {
+     width: 15px;
+ }
+ QScrollBar::handle:vertical {
+     background: #5589B0;
+     height: 10px;
+     border-radius: 5px;
+	 margin: 0px 2px 0px 2px;
+ }
+ QScrollBar::add-line:vertical{
+border: 1px solid #365871;
+     background:#365871;
+     height: 12px;
+ }
+
+ QScrollBar::sub-line:vertical {
+border: 1px solid #365871;
+     background: #365871;
+     height: 12px;
+ }
+</string>
                </property>
                <property name="frameShape">
                 <enum>QFrame::StyledPanel</enum>
@@ -278,8 +239,8 @@ background-color: #EDF6FC;</string>
                   <property name="styleSheet">
                    <string notr="true">border-width: 0;
 border-radius: 0;
-border-bottom: 1px solid #0A0C0D;
-color: #0A0C0D;</string>
+border-bottom: 1px solid white;
+color: white;</string>
                   </property>
                   <property name="text">
                    <string>Compositions</string>
@@ -469,9 +430,9 @@ color: #0A0C0D;
      </property>
      <property name="font">
       <font>
-       <family>Segoe UI Light</family>
-       <pointsize>8</pointsize>
-       <weight>9</weight>
+       <family>Segoe UI</family>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
@@ -501,10 +462,11 @@ color: #0A0C0D;
       <item>
        <widget class="QLabel" name="label_side">
         <property name="styleSheet">
-         <string notr="true">   background-color: #b7d3e8;
-   color: #0A0C0D;
-   font-weight: bold;
-</string>
+         <string notr="true">
+background-color: #5589B0;
+border: solid;
+border-width: 1px;
+border-color:#5589B0;</string>
         </property>
         <property name="text">
          <string>Select Composition</string>

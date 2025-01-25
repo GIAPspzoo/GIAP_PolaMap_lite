@@ -76,7 +76,7 @@ class SelectSection(QDialog, FORM_CLASS):
         self.algorithmTree.setFilters(filters)
 
     def prepare_predefined_custom_sectons(self) -> None:
-        self.reserved_rows = {0: 'GIAP sections'}
+        self.reserved_rows = {0: tr('GIAP sections')}
         self.tools_id_dict = {}
         self.customlistWidget_obj = QListWidget()
         self.tmp_tools_headers = deepcopy(TOOLS_HEADERS)
@@ -85,7 +85,7 @@ class SelectSection(QDialog, FORM_CLASS):
                       if tool['id'] in GIAP_CUSTOM_TOOLS}
         tools = sorted([tool for tool in tools_dict.values()])
         self.add_header_and_delegate(0, tools, self.customToolList,
-                                     'GIAP sections')
+                                     tr('GIAP sections'))
 
         if self.custom_sections:
             cust_tools_dict = {tool['id']: tr(tool['label'])

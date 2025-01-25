@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1291</width>
-    <height>178</height>
+    <height>179</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -70,6 +70,9 @@
      <property name="currentIndex">
       <number>-1</number>
      </property>
+     <property name="documentMode">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item>
@@ -80,27 +83,25 @@
      <property name="topMargin">
       <number>2</number>
      </property>
+     <property name="bottomMargin">
+      <number>2</number>
+     </property>
      <item>
       <widget class="QToolButton" name="pokaz_warstwy">
        <property name="minimumSize">
         <size>
          <width>60</width>
-         <height>20</height>
+         <height>30</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>90</width>
-         <height>20</height>
+         <width>16777215</width>
+         <height>30</height>
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">QToolButton
-{
-    font: 8pt &quot;Segoe UI&quot;;
-	font-weight: bold;
-    border: none;
-}</string>
+        <string notr="true"/>
        </property>
        <property name="text">
         <string>Layers</string>
@@ -131,7 +132,13 @@
        <property name="minimumSize">
         <size>
          <width>150</width>
-         <height>0</height>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
         </size>
        </property>
        <item>
@@ -146,7 +153,13 @@
        <property name="minimumSize">
         <size>
          <width>150</width>
-         <height>0</height>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
         </size>
        </property>
        <item>
@@ -161,7 +174,13 @@
        <property name="minimumSize">
         <size>
          <width>150</width>
-         <height>0</height>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
         </size>
        </property>
        <item>
@@ -176,7 +195,13 @@
        <property name="minimumSize">
         <size>
          <width>150</width>
-         <height>0</height>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
         </size>
        </property>
        <item>
@@ -191,13 +216,13 @@
        <property name="minimumSize">
         <size>
          <width>150</width>
-         <height>26</height>
+         <height>30</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>80</width>
-         <height>16777215</height>
+         <width>16777215</width>
+         <height>30</height>
         </size>
        </property>
        <property name="toolTip">
@@ -220,6 +245,28 @@ or fill in the previous fields and indicate the parcel number e.g. 17/2</string>
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="buttonParcelNr">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wskaż punkt na mapie, aby pobrać działkę&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Select from map</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="Line" name="line">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
@@ -231,7 +278,13 @@ or fill in the previous fields and indicate the parcel number e.g. 17/2</string>
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>26</height>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
         </size>
        </property>
        <property name="toolTip">
@@ -248,7 +301,42 @@ for the street: Warszawa, Pasaż Ursynowski</string>
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="buttonAdress">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wskaż punkt na mapie, aby pobrać punkt adresowy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Select from map</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -272,6 +360,18 @@ for the street: Warszawa, Pasaż Ursynowski</string>
      </item>
      <item>
       <widget class="QToolButton" name="runArea">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
+        </size>
+       </property>
        <property name="text">
         <string>...</string>
        </property>
@@ -279,6 +379,18 @@ for the street: Warszawa, Pasaż Ursynowski</string>
      </item>
      <item>
       <widget class="QToolButton" name="runQuickPrintButton">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
+        </size>
+       </property>
        <property name="text">
         <string>...</string>
        </property>
@@ -286,6 +398,18 @@ for the street: Warszawa, Pasaż Ursynowski</string>
      </item>
      <item>
       <widget class="QToolButton" name="runCompositionButton">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
+        </size>
+       </property>
        <property name="text">
         <string>...</string>
        </property>
@@ -293,6 +417,18 @@ for the street: Warszawa, Pasaż Ursynowski</string>
      </item>
      <item>
       <widget class="QToolButton" name="runOrtoTool">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
+        </size>
+       </property>
        <property name="text">
         <string>...</string>
        </property>
@@ -300,6 +436,18 @@ for the street: Warszawa, Pasaż Ursynowski</string>
      </item>
      <item>
       <widget class="QToolButton" name="offOnSearchButton">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
+        </size>
+       </property>
        <property name="toolTip">
         <string>Turn off or turn on search tool</string>
        </property>

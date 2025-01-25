@@ -36,28 +36,7 @@
     <normaloff>:/plugins/GIAP-giap_layout/icons/giap_logo.png</normaloff>:/plugins/GIAP-giap_layout/icons/giap_logo.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">QPushButton:hover {
-	font-weight: bold;
-}
-QPushButton:disabled {
-	color: gray;
-}
-QPushButton:disabled {
-	color: gray;
-}
-QTreeView::branch {
-        color: #5689b0;
-}
-QListWidget {
-	alternate-background-color:  #e6e6e6;
-}
-QListWidget:item:selected {
-	background: #6fb1e3;
-	color: #EDF6FC;
-}
-QAbstractItemView {
-	color:  #0A0C0D;
-}</string>
+   <string notr="true"/>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedKingdom"/>
@@ -145,9 +124,9 @@ QAbstractItemView {
      </property>
      <property name="font">
       <font>
-       <family>Segoe UI Light</family>
-       <pointsize>8</pointsize>
-       <weight>9</weight>
+       <family>Segoe UI</family>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
@@ -180,9 +159,7 @@ QAbstractItemView {
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">border-right: 2px solid #b7d3e8;
-padding: 2px;
-</string>
+         <string notr="true"/>
         </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
@@ -194,30 +171,7 @@ padding: 2px;
          <item>
           <widget class="QPushButton" name="addSectionTab">
            <property name="styleSheet">
-            <string notr="true">QPushButton{   
-   background-color: #5689b0;
-   color: #FFF;
-   border: none;
-   border-radius:none;
-}
-QPushButton:hover {
-
-	font-weight: bold;
-}
-QPushButton:pressed {
-   background-color: #5689b0;
-   border: 1px solid #6fb1e3;
-}
-
-QPushButton:disabled
-{
-	color: gray;
-}
-
-QPushButton:disabled
-{
-	color: gray;
-}</string>
+            <string notr="true"/>
            </property>
            <property name="text">
             <string>Add section</string>
@@ -227,31 +181,7 @@ QPushButton:disabled
          <item>
           <widget class="QPushButton" name="searchToolTab">
            <property name="styleSheet">
-            <string notr="true">QPushButton{   
-   background-color: #5689b0;
-   color: #FFF;
-   border: none;
-   border-radius:none;
-   width:125%;
-}
-QPushButton:hover {
-
-	font-weight: bold;
-}
-QPushButton:pressed {
-   background-color: #5689b0;
-   border: 1px solid #6fb1e3;
-}
-
-QPushButton:disabled
-{
-	color: gray;
-}
-
-QPushButton:disabled
-{
-	color: gray;
-}</string>
+            <string notr="true"/>
            </property>
            <property name="text">
             <string>Search tool</string>
@@ -267,30 +197,7 @@ QPushButton:disabled
             </size>
            </property>
            <property name="styleSheet">
-            <string notr="true">QPushButton{   
-   background-color: #5689b0;
-   color: #FFF;
-   border: none;
-   border-radius:none;
-}
-QPushButton:hover {
-
-	font-weight: bold;
-}
-QPushButton:pressed {
-   background-color: #5689b0;
-   border: 1px solid #6fb1e3;
-}
-
-QPushButton:disabled
-{
-	color: gray;
-}
-
-QPushButton:disabled
-{
-	color: gray;
-}</string>
+            <string notr="true"/>
            </property>
            <property name="text">
             <string>Create custom section</string>
@@ -383,9 +290,7 @@ QPushButton:disabled
           <item row="1" column="1">
            <widget class="QFrame" name="frame">
             <property name="styleSheet">
-             <string notr="true">border: 1px solid  #0A0C0D;
-border-radius: 10px;
-background-color: #EDF6FC;</string>
+             <string notr="true"/>
             </property>
             <property name="frameShape">
              <enum>QFrame::NoFrame</enum>
@@ -401,30 +306,12 @@ background-color: #EDF6FC;</string>
               <number>0</number>
              </property>
              <item>
-              <spacer name="verticalSpacer_4">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Minimum</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>8</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
               <widget class="QListView" name="toolList">
                <property name="styleSheet">
                 <string notr="true">QListView {
-    alternate-background-color:  rgb(87, 131, 167);
-	background-color: #EDF6FC;
-	border-width: 0px;
-}
-</string>
+	border: 0;
+	color: #0A0C0D;
+}</string>
                </property>
                <property name="selectionMode">
                 <enum>QAbstractItemView::MultiSelection</enum>
@@ -469,7 +356,7 @@ background-color: #EDF6FC;</string>
              <bool>false</bool>
             </property>
             <property name="styleSheet">
-             <string notr="true">color: #fff</string>
+             <string notr="true"/>
             </property>
             <property name="placeholderText">
              <string>Search...</string>
@@ -619,9 +506,7 @@ background-color: #EDF6FC;</string>
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">border: 1px solid  #0A0C0D;
-border-radius: 10px;
-background-color: #EDF6FC;</string>
+             <string notr="true"/>
             </property>
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>
@@ -636,7 +521,7 @@ background-color: #EDF6FC;</string>
              <property name="bottomMargin">
               <number>0</number>
              </property>
-             <item row="1" column="0">
+             <item row="0" column="0">
               <widget class="QgsProcessingToolboxTreeView" name="algorithmTree">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -648,34 +533,10 @@ background-color: #EDF6FC;</string>
                 <enum>Qt::CustomContextMenu</enum>
                </property>
                <property name="styleSheet">
-                <string notr="true">QTreeView:item{
-	color: #0A0C0D;    
-	border: none;
-}
-QTreeView:item:hover{   
-	background-color: #6FB1E3;
-	color: #fff;
-}
-QTreeView:branch:hover{   
-	background-color: #6FB1E3;
-	color: #fff;
-}
-QTreeView:item:selected{
-	background-color: #6FB1E3;
-	color: #fff;
-}
-QTreeView{    
-	border:1px;
-}
-QToolTip{    
-	color:#EDF6FC;    
-	font: 9pt &quot;Segoe UI&quot;;    
-	font-weight: normal;    
-	border-style: outset;    
-	border: none;    
-	border-radius: 6px;    
-	background-color:qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 #41617c, stop:1 #5a87ac);
-}</string>
+                <string notr="true"/>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
                </property>
                <property name="showDropIndicator" stdset="0">
                 <bool>false</bool>
@@ -688,7 +549,7 @@ QToolTip{
                </property>
               </widget>
              </item>
-             <item row="2" column="0">
+             <item row="1" column="0">
               <spacer name="verticalSpacer_3">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
@@ -700,22 +561,6 @@ QToolTip{
                 <size>
                  <width>20</width>
                  <height>5</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="0" column="0">
-              <spacer name="verticalSpacer_2">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Minimum</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>8</height>
                 </size>
                </property>
               </spacer>
@@ -900,9 +745,7 @@ QToolTip{
           <item row="1" column="1">
            <widget class="QFrame" name="frame_4">
             <property name="styleSheet">
-             <string notr="true">border: 1px solid  #0A0C0D;
-border-radius: 10px;
-background-color: #EDF6FC;</string>
+             <string notr="true"/>
             </property>
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>
@@ -918,30 +761,18 @@ background-color: #EDF6FC;</string>
               <number>0</number>
              </property>
              <item>
-              <spacer name="verticalSpacer_6">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Minimum</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>8</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
               <widget class="QListView" name="customToolList">
                <property name="styleSheet">
                 <string notr="true">QListView {
-    alternate-background-color:  rgb(87, 131, 167);
-	background-color: #EDF6FC;
-	border-width: 0px;
-}
-</string>
+	border: 0;
+	color: #0A0C0D;
+}</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Plain</enum>
                </property>
                <property name="alternatingRowColors">
                 <bool>false</bool>
