@@ -646,20 +646,12 @@ STANDARD_TOOLS = [
         ]
     },
     {
-        'label': tr('Dodatki'),
-        'id': 'Dodatki',
-        'btn_size': 30,
-        'btns': [
-            ['giapgeokodowanie', 0, 0],
-        ]
-    },
-
-    {
         'label': tr('Extras'),
         'id': 'Extras',
         'btn_size': 30,
         'btns': [
             ['giapPRNG', 0, 0],
+            ['giapgeokodowanie', 1, 0],
         ]
     },
     {

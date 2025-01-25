@@ -76,7 +76,7 @@ class Geocoding(QtWidgets.QDialog):
     def __init__(self, parent=None) -> None:
         """Constructor."""
         super(Geocoding, self).__init__(parent)
-        ui_file = os.path.join(os.path.dirname(__file__), 'geocoding_tool.ui')
+        ui_file = os.path.join(os.path.dirname(__file__), 'geocoding_tool_new.ui')
         uic.loadUi(ui_file, self)
         setup_resize(self)
         self.frame_many.hide()
@@ -85,7 +85,7 @@ class Geocoding(QtWidgets.QDialog):
 
         self.geocode = {}
 
-        self.stacked_widget = self.findChild(QStackedWidget, 'stackedWidget')
+        self.stacked_widget = self.findChild(QStackedWidget, 'stackedWidget_2')
         self.geocoding_adress = self.findChild(QRadioButton, 'geocoding_adress')
         self.geocoding_parcels = self.findChild(QRadioButton, 'geocoding_parcels')
         self.geocoding_XY = self.findChild(QRadioButton, 'geocoding_XY')
@@ -219,7 +219,7 @@ class Geocoding(QtWidgets.QDialog):
         separator = self.col_x_cbbx.currentText()
         features = self.collect_objects_from_layer()
         crs = self.col_geom_crs_xy.crs()
-        transform = QgsCoordinateTransform(QgsCoordinateReferenceSystem('EPSG:4326'), crs, QgsProject.instance())
+        transform = QgsCoordinateTransform(crs, QgsCoordinateReferenceSystem('EPSG:4326'), QgsProject.instance())
         for feature in features:
             x = feature[x_field]
             y = feature[y_field]
