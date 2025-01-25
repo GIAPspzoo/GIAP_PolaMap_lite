@@ -226,7 +226,7 @@ background-color: #263c4e;
 }
 
 QComboBox::down-arrow {
-    image: url(icons/branch_open.png);
+    image: url(icons/branch-open.png);
     width: 18px;
     height: 28px;
 }
@@ -313,13 +313,13 @@ QTreeView:item:selected
 QTreeView::branch:has-children:!has-siblings:closed,
 QTreeView::branch:closed:has-children:has-siblings {
         border-image: none;
-        image: url(icons/branch_closed.png);
+        image: url(icons/branch-closed.png);
 }
 
 QTreeView::branch:open:has-children:!has-siblings,
 QTreeView::branch:open:has-children:has-siblings  {
         border-image: none;
-        image: url(icons/branch_open.png);
+        image: url(icons/branch-open.png);
 }
 
 QProgressBar {
@@ -364,7 +364,9 @@ QSpinBox::up-button, QDoubleSpinBox::up-button{
   border: 0px solid #E0DECF;
   border-radius: 3;
   background: #263c4e;
-  image: url(icons/up_arrow.png);
+  image: url(icons/spinup.png);
+  width: 9px;
+  height: 9px;
 }
 
 QSpinBox::down-button, QDoubleSpinBox::down-button {
@@ -373,7 +375,9 @@ QSpinBox::down-button, QDoubleSpinBox::down-button {
   border: 0px solid #E0DECF;
   border-radius: 3;
   background: #263c4e;
-  image: url(icons/down_arrow.png);
+  image: url(icons/spindown.png);
+  width: 9px;
+  height: 9px;
 }
 QSpinBox::down-button:hover, QDoubleSpinBox::down-button:hover, QSpinBox::up-button:hover, QDoubleSpinBox::up-button:hover {
 border: solid;
@@ -391,6 +395,46 @@ QSpinBox::down-arrow:off,
  QDoubleSpinBox::down-arrow:disabled,
 QDoubleSpinBox::down-arrow:off{
   image: none;
+}
+
+QRadioButton::indicator:checked,
+QRadioButton::indicator:unchecked{
+      image: url(icons/rbt_unchecked.png);
+      width: 12px;
+      height: 12px;
+}
+
+QRadioButton::indicator:checked {
+    image: url(icons/rbt_checked.png);
+    width: 12px;
+    height: 12px;
+}
+
+QRadioButton::indicator
+{
+}
+
+QCheckBox::indicator:checked,
+QCheckBox::indicator:unchecked{
+      image: url(icons/unchecked.png);
+      width: 15px;
+      height: 15px;
+}
+
+QCheckBox::indicator:checked {
+    image: url(icons/checked.png);
+    width: 15px;
+    height: 15px;
+}
+
+QCheckBox::indicator
+{
+}
+
+QDockWidget
+{
+  	titlebar-close-icon: url(icons/close.png);
+  	titlebar-normal-icon: url(icons/undock.png);
 }
 
 QTableView {
