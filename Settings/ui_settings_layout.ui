@@ -12,8 +12,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>707</width>
-    <height>487</height>
+    <width>1006</width>
+    <height>583</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -39,79 +39,7 @@
     <normaloff>:/plugins/giap_layout/icons/giap_logo.png</normaloff>:/plugins/giap_layout/icons/giap_logo.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">* {
-    font: 10pt &quot;Segoe UI&quot;;
-}
-
-QComboBox
-{
-	selection-background-color: #b7d3e8;
-    background-color: #4f5a63;
-	border-style: solid;
-	border: 1px solid  #5689b0;
-	border-radius: 3px;
-	padding: 2px;
-	font: 9pt &quot;Segoe UI&quot;;
-    height: 20px;
-}
-
-QComboBox:on
-{
-	background-color: #4f5a63;
-	padding-top: 3px;
-	padding-left: 1px;
-	selection-background-color: #4a4a4a;
-}
-
-QComboBox QAbstractItemView
-{
-	background-color: #4f5a63;
-	border-radius: 4px;
-	border: 1px solid  #6fb1e3;
-	selection-background-color: #4f5a63;
-    padding: 4px 10px 4px 10px;
-    width: 1.9em;
-}
-
-QComboBox::drop-down
-{
-	subcontrol-origin: padding;
-	subcontrol-position: top right;
-	width: 15px;
-    background-color: #5689b0;
-	border-left-width: 0;
-	border-left-color:  #1a2936;
-	border-left-style: solid;
-	border-top-right-radius: 3px;
-	border-bottom-right-radius: 3px;
-}
-
-QComboBox::down-arrow
-{
-	image: url(icons/down_arrow_disabled.png);
-}
-
-QComboBox::down-arrow:on,
-QComboBox::down-arrow:hover,
-QComboBox::down-arrow:focus
-{
-	image: url(icons/down_arrow.png);
-}
-
-QLineEdit
-{
-	border: 1px solid #5689b0;
-    border-radius: 3px;
-    background-color: #4f5a63;
-}
-
-QGroupBox {
-border: 1px solid #5689b0;
-}
-
-QRadioButton:selected{
-	border: none;
-}</string>
+   <string notr="true"/>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedKingdom"/>
@@ -135,7 +63,7 @@ QRadioButton:selected{
    <property name="spacing">
     <number>0</number>
    </property>
-   <item row="1" column="1">
+   <item row="0" column="0">
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="font">
       <font>
@@ -371,31 +299,28 @@ p, li { white-space: pre-wrap; }
              <string>Choose font size</string>
             </property>
             <layout class="QGridLayout" name="gridLayout_2">
+             <property name="leftMargin">
+              <number>9</number>
+             </property>
              <property name="topMargin">
               <number>20</number>
              </property>
-              <property name="leftMargin">
-               <number>9</number>
-              </property>
-              <property name="topMargin">
-               <number>20</number>
-              </property>
-              <property name="rightMargin">
-               <number>600</number>
-              </property>
-              <property name="bottomMargin">
-               <number>9</number>
-              </property>
-              <item row="0" column="0">
-               <widget class="QSpinBox" name="spinBox_font">
-                <property name="minimum">
+             <property name="rightMargin">
+              <number>600</number>
+             </property>
+             <property name="bottomMargin">
+              <number>9</number>
+             </property>
+             <item row="0" column="0">
+              <widget class="QSpinBox" name="spinBox_font">
+               <property name="minimum">
                 <number>5</number>
-                </property>
-                <property name="maximum">
+               </property>
+               <property name="maximum">
                 <number>15</number>
-                </property>
-               </widget>
-              </item>
+               </property>
+              </widget>
+             </item>
              <item row="0" column="1">
               <widget class="QPushButton" name="spinBox_button">
                <property name="text">
@@ -545,80 +470,6 @@ p, li { white-space: pre-wrap; }
        </item>
       </layout>
      </widget>
-    </widget>
-   </item>
-   <item row="0" column="0" rowspan="3">
-    <widget class="QFrame" name="frame">
-     <property name="minimumSize">
-      <size>
-       <width>120</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Segoe UI</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <italic>false</italic>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border-right: 2px solid #b7d3e8;
-</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <property name="spacing">
-       <number>9</number>
-      </property>
-      <property name="leftMargin">
-       <number>12</number>
-      </property>
-      <property name="topMargin">
-       <number>12</number>
-      </property>
-      <property name="rightMargin">
-       <number>12</number>
-      </property>
-      <property name="bottomMargin">
-       <number>5</number>
-      </property>
-      <item>
-       <widget class="QLabel" name="label_side">
-        <property name="styleSheet">
-         <string notr="true">   background-color: #b7d3e8;
-          color: #0A0C0D;
-          font-weight: bold;
-         </string>
-        </property>
-        <property name="locale">
-         <locale language="English" country="UnitedKingdom"/>
-        </property>
-        <property name="text">
-         <string>Settings</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="verticalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-     <zorder>verticalSpacer_3</zorder>
-     <zorder>label_side</zorder>
     </widget>
    </item>
   </layout>

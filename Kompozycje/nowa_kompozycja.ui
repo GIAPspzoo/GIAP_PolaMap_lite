@@ -45,104 +45,7 @@
     <normaloff>:/plugins/GIAP-giap_layout/icons/giap_logo.png</normaloff>:/plugins/GIAP-giap_layout/icons/giap_logo.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">
-
-QAbstractItemView
-{
-	alternate-background-color:  #e6e6e6;
-}
-QComboBox
-{
-	selection-background-color: #b7d3e8;
-    background-color: #4f5a63;
-	border-style: solid;
-	border: 1px solid  #5689b0;
-	border-radius: 3px;
-	padding: 2px;
-	font: 9pt &quot;Segoe UI&quot;;
-    height: 20px;
-}
-
-QComboBox:on
-{
-	background-color: #4f5a63;
-	padding-top: 3px;
-	padding-left: 1px;
-	selection-background-color: #4a4a4a;
-}
-
-QComboBox QAbstractItemView
-{
-	background-color: #4f5a63;
-	border-radius: 4px;
-	border: 1px solid  #6fb1e3;
-	selection-background-color: #4f5a63;
-    padding: 4px 10px 4px 10px;
-    width: 1.9em;
-}
-
-QComboBox::drop-down
-{
-	subcontrol-origin: padding;
-	subcontrol-position: top right;
-	width: 15px;
-    background-color: #5689b0;
-	border-left-width: 0;
-	border-left-color:  #1a2936;
-	border-left-style: solid;
-	border-top-right-radius: 3px; 
-	border-bottom-right-radius: 3px;
-}
-
-QComboBox::down-arrow
-{
-	image: url(icons/down_arrow_disabled.png);
-}
-
-QComboBox::down-arrow:on, 
-QComboBox::down-arrow:hover,
-QComboBox::down-arrow:focus
-{
-	image: url(icons/down_arrow.png);
-}
-
-QLineEdit
-{
-	border: None;
-    border-radius: 3px;
-    background-color: #4f5a63;
-}
-
-QGroupBox {
-border: 1px solid #5689b0;
-}
-
-QToolButton {
-   border: 0 solid transparent;
-   color: #EDF6FC;
-   border-radius: 3px;
-}
-
-QToolButton:hover {
-   background-color: #b7d3e8;
-   border: 1px solid #0A0C0D;
-   color: #0A0C0D;
-}
-
-QToolButton:pressed {
-   background-color: #b7d3e8;
-   border: 1px solid #0A0C0D;
-   color: #0A0C0D;
-}
-
-QListView:item:selected {
-   background-color: #6fb1e3;
-}
-
-QListView:item:hover {
-   background-color: #6fb1e3;
-}
-   </string>
+   <string notr="true"/>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedKingdom"/>
@@ -163,7 +66,7 @@ QListView:item:hover {
    <property name="spacing">
     <number>0</number>
    </property>
-   <item row="2" column="1">
+   <item row="2" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="spacing">
       <number>5</number>
@@ -272,7 +175,7 @@ QListView:item:hover {
      </item>
     </layout>
    </item>
-   <item row="1" column="1">
+   <item row="1" column="0">
     <widget class="QFrame" name="frame_main">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -314,9 +217,9 @@ QAbstractScrollArea:corner{
       <item row="1" column="1" rowspan="5">
        <widget class="QFrame" name="frame_layers">
         <property name="styleSheet">
-         <string notr="true">border: 1px solid #0A0C0D;
-border-radius: 10px;
-background-color: #EDF6FC;</string>
+         <string notr="true">QFrame {
+border: 0px solid #5589B0;
+}</string>
         </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
@@ -337,10 +240,10 @@ background-color: #EDF6FC;</string>
             </size>
            </property>
            <property name="styleSheet">
-            <string notr="true">border-width: 0;
-border-radius: 0;
-border-bottom: 1px solid #0A0C0D;
-color: #0A0C0D;</string>
+            <string notr="true">border-bottom: 1px solid white;
+border-left: none;
+border-right: none;
+border-top: none;</string>
            </property>
            <property name="text">
             <string>Layers in groups</string>
@@ -398,9 +301,9 @@ QScrollBar:vertical{
       <item row="3" column="3">
        <widget class="QFrame" name="frame_5">
         <property name="styleSheet">
-         <string notr="true">border: 1px solid #0A0C0D;
-border-radius: 10px;
-background-color: #EDF6FC;</string>
+         <string notr="true">QFrame {
+border: 0px solid #5589B0;
+}</string>
         </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
@@ -421,10 +324,10 @@ background-color: #EDF6FC;</string>
             </size>
            </property>
            <property name="styleSheet">
-            <string notr="true">border-width: 0;
-border-radius: 0;
-border-bottom: 1px solid #0A0C0D;
-color: #0A0C0D;</string>
+            <string notr="true">border-bottom: 1px solid white;
+border-left: none;
+border-right: none;
+border-top: none;</string>
            </property>
            <property name="text">
             <string>Select layers</string>
@@ -528,9 +431,11 @@ QScrollBar:vertical{
       <item row="1" column="0" rowspan="5">
        <widget class="QFrame" name="frame_groups">
         <property name="styleSheet">
-         <string notr="true">border: 1px solid #0A0C0D;
-border-radius: 10px;
-background-color: #EDF6FC;</string>
+         <string notr="true">QFrame {
+border: 0px solid #5589B0;
+}
+
+</string>
         </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
@@ -551,10 +456,10 @@ background-color: #EDF6FC;</string>
             </size>
            </property>
            <property name="styleSheet">
-            <string notr="true">border-width: 0;
-border-radius: 0;
-border-bottom: 1px solid #0A0C0D;
-color: #0A0C0D;</string>
+            <string notr="true">border-bottom: 1px solid white;
+border-left: none;
+border-right: none;
+border-top: none;</string>
            </property>
            <property name="text">
             <string>Groups</string>
@@ -643,108 +548,9 @@ QScrollBar:vertical{
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">* {
-	background-color: rgb(53, 85, 109);
-    font: 10pt &quot;Segoe UI&quot;; 
-	color: #EDF6FC;
-
-}
-QAbstractItemView
-{
-	alternate-background-color:  #e6e6e6;
-}
-QComboBox
-{
-	selection-background-color: #b7d3e8;
-    background-color: #4f5a63;
-	border-style: solid;
-	border: 1px solid  #5689b0;
-	border-radius: 3px;
-	padding: 2px;
-	font: 9pt &quot;Segoe UI&quot;;
-    height: 20px;
-}
-
-QComboBox:on
-{
-	background-color: #4f5a63;
-	padding-top: 3px;
-	padding-left: 1px;
-	selection-background-color: #4a4a4a;
-}
-
-QComboBox QAbstractItemView
-{
-	background-color: #4f5a63;
-	border-radius: 4px;
-	border: 1px solid  #6fb1e3;
-	selection-background-color: #4f5a63;
-    padding: 4px 10px 4px 10px;
-    width: 1.9em;
-}
-
-QComboBox::drop-down
-{
-	subcontrol-origin: padding;
-	subcontrol-position: top right;
-	width: 15px;
-    background-color: #5689b0;
-	border-left-width: 0;
-	border-left-color:  #1a2936;
-	border-left-style: solid;
-	border-top-right-radius: 3px; 
-	border-bottom-right-radius: 3px;
-}
-
-QComboBox::down-arrow
-{
-	image: url(icons/down_arrow_disabled.png);
-}
-
-QComboBox::down-arrow:on, 
-QComboBox::down-arrow:hover,
-QComboBox::down-arrow:focus
-{
-	image: url(icons/down_arrow.png);
-}
-
-QLineEdit
-{
-	border: None;
-    border-radius: 3px;
-    background-color: #4f5a63;
-}
-
-QGroupBox {
-border: 1px solid #5689b0;
-}
-
-QToolButton {
-	color: #EDF6FC;
-	border-radius: 6px;
-	border: 1px solid white;
-}
-
-QToolButton:hover {
-   background-color: #b7d3e8;
-   border: 1px solid #0A0C0D;
-   color: #0A0C0D;
-}
-
-QToolButton:pressed {
-   background-color: #b7d3e8;
-   border: 1px solid #0A0C0D;
-   color: #0A0C0D;
-}
-
-QListView:item:selected {
-   background-color: #6fb1e3;
-}
-
-QListView:item:hover {
-   background-color: #6fb1e3;
-}
-   </string>
+           <string notr="true">border: solid;
+border-width: 1px;
+border-color:#5589B0;</string>
           </property>
           <property name="text">
            <string>...</string>
@@ -763,129 +569,9 @@ QListView:item:hover {
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">* {
-	background-color: rgb(53, 85, 109);
-    font: 10pt &quot;Segoe UI&quot;; 
-	color: #EDF6FC;
-
-}
-QAbstractItemView
-{
-	alternate-background-color:  #e6e6e6;
-}
-QComboBox
-{
-	selection-background-color: #b7d3e8;
-    background-color: #4f5a63;
-	border-style: solid;
-	border: 1px solid  #5689b0;
-	border-radius: 3px;
-	padding: 2px;
-	font: 9pt &quot;Segoe UI&quot;;
-    height: 20px;
-}
-
-QComboBox:on
-{
-	background-color: #4f5a63;
-	padding-top: 3px;
-	padding-left: 1px;
-	selection-background-color: #4a4a4a;
-}
-
-QComboBox QAbstractItemView
-{
-	background-color: #4f5a63;
-	border-radius: 4px;
-	border: 1px solid  #6fb1e3;
-	selection-background-color: #4f5a63;
-    padding: 4px 10px 4px 10px;
-    width: 1.9em;
-}
-
-QComboBox::drop-down
-{
-	subcontrol-origin: padding;
-	subcontrol-position: top right;
-	width: 15px;
-    background-color: #5689b0;
-	border-left-width: 0;
-	border-left-color:  #1a2936;
-	border-left-style: solid;
-	border-top-right-radius: 3px; 
-	border-bottom-right-radius: 3px;
-}
-
-QComboBox::down-arrow
-{
-	image: url(icons/down_arrow_disabled.png);
-}
-
-QComboBox::down-arrow:on, 
-QComboBox::down-arrow:hover,
-QComboBox::down-arrow:focus
-{
-	image: url(icons/down_arrow.png);
-}
-
-QLineEdit
-{
-	border: None;
-    border-radius: 3px;
-    background-color: #4f5a63;
-}
-
-QPushButton {
-	color: #0A0C0D;
-	border: 1px solid #0A0C0D;
-	background-color: #b7d3e8;
-	border-radius: 3px;
-	padding: 4px;
-}
-
-QPushButton:hover {
-	font-weight: bold;
-}
-QPushButton:pressed {
-   background-color: #5689b0;
-   border: 1px solid #6fb1e3;
-}
-
-QPushButton:disabled
-{
-	color: gray;
-}
-
-QGroupBox {
-border: 1px solid #5689b0;
-}
-
-QToolButton {
-	color: #EDF6FC;
-	border-radius: 6px;
-	border: 1px solid white;
-}
-
-QToolButton:hover {
-   background-color: #b7d3e8;
-   border: 1px solid #0A0C0D;
-   color: #0A0C0D;
-}
-
-QToolButton:pressed {
-   background-color: #b7d3e8;
-   border: 1px solid #0A0C0D;
-   color: #0A0C0D;
-}
-
-QListView:item:selected {
-   background-color: #6fb1e3;
-}
-
-QListView:item:hover {
-   background-color: #6fb1e3;
-}
-   </string>
+           <string notr="true">border: solid;
+border-width: 1px;
+border-color:#5589B0;</string>
           </property>
           <property name="text">
            <string>...</string>
@@ -936,7 +622,7 @@ QListView:item:hover {
      </layout>
     </widget>
    </item>
-   <item row="0" column="1">
+   <item row="0" column="0">
     <widget class="QFrame" name="frame_title">
      <property name="minimumSize">
       <size>
@@ -984,67 +670,6 @@ QListView:item:hover {
        <string>Add new composition</string>
       </property>
      </widget>
-    </widget>
-   </item>
-   <item row="0" column="0" rowspan="3">
-    <widget class="QFrame" name="frame">
-     <property name="minimumSize">
-      <size>
-       <width>120</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Segoe UI Light</family>
-       <pointsize>8</pointsize>
-       <weight>9</weight>
-       <italic>false</italic>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">
-          * {
-          color: #0A0C0D;
-          }
-          QFrame {
-          border-right: 2px solid #b7d3e8;
-          }
-      </string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="1" column="0">
-       <spacer name="verticalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_side">
-        <property name="styleSheet">
-         <string notr="true">   background-color: #b7d3e8;
-   color: #0A0C0D;
-   font-weight: bold;
-   padding-left: 5px;
-   padding-right: 5px;</string>
-        </property>
-        <property name="text">
-         <string>Settings</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-     </layout>
     </widget>
    </item>
   </layout>

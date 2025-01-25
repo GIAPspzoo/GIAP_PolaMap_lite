@@ -12,8 +12,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>550</width>
-    <height>576</height>
+    <width>753</width>
+    <height>721</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -39,68 +39,7 @@
     <normaloff>:/plugins/giap_layout/icons/giap_logo.png</normaloff>:/plugins/giap_layout/icons/giap_logo.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">
-<!--    * {-->
-<!--	background-color: rgb(53, 85, 109);-->
-<!--    font: 10pt &quot;Segoe UI&quot;;-->
-<!--	color: #EDF6FC;-->
-<!--}-->
-QComboBox
-{
-	selection-background-color: #6fb1e3;
-    background-color: #4f5a63;
-	border: None;
-	border-radius: 3px;
-	padding: 2px;
-	font: 9pt &quot;Segoe UI&quot;;
-    height: 20px;
-}
-
-QComboBox:on
-{
-	background-color: #4f5a63;
-	padding-top: 3px;
-	padding-left: 1px;
-	selection-background-color: #4a4a4a;
-}
-
-QComboBox QAbstractItemView
-{
-	background-color: #4f5a63;
-	border-radius: 4px;
-	border: 1px solid  #6fb1e3;
-	selection-background-color: #4f5a63;
-    padding: 4px 10px 4px 10px;
-    width: 1.9em;
-}
-
-QComboBox::drop-down
-{
-	subcontrol-origin: padding;
-	subcontrol-position: top right;
-	width: 15px;
-    background-color: #5689b0;
-	border-left-width: 0;
-	border-left-color:  #1a2936;
-	border-left-style: solid;
-	border-top-right-radius: 3px;
-	border-bottom-right-radius: 3px;
-}
-
-QLineEdit
-{
-	border: None;
-    border-radius: 3px;
-    background-color: #4f5a63;
-}
-
-QLineEdit:focus{
-    border: 1px solid #5689B0;
-}
-
-QGroupBox {
-border: 1px solid #5689b0;
-}</string>
+   <string notr="true"/>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedKingdom"/>
@@ -230,23 +169,23 @@ border: 1px solid #5689b0;
           <enum>QFrame::Plain</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout_4">
-          <item row="0" column="0">
-           <widget class="QProgressBar" name="progressBar">
-            <property name="value">
-             <number>24</number>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QGroupBox" name="groupBox_6">
+          <item row="3" column="0">
+           <widget class="QGroupBox" name="groupBox_4">
             <property name="title">
-             <string>Annotations</string>
+             <string>Page orientation</string>
             </property>
-            <layout class="QGridLayout" name="gridLayout_10">
+            <layout class="QGridLayout" name="gridLayout_8">
              <item row="0" column="0">
-              <widget class="QLineEdit" name="adnotacje_lineEdit">
-               <property name="maxLength">
-                <number>700</number>
+              <widget class="QRadioButton" name="horizontalRadioButton">
+               <property name="text">
+                <string>horizontal</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QRadioButton" name="verticalRadioButton">
+               <property name="text">
+                <string>vertical</string>
                </property>
               </widget>
              </item>
@@ -269,26 +208,32 @@ border: 1px solid #5689b0;
             </layout>
            </widget>
           </item>
-          <item row="7" column="0">
+          <item row="4" column="0">
+           <widget class="QGroupBox" name="groupBox_6">
+            <property name="title">
+             <string>Annotations</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_10">
+             <item row="0" column="0">
+              <widget class="QLineEdit" name="adnotacje_lineEdit">
+               <property name="maxLength">
+                <number>700</number>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="8" column="0">
            <widget class="QGroupBox" name="groupBox_3">
             <property name="title">
              <string>Format</string>
             </property>
             <layout class="QGridLayout" name="gridLayout_7">
-             <item row="0" column="0">
-              <widget class="QRadioButton" name="pdfRadioButton">
+             <item row="0" column="3">
+              <widget class="QRadioButton" name="shpRadioButton">
                <property name="text">
-                <string>PDF</string>
-               </property>
-               <property name="autoRepeatDelay">
-                <number>300</number>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QRadioButton" name="pngRadioButton">
-               <property name="text">
-                <string>PNG</string>
+                <string>SHP</string>
                </property>
               </widget>
              </item>
@@ -299,28 +244,48 @@ border: 1px solid #5689b0;
                </property>
               </widget>
              </item>
-            </layout>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QGroupBox" name="groupBox_4">
-            <property name="title">
-             <string>Page orientation</string>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_8">
-             <item row="0" column="0">
-              <widget class="QRadioButton" name="horizontalRadioButton">
+             <item row="0" column="1">
+              <widget class="QRadioButton" name="pngRadioButton">
                <property name="text">
-                <string>horizontal</string>
+                <string>PNG</string>
                </property>
               </widget>
              </item>
-             <item row="0" column="1">
-              <widget class="QRadioButton" name="verticalRadioButton">
+             <item row="0" column="4">
+              <widget class="QRadioButton" name="tiffRadioButton">
                <property name="text">
-                <string>vertical</string>
+                <string>GEOTIFF</string>
                </property>
               </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QRadioButton" name="pdfRadioButton">
+               <property name="text">
+                <string>PDF</string>
+               </property>
+               <property name="autoRepeatDelay">
+                <number>300</number>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0" colspan="5">
+              <widget class="QCheckBox" name="dodaj_warstwy_checkBox">
+               <property name="text">
+                <string>Add layers to tree layer view</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QGroupBox" name="groupBox_5">
+            <property name="title">
+             <string>Paper size</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_9">
+             <item row="0" column="0">
+              <widget class="QComboBox" name="paperFormatComboBox"/>
              </item>
             </layout>
            </widget>
@@ -372,18 +337,6 @@ border: 1px solid #5689b0;
             </layout>
            </widget>
           </item>
-          <item row="5" column="0">
-           <widget class="QGroupBox" name="groupBox_5">
-            <property name="title">
-             <string>Paper size</string>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_9">
-             <item row="0" column="0">
-              <widget class="QComboBox" name="paperFormatComboBox"/>
-             </item>
-            </layout>
-           </widget>
-          </item>
           <item row="6" column="0">
            <widget class="QGroupBox" name="groupBox_7">
             <property name="title">
@@ -399,12 +352,79 @@ border: 1px solid #5689b0;
                 <number>2000</number>
                </property>
                <property name="value">
-                <number>600</number>
+                <number>300</number>
                </property>
               </widget>
              </item>
             </layout>
            </widget>
+          </item>
+          <item row="7" column="0">
+           <widget class="QGroupBox" name="groupBox_8">
+            <property name="title">
+             <string>Print range</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_12">
+             <item row="1" column="0">
+              <widget class="QRadioButton" name="biezacy_widok_rb">
+               <property name="text">
+                <string>Current View</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="5">
+              <widget class="QPushButton" name="wskaz_z_mapy_pb">
+               <property name="text">
+                <string>Select from map</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QRadioButton" name="maska_rb">
+               <property name="text">
+                <string>Crop mask</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QRadioButton" name="caly_zasieg_rb">
+               <property name="text">
+                <string>Full coverage</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3" colspan="3">
+              <widget class="QRadioButton" name="skala_projektu_rb">
+               <property name="text">
+                <string>Print in the scale of the project</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0" colspan="5">
+              <widget class="QLineEdit" name="lineEdit_maska"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QProgressBar" name="progressBar">
+            <property name="value">
+             <number>24</number>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="0">
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </widget>
@@ -636,7 +656,7 @@ border: 1px solid #5689b0;
         <property name="styleSheet">
          <string notr="true">   background-color: #b7d3e8;
    color:  #0A0C0D;
-<!--   font: 10pt &quot;Segoe UI&quot;; -->
+
    font-weight: bold;
 </string>
         </property>

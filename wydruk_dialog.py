@@ -18,7 +18,7 @@ class WydrukDialog(QtWidgets.QDialog, FORM_CLASS):
         super(WydrukDialog, self).__init__(parent)
         self.setupUi(self)
         self.progressBar.hide()
-        self.resspinBox.setValue(600)
+        self.resspinBox.setValue(300)
         self.dateedit.setText(QtCore.QDateTime.currentDateTime().toString('yyyy-MM-dd'))
         self.dateedit.setInputMask('9999-99-99')
         self.dateedit.textEdited.connect(self.date_input)
@@ -31,8 +31,6 @@ class WydrukDialog(QtWidgets.QDialog, FORM_CLASS):
         self.date_button.setPopupMode(QToolButton.InstantPopup)
         self.date_button.setMenu(popup_menu)
         self.calendar.clicked.connect(self.set_date)
-
-
 
     def date_input(self) -> None:
         cur_pos = self.dateedit.cursorPosition()

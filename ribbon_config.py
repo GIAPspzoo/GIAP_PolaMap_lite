@@ -354,7 +354,7 @@ RIBBON_DEFAULT = [
             {
                 'label': tr('Raster'),
                 'id': 'Raster',
-                'btn_size': 60,
+                'btn_size': 30,
                 'btns': [
                     ['mActionShowRasterCalculator', 0, 0],
                     ['mActionShowGeoreferencer', 0, 1],

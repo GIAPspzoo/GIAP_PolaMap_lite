@@ -2,16 +2,19 @@ import os
 import re
 from typing import List, Any, Dict, Optional, Union
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QSortFilterProxyModel
+from PyQt5.QtWidgets import QPushButton
+from qgis.gui import QgsMapToolIdentify
 from qgis.PyQt import QtCore, QtGui
-from qgis.PyQt.QtCore import QThread, QObject, QSettings
+from qgis.PyQt.QtCore import QThread, QObject, QSettings, Qt, pyqtSignal, NULL
 from qgis.PyQt.QtGui import QPen, QBrush, QIcon, QPixmap
 from qgis.PyQt.QtWidgets import QApplication, QProgressDialog, \
     QStyledItemDelegate, QAction, QMessageBox, QScrollArea, QWidget, \
     QGridLayout, QLabel, QDialogButtonBox, QToolButton, QToolBar
 from qgis.core import QgsProject, QgsMessageLog, Qgis, QgsApplication, \
-    QgsVectorLayer, QgsMapLayer
+    QgsVectorLayer, QgsMapLayer, QgsCoordinateTransform, QgsGeometry, QgsPointXY, QgsRectangle
 from qgis.utils import iface
+import qgis
 
 project = QgsProject.instance()
 root = project.layerTreeRoot()
@@ -19,10 +22,44 @@ root = project.layerTreeRoot()
 
 class CustomMessageBox(QMessageBox):
     stylesheet = """
+        * {
+            background-color: rgb(53, 85, 109, 220);
+            color: rgb(255, 255, 255);
+            font: 10pt "Segoe UI";
+            border: 0px;
+        }
+
         QAbstractItemView {
             selection-background-color:  rgb(87, 131, 167);
         }
-    """
+
+        QPushButton {
+            border: none;
+            border-width: 1px;
+            border-radius:3px;
+            background-color: #5589B0;
+        }
+        QPushButton:checked {
+            background-color: #5589B0;
+            border: solid;
+            border-width: 1px;
+            border-color: #5589B0;
+        }
+        
+        QPushButton:pressed {
+            background-color: #5589B0;
+            border: solid;
+            border-width: 1px;
+            border-color:#5589B0;
+        }
+        QPushButton:hover {
+            background-color: #5589B0;
+            border-radius: 3px;
+            border: solid;
+            border-style: solid;
+            border-width: 1px;
+            border-color: #E0DECF;
+        }"""
 
     def __init__(self, parent=None, text='', image=''):
         super(CustomMessageBox, self).__init__(parent)
@@ -31,7 +68,6 @@ class CustomMessageBox(QMessageBox):
         self.rebuild_layout(text, image)
 
     def rebuild_layout(self, text, image):
-        self.stylesheet = f'*{{font: {QSettings().value("qgis/stylesheet/fontPointSize")}pt;}} {self.stylesheet}'
         self.setStyleSheet(self.stylesheet)
 
         scrll = QScrollArea(self)
@@ -64,7 +100,8 @@ class CustomMessageBox(QMessageBox):
         self.layout().removeItem(self.layout().itemAt(0))
         self.layout().removeItem(self.layout().itemAt(0))
         self.setWindowTitle('GIAP-PolaMap(lite)')
-        self.setWindowIcon(icon_manager(['window_icon'])['window_icon'])
+        plug_dir = os.path.dirname(__file__)
+        self.setWindowIcon(QIcon(os.path.join(plug_dir, 'giap.ico')))
 
     def button_ok(self):
         self.setStandardButtons(QMessageBox.Ok)
@@ -75,26 +112,6 @@ class CustomMessageBox(QMessageBox):
     def button_yes_no(self):
         self.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         self.setDefaultButton(QMessageBox.No)
-        self.set_proper_size()
-        return QMessageBox.exec_(self)
-
-    def button_yes_no_open(self):
-        self.setStandardButtons(
-            QMessageBox.Yes | QMessageBox.No | QMessageBox.Open)
-        self.setDefaultButton(QMessageBox.No)
-        self.set_proper_size()
-        return QMessageBox.exec_(self)
-
-    def button_ok_open(self):
-        self.setStandardButtons(QMessageBox.Ok | QMessageBox.Open)
-        self.setDefaultButton(QMessageBox.Open)
-        self.set_proper_size()
-        return QMessageBox.exec_(self)
-
-    def button_editr_close(self):
-        self.setStandardButtons(
-            QMessageBox.Save | QMessageBox.Cancel | QMessageBox.Discard)
-        self.setDefaultButton(QMessageBox.Discard)
         self.set_proper_size()
         return QMessageBox.exec_(self)
 
@@ -114,6 +131,10 @@ class CustomMessageBox(QMessageBox):
                 new_size.setWidth(self.qwdt.sizeHint().width())
             else:
                 new_size.setWidth(btn_box_width)
+        for child in self.findChild(QDialogButtonBox).children():
+            if isinstance(child, QPushButton):
+                child.setMinimumHeight(25)
+                child.setMinimumWidth(50)
         scrll.setFixedSize(new_size)
         scrll.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         scrll.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
@@ -121,9 +142,90 @@ class CustomMessageBox(QMessageBox):
         scrll.horizontalScrollBar().setValue(
             int(scrll.horizontalScrollBar().maximum() / 2))
 
-    def set_size(self, value: int) -> None:
-        self.stylesheet = f'*{{font: {value}pt;}} {self.stylesheet}'
-        self.setStyleSheet(self.stylesheet)
+
+def get_simple_progressbar(max_len, title='Proszę czekać',
+                           txt='Trwa przetwarzanie danych.', parent=None,
+                           window_width: int = 500):
+    progress = QProgressDialog(parent)
+    progress.setFixedWidth(window_width)
+    progress.setWindowTitle(title)
+    progress.setLabelText(txt)
+    progress.setMaximum(max_len)
+    progress.setValue(0)
+    progress.setAutoClose(True)
+    progress.setCancelButton(None)
+    progress.setWindowIcon(QIcon(':/plugins/GIAP-PolaMap/icons/giap_logo.png'))
+    QApplication.processEvents()
+    return progress
+
+
+class ProperSortFilterProxyModel(QSortFilterProxyModel):
+    SORTING_AS_NUMBERS = []
+    SORTING_AS_NAME = []
+
+    def __init__(self):
+        QSortFilterProxyModel.__init__(self)
+        self.sorting_functions = {
+            'SORTING_AS_NUMBERS': self._less_than_numbers,
+            'SORTING_AS_NAME': self._less_than_name
+        }
+        self.setFilterCaseSensitivity(Qt.CaseInsensitive)
+        self.sortOrder()
+
+    def lessThan(self, left, right):
+        col_num = left.column()
+        for sorting_cat in self.sorting_functions:
+            if col_num in getattr(self, sorting_cat):
+                return self.sorting_functions[sorting_cat](left, right)
+        return QSortFilterProxyModel.lessThan(self, left, right)
+
+    def _less_than_name(self, left, right):
+        try:
+            lvalue = left.data()
+            rvalue = right.data()
+
+            if lvalue in (NULL, 'NULL', ''):
+                lvalue = ''
+            if rvalue in (NULL, 'NULL', ''):
+                rvalue = ''
+            if not str(lvalue).lower():
+                if self.sortOrder():
+                    return True
+                else:
+                    return False
+            elif not str(rvalue).lower():
+                if self.sortOrder():
+                    return False
+                else:
+                    return True
+            else:
+                return str(lvalue).lower() < str(rvalue).lower()
+        except (ValueError, TypeError):
+            return QSortFilterProxyModel.lessThan(self, left, right)
+
+    def _less_than_numbers(self, left, right):
+        try:
+            lvalue = left.data()
+            rvalue = right.data()
+            if lvalue in (NULL, 'NULL', ''):
+                lvalue = ''
+            if rvalue in (NULL, 'NULL', ''):
+                rvalue = ''
+            if not lvalue:
+                if self.sortOrder():
+                    return True
+                else:
+                    return False
+            elif not rvalue:
+                if self.sortOrder():
+                    return False
+                else:
+                    return True
+            lvalue = float(lvalue)
+            rvalue = float(rvalue)
+            return lvalue < rvalue
+        except (ValueError, TypeError) as e:
+            return QSortFilterProxyModel.lessThan(self, left, right)
 
 
 class SingletonModel:
@@ -208,17 +310,50 @@ def identify_layer_in_group(group_name, layer_to_find):
 
 
 def identify_layer_in_group_by_parts(group_name, layer_to_find):
-    """
-    Identyfikuje warstwę gdy nie mamy jej pełnej nazwy.
-
-    :param group_name: string
-    :param layer_to_find: string, początek nazwy warstwy
-    :return: QgsVectorLayer
-    """
     for lr in project.layerTreeRoot().findLayers():
         if lr.parent().name() == group_name \
                 and lr.name().startswith(layer_to_find):
             return lr.layer()
+
+
+class IdentifyGeometryByType(QgsMapToolIdentify):
+    geomIdentified = pyqtSignal(list)
+
+    def __init__(self, canvas, wkb_type_list, get_only_visible_layers=False):
+        QgsMapToolIdentify.__init__(self, canvas)
+        self.wkb_types = wkb_type_list
+        self.get_only_visible_layers = get_only_visible_layers
+
+    def canvasReleaseEvent(self, mouseEvent):
+        if self.get_only_visible_layers:
+            layers = iface.mapCanvas().layers()
+        else:
+            layers = project.mapLayers().values()
+        layerList = []
+        for layer in layers:
+            if layer.type().value == 0 and layer.wkbType() in self.wkb_types:
+                layerList.append(layer)
+        results = self.identify(mouseEvent.x(), mouseEvent.y(),
+                                layerList=layerList, mode=self.LayerSelection)
+        self.geomIdentified.emit(results)
+
+
+def identify_layer_by_name(layername_to_find):
+    for layer in list(project.mapLayers().values()):
+        if layer.name() == layername_to_find:
+            return layer
+
+
+def transform_geometry(geometry, geom_layer):
+    geom_layer_crs = geom_layer.crs()
+    destination_crs = iface.mapCanvas().mapSettings().destinationCrs()
+    xform = QgsCoordinateTransform(geom_layer_crs, destination_crs, project)
+    if isinstance(geometry, (QgsPointXY, QgsRectangle)):
+        geom_in_dest_crs = xform.transform(geometry)
+    else:
+        geom_in_dest_crs = QgsGeometry(geometry)
+        geom_in_dest_crs.transform(xform)
+    return geom_in_dest_crs
 
 
 def set_project_config(parameter, key, value):
@@ -290,16 +425,16 @@ class SectionHeaderDelegate(QStyledItemDelegate):
 
     def sizeHint(self, option, index):
         return QtCore.QSize(
-            QtGui.QTextDocument(index.model().data(index)).idealWidth(), 30)
+            int(QtGui.QTextDocument(index.model().data(index)).idealWidth()), 30)
 
     def paint(self, painter, option, index):
         painter.save()
         painter.setPen(
-            QPen(QBrush(Qt.black), 1, Qt.SolidLine, Qt.SquareCap,
+            QPen(QBrush(Qt.white), 1, Qt.SolidLine, Qt.SquareCap,
                  Qt.BevelJoin))
         painter.setClipRect(option.rect)
         painter.drawLine(option.rect.bottomLeft(), option.rect.bottomRight())
-        painter.setPen(QPen(Qt.black))
+        painter.setPen(QPen(Qt.white))
         font = painter.font()
         font.setPointSize(10)
         painter.setFont(font)
@@ -310,30 +445,6 @@ class SectionHeaderDelegate(QStyledItemDelegate):
 
 GIAP_NEWS_WEB_PAGE = 'https://www.giap.pl/aktualnosci/'
 WFS_PRG = "https://mapy.geoportal.gov.pl/wss/service/PZGIK/PRG/WFS/AdministrativeBoundaries"
-
-# oba poniższe słowniki powinny być spójne
-WMS_SERVERS = {
-    'ORTOFOTOMAPA - WMTS': 'contextualWMSLegend=0&crs=EPSG:2180&dpiMode=0&featureCount=10&format=image/jpeg&layers=ORTOFOTOMAPA&styles=default&tileMatrixSet=EPSG:2180&url=https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMTS/StandardResolution?service%3DWMTS%26request%3DgetCapabilities',
-    'Wizualizacja BDOT10k - WMS': 'contextualWMSLegend=0&crs=EPSG:2180&dpiMode=7&featureCount=10&format=image/png8&layers=RZab&layers=TPrz&layers=SOd2&layers=SOd1&layers=GNu2&layers=GNu1&layers=TKa2&layers=TKa1&layers=TPi2&layers=TPi1&layers=UTrw&layers=TLes&layers=RKr&layers=RTr&layers=ku7&layers=ku6&layers=ku5&layers=ku4&layers=ku3&layers=ku2&layers=ku1&layers=Mo&layers=Szu&layers=Pl3&layers=Pl2&layers=Pl1&layers=kanOkr&layers=rzOk&layers=row&layers=kan&layers=rz&layers=RowEt&layers=kanEt&layers=rzEt&layers=WPow&layers=LBrzN&layers=LBrz&layers=WPowEt&layers=GrPol&layers=Rez&layers=GrPK&layers=GrPN&layers=GrDz&layers=GrGm&layers=GrPo&layers=GrWo&layers=GrPns&layers=PRur&layers=ZbTA&layers=BudCm&layers=TerCm&layers=BudSp&layers=Szkl&layers=Kap&layers=SwNch&layers=SwCh&layers=BudZr&layers=BudGo&layers=BudPWy&layers=BudP2&layers=BudP1&layers=BudUWy&layers=BudU&layers=BudMWy&layers=BudMJ&layers=BudMW&layers=Bzn&layers=BHydA&layers=BHydL&layers=wyk&layers=wa6&layers=wa5&layers=wa4&layers=wa3&layers=wa2&layers=wa1&layers=IUTA&layers=ObOrA&layers=ObPL&layers=Prom&layers=PomL&layers=MurH&layers=PerA&layers=PerL&layers=Tryb&layers=UTrL&layers=LTra&layers=LKNc&layers=LKBu&layers=LKWs&layers=TSt&layers=LKNelJ&layers=LKNelD&layers=LKNelW&layers=LKZelJ&layers=LKZelD&layers=LKZelW&layers=Scz&layers=Al&layers=AlEt&layers=Sch2&layers=Sch1&layers=DrDGr&layers=DrLGr&layers=JDrLNUt&layers=JDLNTw&layers=JDrZTw&layers=JDrG&layers=DrEk&layers=JDrEk&layers=AuBud&layers=JAu&layers=NazDr&layers=NrDr&layers=Umo&layers=PPdz&layers=Prze&layers=TunK&layers=TunD&layers=Klad&layers=MosK&layers=MosD&layers=UTrP&layers=ObKom&layers=InUTP&layers=ZbTP&layers=NazUl&layers=ObOrP&layers=WyBT&layers=LTel&layers=LEle&layers=ObPP&layers=DrzPomP&layers=e13&layers=e12&layers=e11&layers=e10&layers=e9&layers=e8&layers=e7&layers=e6&layers=e5&layers=e4&layers=e3&layers=e2&layers=e1&layers=s19&layers=s18&layers=s17&layers=s16&layers=s15&layers=s14&layers=s13&layers=s12&layers=s11&layers=s10&layers=s9&layers=s8&layers=s7&layers=s6&layers=s5&layers=s4&layers=s3&layers=s2&layers=s1&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&url=http://mapy.geoportal.gov.pl/wss/service/pub/guest/kompozycja_BDOT10k_WMS/MapServer/WMSServer',
-    'Mapa topograficzna - WMTS': 'contextualWMSLegend=0&crs=EPSG:2180&dpiMode=7&featureCount=10&format=image/jpeg&layers=MAPA%20TOPOGRAFICZNA&styles=default&tileMatrixSet=EPSG:2180&url=http://mapy.geoportal.gov.pl/wss/service/WMTS/guest/wmts/TOPO?SERVICE%3DWMTS%26REQUEST%3DGetCapabilities',
-    'Krajowa Integracja Ewidencji Gruntów - WMS': 'contextualWMSLegend=0&crs=EPSG:2180&dpiMode=7&featureCount=10&format=image/png&layers=dzialki&layers=geoportal&layers=powiaty&layers=ekw&layers=zsin&layers=obreby&layers=numery_dzialek&layers=budynki&styles=&styles=&styles=&styles=&styles=&styles=&styles=&styles=&url=http://integracja.gugik.gov.pl/cgi-bin/KrajowaIntegracjaEwidencjiGruntow',
-    'Bank Danych o Lasach - WMS': 'contextualWMSLegend=0&crs=EPSG:2180&dpiMode=7&featureCount=10&format=image/jpeg&layers=0&layers=1&layers=2&layers=3&layers=4&layers=5&styles=&styles=&styles=&styles=&styles=&styles=&url=http://mapserver.bdl.lasy.gov.pl/ArcGIS/services/WMS_BDL/mapserver/WMSServer',
-    'Wody Polskie - mapa zagrożenia powodziowego': 'contextualWMSLegend=0&crs=EPSG:2180&dpiMode=7&featureCount=10&format=image/png&layers=OSZP1m&layers=OSZP1&layers=OSZP10&styles=&styles=&styles=&url=http://integracja.gugik.gov.pl/cgi-bin/MapaZagrozeniaPowodziowego?',
-    'Monitoring Warunków Glebowych': 'contextualWMSLegend=0&crs=EPSG:2180&dpiMode=7&featureCount=10&format=image/png&layers=smois_2021_11_13_12_00_00&layers=smois_2021_11_14_12_00_00&layers=smois_2021_11_15_12_00_00&layers=smois_2021_11_16_12_00_00&layers=smois_2021_11_17_12_00_00&layers=punkty&layers=wojewodztwa&styles&styles&styles&styles&styles&styles&styles&url=https://integracja.gugik.gov.pl/cgi-bin/MonitoringWarunkowGlebowych',
-    'Uzbrojenie terenu': 'contextualWMSLegend=0&crs=EPSG:2180&dpiMode=7&featureCount=10&format=image/png&layers=gesut&layers=kgesut&layers=kgesut_dane&layers=przewod_urzadzenia&layers=przewod_niezidentyfikowany&layers=przewod_specjalny&layers=przewod_telekomunikacyjny&layers=przewod_cieplowniczy&layers=przewod_gazowy&layers=przewod_elektroenergetyczny&layers=przewod_kanalizacyjny&layers=przewod_wodociagowy&styles&styles&styles&styles&styles&styles&styles&styles&styles&styles&styles&styles&url=https://integracja.gugik.gov.pl/cgi-bin/KrajowaIntegracjaUzbrojeniaTerenu'
-}
-
-group_name = "WMS/WMTS"
-WMS_SERVERS_GROUPS = {
-    'ORTOFOTOMAPA - WMTS': group_name,
-    'Wizualizacja BDOT10k - WMS': group_name,
-    'Mapa topograficzna - WMTS': group_name,
-    'Krajowa Integracja Ewidencji Gruntów - WMS': group_name,
-    'Bank Danych o Lasach - WMS': group_name,
-    'Wody Polskie - mapa zagrożenia powodziowego': group_name,
-    'Monitoring Warunków Glebowych': group_name,
-    'Uzbrojenie terenu': group_name
-}
 
 search_group_name = 'WYNIKI WYSZUKIWANIA'
 
@@ -536,6 +647,14 @@ STANDARD_TOOLS = [
     },
 
     {
+        'label': tr('Extras'),
+        'id': 'Extras',
+        'btn_size': 30,
+        'btns': [
+            ['giapPRNG', 0, 0],
+        ]
+    },
+    {
         'label': tr('Geoprocessing Tools'),
         'id': 'Geoprocessing Tools',
         'btn_size': 30,
@@ -623,7 +742,7 @@ STANDARD_TOOLS = [
     {
         'label': tr('Raster'),
         'id': 'Raster',
-        'btn_size': 60,
+        'btn_size': 30,
         'btns': [
             ['mActionShowRasterCalculator', 0, 0],
             ['mActionShowGeoreferencer', 0, 1],
@@ -950,7 +1069,7 @@ DEFAULT_TABS = ['Main tools', 'Advanced tools', 'Vector', 'Raster']
 GIAP_CUSTOM_TOOLS = ['GIAP Tools', 'Vector digitization', 'Measurement',
                      'Project', 'Attributes', 'Advanced attributes',
                      'Selection', 'Navigation', 'Add Layer', 'Create Layer',
-                     'Prints']
+                     'Prints', 'Extras']
 TOOLS_HEADERS = [
     'Sections',
     'GIAP sections',
@@ -1237,7 +1356,8 @@ custom_icon_dict = {
     'mActionShowAlignRasterTool': 'mActionShowAlignRasterTool.png',
     'mActionNewMemoryLayer': 'mActionNewMemoryLayer.png',
     'mActionSaveProjectAs': 'mActionSaveProjectAs.png',
-    'window_icon': 'giap_logo.png'
+    'window_icon': 'giap_logo.png',
+    'giapPRNG': 'giapPRNG.png'
 }
 
 custom_label_dict = {
@@ -1245,7 +1365,8 @@ custom_label_dict = {
     'giapCompositions': "Composition settings",
     "giapQuickPrint": "Map quick print",
     "giapMyPrints": "My Prints",
-    "giapAreaLength": 'Area and length'
+    "giapAreaLength": 'Area and length',
+    'giapPRNG': 'PRNG Tool'
 }
 
 max_ele_nazwy = 4

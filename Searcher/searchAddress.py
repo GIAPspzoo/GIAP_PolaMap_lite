@@ -8,11 +8,11 @@ from urllib.parse import quote
 from urllib.request import urlopen
 
 from qgis.PyQt.QtCore import QVariant
-from qgis.core import QgsGeometry, QgsFeature, QgsField, QgsFields, \
-    QgsVectorLayer, QgsMessageLog, Qgis
+from qgis.core import QgsFields, QgsVectorLayer, QgsMessageLog, Qgis
 from qgis.utils import iface
 
 from ..utils import tr, add_map_layer_to_group, search_group_name, project
+from qgis.core import QgsField, QgsFeature, QgsGeometry
 
 
 class SearchAddress:
@@ -30,7 +30,7 @@ class SearchAddress:
             QgsField("number", QVariant.String, len=20),
             QgsField("simc", QVariant.String, len=30),
             QgsField("street", QVariant.String, len=250),
-            QgsField("stret_accuracy", QVariant.String, len=10),
+            QgsField("street_accuracy", QVariant.String, len=10),
             QgsField("teryt", QVariant.String, len=20),
             QgsField("ulic", QVariant.String, len=30),
             QgsField("x", QVariant.Double, "double", 10, 4),
@@ -91,7 +91,6 @@ class SearchAddress:
                 flds.append(fld)
         lyr.dataProvider().addAttributes(flds)
         lyr.updateFields()
-        # QgsProject.instance().addMapLayer(lyr)
         add_map_layer_to_group(lyr, search_group_name, force_create=True)
         direc = os.path.dirname(__file__)
         lyr.loadNamedStyle(os.path.join(direc, qml))
@@ -120,6 +119,8 @@ class SearchAddress:
             return False, tr('Check log, problems occured.')
         fnm = lyr.dataProvider().fieldNameMap()
         feats = []
+        
+        
         if 'only exact numbers' in self.jres.keys():  # if jezeli znajdzie dokladnie ten adres
             exact_adr = self.jres['results'][
                 '1']  # poprzednia metoda zapelniala warstwe wszystkim co znalazla
@@ -148,7 +149,7 @@ class SearchAddress:
                     feats.append(feat)
 
         return True, feats
-
+        
     def zoom_to_feature(self, layer: str) -> None:
         layer = project.mapLayersByName(layer)[0]
         iface.mapCanvas().zoomScale(500)
@@ -167,3 +168,6 @@ class SearchAddress:
             lyr.dataProvider().addFeatures(feats)
             self.zoom_to_feature(obj_type)
         return True
+    
+    
+    
