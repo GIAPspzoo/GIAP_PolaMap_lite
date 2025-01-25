@@ -88,21 +88,24 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
     
     def get_selected_layers(self):
         model = self.listView.model()
-        source_model = model.sourceModel()
-        self.selected_layers.clear()
-        
-        for index in range(model.rowCount()):
-            source_index = model.mapToSource(model.index(index, 0))
-            item = source_model.item(source_index.row())
-            if item.checkState() == Qt.Checked:
-                layer_name = item.text()
-                self.selected_layers.append(layer_name)
-        
-        if not self.selected_layers:
+        if model:
+            source_model = model.sourceModel()
+            self.selected_layers.clear()
+
+            for index in range(model.rowCount()):
+                source_index = model.mapToSource(model.index(index, 0))
+                item = source_model.item(source_index.row())
+                if item.checkState() == Qt.Checked:
+                    layer_name = item.text()
+                    self.selected_layers.append(layer_name)
+
+            if not self.selected_layers:
+                QMessageBox.warning(self, "No layers selected", "Please select at least one layer to add.")
+                return
+        else:
             QMessageBox.warning(self, "No layers selected", "Please select at least one layer to add.")
             return
-    
-    
+
     def transform_feature_geometry(self, geom: QgsGeometry, input_crs: int,
                                output_crs: int) -> QgsGeometry:
         if input_crs == output_crs:
@@ -190,13 +193,13 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
 
     def add_selected_layers_to_map(self):
         self.get_selected_layers()
-        
-        for layer_name in self.selected_layers:
-            layer = self.create_WFS_layer(layer_name)
-            if layer:
-                processed_layer = self.apply_bbox_to_layer(layer)
-                QgsProject.instance().addMapLayer(processed_layer)
-        QgsProject.instance().removeMapLayer(layer.id())
+        if self.selected_layers:
+            for layer_name in self.selected_layers:
+                layer = self.create_WFS_layer(layer_name)
+                if layer:
+                    processed_layer = self.apply_bbox_to_layer(layer)
+                    QgsProject.instance().addMapLayer(processed_layer)
+            QgsProject.instance().removeMapLayer(layer.id())
 
 # wersja z progres barem 
 ################################################################################

@@ -1357,7 +1357,8 @@ custom_icon_dict = {
     'mActionNewMemoryLayer': 'mActionNewMemoryLayer.png',
     'mActionSaveProjectAs': 'mActionSaveProjectAs.png',
     'window_icon': 'giap_logo.png',
-    'giapPRNG': 'giapPRNG.png'
+    'giapPRNG': 'giapPRNG.png',
+    'giapAddWfsLayer': 'giapAddWfsLayer.png',
 }
 
 custom_label_dict = {
