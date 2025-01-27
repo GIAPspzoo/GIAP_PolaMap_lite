@@ -100,7 +100,7 @@ class OrtoActionService(QObject):
         if not online_layers:
             progress.close()
             CustomMessageBox(
-                None, f'{tr('Cannot be added')} {self.name}.').button_ok()
+                None, f'''{tr('Cannot be added')} {self.name}.''').button_ok()
             return
         group = root.findGroup(self.name)
         if not group:
