@@ -50,10 +50,6 @@ QAbstractScrollArea::corner {
 width: 0px;
 height: 0px;
 }
-QProgressBar {
-    border: 2px solid #263B4E;
-    border-radius: 5px;
-}
 
 QLineEdit, QTextEdit{
 color:#E0DECF;
@@ -81,6 +77,11 @@ background-color: #5589B0;
 border: solid;
 border-width: 1px;
 border-color: #5589B0;
+}
+
+QPushButton:disabled, QToolButton:disabled  {
+background-color: #465A68;
+color: #7E7F81;
 }
 
 QPushButton:pressed {
@@ -331,11 +332,11 @@ QToolBar {
 }
 
 QProgressBar {
-    border: 2px solid #365871;
-    background-color: #365871;
+    border: 1px solid #E0DECF;
+    background-color: white;
     border-radius: 3px;
     text-align: center;
-    color: #E0DECF;
+    color: #263c4e;
 }
 
 QProgressBar::chunk {
@@ -505,5 +506,3 @@ QTableView::item:selected, QListView::item:selected
             color: #E0DECF;
             background-color: #5589B0;
         }
-
-
