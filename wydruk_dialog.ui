@@ -49,21 +49,7 @@ font: 10pt &quot;Segoe UI&quot;;
 color:#E0DECF;
 height: 35px;
 }
-QCheckBox::indicator {
-  width: 13px;
-    height: 13px;
-border: 0px solid #E0DECF;
-}
-QCheckBox::indicator:checked {
- image: url(:/plugins/GIAP-PolaMap/icons/checked.png);
-  width: 13px;
-    height: 13px;
-}
-QCheckBox::indicator:unchecked {
- image: url(:/plugins/GIAP-PolaMap/icons/unchecked.png);
-  width: 13px;
-    height: 13px;
-}
+
 
 QScrollBar:horizontal {
     height: 15px;

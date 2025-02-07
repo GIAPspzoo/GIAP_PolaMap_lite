@@ -785,26 +785,31 @@ QTableView::item, QListView::item
         {
             color: #263c4e;
         }
+
 QTableView::item:hover, QListView::item:hover
         {
             color: white;
             background: #5589B0;
             selection-background-color: #5589B0;
         }
+
 QTableView::item:focus, QListView::item:focus
         {
             color: white;
             background: #263B4E;
         }
+
 QTableView::item:selected, QListView::item:selected
         {
             color: white;
             background-color: #5589B0;
-        }
-</string>
+        }</string>
            </property>
            <property name="editTriggers">
             <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="showDropIndicator" stdset="0">
+            <bool>true</bool>
            </property>
            <property name="dragEnabled">
             <bool>false</bool>
@@ -819,13 +824,16 @@ QTableView::item:selected, QListView::item:selected
             <enum>Qt::MoveAction</enum>
            </property>
            <property name="alternatingRowColors">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
            <property name="selectionMode">
             <enum>QAbstractItemView::MultiSelection</enum>
            </property>
            <property name="selectionBehavior">
             <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+           <property name="layoutMode">
+            <enum>QListView::SinglePass</enum>
            </property>
           </widget>
          </item>

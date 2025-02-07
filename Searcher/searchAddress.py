@@ -8,7 +8,7 @@ from urllib.parse import quote
 from urllib.request import urlopen
 
 from qgis.PyQt.QtCore import QVariant
-from qgis.core import QgsFields, QgsVectorLayer, QgsMessageLog, Qgis
+from qgis.core import QgsFields, QgsVectorLayer, QgsMessageLog, Qgis, QgsProject
 from qgis.utils import iface
 
 from ..utils import tr, add_map_layer_to_group, search_group_name, project
@@ -19,7 +19,6 @@ class SearchAddress:
     def __init__(self):
         self.address = ''
         self.adres = ''
-        # fields for layer
         self.layer_fields = [
             QgsField('accuracy', QVariant.String, len=10),
             QgsField("city", QVariant.String, len=150),
@@ -166,6 +165,8 @@ class SearchAddress:
                 return
             lyr = self.get_layer_data(org, obj_type, qml)
             lyr.dataProvider().addFeatures(feats)
+            root = QgsProject.instance().layerTreeRoot()
+            root.findLayer(lyr).setItemVisibilityCheckedParentRecursive(True)
             self.zoom_to_feature(obj_type)
         return True
     

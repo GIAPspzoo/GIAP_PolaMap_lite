@@ -419,7 +419,8 @@ class MainTabQgsWidget:
     def off_on_search_tool(self, visibility) -> None:
         elements = ['comboBox_woj', 'comboBox_pow', 'comboBox_gmina',
                     'comboBox_obr', 'buttonParcelNr', 'buttonAdress',
-                    'lineEdit_parcel', 'lineEdit_address', 'line']
+                    'lineEdit_parcel', 'lineEdit_address', 'line',
+                    'wyszukaj_pushButton', 'wyszukaj_adres_pushButton']
 
         for elem in elements:
             getattr(self.main_widget, elem).setVisible(visibility)

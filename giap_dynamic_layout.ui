@@ -245,6 +245,19 @@ or fill in the previous fields and indicate the parcel number e.g. 17/2</string>
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="wyszukaj_pushButton">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Search</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="buttonParcelNr">
        <property name="minimumSize">
         <size>
@@ -297,6 +310,19 @@ for the street: Warszawa, Pasaż Ursynowski</string>
        </property>
        <property name="placeholderText">
         <string>Search address point</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="wyszukaj_adres_pushButton">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Search</string>
        </property>
       </widget>
      </item>
