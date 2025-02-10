@@ -69,6 +69,7 @@ class MainTabQgsWidget:
         self.iface.initializationCompleted.connect(self.load_ribbons)
         self.iface.newProjectCreated.connect(self.missingCorePlugins)
         self.set_dlg = SettingsDialog()
+        self.set_dlg.groupBox_5.hide()
         self.set_dlg.adjustSize()
         self.style_manager_dlg = StyleManagerDialog(self.style_manager)
         self.font_size = QSettings().value("qgis/stylesheet/fontPointSize")
