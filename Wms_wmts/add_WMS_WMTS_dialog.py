@@ -15,7 +15,6 @@ class CreateConnection(QDialog, FORM_CLASS):
         self.setupUi(self)
         self.parent = parent
         self.json_file = self.parent.json_file
-        self.plugins = qgis.utils.plugins['GIAP-PolaMap(lite)']
         self.parent.groups_combobox(self)
         self.comboBox_group.setCurrentText('')
         self.close_btn.clicked.connect(self.accept)
@@ -41,5 +40,5 @@ class CreateConnection(QDialog, FORM_CLASS):
                 json_read.close()
             with open(self.json_file, "w+") as json_write:
                 json.dump(data, json_write)
-            self.plugins.orto_add.my_refresh_menu()
+            self.parent.OrtoAddingTool.my_refresh_menu()
             self.close()

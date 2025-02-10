@@ -8,5 +8,5 @@ class WMS_WMTS(QObject):
         self.parent = parent
 
     def run(self):
-        self.configure_wms_dlg = WMS_WMTS_dialog()
+        self.configure_wms_dlg = WMS_WMTS_dialog(self.parent)
         self.configure_wms_dlg.run()
