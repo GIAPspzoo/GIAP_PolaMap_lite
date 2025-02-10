@@ -506,3 +506,15 @@ QTableView::item:selected, QListView::item:selected
             color: #E0DECF;
             background-color: #5589B0;
         }
+
+QListView::indicator:checked {
+image: url(icons/checked_black.png);
+    width: 15px;
+    height: 15px;
+}
+
+QListView::indicator:unchecked {
+image: url(icons/unchecked_black.png);
+    width: 15px;
+    height: 15px;
+}
