@@ -6,6 +6,7 @@ color:#E0DECF;
 QLabel, QCheckBox {
 color:#E0DECF;
 }
+
 QScrollBar:horizontal {
     height: 15px;
 }
@@ -276,28 +277,32 @@ border-radius: 3px;
 background-color:#4F5A63;
 }
 
-Line{
-color: 1px solid #E0DECF;
-}
 
-QTabBar::tab {
-    padding: 2px;
-    color: #E0DECF;
-}
 QTabBar {
     font: 10pt "Segoe UI";
+    border-bottom: 1px solid #E0DECF;
 }
 
 QTabWidget::tab-bar {
-    left: 5px;
+    left: 1px;
 }
+QTabBar::tab {
+    padding-left: 6px;
+    padding-right: 6px;
+    color: #E0DECF;
+}
+
 QTabBar::tab:disabled{
     color: #7E7F81;
 }
 
-QTabWidget::pane {
+QTabWidget::pane, QTabBar::pane {
+    align: center;
     border: 1px solid #365871;
     border-top: 1px solid #E0DECF;
+}
+QDialog QTabWidget::pane, QTabBar::pane {
+    border: 1px solid #E0DECF;
 }
 
 QTabWidget::pane:disabled {
@@ -314,32 +319,34 @@ border-bottom: 1px solid #7E7F81;
 
 QTabBar::tab:selected, QTabBar::tab:hover, QTabBar::tab:!selected:hover {
 font-weight: 450;
-padding: 3px;
+margin-bottom: 3px;
 border-top: 2px solid #365871;
 border-right: 0px solid #E0DECF;
 border-left: 0px solid #E0DECF;
 border-bottom: 3px solid #E0DECF;
-background: #5589B0;
+background: #365871;
 }
 
 QTabBar::tab:!selected {
+margin-bottom: 2px;
 font-weight: 450;
 color: #E0DECF;
 border: 2px solid #365871;
-border-bottom: 1px solid #E0DECF;
 }
 
 QTreeView {
+    margin-left: 2px;
     border: 1px solid;
     border-color: #5589B0;
-    margin: 2px;
    show-decoration-selected: 1;
 }
 
 QTreeView::item,
 QTreeView::branch {
     color: #E0DECF;
-     padding: 2px;
+    padding-left: 1px;
+     padding-top: 2px;
+     padding-bottom: 2px;
 }
 
 QTreeView:branch:hover,
@@ -347,16 +354,16 @@ QTreeView:item:hover
 {
     background-color: #5589B0;
 }
-View::indicator:unchecked {
+QTreeView::indicator:unchecked {
        image: url(icons/unchecked.png);
-      width: 15px;
-      height: 15px;
+      width: 12px;
+      height: 12px;
  }
 
  QTreeView::indicator:checked {
         image: url(icons/checked.png);
-      width: 15px;
-      height: 15px;
+      width: 12px;
+      height: 12px;
   }
 
 QTreeView:branch:selected,
@@ -488,39 +495,24 @@ QCheckBox:disabled, QRadioButton:disabled, QLabel:disabled, QTabBar:disabled {
     color: #7E7F81;
 }
 
-QCheckBox::indicator:unchecked{
+QCheckBox::indicator:unchecked, QGroupBox::indicator:unchecked{
       image: url(icons/unchecked.png);
       width: 12px;
       height: 12px;
 }
 
-QCheckBox::indicator:checked {
+QCheckBox::indicator:checked, QGroupBox::indicator:checked {
     image: url(icons/checked.png);
     width: 12px;
     height: 12px;
 }
-QCheckBox::indicator:disabled:unchecked{
+QCheckBox::indicator:disabled:unchecked, QGroupBox::indicator:disabled:unchecked{
     image: url(icons/rbt_unchecked_disable.png);
     width: 12px;
     height: 12px;
 }
-QCheckBox::indicator:disabled:checked{
+QCheckBox::indicator:disabled:checked, QGroupBox::indicator:disabled:checked{
     image: url(icons/checked_disable.png);
-    width: 12px;
-    height: 12px;
-}
-
-QGroupBox::indicator:unchecked {
-      image: url(icons/unchecked_disable.png);
-      width: 12px;
-      height: 12px;
-}
-QGroupBox::indicator:checked {
-      image: url(icons/checked.png);
-      width: 12px;
-      height: 12px;
-}
-QGroupBox::indicator {
     width: 12px;
     height: 12px;
 }
@@ -531,7 +523,6 @@ QDockWidget
   	titlebar-normal-icon: url(icons/undock.png);
   	width: 12px;
     height: 12px;
-    border: 10px solid lightgray;
 }
 
 QTableView {
@@ -543,23 +534,30 @@ QTableView:disabled {
     background-color: #465A68;
     color: #7E7F81;
 }
+Qwidget QFrame{
+    padding-top: 5px;
+    margin-top: 5px;
+    padding-left: 5px;
+}
 
 QGroupBox {
-    padding: 2px;
-    border-top: 1px solid #E0DECF;
-    margin-top: 5ex;
+    padding-top: 5px;
+    margin-top: 5px;
+    padding-left: 5px;
+    border: 1px solid #E0DECF;
 }
 QGroupBox::title {
+    padding: 2px;
     subcontrol-origin: margin;
-    padding: 2px 5px 2px 5px;
     }
 
 QGroupBox::title:disabled{
     color: #7E7F81;
 }
 QGroupBox:disabled{
-    border-top: 1px solid #7E7F81;
+    border: 1px solid #7E7F81;
 }
+
 QDialog QTreeView {
 			alternate-background-color:#465A68;
 			alternate-color: #263c4e;
@@ -605,14 +603,14 @@ QWidget QFrame QFrame QTreeView:item:hover
     background-color: #5589B0;
     color: white
 }
- QWidget QFrame QFrame QTreeView::indicator:unchecked {
-       image: url(icons/unchecked.png);
+QWidget QFrame QFrame QTreeView::indicator:unchecked {
+      image: url(icons/unchecked.png);
       width: 15px;
       height: 15px;
  }
 
- QWidget QFrame QFrameQTreeView::indicator:checked {
-        image: url(icons/checked.png);
+QWidget QFrame QFrameQTreeView::indicator:checked {
+      image: url(icons/checked.png);
       width: 15px;
       height: 15px;
   }
