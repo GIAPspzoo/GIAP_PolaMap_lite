@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 
 import os
 
+from PyQt5.QtGui import QIcon
 from qgis.PyQt import QtWidgets, uic, QtCore
 
 from qgis.PyQt.QtWidgets import QWidgetAction, QCalendarWidget, QMenu, QToolButton
@@ -17,6 +18,7 @@ class WydrukDialog(QtWidgets.QDialog, FORM_CLASS):
         """Constructor."""
         super(WydrukDialog, self).__init__(parent)
         self.setupUi(self)
+        self.plugin_dir = os.path.dirname(__file__)
         self.progressBar.hide()
         self.resspinBox.setValue(300)
         self.dateedit.setText(QtCore.QDateTime.currentDateTime().toString('yyyy-MM-dd'))
@@ -30,6 +32,8 @@ class WydrukDialog(QtWidgets.QDialog, FORM_CLASS):
         popup_menu.addAction(btn_action)
         self.date_button.setPopupMode(QToolButton.InstantPopup)
         self.date_button.setMenu(popup_menu)
+        self.date_button.setIcon(
+            QIcon(os.path.join(self.plugin_dir, 'icons', 'calendar.png')))
         self.calendar.clicked.connect(self.set_date)
 
     def date_input(self) -> None:
