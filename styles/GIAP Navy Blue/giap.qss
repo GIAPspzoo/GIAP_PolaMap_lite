@@ -130,7 +130,7 @@ QWebView, QTextBrowser
     background-color: white;
 }
 
-QMenuBar {
+QMenuBar, QMenuBar:hover {
 selection-background-color:  #5589B0;
 }
 
@@ -138,7 +138,7 @@ QMenu{
 border: 1px solid #263c4e;
 }
 
-QMenu::item:selected {
+QMenu::item:selected, QMenu::item:hover {
 background-color:  #5589B0;
 }
 
@@ -631,6 +631,11 @@ QTableView, QListView
             alternate-background-color: #4F5A63;
             selection-background-color: #5589B0;
             border: 1px solid #5589B0;
+        }
+QTableView:disabled, QListView:disabled
+        {
+            background-color: #465A68;
+            color: #7E7F81;
         }
 QTableView::item, QListView::item
         {
