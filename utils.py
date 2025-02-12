@@ -645,13 +645,13 @@ STANDARD_TOOLS = [
             ['giapAreaLength', 0, 3],
         ]
     },
-
     {
         'label': tr('Extras'),
         'id': 'Extras',
         'btn_size': 30,
         'btns': [
             ['giapPRNG', 0, 0],
+            ['giapgeokodowanie', 1, 0],
         ]
     },
     {
@@ -1357,7 +1357,8 @@ custom_icon_dict = {
     'mActionNewMemoryLayer': 'mActionNewMemoryLayer.png',
     'mActionSaveProjectAs': 'mActionSaveProjectAs.png',
     'window_icon': 'giap_logo.png',
-    'giapPRNG': 'giapPRNG.png'
+    'giapPRNG': 'giapPRNG.png',
+    'giapgeokodowanie': 'giapgeokodowanie.png',
 }
 
 custom_label_dict = {
@@ -1366,7 +1367,8 @@ custom_label_dict = {
     "giapQuickPrint": "Map quick print",
     "giapMyPrints": "My Prints",
     "giapAreaLength": 'Area and length',
-    'giapPRNG': 'PRNG Tool'
+    'giapPRNG': 'PRNG Tool',
+    "giapgeokodowanie": 'geokodowanie',
 }
 
 max_ele_nazwy = 4

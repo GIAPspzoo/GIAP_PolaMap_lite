@@ -15,6 +15,7 @@ from qgis.core import QgsApplication
 from qgis.utils import iface
 from qgis.gui import QgsMapTool
 
+from .geocoding_tool import Geocoding
 from .prng_tool import PRNGTool
 from .OrtoTools import OrtoAddingTool
 from .QuickPrint import PrintMapTool
@@ -868,6 +869,11 @@ class CustomSection(QWidget):
                 self.tbut.setToolTip(tr("PRNG Tool"))
                 self.prng_tool = PRNGTool(self)
                 self.tbut.clicked.connect(self.prng_tool.run)
+
+            if oname == "giapgeokodowanie":
+                self.tbut.setToolTip(tr("geocoding"))
+                self.geocoding_tool = Geocoding(self)
+                self.tbut.clicked.connect(self.geocoding_tool.run)
 
             self.tbut.setIcon(icon)
 

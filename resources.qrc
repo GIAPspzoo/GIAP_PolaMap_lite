@@ -139,5 +139,6 @@
     <file>icons/zglaszaj_awarie.png</file>
     <file>icons/admin_tools.png</file>
     <file>icons/giapPRNG.png</file>
+    <file>icons/giapgeokodowanie.png</file>
   </qresource>
 </RCC>
