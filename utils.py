@@ -652,6 +652,8 @@ STANDARD_TOOLS = [
         'btn_size': 30,
         'btns': [
             ['giapPRNG', 0, 0],
+            ['giapGeoportal', 1, 0],
+            ['giapOrtoContr', 0, 1],
         ]
     },
     {
@@ -1357,7 +1359,9 @@ custom_icon_dict = {
     'mActionNewMemoryLayer': 'mActionNewMemoryLayer.png',
     'mActionSaveProjectAs': 'mActionSaveProjectAs.png',
     'window_icon': 'giap_logo.png',
-    'giapPRNG': 'giapPRNG.png'
+    'giapPRNG': 'giapPRNG.png',
+    'giapGeoportal': 'giapGeoportal.png',
+    'giapOrtoContr': 'giapOrtoContr.png',
 }
 
 custom_label_dict = {
@@ -1366,7 +1370,9 @@ custom_label_dict = {
     "giapQuickPrint": "Map quick print",
     "giapMyPrints": "My Prints",
     "giapAreaLength": 'Area and length',
-    'giapPRNG': 'PRNG Tool'
+    'giapPRNG': 'PRNG Tool',
+    'giapGeoportal': 'Geoportal',
+    'giapOrtoContr': 'Ortofotomapa archiwalna',
 }
 
 max_ele_nazwy = 4
