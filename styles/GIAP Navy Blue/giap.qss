@@ -384,6 +384,7 @@ QTreeView::branch:open:has-children:has-siblings  {
         border-image: none;
         image: url(icons/branch-open.png);
 }
+
 QToolBar {
     border: 0px solid white;
 }

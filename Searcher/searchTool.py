@@ -136,6 +136,8 @@ class SearcherTool:
 
     def search_address(self) -> None:
         validate_address = self.validate_lineedit()
+        progress = ProgressDialog(None, tr("Waiting for the ULDK website response"))
+        progress.start()
         ok = False
         if validate_address:
             lineedit = self.dock.lineEdit_address.text().split(',')
@@ -151,7 +153,7 @@ class SearcherTool:
             except:
                 pass
             if not ok:
-                CustomMessageBox(None, f'{tr("Warning!")} Wystąpił nieoczekiwany błąd.').button_ok()
+                CustomMessageBox(None, f'{tr("Warning! An unexpected error.")}').button_ok()
                 return
             self.searchaddress_call.add_feats(res)
 
@@ -163,6 +165,7 @@ class SearcherTool:
             self.timer.setSingleShot(True)
             self.timer.timeout.connect(change_scale)
             self.timer.start(10)
+        progress.stop()
 
     def validate_lineedit(self) -> bool:
         if self.dock.lineEdit_address.text():
@@ -345,6 +348,8 @@ class SearcherTool:
         return mun_txt.split('|')[1]
 
     def search_parcel(self) -> None:
+        progress = ProgressDialog(None, tr("Waiting for the ULDK website response"))
+        progress.start()
         parc = self.dock.lineEdit_parcel.text()
         if '.' in parc and '_' in parc:  # user input whole address in parcel
             adr = parc
@@ -369,6 +374,7 @@ class SearcherTool:
         pr.parse_responce(feULDK.responce)
         root = QgsProject.instance().layerTreeRoot()
         root.findLayer(pr.lyr).setItemVisibilityCheckedParentRecursive(True)
+        progress.stop()
 
     def handle_parcel_button_click(self):
         if self._pointTool is not None:
@@ -398,6 +404,8 @@ class SearcherTool:
 
     def fetch_address_by_xy(self):
         if self.clicked_x is not None and self.clicked_y is not None:
+            progress = ProgressDialog(None, tr("Waiting for the ULDK website response"))
+            progress.start()
             url = f'https://services.gugik.gov.pl/uug/?request=GetAddressReverse&location=POINT({self.clicked_x} {self.clicked_y})&srid=2180'
             try:
                 response = requests.get(url, verify=False)
@@ -411,8 +419,10 @@ class SearcherTool:
 
                 else:
                     CustomMessageBox(None, tr('No address found.')).button_ok()
+
             except requests.RequestException as e:
                 CustomMessageBox(None, tr('Error.')).button_ok()
+            progress.stop()
         else:
             CustomMessageBox(None, tr('Error. Invalid coordinates.')).button_ok()
 
@@ -462,6 +472,12 @@ class SearcherTool:
         layer.triggerRepaint()
         root = QgsProject.instance().layerTreeRoot()
         root.findLayer(layer).setItemVisibilityCheckedParentRecursive(True)
+        iface.messageBar().pushMessage(
+            'GIAP-PolaMap(lite)',
+            tr('The object has been downloaded!'),
+            Qgis.Info,
+            duration=1
+        )
 
     def get_layer_data(self, org: str, obj_type: str,
                        qml: str) -> QgsVectorLayer:
@@ -478,6 +494,8 @@ class SearcherTool:
 
     def fetch_parcel_by_xy(self):
         if self.clicked_x is not None and self.clicked_y is not None:
+            progress = ProgressDialog(None, tr("Waiting for the ULDK website response"))
+            progress.start()
             params = '&result=geom_wkt,teryt,voivodeship,county,region,commune,parcel'
             url = f'https://uldk.gugik.gov.pl/?request=GetParcelByXY&xy={self.clicked_x},{self.clicked_y}{params}'
             fetcher = FetchULDK()
@@ -487,6 +505,7 @@ class SearcherTool:
                 parser.parse_responce(fetcher.responce)
                 root = QgsProject.instance().layerTreeRoot()
                 root.findLayer(parser.lyr).setItemVisibilityCheckedParentRecursive(True)
+            progress.stop()
         else:
             iface.messageBar().pushMessage("Error", "Failed to fetch parcel", level=Qgis.Critical)
 

@@ -169,10 +169,6 @@ class MainTabQgsWidget:
         corner_layout.addWidget(self.editButton)
         corner_layout.addWidget(self.styleButton)
         corner_layout.addWidget(self.settingsButton)
-        self.main_widget.lineEdit_address.setToolTip(
-            f"""{tr('Enter the data according to the scheme:')}
-{tr('for the address point:')} {'Warszawa, Pasaż Ursynowski 1'}
-{tr('for the street:')} {'Warszawa, Pasaż Ursynowski'}""")
         # logo icon
         plug_dir = os.path.dirname(__file__)
         gbut = QPushButton()

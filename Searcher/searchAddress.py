@@ -155,6 +155,12 @@ class SearchAddress:
         layer.selectByIds([len(layer)])
         iface.mapCanvas().zoomToSelected(layer)
         layer.removeSelection()
+        iface.messageBar().pushMessage(
+            'GIAP-PolaMap(lite)',
+            tr('The object has been downloaded!'),
+            Qgis.Info,
+            duration=1
+        )
 
     def add_feats(self, feats: QgsFeature) -> Union[bool, None]:
         if isinstance(feats, str):

@@ -9,12 +9,12 @@
         <translation type="obsolete">Wystąpił błąd podczas wczytywania pliku konfiguracyjnego config.json.</translation>
     </message>
     <message>
-        <location filename="../giap_dynamic_layout.py" line="49"/>
+        <location filename="../giap_dynamic_layout.py" line="53"/>
         <source>New tab</source>
         <translation>Nowa zakładka</translation>
     </message>
     <message>
-        <location filename="../giap_layout.py" line="80"/>
+        <location filename="../giap_layout.py" line="81"/>
         <source>New section</source>
         <translation>Nowa sekcja</translation>
     </message>
@@ -29,9 +29,9 @@
         <translation type="obsolete">Zapis pliku</translation>
     </message>
     <message>
-        <location filename="../QuickPrint.py" line="270"/>
+        <location filename="../QuickPrint.py" line="506"/>
         <source>SCALE:</source>
-        <translation type="obsolete">SKALA: </translation>
+        <translation>SKALA:</translation>
     </message>
     <message>
         <location filename="../Kompozycje/Kompozycje.py" line="908"/>
@@ -228,7 +228,7 @@ Proszę czekać...</translation>
         <translation>Twórz warstwę</translation>
     </message>
     <message>
-        <location filename="../ribbon_config.py" line="121"/>
+        <location filename="../ribbon_config.py" line="131"/>
         <source>Advanced Tools</source>
         <translation>Narzędzia zaawansowane</translation>
     </message>
@@ -243,7 +243,7 @@ Proszę czekać...</translation>
         <translation>Wektor</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="832"/>
+        <location filename="../utils.py" line="834"/>
         <source>Digitizing</source>
         <translation>Digitalizacja</translation>
     </message>
@@ -258,12 +258,12 @@ Proszę czekać...</translation>
         <translation>Narzędzia GIAP</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="1053"/>
+        <location filename="../utils.py" line="1055"/>
         <source>Mesh digitizing</source>
         <translation>Digitalizacja warstwy siatkowej</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="1033"/>
+        <location filename="../utils.py" line="1035"/>
         <source>Annotations</source>
         <translation>Adnotacje</translation>
     </message>
@@ -293,57 +293,57 @@ Proszę czekać...</translation>
         <translation>Digitalizacja wektorowa</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="658"/>
+        <location filename="../utils.py" line="660"/>
         <source>Geoprocessing Tools</source>
         <translation>Narzędzia geoprocesingu</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="675"/>
+        <location filename="../utils.py" line="677"/>
         <source>Geometry Tools</source>
         <translation>Narzędzia geometrii</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="695"/>
+        <location filename="../utils.py" line="697"/>
         <source>Analysis Tools</source>
         <translation>Narzędzia analizy</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="711"/>
+        <location filename="../utils.py" line="713"/>
         <source>Research Tools</source>
         <translation>Narzędzia badawcze</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="730"/>
+        <location filename="../utils.py" line="732"/>
         <source>Data Management Tools</source>
         <translation>Narzędzia zarządzania danymi</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="743"/>
+        <location filename="../utils.py" line="745"/>
         <source>Raster</source>
         <translation>Raster</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="754"/>
+        <location filename="../utils.py" line="756"/>
         <source>Raster analysis</source>
         <translation>Analizy rastrowe</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="776"/>
+        <location filename="../utils.py" line="778"/>
         <source>Projections</source>
         <translation>Odwzorowania</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="787"/>
+        <location filename="../utils.py" line="789"/>
         <source>Miscellaneous</source>
         <translation>Różne</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="800"/>
+        <location filename="../utils.py" line="802"/>
         <source>Extract Projection</source>
         <translation>Wyodrębnianie danych</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="811"/>
+        <location filename="../utils.py" line="813"/>
         <source>Conversion</source>
         <translation>Konwersja</translation>
     </message>
@@ -363,57 +363,57 @@ Proszę czekać...</translation>
         <translation>Sekcje użytkownika</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="933"/>
+        <location filename="../utils.py" line="935"/>
         <source>Project </source>
         <translation>Projekt </translation>
     </message>
     <message>
-        <location filename="../utils.py" line="946"/>
+        <location filename="../utils.py" line="948"/>
         <source>Attributes </source>
         <translation>Atrybuty </translation>
     </message>
     <message>
-        <location filename="../utils.py" line="967"/>
+        <location filename="../utils.py" line="969"/>
         <source>Map Navigation </source>
         <translation>Nawigacja mapy </translation>
     </message>
     <message>
-        <location filename="../utils.py" line="990"/>
+        <location filename="../utils.py" line="992"/>
         <source>Manage Layers </source>
         <translation>Zarządzanie warstwami </translation>
     </message>
     <message>
-        <location filename="../utils.py" line="1015"/>
+        <location filename="../utils.py" line="1017"/>
         <source>Selection </source>
         <translation>Narzędzia zaznaczania </translation>
     </message>
     <message>
-        <location filename="../utils.py" line="824"/>
+        <location filename="../utils.py" line="826"/>
         <source>Data base</source>
         <translation>Baza danych</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="853"/>
+        <location filename="../utils.py" line="855"/>
         <source>Selection</source>
         <translation>Selekcja</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="871"/>
+        <location filename="../utils.py" line="873"/>
         <source>Help</source>
         <translation>Pomoc</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="879"/>
+        <location filename="../utils.py" line="881"/>
         <source>Plugins</source>
         <translation>Wtyczki</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="887"/>
+        <location filename="../utils.py" line="889"/>
         <source>Data Source Manager</source>
         <translation>Zarządzanie bazami danych</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="900"/>
+        <location filename="../utils.py" line="902"/>
         <source>Advanced digitizing tools</source>
         <translation>Zaawansowane narzędzia digitalizacji</translation>
     </message>
@@ -423,22 +423,22 @@ Proszę czekać...</translation>
         <translation type="obsolete">Włącz brakującą wtyczkę wbudowaną: Kontrola Topologii</translation>
     </message>
     <message>
-        <location filename="../giap_layout.py" line="183"/>
+        <location filename="../giap_layout.py" line="180"/>
         <source>GIAP.pl - Website</source>
         <translation>GIAP.pl - Strona WWW</translation>
     </message>
     <message>
-        <location filename="../giap_layout.py" line="214"/>
+        <location filename="../giap_layout.py" line="211"/>
         <source>Map quick print</source>
         <translation>Szybki wydruk mapy</translation>
     </message>
     <message>
-        <location filename="../giap_layout.py" line="490"/>
+        <location filename="../giap_layout.py" line="488"/>
         <source>My Prints</source>
         <translation>Moje wydruki</translation>
     </message>
     <message>
-        <location filename="../giap_layout.py" line="686"/>
+        <location filename="../giap_layout.py" line="684"/>
         <source>Please, restart QGIS!</source>
         <translation>Proszę uruchomić QGISa ponownie!</translation>
     </message>
@@ -473,37 +473,37 @@ Proszę czekać...</translation>
         <translation>użytkownika</translation>
     </message>
     <message>
-        <location filename="../giap_layout.py" line="140"/>
+        <location filename="../giap_layout.py" line="141"/>
         <source>Show menu</source>
         <translation>Pokaż menu</translation>
     </message>
     <message>
-        <location filename="../giap_layout.py" line="557"/>
+        <location filename="../giap_layout.py" line="555"/>
         <source>Edit menu</source>
         <translation>Edytuj wstęgi</translation>
     </message>
     <message>
-        <location filename="../giap_layout.py" line="153"/>
+        <location filename="../giap_layout.py" line="154"/>
         <source>Change Theme</source>
         <translation>Zmień styl</translation>
     </message>
     <message>
-        <location filename="../giap_layout.py" line="159"/>
+        <location filename="../giap_layout.py" line="160"/>
         <source>Settings</source>
         <translation>Ustawienia</translation>
     </message>
     <message>
-        <location filename="../giap_layout.py" line="554"/>
+        <location filename="../giap_layout.py" line="552"/>
         <source>Finish editing</source>
         <translation>Zakończ edycję</translation>
     </message>
     <message>
-        <location filename="../giap_layout.py" line="307"/>
+        <location filename="../giap_layout.py" line="304"/>
         <source>Area and length</source>
         <translation>Powierzchnia i długość</translation>
     </message>
     <message>
-        <location filename="../giap_dynamic_layout.py" line="151"/>
+        <location filename="../giap_dynamic_layout.py" line="155"/>
         <source>Do you want to save your changes?</source>
         <translation>Czy chcesz zapisać zmiany?</translation>
     </message>
@@ -543,12 +543,12 @@ Proszę czekać...</translation>
         <translation type="obsolete">ikony narzędzia i przycisk Delete</translation>
     </message>
     <message>
-        <location filename="../giap_dynamic_layout.py" line="337"/>
+        <location filename="../giap_dynamic_layout.py" line="341"/>
         <source>Select item has sub-section</source>
         <translation>Wybrany element ma podsekcję</translation>
     </message>
     <message>
-        <location filename="../giap_layout.py" line="222"/>
+        <location filename="../giap_layout.py" line="219"/>
         <source>Composition settings</source>
         <translation>Ustawienia kompozycji</translation>
     </message>
@@ -558,12 +558,17 @@ Proszę czekać...</translation>
         <translation type="obsolete">Usługa nie znalazła żadnych dopasowań. Podano zły numer działki.</translation>
     </message>
     <message>
+        <location filename="../Searcher/searchParcel.py" line="138"/>
+        <source>The object has been downloaded!</source>
+        <translation>Obiekt został pobrany!</translation>
+    </message>
+    <message>
         <location filename="../Searcher/searchParcel.py" line="53"/>
         <source>Error!</source>
         <translation type="obsolete">Błąd!</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchAddress.py" line="54"/>
+        <location filename="../Searcher/searchAddress.py" line="53"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
@@ -573,7 +578,7 @@ Proszę czekać...</translation>
         <translation type="obsolete">Usługa chwilowo niedostępna po stronie ULDK.</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchAddress.py" line="48"/>
+        <location filename="../Searcher/searchAddress.py" line="47"/>
         <source>Service unavailable</source>
         <translation>Usługa niedostępna</translation>
     </message>
@@ -583,27 +588,27 @@ Proszę czekać...</translation>
         <translation type="obsolete">Sprawdź, czy adres jest poprawny.</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchAddress.py" line="104"/>
+        <location filename="../Searcher/searchAddress.py" line="103"/>
         <source>Cannot parse results.</source>
         <translation>Nie można przetworzyć pobranych danych.</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchAddress.py" line="108"/>
+        <location filename="../Searcher/searchAddress.py" line="107"/>
         <source>Service did not find any objects for this query.</source>
         <translation>Usługa nie znalazła żadnych obiektów dla tego zapytania.</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchAddress.py" line="111"/>
+        <location filename="../Searcher/searchAddress.py" line="110"/>
         <source>Zero objects found.</source>
         <translation>Nie znaleziono obiektów.</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchAddress.py" line="119"/>
+        <location filename="../Searcher/searchAddress.py" line="118"/>
         <source>Check log, problems occured.</source>
         <translation>Sprawdź log, zarejestrowano problemy.</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchAddress.py" line="115"/>
+        <location filename="../Searcher/searchAddress.py" line="114"/>
         <source>No objects found. Please enter valid value.</source>
         <translation>Nie znaleziono obiektów. Wpisz poprawną wartość.</translation>
     </message>
@@ -633,27 +638,32 @@ Proszę czekać...</translation>
         <translation type="obsolete">Błąd</translation>
     </message>
     <message>
+        <location filename="../Searcher/searchTool.py" line="139"/>
+        <source>Waiting for the ULDK website response</source>
+        <translation>Oczekiwanie na odpowiedź serwisu ULDK</translation>
+    </message>
+    <message>
         <location filename="../Searcher/searchTool.py" line="144"/>
         <source>Empty address field</source>
         <translation type="obsolete">Puste pole adresu</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchTool.py" line="191"/>
+        <location filename="../Searcher/searchTool.py" line="196"/>
         <source>Adding layers...</source>
         <translation>Dodawanie warstwy...</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchTool.py" line="304"/>
+        <location filename="../Searcher/searchTool.py" line="309"/>
         <source>Cadastral district</source>
         <translation>Obręb ewidencyjny</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchTool.py" line="311"/>
+        <location filename="../Searcher/searchTool.py" line="316"/>
         <source>Municipality</source>
         <translation>Gmina</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchTool.py" line="318"/>
+        <location filename="../Searcher/searchTool.py" line="323"/>
         <source>District</source>
         <translation>Powiat</translation>
     </message>
@@ -673,17 +683,22 @@ Proszę czekać...</translation>
         <translation>Usługa zwróciła {} niepoprawnych obiektów.</translation>
     </message>
     <message>
-        <location filename="../giap_dynamic_layout.py" line="457"/>
+        <location filename="../Searcher/searchTool.py" line="154"/>
+        <source>Warning! An unexpected error.</source>
+        <translation>Wystąpił nieoczekiwany błąd po stronie usługi.</translation>
+    </message>
+    <message>
+        <location filename="../giap_dynamic_layout.py" line="461"/>
         <source>Do you want to delete this section?</source>
         <translation>Czy chcesz usunąć tę sekcję?</translation>
     </message>
     <message>
-        <location filename="../giap_dynamic_layout.py" line="430"/>
+        <location filename="../giap_dynamic_layout.py" line="434"/>
         <source>Error - Unable to edit the object.</source>
         <translation>Błąd - nie udało się edytować obiektu.</translation>
     </message>
     <message>
-        <location filename="../giap_dynamic_layout.py" line="453"/>
+        <location filename="../giap_dynamic_layout.py" line="457"/>
         <source>Error - Unable to remove the object.</source>
         <translation>Błąd - nie udało się usunąć obiektu.</translation>
     </message>
@@ -708,7 +723,7 @@ Proszę czekać...</translation>
         <translation type="obsolete">Powierzchnia</translation>
     </message>
     <message>
-        <location filename="../giap_dynamic_layout.py" line="868"/>
+        <location filename="../giap_dynamic_layout.py" line="872"/>
         <source>PRNG Tool</source>
         <translation>Narzędzia PRNG</translation>
     </message>
@@ -725,22 +740,22 @@ Compositions will be updated.</source>
 Kompozje zostaną zaktualizowane.</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchAddress.py" line="54"/>
+        <location filename="../Searcher/searchAddress.py" line="53"/>
         <source>Check address</source>
         <translation>Sprawdz adres</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchTool.py" line="406"/>
+        <location filename="../Searcher/searchTool.py" line="413"/>
         <source>No address found.</source>
         <translation>Nie znaleziono adresu.</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchTool.py" line="408"/>
+        <location filename="../Searcher/searchTool.py" line="415"/>
         <source>Error.</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchTool.py" line="410"/>
+        <location filename="../Searcher/searchTool.py" line="417"/>
         <source>Error. Invalid coordinates.</source>
         <translation>Błąd. Złe współrzędne.</translation>
     </message>
@@ -805,52 +820,52 @@ Kompozje zostaną zaktualizowane.</translation>
         <translation>Wystąpił błąd podczas połączenia z serwerem.</translation>
     </message>
     <message>
-        <location filename="../prng_tool.py" line="42"/>
+        <location filename="../prng_tool.py" line="43"/>
         <source>Please enter a location name!</source>
         <translation>Proszę podać nazwę lokalizacji!</translation>
     </message>
     <message>
-        <location filename="../prng_tool.py" line="47"/>
+        <location filename="../prng_tool.py" line="48"/>
         <source>Connection</source>
         <translation>Łączenie</translation>
     </message>
     <message>
-        <location filename="../prng_tool.py" line="47"/>
+        <location filename="../prng_tool.py" line="48"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
     <message>
-        <location filename="../prng_tool.py" line="48"/>
+        <location filename="../prng_tool.py" line="49"/>
         <source>Please wait</source>
         <translation>Proszę czekać</translation>
     </message>
     <message>
-        <location filename="../prng_tool.py" line="76"/>
+        <location filename="../prng_tool.py" line="77"/>
         <source>No objects found!</source>
         <translation>Nie znaleziono obiektów!</translation>
     </message>
     <message>
-        <location filename="../prng_tool.py" line="99"/>
+        <location filename="../prng_tool.py" line="100"/>
         <source>Error in query!</source>
         <translation>Błąd w zapytaniu!</translation>
     </message>
     <message>
-        <location filename="../prng_tool.py" line="103"/>
+        <location filename="../prng_tool.py" line="104"/>
         <source>Invalid server response!</source>
         <translation>Nieprawidłowa odpowiedź serwera!</translation>
     </message>
     <message>
-        <location filename="../prng_tool.py" line="108"/>
+        <location filename="../prng_tool.py" line="109"/>
         <source>Please select an object from the list.</source>
         <translation>Proszę wybrać obiekt z listy.</translation>
     </message>
     <message>
-        <location filename="../prng_tool.py" line="140"/>
+        <location filename="../prng_tool.py" line="141"/>
         <source>Could not obtain coordinates.</source>
         <translation>Nie udało się uzyskać koordynatów.</translation>
     </message>
     <message>
-        <location filename="../giap_layout.py" line="712"/>
+        <location filename="../giap_layout.py" line="710"/>
         <source>The program must be restarted for the changes to take effect. Restart now?</source>
         <translation>Aby zachować zmiany, program musi zostać uruchomiony ponownie. Czy uruchomić ponownie?</translation>
     </message>
@@ -858,6 +873,16 @@ Kompozje zostaną zaktualizowane.</translation>
         <location filename="../OrtoTools.py" line="138"/>
         <source>LIST SETTINGS</source>
         <translation>USTAWIENIA LISTY</translation>
+    </message>
+    <message>
+        <location filename="../giap_dynamic_layout.py" line="876"/>
+        <source>Geoportal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../giap_dynamic_layout.py" line="879"/>
+        <source>Ortofotomapa archiwalna</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -868,32 +893,32 @@ Kompozje zostaną zaktualizowane.</translation>
         <translation>GIAP-PolaMap(lite) - Dodaj/Edytuj sekcję</translation>
     </message>
     <message>
-        <location filename="../SectionManager/UI/add_section_dialog.ui" line="569"/>
+        <location filename="../SectionManager/UI/add_section_dialog.ui" line="155"/>
         <source>Add/Edit custom tool section</source>
         <translation>Dodaj/Edytuj sekcję użytkownika</translation>
     </message>
     <message>
-        <location filename="../SectionManager/UI/add_section_dialog.ui" line="853"/>
+        <location filename="../SectionManager/UI/add_section_dialog.ui" line="485"/>
         <source>Section name</source>
         <translation>Nazwa sekcji</translation>
     </message>
     <message>
-        <location filename="../SectionManager/UI/add_section_dialog.ui" line="962"/>
+        <location filename="../SectionManager/UI/add_section_dialog.ui" line="594"/>
         <source>Save</source>
         <translation>Zapisz</translation>
     </message>
     <message>
-        <location filename="../SectionManager/UI/add_section_dialog.ui" line="937"/>
+        <location filename="../SectionManager/UI/add_section_dialog.ui" line="569"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
     <message>
-        <location filename="../SectionManager/UI/add_section_dialog.ui" line="760"/>
+        <location filename="../SectionManager/UI/add_section_dialog.ui" line="392"/>
         <source>Selected tools</source>
         <translation>Wybrane narzędzia</translation>
     </message>
     <message>
-        <location filename="../SectionManager/UI/add_section_dialog.ui" line="616"/>
+        <location filename="../SectionManager/UI/add_section_dialog.ui" line="202"/>
         <source>Available tools</source>
         <translation>Dostępne narzędzia</translation>
     </message>
@@ -903,22 +928,22 @@ Kompozje zostaną zaktualizowane.</translation>
         <translation type="obsolete">Zapisz wybrane</translation>
     </message>
     <message>
-        <location filename="../SectionManager/UI/add_section_dialog.ui" line="843"/>
+        <location filename="../SectionManager/UI/add_section_dialog.ui" line="475"/>
         <source>Find tool</source>
         <translation>Wyszukaj narzędzie</translation>
     </message>
     <message>
-        <location filename="../SectionManager/UI/add_section_dialog.ui" line="872"/>
+        <location filename="../SectionManager/UI/add_section_dialog.ui" line="504"/>
         <source>Search...</source>
         <translation>Wyszukaj...</translation>
     </message>
     <message>
-        <location filename="../SectionManager/UI/add_section_dialog.ui" line="721"/>
+        <location filename="../SectionManager/UI/add_section_dialog.ui" line="353"/>
         <source>...</source>
         <translation type="unfinished">...</translation>
     </message>
     <message>
-        <location filename="../SectionManager/UI/add_section_dialog.ui" line="863"/>
+        <location filename="../SectionManager/UI/add_section_dialog.ui" line="495"/>
         <source>Enter algorithm name to filter list</source>
         <translation type="unfinished"></translation>
     </message>
@@ -933,45 +958,45 @@ Kompozje zostaną zaktualizowane.</translation>
     <message>
         <location filename="../Kompozycje/compositions_saver.ui" line="884"/>
         <source>Select Composition</source>
-        <translation>Wybierz kompozycję</translation>
+        <translation type="obsolete">Wybierz kompozycję</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/compositions_saver.ui" line="563"/>
+        <location filename="../Kompozycje/compositions_saver.ui" line="149"/>
         <source>Select composition</source>
         <translation>Wybierz kompozycję</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/compositions_saver.ui" line="695"/>
+        <location filename="../Kompozycje/compositions_saver.ui" line="281"/>
         <source>Select</source>
         <translation>Zaznacz</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/compositions_saver.ui" line="702"/>
+        <location filename="../Kompozycje/compositions_saver.ui" line="288"/>
         <source>Unselect</source>
         <translation>Odznacz</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/compositions_saver.ui" line="709"/>
+        <location filename="../Kompozycje/compositions_saver.ui" line="295"/>
         <source>Select All</source>
         <translation>Zaznacz wszystkie</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/compositions_saver.ui" line="716"/>
+        <location filename="../Kompozycje/compositions_saver.ui" line="302"/>
         <source>Unselect All</source>
         <translation>Odznacz wszystkie</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/compositions_saver.ui" line="749"/>
+        <location filename="../Kompozycje/compositions_saver.ui" line="335"/>
         <source>Save selected</source>
         <translation>Zapisz wybrane</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/compositions_saver.ui" line="832"/>
+        <location filename="../Kompozycje/compositions_saver.ui" line="418"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/compositions_saver.ui" line="660"/>
+        <location filename="../Kompozycje/compositions_saver.ui" line="246"/>
         <source>Compositions</source>
         <translation>Kompozycje</translation>
     </message>
@@ -1078,19 +1103,21 @@ lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
     <message>
         <location filename="../giap_dynamic_layout.ui" line="275"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wskaż punkt na mapie, aby pobrać działkę&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wskaż punkt na mapie, aby pobrać działkę&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.ui" line="304"/>
         <source>Enter the data according to the scheme:
 for the address point: Warszawa, Pasaż Ursynowski 1
 for the street: Warszawa, Pasaż Ursynowski</source>
-        <translation type="unfinished"></translation>
+        <translation>Wpisz dane według schematu:
+Dla adresu: Warszawa, Pasaż Ursynowski 1
+Dla ulicy: Warszawa, Pasaż Ursynowski</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.ui" line="344"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wskaż punkt na mapie, aby pobrać punkt adresowy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wskaż punkt na mapie, aby pobrać punkt adresowy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.ui" line="481"/>
@@ -1107,6 +1134,16 @@ for the street: Warszawa, Pasaż Ursynowski</source>
         <source>Search</source>
         <translation>Szukaj</translation>
     </message>
+    <message>
+        <location filename="../giap_dynamic_layout.ui" line="275"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a point on the map to download a parcel&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wskaż punkt na mapie, aby pobrać działkę&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../giap_dynamic_layout.ui" line="344"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a point on the map to download an address point&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wskaż punkt na mapie, aby pobrać punkt adresowy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
 </context>
 <context>
     <name>KompozycjeDialog</name>
@@ -1116,97 +1153,97 @@ for the street: Warszawa, Pasaż Ursynowski</source>
         <translation>GIAP-PolaMap(lite) - KOMPOZYCJE</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="1032"/>
+        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="671"/>
         <source>User compositions</source>
         <translation>Kompozycje użytkownika</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="1058"/>
+        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="697"/>
         <source>Save to file</source>
         <translation>Zapisz do pliku</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="1068"/>
+        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="707"/>
         <source>Load from file</source>
         <translation>Wczytaj z pliku</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="567"/>
+        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="169"/>
         <source>Composition settings</source>
         <translation>Ustawienia kompozycji</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="632"/>
+        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="234"/>
         <source>Delete</source>
         <translation>Usuń</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="721"/>
+        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="323"/>
         <source>Compositions</source>
         <translation>Kompozycje</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="1084"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="724"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="625"/>
+        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="227"/>
         <source>Edit</source>
         <translation>Edytuj</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="618"/>
+        <location filename="../Kompozycje/dodaj_kompozycje.ui" line="220"/>
         <source>Add</source>
         <translation>Dodaj</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="541"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="127"/>
         <source>Save</source>
         <translation>Zapisz</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="570"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="156"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="663"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="249"/>
         <source>Layers in groups</source>
         <translation>Warstwy w grupach</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="765"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="351"/>
         <source>Select layers</source>
         <translation>Wybrane warstwy</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="990"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="584"/>
         <source>Composition name:</source>
         <translation>Nazwa kompozycji:</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="853"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="447"/>
         <source>Select</source>
         <translation>Zaznacz</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="860"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="454"/>
         <source>Unselect</source>
         <translation>Odznacz</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="867"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="461"/>
         <source>Select all</source>
         <translation>Zaznacz wszystkie</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="874"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="468"/>
         <source>Unselect All</source>
         <translation>Odznacz wszystkie</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="915"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="509"/>
         <source>Groups</source>
         <translation>Grupy</translation>
     </message>
@@ -1216,7 +1253,7 @@ for the street: Warszawa, Pasaż Ursynowski</source>
         <translation type="obsolete">Ustawienia</translation>
     </message>
     <message>
-        <location filename="../Kompozycje/nowa_kompozycja.ui" line="1141"/>
+        <location filename="../Kompozycje/nowa_kompozycja.ui" line="781"/>
         <source>Add new composition</source>
         <translation>Dodaj nową kompozycję</translation>
     </message>
@@ -1224,27 +1261,27 @@ for the street: Warszawa, Pasaż Ursynowski</source>
 <context>
     <name>RegisterToPdfDialog</name>
     <message>
-        <location filename="../Wms_wmts/online_layers_dialog.ui" line="771"/>
+        <location filename="../Wms_wmts/online_layers_dialog.ui" line="323"/>
         <source>X</source>
         <translation>X</translation>
     </message>
     <message>
-        <location filename="../Wms_wmts/online_layers_dialog.ui" line="583"/>
+        <location filename="../Wms_wmts/online_layers_dialog.ui" line="38"/>
         <source>Loading layers from online resources</source>
         <translation>Wczytywanie warstw z zasobów online</translation>
     </message>
     <message>
-        <location filename="../Wms_wmts/online_layers_dialog.ui" line="644"/>
+        <location filename="../Wms_wmts/online_layers_dialog.ui" line="196"/>
         <source>Load</source>
         <translation>Wczytaj</translation>
     </message>
     <message>
-        <location filename="../Wms_wmts/online_layers_dialog.ui" line="670"/>
+        <location filename="../Wms_wmts/online_layers_dialog.ui" line="222"/>
         <source>Select/Unselect all</source>
         <translation>Zaznacz/Odznacz wszystko</translation>
     </message>
     <message>
-        <location filename="../Wms_wmts/online_layers_dialog.ui" line="743"/>
+        <location filename="../Wms_wmts/online_layers_dialog.ui" line="295"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
@@ -1252,7 +1289,7 @@ for the street: Warszawa, Pasaż Ursynowski</source>
         <location filename="../Wms_wmts/online_layers_dialog.ui" line="856"/>
         <source>Loading layers from
 online resources</source>
-        <translation>Wczytywanie warstw z
+        <translation type="obsolete">Wczytywanie warstw z
 zasobów online</translation>
     </message>
 </context>
@@ -1269,57 +1306,57 @@ zasobów online</translation>
         <translation type="obsolete">Sekcje</translation>
     </message>
     <message>
-        <location filename="../SectionManager/UI/select_section_dialog.ui" line="829"/>
+        <location filename="../SectionManager/UI/select_section_dialog.ui" line="454"/>
         <source>Add section</source>
         <translation>Dodaj sekcję</translation>
     </message>
     <message>
-        <location filename="../SectionManager/UI/select_section_dialog.ui" line="1246"/>
+        <location filename="../SectionManager/UI/select_section_dialog.ui" line="906"/>
         <source>Add</source>
         <translation>Dodaj</translation>
     </message>
     <message>
-        <location filename="../SectionManager/UI/select_section_dialog.ui" line="1253"/>
+        <location filename="../SectionManager/UI/select_section_dialog.ui" line="931"/>
         <source>Edit</source>
         <translation>Edytuj</translation>
     </message>
     <message>
-        <location filename="../SectionManager/UI/select_section_dialog.ui" line="1260"/>
+        <location filename="../SectionManager/UI/select_section_dialog.ui" line="956"/>
         <source>Remove</source>
         <translation>Usuń</translation>
     </message>
     <message>
-        <location filename="../SectionManager/UI/select_section_dialog.ui" line="1139"/>
+        <location filename="../SectionManager/UI/select_section_dialog.ui" line="779"/>
         <source>Create custom section</source>
         <translation>Stwórz własną sekcję</translation>
     </message>
     <message>
-        <location filename="../SectionManager/UI/select_section_dialog.ui" line="757"/>
+        <location filename="../SectionManager/UI/select_section_dialog.ui" line="382"/>
         <source>Add selection</source>
         <translation>Dodaj zaznaczone</translation>
     </message>
     <message>
-        <location filename="../SectionManager/UI/select_section_dialog.ui" line="525"/>
+        <location filename="../SectionManager/UI/select_section_dialog.ui" line="111"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
     <message>
-        <location filename="../SectionManager/UI/select_section_dialog.ui" line="1069"/>
+        <location filename="../SectionManager/UI/select_section_dialog.ui" line="709"/>
         <source>Search tool</source>
         <translation>Wyszukaj narzędzie</translation>
     </message>
     <message>
-        <location filename="../SectionManager/UI/select_section_dialog.ui" line="1279"/>
+        <location filename="../SectionManager/UI/select_section_dialog.ui" line="975"/>
         <source>Search...</source>
         <translation>Szukaj...</translation>
     </message>
     <message>
-        <location filename="../SectionManager/UI/select_section_dialog.ui" line="1017"/>
+        <location filename="../SectionManager/UI/select_section_dialog.ui" line="657"/>
         <source>Add tool to ribbon</source>
         <translation>Dodaj narzędzie do wstęgi</translation>
     </message>
     <message>
-        <location filename="../SectionManager/UI/select_section_dialog.ui" line="1270"/>
+        <location filename="../SectionManager/UI/select_section_dialog.ui" line="966"/>
         <source>Enter algorithm name to filter list</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1460,72 +1497,72 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>WMS_WMTSDialog</name>
     <message>
-        <location filename="../Wms_wmts/DODAJ_WMS_WMTS.ui" line="500"/>
+        <location filename="../Wms_wmts/DODAJ_WMS_WMTS.ui" line="194"/>
         <source>Add</source>
         <translation>Dodaj</translation>
     </message>
     <message>
-        <location filename="../Wms_wmts/DODAJ_WMS_WMTS.ui" line="507"/>
+        <location filename="../Wms_wmts/DODAJ_WMS_WMTS.ui" line="201"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
     <message>
-        <location filename="../Wms_wmts/DODAJ_WMS_WMTS.ui" line="562"/>
+        <location filename="../Wms_wmts/DODAJ_WMS_WMTS.ui" line="112"/>
         <source>CONNECTION DETAILS</source>
         <translation>SZCZEGÓŁY POŁĄCZENIA</translation>
     </message>
     <message>
-        <location filename="../Wms_wmts/DODAJ_WMS_WMTS.ui" line="575"/>
+        <location filename="../Wms_wmts/DODAJ_WMS_WMTS.ui" line="125"/>
         <source>Name</source>
         <translation>Nazwa</translation>
     </message>
     <message>
-        <location filename="../Wms_wmts/DODAJ_WMS_WMTS.ui" line="582"/>
+        <location filename="../Wms_wmts/DODAJ_WMS_WMTS.ui" line="132"/>
         <source>URL address</source>
         <translation>Adres URL</translation>
     </message>
     <message>
-        <location filename="../Wms_wmts/DODAJ_WMS_WMTS.ui" line="596"/>
+        <location filename="../Wms_wmts/DODAJ_WMS_WMTS.ui" line="146"/>
         <source>Group name (optional)</source>
         <translation>Nazwa grupy (opcjonalnie)</translation>
     </message>
     <message>
-        <location filename="../Wms_wmts/DODAJ_WMS_WMTS.ui" line="691"/>
+        <location filename="../Wms_wmts/DODAJ_WMS_WMTS.ui" line="32"/>
         <source>Create WMS/WMTS connection</source>
         <translation>Utwórz połączenie WMS/WMTS</translation>
     </message>
     <message>
-        <location filename="../Wms_wmts/WMS_WMTS.ui" line="529"/>
+        <location filename="../Wms_wmts/WMS_WMTS.ui" line="141"/>
         <source>ADD WMS/WMTS/WFS</source>
         <translation>Dodaj WMS/WMTS/WFS</translation>
     </message>
     <message>
-        <location filename="../Wms_wmts/WMS_WMTS.ui" line="535"/>
+        <location filename="../Wms_wmts/WMS_WMTS.ui" line="147"/>
         <source>ADD</source>
         <translation>Dodaj</translation>
     </message>
     <message>
-        <location filename="../Wms_wmts/WMS_WMTS.ui" line="545"/>
+        <location filename="../Wms_wmts/WMS_WMTS.ui" line="157"/>
         <source>List WMS/WMTS/WFS</source>
         <translation>Lista WMS/WMTS/WFS</translation>
     </message>
     <message>
-        <location filename="../Wms_wmts/WMS_WMTS.ui" line="551"/>
+        <location filename="../Wms_wmts/WMS_WMTS.ui" line="163"/>
         <source>Edit</source>
         <translation>Edytuj</translation>
     </message>
     <message>
-        <location filename="../Wms_wmts/WMS_WMTS.ui" line="558"/>
+        <location filename="../Wms_wmts/WMS_WMTS.ui" line="170"/>
         <source>Delete</source>
         <translation>Usuń</translation>
     </message>
     <message>
-        <location filename="../Wms_wmts/WMS_WMTS.ui" line="642"/>
+        <location filename="../Wms_wmts/WMS_WMTS.ui" line="83"/>
         <source>Close</source>
         <translation>Zamknij</translation>
     </message>
     <message>
-        <location filename="../Wms_wmts/WMS_WMTS.ui" line="718"/>
+        <location filename="../Wms_wmts/WMS_WMTS.ui" line="32"/>
         <source>ADD WMS / WMTS / WFS</source>
         <translation>Dodaj WMS / WMTS / WFS</translation>
     </message>
@@ -1538,152 +1575,152 @@ p, li { white-space: pre-wrap; }
         <translation>GIAP-PolaMap(lite) - Wydruk widoku mapy</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="1074"/>
+        <location filename="../wydruk_dialog.ui" line="666"/>
         <source>Prints</source>
         <translation>Wydruk</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="650"/>
+        <location filename="../wydruk_dialog.ui" line="236"/>
         <source>Format</source>
         <translation>Format zapisu</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="684"/>
+        <location filename="../wydruk_dialog.ui" line="270"/>
         <source>PDF</source>
         <translation>PDF</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="670"/>
+        <location filename="../wydruk_dialog.ui" line="256"/>
         <source>PNG</source>
         <translation>PNG</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="663"/>
+        <location filename="../wydruk_dialog.ui" line="249"/>
         <source>JPG</source>
         <translation>JPG</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="627"/>
+        <location filename="../wydruk_dialog.ui" line="213"/>
         <source>Print title</source>
         <translation>Tytuł wydruku</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="740"/>
+        <location filename="../wydruk_dialog.ui" line="326"/>
         <source>Additional options</source>
         <translation>Opcje dodatkowe</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="746"/>
+        <location filename="../wydruk_dialog.ui" line="332"/>
         <source>Add scale</source>
         <translation>Dodaj skalę</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="760"/>
+        <location filename="../wydruk_dialog.ui" line="346"/>
         <source>Add legend</source>
         <translation>Dodaj legendę</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="723"/>
+        <location filename="../wydruk_dialog.ui" line="309"/>
         <source>horizontal</source>
         <translation>pozioma</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="730"/>
+        <location filename="../wydruk_dialog.ui" line="316"/>
         <source>vertical</source>
         <translation>pionowa</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="611"/>
+        <location filename="../wydruk_dialog.ui" line="197"/>
         <source>Annotations</source>
         <translation>Adnotacje</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="753"/>
+        <location filename="../wydruk_dialog.ui" line="339"/>
         <source>Add date</source>
         <translation>Dodaj datę</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="787"/>
+        <location filename="../wydruk_dialog.ui" line="379"/>
         <source>Paper size</source>
         <translation>Format Arkusza</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="589"/>
+        <location filename="../wydruk_dialog.ui" line="175"/>
         <source>Resolution</source>
         <translation>Rozdzielczość</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="990"/>
+        <location filename="../wydruk_dialog.ui" line="582"/>
         <source>Preview</source>
         <translation>Podgląd</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="1003"/>
+        <location filename="../wydruk_dialog.ui" line="595"/>
         <source>Save</source>
         <translation>Zapisz</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="1025"/>
+        <location filename="../wydruk_dialog.ui" line="617"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="911"/>
+        <location filename="../wydruk_dialog.ui" line="503"/>
         <source>Finish</source>
         <translation>Zakończ</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="937"/>
+        <location filename="../wydruk_dialog.ui" line="529"/>
         <source>Register</source>
         <translation>Zarejestruj</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="717"/>
+        <location filename="../wydruk_dialog.ui" line="303"/>
         <source>Page orientation</source>
         <translation>Orientacja wydruku</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="656"/>
+        <location filename="../wydruk_dialog.ui" line="242"/>
         <source>SHP</source>
         <translation>SHP</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="677"/>
+        <location filename="../wydruk_dialog.ui" line="263"/>
         <source>GEOTIFF</source>
         <translation>GEOTIFF</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="694"/>
+        <location filename="../wydruk_dialog.ui" line="280"/>
         <source>Add layers to tree layer view</source>
         <translation>Dodaj utworzone warstwy do drzewka warstw</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="799"/>
+        <location filename="../wydruk_dialog.ui" line="391"/>
         <source>Print range</source>
         <translation>Zakres wydruku</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="805"/>
+        <location filename="../wydruk_dialog.ui" line="397"/>
         <source>Current View</source>
         <translation>Bieżący widok</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="812"/>
+        <location filename="../wydruk_dialog.ui" line="404"/>
         <source>Select from map</source>
         <translation>Wskaż z mapy</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="819"/>
+        <location filename="../wydruk_dialog.ui" line="411"/>
         <source>Crop mask</source>
         <translation>Maska przycięcia</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="826"/>
+        <location filename="../wydruk_dialog.ui" line="418"/>
         <source>Full coverage</source>
         <translation>Cały zasięg</translation>
     </message>
     <message>
-        <location filename="../wydruk_dialog.ui" line="833"/>
+        <location filename="../wydruk_dialog.ui" line="425"/>
         <source>Print in the scale of the project</source>
         <translation>Wydruk w skali projektu</translation>
     </message>

@@ -14,7 +14,7 @@ from qgis.PyQt.QtWidgets import QWidget, QApplication, QHBoxLayout, \
     QGridLayout, QSpacerItem, QLineEdit, QWidgetItem, QAction, \
     QBoxLayout, QMessageBox, QScrollArea, QMenu, QToolBar
 from qgis.core import QgsApplication, QgsCoordinateReferenceSystem, QgsCoordinateTransform, QgsProject, \
-    QgsTemporalNavigationObject, QgsRasterLayer, QgsInterval
+    QgsTemporalNavigationObject, QgsRasterLayer, QgsInterval, QgsMapLayer
 from qgis.utils import iface
 from qgis.gui import QgsMapTool
 
@@ -1085,8 +1085,16 @@ class CustomSection(QWidget):
         webbrowser.open(url, new=2)
 
     def remove_raster(self):
-        if identify_layer_by_name('ORTOFOTOMAPA ARCHIWLANA'):
-            QgsProject.instance().removeMapLayer(identify_layer_by_name('ORTOFOTOMAPA ARCHIWLANA'))
+        project = QgsProject.instance()
+        root = project.layerTreeRoot()
+        group = root.findGroup('ORTOFOTOMAPA ARCHIWLANA')
+        if not group:
+            return
+        for child in group.children():
+            if isinstance(child, QgsMapLayer):
+                project.removeMapLayer(child)
+        group.removeAllChildren()
+        root.removeChildNode(group)
 
     def open_temporal_controller(self, resolution):
         self.remove_raster()
@@ -1149,7 +1157,7 @@ class CustomSection(QWidget):
         interval.setYears(1.0)
         temporalController.setFrameDuration(interval)
 
-        add_map_layer_to_group(raster_layer_from_cos, 'DANE DODATKOWE', force_create=True)
+        add_map_layer_to_group(raster_layer_from_cos, 'ORTOFOTOMAPA ARCHIWLANA', force_create=True)
 
 class CustomToolButton(QToolButton):
     def __init__(self, parent:QtWidgets) -> None:
