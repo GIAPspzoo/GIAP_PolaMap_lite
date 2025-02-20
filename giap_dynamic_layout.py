@@ -1084,13 +1084,18 @@ class CustomSection(QWidget):
         url = f"https://mapy.geoportal.gov.pl/imap/Imgp_2.html?composition=default&bbox={str(xmin_2180)},{str(ymin_2180)},{str(xmax_2180)},{str(ymax_2180)}"
         webbrowser.open(url, new=2)
 
-    def open_temporal_controller(self, resolution):
+    def remove_raster(self):
         if identify_layer_by_name('ORTOFOTOMAPA ARCHIWLANA'):
-            return
+            QgsProject.instance().removeMapLayer(identify_layer_by_name('ORTOFOTOMAPA ARCHIWLANA'))
+
+    def open_temporal_controller(self, resolution):
+        self.remove_raster()
 
         for obj in iface.mainWindow().findChildren(QDockWidget):
             if obj.objectName() == 'Temporal Controller':
                 obj.setVisible(True)
+                obj.visibilityChanged.connect(self.remove_raster)
+                break
 
         temporalController = iface.mapCanvas().temporalController()
         temporalController.setNavigationMode(QgsTemporalNavigationObject.Animated)
@@ -1145,7 +1150,6 @@ class CustomSection(QWidget):
         temporalController.setFrameDuration(interval)
 
         add_map_layer_to_group(raster_layer_from_cos, 'DANE DODATKOWE', force_create=True)
-
 
 class CustomToolButton(QToolButton):
     def __init__(self, parent:QtWidgets) -> None:
