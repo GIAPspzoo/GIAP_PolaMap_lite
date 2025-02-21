@@ -234,9 +234,11 @@ class MainTabQgsWidget:
             QIcon(os.path.join(self.plugin_dir, 'styles', 'GIAP Navy Blue', 'icons', 'close.png')))
 
         self.main_widget.setFocusPolicy(Qt.StrongFocus)
-
-        new = self.html_div_from_url(GIAP_NEWS_WEB_PAGE)
-        self.add_news_from_dict(new)
+        try:
+            new = self.html_div_from_url(GIAP_NEWS_WEB_PAGE)
+            self.add_news_from_dict(new)
+        except:
+            pass
 
         process = qgis.utils.plugins.get('processing')
         if process:
