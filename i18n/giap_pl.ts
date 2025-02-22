@@ -555,7 +555,7 @@ Proszę czekać...</translation>
     <message>
         <location filename="../Searcher/searchParcel.py" line="73"/>
         <source>Service did not find any matches, wrong plot number.</source>
-        <translation type="obsolete">Usługa nie znalazła żadnych dopasowań. Podano zły numer działki.</translation>
+        <translation>Usługa nie znalazła żadnych dopasowań. Podano zły numer działki.</translation>
     </message>
     <message>
         <location filename="../Searcher/searchParcel.py" line="138"/>
@@ -633,9 +633,9 @@ Proszę czekać...</translation>
         <translation>UWAGA</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchTool.py" line="144"/>
+        <location filename="../Searcher/searchTool.py" line="175"/>
         <source>Invalid</source>
-        <translation type="obsolete">Błąd</translation>
+        <translation>Błąd</translation>
     </message>
     <message>
         <location filename="../Searcher/searchTool.py" line="139"/>
@@ -643,9 +643,9 @@ Proszę czekać...</translation>
         <translation>Oczekiwanie na odpowiedź serwisu ULDK</translation>
     </message>
     <message>
-        <location filename="../Searcher/searchTool.py" line="144"/>
+        <location filename="../Searcher/searchTool.py" line="175"/>
         <source>Empty address field</source>
-        <translation type="obsolete">Puste pole adresu</translation>
+        <translation>Puste pole adresu</translation>
     </message>
     <message>
         <location filename="../Searcher/searchTool.py" line="196"/>
