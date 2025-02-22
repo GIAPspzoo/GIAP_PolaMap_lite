@@ -159,7 +159,7 @@ class SearchAddress:
             'GIAP-PolaMap(lite)',
             tr('The object has been downloaded!'),
             Qgis.Info,
-            duration=1
+            duration=3
         )
 
     def add_feats(self, feats: QgsFeature) -> Union[bool, None]:

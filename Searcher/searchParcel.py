@@ -137,7 +137,7 @@ class ParseResponce:
             'GIAP-PolaMap(lite)',
             tr('The object has been downloaded!'),
             Qgis.Info,
-            duration=1
+            duration=3
         )
 
     def _create_feature(self, row: str) -> QgsFeature:

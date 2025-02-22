@@ -476,7 +476,7 @@ class SearcherTool:
             'GIAP-PolaMap(lite)',
             tr('The object has been downloaded!'),
             Qgis.Info,
-            duration=1
+            duration=3
         )
 
     def get_layer_data(self, org: str, obj_type: str,
