@@ -510,37 +510,37 @@ Proszę czekać...</translation>
     <message>
         <location filename="../giap_dynamic_layout.py" line="194"/>
         <source>Edit tools within a section:</source>
-        <translation type="obsolete">Edycja narzędzi w obrębie sekcji:</translation>
+        <translation>Edycja narzędzi w obrębie sekcji:</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.py" line="195"/>
         <source>Moving tools</source>
-        <translation type="obsolete">Przesuwanie narzędzi</translation>
+        <translation>Przesuwanie narzędzi</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.py" line="195"/>
         <source>click and hold the left mouse button</source>
-        <translation type="obsolete">kliknięcie oraz przytrzymanie lewym</translation>
+        <translation>kliknięcie oraz przytrzymanie lewym</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.py" line="196"/>
         <source>on the icon and move it to the desired location</source>
-        <translation type="obsolete">przyciskiem myszy ikony i przesunięcie w wybrane miejsce</translation>
+        <translation>przyciskiem myszy ikony i przesunięcie w wybrane miejsce</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.py" line="198"/>
         <source>Tool removal</source>
-        <translation type="obsolete">Usuwanie narzędzia</translation>
+        <translation>Usuwanie narzędzia</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.py" line="198"/>
         <source>double click</source>
-        <translation type="obsolete">dwukrotne kliknięcie</translation>
+        <translation>dwukrotne kliknięcie</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.py" line="199"/>
         <source>tool icon and click delete button</source>
-        <translation type="obsolete">ikony narzędzia i przycisk Delete</translation>
+        <translation>ikony narzędzia i przycisk Delete</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.py" line="341"/>
@@ -711,6 +711,21 @@ Proszę czekać...</translation>
         <location filename="../SectionManager/CustomSectionManager.py" line="222"/>
         <source>Error - The section name already exists.</source>
         <translation>Błąd - Sekcja o wybranej nazwie już istnieje.</translation>
+    </message>
+    <message>
+        <location filename="../SectionManager/CustomSectionManager.py" line="178"/>
+        <source>Choose tool to change order.</source>
+        <translation>Wybierz narzędzie aby je przesunąć.</translation>
+    </message>
+    <message>
+        <location filename="../SectionManager/CustomSectionManager.py" line="165"/>
+        <source>Unable to move item down.</source>
+        <translation>Nie można przesunąć elementu na dół.</translation>
+    </message>
+    <message>
+        <location filename="../SectionManager/CustomSectionManager.py" line="191"/>
+        <source>Unable to move item up.</source>
+        <translation>Nie można przesunąć elementu w górę.</translation>
     </message>
     <message>
         <location filename="../AreaAndLengthTool/Events/BaseEventPrototype.py" line="80"/>
