@@ -172,6 +172,25 @@ class ProperSortFilterProxyModel(QSortFilterProxyModel):
         self.setFilterCaseSensitivity(Qt.CaseInsensitive)
         self.sortOrder()
 
+    def flags(self, index):
+        source_index = self.mapToSource(index)
+        if not source_index.parent().isValid():
+            return Qt.NoItemFlags | Qt.ItemIsEnabled
+        return super().flags(index)
+
+    def filterAcceptsRow(self, source_row, source_parent):
+        if not source_parent.isValid():
+            return True
+
+        source_index = self.sourceModel().index(source_row, 0, source_parent)
+        if not source_index.isValid():
+            return False
+        text = source_index.data()
+        if text is None:
+            return False
+
+        return self.filterRegExp().pattern().lower() in text.lower()
+
     def lessThan(self, left, right):
         col_num = left.column()
         for sorting_cat in self.sorting_functions:

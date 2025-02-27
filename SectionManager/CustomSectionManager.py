@@ -213,22 +213,22 @@ class CustomSectionManager(QDialog, FORM_CLASS):
         tool_section_id = tool_id[-1]
         tool_section_row_id = tool_id[0].row()
         self.get_actual_tools()
-        if tool_section_id in self.tools_dict.keys():
-            section_actions = [action_list[0] for action_list in
-                               self.tools_dict[tool_section_id][0]
-                               if isinstance(action_list, list)]
-            self.section_name_lineedit.setText(
-                tr(self.tools_dict[tool_section_id][-1]))
-            self.section_name_backup = self.section_name_lineedit.text()
-            for tool in section_actions:
-                try:
-                    item = QStandardItem(tr(get_tool_label(tool, self.main_qgs_widget)))
-                    item.setData(icon_manager([tool], self.main_qgs_widget)[tool], Qt.DecorationRole)
-                    self.selected_model.appendRow([QStandardItem(tool), item])
-                except:
-                    item = QStandardItem(tr(get_tool_label(tool, self.main_qgs_widget)))
-                    item.setData(icon_manager([tool], self.main_qgs_widget)[tool.replace(":", "_")], Qt.DecorationRole)
-                    self.selected_model.appendRow([QStandardItem(tool), item])
+        for tools_dict_item in self.tools_dict.keys():
+            if tool_section_id == tr(tools_dict_item) or tool_section_id == self.tools_dict[tools_dict_item][-1]:
+                section_actions = [action_list[0] for action_list in
+                                   self.tools_dict[tools_dict_item][0]
+                                   if isinstance(action_list, list)]
+                self.section_name_lineedit.setText(tr(self.tools_dict[tools_dict_item][-1]))
+                self.section_name_backup = self.section_name_lineedit.text()
+                for tool in section_actions:
+                    try:
+                        item = QStandardItem(tr(get_tool_label(tool, self.main_qgs_widget)))
+                        item.setData(icon_manager([tool], self.main_qgs_widget)[tool], Qt.DecorationRole)
+                        self.selected_model.appendRow([QStandardItem(tool), item])
+                    except:
+                        item = QStandardItem(tr(get_tool_label(tool, self.main_qgs_widget)))
+                        item.setData(icon_manager([tool], self.main_qgs_widget)[tool.replace(":", "_")], Qt.DecorationRole)
+                        self.selected_model.appendRow([QStandardItem(tool), item])
         self.edit_id = tool_section_id
         self.selectedToolTable.resizeColumnsToContents()
         self.selectedToolTable.hideColumn(0)
@@ -301,10 +301,13 @@ class CustomSectionManager(QDialog, FORM_CLASS):
     def remove_section(self, sections, section_id) -> None:
         tmp_idx = None
         for sec in sections:
-            if sec['id'] == section_id:
+            if sec['label'] == section_id:
                 tmp_idx = sections.index(sec)
                 break
-        sections.pop(tmp_idx)
+        try:
+            sections.pop(tmp_idx)
+        except TypeError:
+            pass
 
     def remove_row(self, tool_id: Set[Union[QModelIndex, str]]) -> None:
         model = QStandardItemModel()

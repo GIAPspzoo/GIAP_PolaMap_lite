@@ -334,53 +334,53 @@ color: #E0DECF;
 border: 2px solid #365871;
 }
 
-QTreeView {
+QgsLayerTreeView {
     margin-left: 2px;
     border: 1px solid;
     border-color: #5589B0;
    show-decoration-selected: 1;
 }
 
-QTreeView::item,
-QTreeView::branch {
+QgsLayerTreeView::item,
+QgsLayerTreeView::branch {
     color: #E0DECF;
     padding-left: 1px;
      padding-top: 2px;
      padding-bottom: 2px;
 }
 
-QTreeView:branch:hover,
-QTreeView:item:hover
+QgsLayerTreeView:branch:hover,
+QgsLayerTreeView:item:hover
 {
     background-color: #5589B0;
 }
-QTreeView::indicator:unchecked {
+QgsLayerTreeView::indicator:unchecked {
        image: url(icons/unchecked.png);
       width: 12px;
       height: 12px;
  }
 
- QTreeView::indicator:checked {
+ QgsLayerTreeView::indicator:checked {
         image: url(icons/checked.png);
       width: 12px;
       height: 12px;
   }
 
-QTreeView:branch:selected,
-QTreeView:item:selected
+QgsLayerTreeView:branch:selected,
+QgsLayerTreeView:item:selected
 {
     background-color: #5589B0;
     color: #E0DECF;
 }
 
-QTreeView::branch:has-children:!has-siblings:closed,
-QTreeView::branch:closed:has-children:has-siblings {
+QgsLayerTreeView::branch:has-children:!has-siblings:closed,
+QgsLayerTreeView::branch:closed:has-children:has-siblings {
         border-image: none;
         image: url(icons/branch-closed.png);
 }
 
-QTreeView::branch:open:has-children:!has-siblings,
-QTreeView::branch:open:has-children:has-siblings  {
+QgsLayerTreeView::branch:open:has-children:!has-siblings,
+QgsLayerTreeView::branch:open:has-children:has-siblings  {
         border-image: none;
         image: url(icons/branch-open.png);
 }

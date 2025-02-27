@@ -262,6 +262,7 @@ class MainWidget(QWidget, FORM_CLASS):
         """
         self.dlg = SelectSection(self)
         self.run_select_section()
+        self.dlg.show()
         response = self.dlg.exec_()
         if not response:
             return
@@ -274,7 +275,7 @@ class MainWidget(QWidget, FORM_CLASS):
         if self.custom_sections:
             all_available_tools.extend([tool for tool in self.custom_sections])
         selected = [str(item.data(0)) for item in
-                    self.dlg.toolList.selectionModel().selectedRows()
+                    self.dlg.treeView.selectionModel().selectedRows()
                     if str(item.data(0)) not in section_names]
         self.tabWidget.setUpdatesEnabled(True)
         print_trig = False
@@ -314,6 +315,8 @@ class MainWidget(QWidget, FORM_CLASS):
         self.dlg.searchBox.textChanged.connect(self.search_tree)
         self.dlg.add_searchBox.textChanged.connect(
             self.search_add_sections_tree)
+        self.dlg.add_custom_searchBox.textChanged.connect(
+            self.search_add_custom_sections_tree)
         self.connect_checking_signal()
 
     def add_to_ribbon(self) -> None:
@@ -364,7 +367,18 @@ class MainWidget(QWidget, FORM_CLASS):
         self.dlg.algorithmTree.setFilterString(self.dlg.searchBox.value())
 
     def search_add_sections_tree(self) -> None:
-        self.dlg.sort.setFilterFixedString(self.dlg.add_searchBox.value())
+        search_text = self.dlg.add_searchBox.value()
+        self.dlg.sort.setFilterRegExp(search_text)
+        self.dlg.sort.setFilterKeyColumn(0)
+        self.dlg.sort.setFilterCaseSensitivity(Qt.CaseInsensitive)
+        self.dlg.treeView.expandAll()
+
+    def search_add_custom_sections_tree(self) -> None:
+        search_text = self.dlg.add_custom_searchBox.value()
+        self.dlg.sort_custom.setFilterRegExp(search_text)
+        self.dlg.sort_custom.setFilterKeyColumn(0)
+        self.dlg.sort_custom.setFilterCaseSensitivity(Qt.CaseInsensitive)
+        self.dlg.treeView_2.expandAll()
 
     def section_tab(self) -> None:
         self.dlg.stackedWidget.setCurrentIndex(0)
@@ -416,9 +430,9 @@ class MainWidget(QWidget, FORM_CLASS):
                 self.add_tab()
 
     def connect_checking_signal(self) -> None:
-        self.dlg.customToolList.selectionModel(). \
+        self.dlg.treeView_2.selectionModel(). \
             selectionChanged.disconnect()
-        self.dlg.customToolList.selectionModel(). \
+        self.dlg.treeView_2.selectionModel(). \
             selectionChanged.connect(self.check_for_remove)
 
     def add_custom_section(self) -> None:
@@ -443,9 +457,9 @@ class MainWidget(QWidget, FORM_CLASS):
     def check_for_remove(self) -> None:
         if not hasattr(self, 'custom_section_dlg'):
             self.custom_section_dlg = CustomSectionManager(self, 'remove')
+
         row = self.dlg.get_selected_row()
-        if not row or self.custom_section_dlg.manage_editing_option(
-                row[0].row()):
+        if not row:
             self.dlg.pushButton_remove_custom.setEnabled(False)
         else:
             self.dlg.pushButton_remove_custom.setEnabled(True)

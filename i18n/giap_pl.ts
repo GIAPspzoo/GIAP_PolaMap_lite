@@ -6,7 +6,7 @@
     <message>
         <location filename="../config.py" line="20"/>
         <source>Failed to load confing.json.</source>
-        <translation type="obsolete">Wystąpił błąd podczas wczytywania pliku konfiguracyjnego config.json.</translation>
+        <translation>Wystąpił błąd podczas wczytywania pliku konfiguracyjnego config.json.</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.py" line="53"/>
@@ -21,12 +21,12 @@
     <message>
         <location filename="../OrtoTools.py" line="22"/>
         <source>Add WMS/WMTS services</source>
-        <translation type="obsolete">Dodaj usługę WMS/WMTS</translation>
+        <translation>Dodaj usługę WMS/WMTS</translation>
     </message>
     <message>
         <location filename="../QuickPrint.py" line="166"/>
         <source>Save file</source>
-        <translation type="obsolete">Zapis pliku</translation>
+        <translation>Zapis pliku</translation>
     </message>
     <message>
         <location filename="../QuickPrint.py" line="506"/>
@@ -72,7 +72,7 @@
         <location filename="../Kompozycje/Kompozycje.py" line="189"/>
         <source>Changes in layer&apos;s panel are detected.
 Compositions will be updated.</source>
-        <translation type="obsolete">Wykryto zmiany w panelu warstw.
+        <translation>Wykryto zmiany w panelu warstw.
 Kompozycje zostaną uaktualnione.</translation>
     </message>
     <message>
@@ -118,7 +118,7 @@ Kompozycje zostaną uaktualnione.</translation>
     <message>
         <location filename="../Kompozycje/Kompozycje.py" line="638"/>
         <source>Select layer to remove from the mark layers.</source>
-        <translation type="obsolete">Zaznacz warstwę, aby usunąc ją z wybranych.</translation>
+        <translation>Zaznacz warstwę, aby usunąc ją z wybranych.</translation>
     </message>
     <message>
         <location filename="../Kompozycje/Kompozycje.py" line="730"/>
@@ -275,7 +275,7 @@ Proszę czekać...</translation>
     <message>
         <location filename="../tools.py" line="103"/>
         <source>Path to *.qss not found, load default style.</source>
-        <translation type="obsolete">Nie odnaleziono ścieżki do *.qss, ustawiono styl domyślny.</translation>
+        <translation>Nie odnaleziono ścieżki do *.qss, ustawiono styl domyślny.</translation>
     </message>
     <message>
         <location filename="../tools.py" line="101"/>
@@ -348,9 +348,9 @@ Proszę czekać...</translation>
         <translation>Konwersja</translation>
     </message>
     <message>
-        <location filename="../utils.py" line="643"/>
+        <location filename="../utils.py" line="1076"/>
         <source>Sections</source>
-        <translation type="obsolete">Sekcje</translation>
+        <translation>Sekcje</translation>
     </message>
     <message>
         <location filename="../SectionManager/select_section.py" line="87"/>
@@ -420,7 +420,7 @@ Proszę czekać...</translation>
     <message>
         <location filename="../giap_layout.py" line="78"/>
         <source>Switch on manually missing core plugin: Topology Checker</source>
-        <translation type="obsolete">Włącz brakującą wtyczkę wbudowaną: Kontrola Topologii</translation>
+        <translation>Włącz brakującą wtyczkę wbudowaną: Kontrola Topologii</translation>
     </message>
     <message>
         <location filename="../giap_layout.py" line="180"/>
@@ -445,22 +445,22 @@ Proszę czekać...</translation>
     <message>
         <location filename="../giap_layout.py" line="134"/>
         <source>Enter the data according to the scheme:</source>
-        <translation type="obsolete">Wpisz dane według schematu:</translation>
+        <translation>Wpisz dane według schematu:</translation>
     </message>
     <message>
         <location filename="../giap_layout.py" line="135"/>
         <source>for the address point:</source>
-        <translation type="obsolete">dla punktu adresowego:</translation>
+        <translation>dla punktu adresowego:</translation>
     </message>
     <message>
         <location filename="../giap_layout.py" line="136"/>
         <source>for the street:</source>
-        <translation type="obsolete">dla ulicy:</translation>
+        <translation>dla ulicy:</translation>
     </message>
     <message>
         <location filename="../OrtoTools.py" line="58"/>
         <source>Error, detaching signals from groups in layers tree.</source>
-        <translation type="obsolete">Błąd, nie udało się usunąć sygnałów z grup w panelu warstw.</translation>
+        <translation>Błąd, nie udało się usunąć sygnałów z grup w panelu warstw.</translation>
     </message>
     <message>
         <location filename="../Kompozycje/Kompozycje.py" line="139"/>
@@ -565,7 +565,7 @@ Proszę czekać...</translation>
     <message>
         <location filename="../Searcher/searchParcel.py" line="53"/>
         <source>Error!</source>
-        <translation type="obsolete">Błąd!</translation>
+        <translation>Błąd!</translation>
     </message>
     <message>
         <location filename="../Searcher/searchAddress.py" line="53"/>
@@ -575,7 +575,7 @@ Proszę czekać...</translation>
     <message>
         <location filename="../Searcher/searchParcel.py" line="62"/>
         <source>Service temporary unvailiable on the ULDK side.</source>
-        <translation type="obsolete">Usługa chwilowo niedostępna po stronie ULDK.</translation>
+        <translation>Usługa chwilowo niedostępna po stronie ULDK.</translation>
     </message>
     <message>
         <location filename="../Searcher/searchAddress.py" line="47"/>
@@ -585,7 +585,7 @@ Proszę czekać...</translation>
     <message>
         <location filename="../Searcher/searchAddress.py" line="61"/>
         <source>Check address.</source>
-        <translation type="obsolete">Sprawdź, czy adres jest poprawny.</translation>
+        <translation>Sprawdź, czy adres jest poprawny.</translation>
     </message>
     <message>
         <location filename="../Searcher/searchAddress.py" line="103"/>
@@ -615,17 +615,17 @@ Proszę czekać...</translation>
     <message>
         <location filename="../Searcher/searchParcel.py" line="53"/>
         <source>Service returned incomplete responce.</source>
-        <translation type="obsolete">Usługa zwróciła niepełną odpowiedź.</translation>
+        <translation>Usługa zwróciła niepełną odpowiedź.</translation>
     </message>
     <message>
         <location filename="../Searcher/searchParcel.py" line="56"/>
         <source>Service error</source>
-        <translation type="obsolete">Błąd usługi</translation>
+        <translation>Błąd usługi</translation>
     </message>
     <message>
         <location filename="../Searcher/searchParcel.py" line="59"/>
         <source>Service is not responding.</source>
-        <translation type="obsolete">Usługa nie odpowiada.</translation>
+        <translation>Usługa nie odpowiada.</translation>
     </message>
     <message>
         <location filename="../Searcher/searchParcel.py" line="123"/>
@@ -670,12 +670,12 @@ Proszę czekać...</translation>
     <message>
         <location filename="../Searcher/searchTool.py" line="130"/>
         <source>Warning!</source>
-        <translation type="obsolete">Uwaga!</translation>
+        <translation>Uwaga!</translation>
     </message>
     <message>
         <location filename="../Searcher/searchTool.py" line="278"/>
         <source>Address of parcel is not valid.</source>
-        <translation type="obsolete">Adres działki jest niepoprawny.</translation>
+        <translation>Adres działki jest niepoprawny.</translation>
     </message>
     <message>
         <location filename="../Searcher/searchParcel.py" line="123"/>
@@ -730,12 +730,12 @@ Proszę czekać...</translation>
     <message>
         <location filename="../AreaAndLengthTool/Events/BaseEventPrototype.py" line="80"/>
         <source>Length:</source>
-        <translation type="obsolete">Długość</translation>
+        <translation>Długość</translation>
     </message>
     <message>
         <location filename="../AreaAndLengthTool/Events/BaseEventPrototype.py" line="87"/>
         <source>Area:</source>
-        <translation type="obsolete">Powierzchnia</translation>
+        <translation>Powierzchnia</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.py" line="872"/>
@@ -940,7 +940,7 @@ Kompozje zostaną zaktualizowane.</translation>
     <message>
         <location filename="../SectionManager/UI/add_section_dialog.ui" line="32"/>
         <source>Save selected</source>
-        <translation type="obsolete">Zapisz wybrane</translation>
+        <translation>Zapisz wybrane</translation>
     </message>
     <message>
         <location filename="../SectionManager/UI/add_section_dialog.ui" line="475"/>
@@ -973,7 +973,7 @@ Kompozje zostaną zaktualizowane.</translation>
     <message>
         <location filename="../Kompozycje/compositions_saver.ui" line="884"/>
         <source>Select Composition</source>
-        <translation type="obsolete">Wybierz kompozycję</translation>
+        <translation>Wybierz kompozycję</translation>
     </message>
     <message>
         <location filename="../Kompozycje/compositions_saver.ui" line="149"/>
@@ -1118,7 +1118,7 @@ lub uzupełnij wcześniejsze pola i wskaż numer działki np. 17/2</translation>
     <message>
         <location filename="../giap_dynamic_layout.ui" line="275"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wskaż punkt na mapie, aby pobrać działkę&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wskaż punkt na mapie, aby pobrać działkę&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wskaż punkt na mapie, aby pobrać działkę&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.ui" line="304"/>
@@ -1132,7 +1132,7 @@ Dla ulicy: Warszawa, Pasaż Ursynowski</translation>
     <message>
         <location filename="../giap_dynamic_layout.ui" line="344"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wskaż punkt na mapie, aby pobrać punkt adresowy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wskaż punkt na mapie, aby pobrać punkt adresowy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wskaż punkt na mapie, aby pobrać punkt adresowy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.ui" line="481"/>
@@ -1265,7 +1265,7 @@ Dla ulicy: Warszawa, Pasaż Ursynowski</translation>
     <message>
         <location filename="../Kompozycje/nowa_kompozycja.ui" line="837"/>
         <source>Settings</source>
-        <translation type="obsolete">Ustawienia</translation>
+        <translation>Ustawienia</translation>
     </message>
     <message>
         <location filename="../Kompozycje/nowa_kompozycja.ui" line="781"/>
@@ -1304,7 +1304,7 @@ Dla ulicy: Warszawa, Pasaż Ursynowski</translation>
         <location filename="../Wms_wmts/online_layers_dialog.ui" line="856"/>
         <source>Loading layers from
 online resources</source>
-        <translation type="obsolete">Wczytywanie warstw z
+        <translation>Wczytywanie warstw z
 zasobów online</translation>
     </message>
 </context>
@@ -1318,7 +1318,7 @@ zasobów online</translation>
     <message>
         <location filename="../SectionManager/UI/select_section_dialog.ui" line="512"/>
         <source>Sections</source>
-        <translation type="obsolete">Sekcje</translation>
+        <translation>Sekcje</translation>
     </message>
     <message>
         <location filename="../SectionManager/UI/select_section_dialog.ui" line="454"/>
@@ -1373,7 +1373,7 @@ zasobów online</translation>
     <message>
         <location filename="../SectionManager/UI/select_section_dialog.ui" line="966"/>
         <source>Enter algorithm name to filter list</source>
-        <translation type="unfinished"></translation>
+        <translation>Wprowadź nazwę algorytmu</translation>
     </message>
 </context>
 <context>

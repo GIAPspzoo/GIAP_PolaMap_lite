@@ -331,12 +331,37 @@
                <property name="frameShape">
                 <enum>QFrame::NoFrame</enum>
                </property>
+               <property name="editTriggers">
+                <set>QAbstractItemView::NoEditTriggers</set>
+               </property>
+               <property name="defaultDropAction">
+                <enum>Qt::IgnoreAction</enum>
+               </property>
                <property name="selectionMode">
-                <enum>QAbstractItemView::MultiSelection</enum>
+                <enum>QAbstractItemView::ExtendedSelection</enum>
                </property>
                <property name="selectionBehavior">
                 <enum>QAbstractItemView::SelectRows</enum>
                </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QTreeView" name="treeView">
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="editTriggers">
+                <set>QAbstractItemView::NoEditTriggers</set>
+               </property>
+               <property name="alternatingRowColors">
+                <bool>false</bool>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::ExtendedSelection</enum>
+               </property>
+               <attribute name="headerVisible">
+                <bool>false</bool>
+               </attribute>
               </widget>
              </item>
              <item>
@@ -397,8 +422,14 @@
             <property name="placeholderText">
              <string>Search...</string>
             </property>
+            <property name="nullValue">
+             <string/>
+            </property>
             <property name="showSearchIcon">
              <bool>true</bool>
+            </property>
+            <property name="showSpinner">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -522,7 +553,7 @@
          </property>
          <layout class="QGridLayout" name="gridLayout_8">
           <property name="leftMargin">
-           <number>10</number>
+           <number>9</number>
           </property>
           <property name="topMargin">
            <number>0</number>
@@ -834,6 +865,16 @@
               </widget>
              </item>
              <item>
+              <widget class="QTreeView" name="treeView_2">
+               <property name="editTriggers">
+                <set>QAbstractItemView::NoEditTriggers</set>
+               </property>
+               <attribute name="headerVisible">
+                <bool>false</bool>
+               </attribute>
+              </widget>
+             </item>
+             <item>
               <spacer name="verticalSpacer_7">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
@@ -871,13 +912,13 @@
               <number>5</number>
              </property>
              <property name="leftMargin">
-              <number>5</number>
+              <number>0</number>
              </property>
              <property name="topMargin">
               <number>0</number>
              </property>
              <property name="rightMargin">
-              <number>5</number>
+              <number>0</number>
              </property>
              <property name="bottomMargin">
               <number>0</number>
