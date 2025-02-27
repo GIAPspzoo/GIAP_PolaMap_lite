@@ -6,12 +6,13 @@ import os
 
 import requests
 from qgis.PyQt import QtWidgets, uic, QtCore
-from qgis.core import QgsVectorLayer, QgsProject, QgsFeature, QgsGeometry, QgsFields, QgsField
+from qgis.core import QgsVectorLayer, QgsProject, QgsFeature, QgsGeometry, QgsFields, QgsField, QgsRasterLayer, \
+    QgsLayerTreeGroup
 from qgis.utils import iface
 from qgis.PyQt.QtCore import QTimer
 from qgis.PyQt.QtWidgets import QApplication, QProgressDialog
 
-from .utils import CustomMessageBox, tr
+from .utils import CustomMessageBox, tr, search_group_name, add_map_layer_to_group
 
 
 class PRNGTool(QtWidgets.QDialog):
@@ -133,7 +134,7 @@ class PRNGTool(QtWidgets.QDialog):
             feature.setAttributes(attributes)
             layer.dataProvider().addFeature(feature)
             layer.updateExtents()
-            QgsProject.instance().addMapLayer(layer)
+            add_map_layer_to_group(layer, search_group_name, force_create=True)
             self.zoom_to_feature(feature)
             self.close()
         else:

@@ -103,6 +103,16 @@ RIBBON_DEFAULT = [
                 ]
             },
             {
+                'label': tr('Extras'),
+                'id': 'Extras',
+                'btn_size': 30,
+                'btns': [
+                    ['giapPRNG', 0, 0],
+                    ['giapGeoportal', 1, 0],
+                    ['giapOrtoContr', 0, 1],
+                ]
+            },
+            {
                 'label': tr('GIAP Tools'),
                 'id': 'GIAP Tools',
                 'btn_size': 60,

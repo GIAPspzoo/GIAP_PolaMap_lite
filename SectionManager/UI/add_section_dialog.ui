@@ -209,7 +209,7 @@ border-top: none;</string>
              <item>
               <widget class="QTableView" name="availableToolTable">
                <property name="styleSheet">
-                <string notr="true">border: none</string>
+                <string notr="true"/>
                </property>
                <property name="frameShape">
                 <enum>QFrame::NoFrame</enum>
@@ -278,9 +278,32 @@ border-top: none;</string>
                </font>
               </property>
               <property name="styleSheet">
-               <string notr="true">border: solid;
+               <string notr="true">QToolButton {
+padding: 5px;
+border: none;
 border-width: 1px;
-border-color:#5589B0;</string>
+border-radius: 3px;
+background-color: #5589B0;
+}
+QToolButton:checked {
+background-color: #5589B0;
+border: solid;
+border-width: 1px;
+border-color: #5589B0;
+}
+
+QToolButton:disabled  {
+background-color: #465A68;
+color: #7E7F81;
+}
+
+QToolButton:hover {
+background-color: #5589B0;
+border-radius: 3px;
+border: solid;
+border-width: 1px;
+border-color: #E0DECF;
+}</string>
               </property>
               <property name="text">
                <string>...</string>
@@ -299,9 +322,32 @@ border-color:#5589B0;</string>
                </size>
               </property>
               <property name="styleSheet">
-               <string notr="true">border: solid;
+               <string notr="true">QToolButton {
+padding: 5px;
+border: none;
 border-width: 1px;
-border-color:#5589B0;</string>
+border-radius: 3px;
+background-color: #5589B0;
+}
+QToolButton:checked {
+background-color: #5589B0;
+border: solid;
+border-width: 1px;
+border-color: #5589B0;
+}
+
+QToolButton:disabled  {
+background-color: #465A68;
+color: #7E7F81;
+}
+
+QToolButton:hover {
+background-color: #5589B0;
+border-radius: 3px;
+border: solid;
+border-width: 1px;
+border-color: #E0DECF;
+}</string>
               </property>
               <property name="text">
                <string>...</string>
@@ -353,7 +399,7 @@ border-top: none;</string>
              <item>
               <widget class="QTableView" name="selectedToolTable">
                <property name="styleSheet">
-                <string notr="true">border: none</string>
+                <string notr="true"/>
                </property>
                <property name="frameShape">
                 <enum>QFrame::NoFrame</enum>
@@ -367,8 +413,14 @@ border-top: none;</string>
                <property name="editTriggers">
                 <set>QAbstractItemView::NoEditTriggers</set>
                </property>
+               <property name="dragDropMode">
+                <enum>QAbstractItemView::NoDragDrop</enum>
+               </property>
+               <property name="defaultDropAction">
+                <enum>Qt::IgnoreAction</enum>
+               </property>
                <property name="selectionMode">
-                <enum>QAbstractItemView::MultiSelection</enum>
+                <enum>QAbstractItemView::SingleSelection</enum>
                </property>
                <property name="selectionBehavior">
                 <enum>QAbstractItemView::SelectRows</enum>
@@ -401,6 +453,98 @@ border-top: none;</string>
                 <bool>false</bool>
                </attribute>
               </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_4">
+               <item>
+                <widget class="QToolButton" name="wdol_narzdzie">
+                 <property name="minimumSize">
+                  <size>
+                   <width>100</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QToolButton {
+padding: 5px;
+border: none;
+border-width: 1px;
+border-radius: 3px;
+background-color: #5589B0;
+}
+QToolButton:checked {
+background-color: #5589B0;
+border: solid;
+border-width: 1px;
+border-color: #5589B0;
+}
+
+QToolButton:disabled  {
+background-color: #465A68;
+color: #7E7F81;
+}
+
+QToolButton:hover {
+background-color: #5589B0;
+border-radius: 3px;
+border: solid;
+border-width: 1px;
+border-color: #E0DECF;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>...</string>
+                 </property>
+                 <property name="arrowType">
+                  <enum>Qt::DownArrow</enum>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QToolButton" name="wgore_narzdzie">
+                 <property name="minimumSize">
+                  <size>
+                   <width>100</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QToolButton {
+padding: 5px;
+border: none;
+border-width: 1px;
+border-radius: 3px;
+background-color: #5589B0;
+}
+QToolButton:checked {
+background-color: #5589B0;
+border: solid;
+border-width: 1px;
+border-color: #5589B0;
+}
+
+QToolButton:disabled  {
+background-color: #465A68;
+color: #7E7F81;
+}
+
+QToolButton:hover {
+background-color: #5589B0;
+border-radius: 3px;
+border: solid;
+border-width: 1px;
+border-color: #E0DECF;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>...</string>
+                 </property>
+                 <property name="arrowType">
+                  <enum>Qt::UpArrow</enum>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
             </layout>
            </widget>

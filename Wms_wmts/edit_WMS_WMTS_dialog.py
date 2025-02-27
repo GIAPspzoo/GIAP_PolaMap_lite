@@ -18,7 +18,6 @@ class EditConnection(QDialog, FORM_CLASS):
         self.add_btn.setText(tr('Confirm'))
         self.close_btn.clicked.connect(self.accept)
         self.add_btn.clicked.connect(self.edit_wms_wmts)
-        self.plugins = qgis.utils.plugins['GIAP-PolaMap(lite)']
         self.parent.groups_combobox(self)
 
         self.wms_list = {}
@@ -56,7 +55,7 @@ class EditConnection(QDialog, FORM_CLASS):
                 json_read.close()
             with open(self.json_file, "w+") as json_write:
                 json.dump(data, json_write)
-            self.plugins.orto_add.my_refresh_menu()
+            self.parent.OrtoAddingTool.my_refresh_menu()
             self.close()
 
         self.parent.fill_list()

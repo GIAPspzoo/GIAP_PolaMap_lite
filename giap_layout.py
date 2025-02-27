@@ -4,8 +4,12 @@ import subprocess
 import webbrowser
 import urllib.request
 import re
+import time
+
 from typing import List
 from urllib.error import URLError
+from datetime import datetime
+from platform import python_version
 
 import qgis
 from qgis.PyQt.QtCore import QTranslator, QCoreApplication, QSize, \
@@ -65,6 +69,7 @@ class MainTabQgsWidget:
         self.iface.initializationCompleted.connect(self.load_ribbons)
         self.iface.newProjectCreated.connect(self.missingCorePlugins)
         self.set_dlg = SettingsDialog()
+        self.set_dlg.groupBox_5.hide()
         self.set_dlg.adjustSize()
         self.style_manager_dlg = StyleManagerDialog(self.style_manager)
         self.font_size = QSettings().value("qgis/stylesheet/fontPointSize")
@@ -164,10 +169,6 @@ class MainTabQgsWidget:
         corner_layout.addWidget(self.editButton)
         corner_layout.addWidget(self.styleButton)
         corner_layout.addWidget(self.settingsButton)
-        self.main_widget.lineEdit_address.setToolTip(
-            f"""{tr('Enter the data according to the scheme:')}
-{tr('for the address point:')} {'Warszawa, Pasaż Ursynowski 1'}
-{tr('for the street:')} {'Warszawa, Pasaż Ursynowski'}""")
         # logo icon
         plug_dir = os.path.dirname(__file__)
         gbut = QPushButton()
@@ -233,15 +234,55 @@ class MainTabQgsWidget:
             QIcon(os.path.join(self.plugin_dir, 'styles', 'GIAP Navy Blue', 'icons', 'close.png')))
 
         self.main_widget.setFocusPolicy(Qt.StrongFocus)
-
-        new = self.html_div_from_url(GIAP_NEWS_WEB_PAGE)
-        self.add_news_from_dict(new)
+        try:
+            new = self.html_div_from_url(GIAP_NEWS_WEB_PAGE)
+            self.add_news_from_dict(new)
+        except:
+            pass
 
         process = qgis.utils.plugins.get('processing')
         if process:
             process.initGui()
             process.initProcessing()
             self.load_ribbons()
+        self.run_logger()
+
+    def run_logger(self):
+        current_time = datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
+        dirn = os.path.dirname
+        self.log_folder = os.path.join(dirn(dirn(dirn(self.plugin_dir))), 'GIAP_lite_logs')
+        print(self.log_folder)
+        if not os.path.exists(self.log_folder):
+            os.makedirs(self.log_folder)
+        self.new_txt_file = os.path.join(self.log_folder, f"qgis_logs_{current_time}.txt")
+        qgis_version = Qgis.QGIS_VERSION
+        plugin_version = self.get_version()
+        self.remove_old_logs()
+        with open(self.new_txt_file, 'a') as logfile:
+            logfile.write(f'''Data:  {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} \n''')
+            logfile.write(f'''Wersja Qgis:  {qgis_version} \n''')
+            logfile.write(f'''Wersja Python:  {python_version()} \n''')
+            logfile.write('''Wtyczka:  GIAP-PolaMap (lite)\n''')
+            logfile.write(f'''Wersja wtyczki:  {plugin_version}''')
+        QgsApplication.messageLog().messageReceived.connect(self.write_log_message)
+
+    def get_version(self):
+        meta_file = os.path.join(os.path.dirname(__file__), "metadata.txt")
+        with open(meta_file, 'r') as mf:
+            for line in mf:
+                if 'subversion=' in line:
+                    return line.replace('subversion=', '')
+
+    def remove_old_logs(self):
+        treshold = time.time() - 10 * 86400 # 10 dni
+        for tmp_dir in os.listdir(self.log_folder):
+            creation_time = os.stat(os.path.join(self.log_folder, tmp_dir)).st_ctime
+            if creation_time < treshold:
+                os.remove(os.path.join(self.log_folder, tmp_dir))
+
+    def write_log_message(self, message, tag, level):
+        with open(self.new_txt_file, 'a') as logfile:
+            logfile.write(f'''{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}:  {tag} ({level}):  {message} \n\n''')
 
     def ustaw_legende(self) -> None:
         self.layer_panel = \
@@ -377,7 +418,8 @@ class MainTabQgsWidget:
     def off_on_search_tool(self, visibility) -> None:
         elements = ['comboBox_woj', 'comboBox_pow', 'comboBox_gmina',
                     'comboBox_obr', 'buttonParcelNr', 'buttonAdress',
-                    'lineEdit_parcel', 'lineEdit_address', 'line']
+                    'lineEdit_parcel', 'lineEdit_address', 'line',
+                    'wyszukaj_pushButton', 'wyszukaj_adres_pushButton']
 
         for elem in elements:
             getattr(self.main_widget, elem).setVisible(visibility)

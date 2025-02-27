@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import List, Union, Set
 
 from qgis.PyQt import uic
-from qgis.PyQt.QtCore import QModelIndex
+from qgis.PyQt.QtCore import QModelIndex, QItemSelectionModel
 from qgis.PyQt.QtCore import QSortFilterProxyModel, QSettings
 from qgis.PyQt.QtGui import QStandardItemModel, QStandardItem
 from qgis.PyQt.QtWidgets import QDialog, QToolBar, QAction
@@ -36,6 +36,8 @@ class CustomSectionManager(QDialog, FORM_CLASS):
             self.toolButton_add_tool.clicked.connect(self.add_to_selected)
             self.toolButton_remove_tool.clicked.connect(
                 self.remove_from_selected)
+            self.wdol_narzdzie.clicked.connect(self.move_down)
+            self.wgore_narzdzie.clicked.connect(self.move_up)
             self.pushButton_save.clicked.connect(self.save_section)
             self.protected = False
 
@@ -146,6 +148,62 @@ class CustomSectionManager(QDialog, FORM_CLASS):
         for row_id in sorted(selected_tools_ids, reverse=True):
             self.selectedToolTable.model().removeRow(row_id)
 
+    def move_down(self):
+
+        table_sel_model = self.selectedToolTable.selectionModel()
+        rows = table_sel_model.selectedRows()
+        row_max = self.selectedToolTable.model().rowCount()-1
+        if rows:
+            check_is_row_move = True
+            for row in rows:
+                index = row.row()
+                if index == row_max:
+                    check_is_row_move = False
+            if not check_is_row_move:
+                table_sel_model.clear()
+                CustomMessageBox(self, tr('Unable to move item down.')).button_ok()
+                return
+            else:
+                for row in rows:
+                    index = row.row()
+                    self._move_field(index, index + 1)
+            model = self.selectedToolTable.model()
+            table_sel_model = self.selectedToolTable.selectionModel()
+            table_sel_model.clear()
+            for row in rows:
+                table_sel_model.select(model.index(row.row() + 1, 0), QItemSelectionModel.Select | QItemSelectionModel.Rows)
+        else:
+            CustomMessageBox(self,
+                             tr('Choose tool to change order.')
+                             ).button_ok()
+
+    def move_up(self):
+        table_sel_model = self.selectedToolTable.selectionModel()
+        rows = table_sel_model.selectedRows()
+        if rows:
+            for row in rows:
+                index = row.row()
+                if index > 0:
+                    self._move_field(index, index - 1)
+                elif index == 0:
+                    table_sel_model.clear()
+                    CustomMessageBox(self, tr('Unable to move item up.')).button_ok()
+                    return
+
+            model = self.selectedToolTable.model()
+            table_sel_model = self.selectedToolTable.selectionModel()
+            table_sel_model.clear()
+            for row in rows:
+                table_sel_model.select(model.index(row.row() - 1, 0), QItemSelectionModel.Select | QItemSelectionModel.Rows)
+        else:
+            CustomMessageBox(self,
+                             tr('Choose tool to change order.')
+                             ).button_ok()
+
+    def _move_field(self, index: int, direction: int) -> None:
+        model = self.selectedToolTable.model()
+        model.insertRow(direction, model.takeRow(index))
+
     def edit_selected_item(self,
                            tool_id: Set[Union[QModelIndex, str]]) -> None:
         if not hasattr(self, 'selected_model'):
@@ -155,22 +213,22 @@ class CustomSectionManager(QDialog, FORM_CLASS):
         tool_section_id = tool_id[-1]
         tool_section_row_id = tool_id[0].row()
         self.get_actual_tools()
-        if tool_section_id in self.tools_dict.keys():
-            section_actions = [action_list[0] for action_list in
-                               self.tools_dict[tool_section_id][0]
-                               if isinstance(action_list, list)]
-            self.section_name_lineedit.setText(
-                tr(self.tools_dict[tool_section_id][-1]))
-            self.section_name_backup = self.section_name_lineedit.text()
-            for tool in section_actions:
-                try:
-                    item = QStandardItem(tr(get_tool_label(tool, self.main_qgs_widget)))
-                    item.setData(icon_manager([tool], self.main_qgs_widget)[tool], Qt.DecorationRole)
-                    self.selected_model.appendRow([QStandardItem(tool), item])
-                except:
-                    item = QStandardItem(tr(get_tool_label(tool, self.main_qgs_widget)))
-                    item.setData(icon_manager([tool], self.main_qgs_widget)[tool.replace(":", "_")], Qt.DecorationRole)
-                    self.selected_model.appendRow([QStandardItem(tool), item])
+        for tools_dict_item in self.tools_dict.keys():
+            if tool_section_id == tr(tools_dict_item) or tool_section_id == self.tools_dict[tools_dict_item][-1]:
+                section_actions = [action_list[0] for action_list in
+                                   self.tools_dict[tools_dict_item][0]
+                                   if isinstance(action_list, list)]
+                self.section_name_lineedit.setText(tr(self.tools_dict[tools_dict_item][-1]))
+                self.section_name_backup = self.section_name_lineedit.text()
+                for tool in section_actions:
+                    try:
+                        item = QStandardItem(tr(get_tool_label(tool, self.main_qgs_widget)))
+                        item.setData(icon_manager([tool], self.main_qgs_widget)[tool], Qt.DecorationRole)
+                        self.selected_model.appendRow([QStandardItem(tool), item])
+                    except:
+                        item = QStandardItem(tr(get_tool_label(tool, self.main_qgs_widget)))
+                        item.setData(icon_manager([tool], self.main_qgs_widget)[tool.replace(":", "_")], Qt.DecorationRole)
+                        self.selected_model.appendRow([QStandardItem(tool), item])
         self.edit_id = tool_section_id
         self.selectedToolTable.resizeColumnsToContents()
         self.selectedToolTable.hideColumn(0)
@@ -243,10 +301,13 @@ class CustomSectionManager(QDialog, FORM_CLASS):
     def remove_section(self, sections, section_id) -> None:
         tmp_idx = None
         for sec in sections:
-            if sec['id'] == section_id:
+            if sec['label'] == section_id:
                 tmp_idx = sections.index(sec)
                 break
-        sections.pop(tmp_idx)
+        try:
+            sections.pop(tmp_idx)
+        except TypeError:
+            pass
 
     def remove_row(self, tool_id: Set[Union[QModelIndex, str]]) -> None:
         model = QStandardItemModel()

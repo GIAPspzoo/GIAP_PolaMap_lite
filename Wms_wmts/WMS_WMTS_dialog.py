@@ -14,9 +14,10 @@ FORM_CLASS, _ = loadUiType(os.path.join(
 
 
 class WMS_WMTS_dialog(QDialog, FORM_CLASS):
-    def __init__(self, parent=None):
+    def __init__(self, OrtoAddingTool, parent=None):
         super(WMS_WMTS_dialog, self).__init__(parent)
         self.setupUi(self)
+        self.OrtoAddingTool = OrtoAddingTool
         self.json_file = json_path()
         self.close_btn.clicked.connect(self.accept)
         self.add_btn.clicked.connect(self.run_add_service)
@@ -24,7 +25,6 @@ class WMS_WMTS_dialog(QDialog, FORM_CLASS):
         self.remove_btn.clicked.connect(self.remove_selected)
         self.wms_list = {}
         self.fill_list()
-        self.plugins = qgis.utils.plugins['GIAP-PolaMap(lite)']
 
     def run(self) -> None:
         self.show()
@@ -65,7 +65,7 @@ class WMS_WMTS_dialog(QDialog, FORM_CLASS):
             json_read.close()
         with open(self.json_file, "w+") as json_write:
             json.dump(data, json_write)
-        self.plugins.orto_add.my_refresh_menu()
+        self.OrtoAddingTool.my_refresh_menu()
 
     def check_wms_name(self, wms_name: str) -> bool or None:
         with open(self.json_file, "r+") as json_read:
@@ -82,7 +82,7 @@ class WMS_WMTS_dialog(QDialog, FORM_CLASS):
         return True
 
     def groups_combobox(self, child) -> None:
-        items = self.plugins.orto_add.get_group_names()
+        items = self.OrtoAddingTool.get_group_names()
         child.comboBox_group.addItems(items)
         child.comboBox_group.setEditable(True)
 

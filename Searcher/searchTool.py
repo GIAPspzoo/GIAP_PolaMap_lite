@@ -9,7 +9,7 @@ from qgis.PyQt.QtGui import QFont, QFontMetrics
 from qgis.PyQt.QtCore import QStringListModel
 from qgis.PyQt.QtCore import QTimer
 from qgis.PyQt.QtWidgets import QCompleter
-from qgis.core import QgsVectorLayer
+from qgis.core import QgsVectorLayer, QgsProject
 from qgis.utils import iface
 from typing import Union, Dict, List
 from qgis.core import QgsField, QgsFeature, QgsGeometry, QgsPointXY, QgsMapLayer
@@ -41,6 +41,8 @@ class SearcherTool:
             self.gmi_changed)
         self.dock.lineEdit_parcel.returnPressed.connect(
             self.search_parcel)
+        self.dock.wyszukaj_pushButton.clicked.connect(self.search_parcel)
+        self.dock.wyszukaj_adres_pushButton.clicked.connect(self.search_address)
         self.dock.buttonParcelNr.clicked.connect(self.handle_parcel_button_click)
         self.dock.buttonAdress.clicked.connect(self.handle_address_button_click)
         self._pointTool = None
@@ -134,6 +136,9 @@ class SearcherTool:
 
     def search_address(self) -> None:
         validate_address = self.validate_lineedit()
+        progress = ProgressDialog(None, tr("Waiting for the ULDK website response"))
+        progress.start()
+        ok = False
         if validate_address:
             lineedit = self.dock.lineEdit_address.text().split(',')
             if len(lineedit) == 3:
@@ -142,10 +147,14 @@ class SearcherTool:
                 correct_lineedit = f"{lineedit[0].strip()}, {lineedit[1].strip()}"
             else:
                 correct_lineedit = f"{lineedit[0].strip()}"
-            self.searchaddress_call.fetch_address(correct_lineedit)
-            ok, res = self.searchaddress_call.process_results()
+            try:
+                self.searchaddress_call.fetch_address(correct_lineedit)
+                ok, res = self.searchaddress_call.process_results()
+            except:
+                pass
             if not ok:
-                CustomMessageBox(None, f'{tr("Warning!")} {res}').button_ok()
+                CustomMessageBox(None, f'{tr("Warning! An unexpected error.")}').button_ok()
+                return
             self.searchaddress_call.add_feats(res)
 
             def change_scale():
@@ -156,6 +165,7 @@ class SearcherTool:
             self.timer.setSingleShot(True)
             self.timer.timeout.connect(change_scale)
             self.timer.start(10)
+        progress.stop()
 
     def validate_lineedit(self) -> bool:
         if self.dock.lineEdit_address.text():
@@ -250,7 +260,8 @@ class SearcherTool:
         self.dock.comboBox_pow.blockSignals(True)
         result = fe.responce
         self.dock.comboBox_pow.addItems(result)
-        self.dock.comboBox_pow.view().setFixedWidth(self.widthforview(result))
+        if result:
+            self.dock.comboBox_pow.view().setFixedWidth(self.widthforview(result))
         self.dock.comboBox_pow.blockSignals(False)
 
     def pow_changed(self) -> None:
@@ -275,8 +286,9 @@ class SearcherTool:
             else:
                 communities.append(district)
         self.dock.comboBox_gmina.addItems(communities)
-        self.dock.comboBox_gmina.view().setFixedWidth(
-            self.widthforview(communities))
+        if communities:
+            self.dock.comboBox_gmina.view().setFixedWidth(
+                self.widthforview(communities))
         self.dock.comboBox_gmina.blockSignals(False)
 
     def gmi_changed(self) -> None:
@@ -289,7 +301,8 @@ class SearcherTool:
         self.dock.comboBox_obr.blockSignals(True)
         result = fe.responce
         self.dock.comboBox_obr.addItems(result)
-        self.dock.comboBox_obr.view().setFixedWidth(self.widthforview(result))
+        if result:
+            self.dock.comboBox_obr.view().setFixedWidth(self.widthforview(result))
         self.dock.comboBox_obr.blockSignals(False)
 
     def clear_comboBoxes(self, level: str = None) -> None:
@@ -335,6 +348,8 @@ class SearcherTool:
         return mun_txt.split('|')[1]
 
     def search_parcel(self) -> None:
+        progress = ProgressDialog(None, tr("Waiting for the ULDK website response"))
+        progress.start()
         parc = self.dock.lineEdit_parcel.text()
         if '.' in parc and '_' in parc:  # user input whole address in parcel
             adr = parc
@@ -357,6 +372,9 @@ class SearcherTool:
         pr = ParseResponce()
         pr.get_layer()
         pr.parse_responce(feULDK.responce)
+        root = QgsProject.instance().layerTreeRoot()
+        root.findLayer(pr.lyr).setItemVisibilityCheckedParentRecursive(True)
+        progress.stop()
 
     def handle_parcel_button_click(self):
         if self._pointTool is not None:
@@ -386,6 +404,8 @@ class SearcherTool:
 
     def fetch_address_by_xy(self):
         if self.clicked_x is not None and self.clicked_y is not None:
+            progress = ProgressDialog(None, tr("Waiting for the ULDK website response"))
+            progress.start()
             url = f'https://services.gugik.gov.pl/uug/?request=GetAddressReverse&location=POINT({self.clicked_x} {self.clicked_y})&srid=2180'
             try:
                 response = requests.get(url, verify=False)
@@ -399,8 +419,10 @@ class SearcherTool:
 
                 else:
                     CustomMessageBox(None, tr('No address found.')).button_ok()
+
             except requests.RequestException as e:
                 CustomMessageBox(None, tr('Error.')).button_ok()
+            progress.stop()
         else:
             CustomMessageBox(None, tr('Error. Invalid coordinates.')).button_ok()
 
@@ -448,6 +470,14 @@ class SearcherTool:
         pr.addFeature(fet)
         layer.updateExtents()
         layer.triggerRepaint()
+        root = QgsProject.instance().layerTreeRoot()
+        root.findLayer(layer).setItemVisibilityCheckedParentRecursive(True)
+        iface.messageBar().pushMessage(
+            'GIAP-PolaMap(lite)',
+            tr('The object has been downloaded!'),
+            Qgis.Info,
+            duration=3
+        )
 
     def get_layer_data(self, org: str, obj_type: str,
                        qml: str) -> QgsVectorLayer:
@@ -464,6 +494,8 @@ class SearcherTool:
 
     def fetch_parcel_by_xy(self):
         if self.clicked_x is not None and self.clicked_y is not None:
+            progress = ProgressDialog(None, tr("Waiting for the ULDK website response"))
+            progress.start()
             params = '&result=geom_wkt,teryt,voivodeship,county,region,commune,parcel'
             url = f'https://uldk.gugik.gov.pl/?request=GetParcelByXY&xy={self.clicked_x},{self.clicked_y}{params}'
             fetcher = FetchULDK()
@@ -471,6 +503,9 @@ class SearcherTool:
                 parser = ParseResponce()
                 parser.get_layer()  # Ensure the layer is initialized
                 parser.parse_responce(fetcher.responce)
+                root = QgsProject.instance().layerTreeRoot()
+                root.findLayer(parser.lyr).setItemVisibilityCheckedParentRecursive(True)
+            progress.stop()
         else:
             iface.messageBar().pushMessage("Error", "Failed to fetch parcel", level=Qgis.Critical)
 

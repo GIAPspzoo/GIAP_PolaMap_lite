@@ -172,6 +172,25 @@ class ProperSortFilterProxyModel(QSortFilterProxyModel):
         self.setFilterCaseSensitivity(Qt.CaseInsensitive)
         self.sortOrder()
 
+    def flags(self, index):
+        source_index = self.mapToSource(index)
+        if not source_index.parent().isValid():
+            return Qt.NoItemFlags | Qt.ItemIsEnabled
+        return super().flags(index)
+
+    def filterAcceptsRow(self, source_row, source_parent):
+        if not source_parent.isValid():
+            return True
+
+        source_index = self.sourceModel().index(source_row, 0, source_parent)
+        if not source_index.isValid():
+            return False
+        text = source_index.data()
+        if text is None:
+            return False
+
+        return self.filterRegExp().pattern().lower() in text.lower()
+
     def lessThan(self, left, right):
         col_num = left.column()
         for sorting_cat in self.sorting_functions:
@@ -651,7 +670,9 @@ STANDARD_TOOLS = [
         'btn_size': 30,
         'btns': [
             ['giapPRNG', 0, 0],
-            ['giapgeokodowanie', 1, 0],
+            ['giapgeokodowanie', 1, 0]
+            ['giapGeoportal', 0, 1],
+            ['giapOrtoContr', 1, 1],
         ]
     },
     {
@@ -1358,6 +1379,8 @@ custom_icon_dict = {
     'mActionSaveProjectAs': 'mActionSaveProjectAs.png',
     'window_icon': 'giap_logo.png',
     'giapPRNG': 'giapPRNG.png',
+    'giapGeoportal': 'giapGeoportal.png',
+    'giapOrtoContr': 'giapOrtoContr.png',
     'giapgeokodowanie': 'giapgeokodowanie.png',
 }
 
@@ -1368,6 +1391,8 @@ custom_label_dict = {
     "giapMyPrints": "My Prints",
     "giapAreaLength": 'Area and length',
     'giapPRNG': 'PRNG Tool',
+    'giapGeoportal': 'Geoportal',
+    'giapOrtoContr': 'Ortofotomapa archiwalna',
     "giapgeokodowanie": 'geokodowanie',
 }
 
