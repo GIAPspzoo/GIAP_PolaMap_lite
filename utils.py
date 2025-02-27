@@ -670,7 +670,7 @@ STANDARD_TOOLS = [
         'btn_size': 30,
         'btns': [
             ['giapPRNG', 0, 0],
-            ['giapgeokodowanie', 1, 0]
+            ['giapgeokodowanie', 1, 0],
             ['giapGeoportal', 0, 1],
             ['giapOrtoContr', 1, 1],
         ]
