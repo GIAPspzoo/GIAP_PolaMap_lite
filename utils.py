@@ -664,15 +664,15 @@ STANDARD_TOOLS = [
             ['giapAreaLength', 0, 3],
         ]
     },
-
     {
         'label': tr('Extras'),
         'id': 'Extras',
         'btn_size': 30,
         'btns': [
             ['giapPRNG', 0, 0],
-            ['giapGeoportal', 1, 0],
-            ['giapOrtoContr', 0, 1],
+            ['giapgeokodowanie', 1, 0],
+            ['giapGeoportal', 0, 1],
+            ['giapOrtoContr', 1, 1],
         ]
     },
     {
@@ -1381,6 +1381,7 @@ custom_icon_dict = {
     'giapPRNG': 'giapPRNG.png',
     'giapGeoportal': 'giapGeoportal.png',
     'giapOrtoContr': 'giapOrtoContr.png',
+    'giapgeokodowanie': 'giapgeokodowanie.png',
 }
 
 custom_label_dict = {
@@ -1392,6 +1393,7 @@ custom_label_dict = {
     'giapPRNG': 'PRNG Tool',
     'giapGeoportal': 'Geoportal',
     'giapOrtoContr': 'Ortofotomapa archiwalna',
+    "giapgeokodowanie": 'geokodowanie',
 }
 
 max_ele_nazwy = 4
