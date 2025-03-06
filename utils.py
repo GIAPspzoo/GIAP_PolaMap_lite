@@ -12,7 +12,8 @@ from qgis.PyQt.QtWidgets import QApplication, QProgressDialog, \
     QStyledItemDelegate, QAction, QMessageBox, QScrollArea, QWidget, \
     QGridLayout, QLabel, QDialogButtonBox, QToolButton, QToolBar
 from qgis.core import QgsProject, QgsMessageLog, Qgis, QgsApplication, \
-    QgsVectorLayer, QgsMapLayer, QgsCoordinateTransform, QgsGeometry, QgsPointXY, QgsRectangle
+    QgsVectorLayer, QgsMapLayer, QgsCoordinateTransform, QgsGeometry, QgsPointXY, QgsRectangle, QgsEditFormConfig, \
+    QgsFeature
 from qgis.utils import iface
 import qgis
 
@@ -309,8 +310,26 @@ class ProgressDialog(QProgressDialog, SingletonModel):
         self.close()
 
 
-def identify_layer(ls, layer_to_find):
-    for layer in list(ls.values()):
+class TmpCopyLayer(QgsVectorLayer):
+    def __init__(self, *args, **kwargs):
+        super(TmpCopyLayer, self).__init__(*args, **kwargs)
+
+    def set_fields_from_layer(self, layer):
+        fields = layer.dataProvider().fields()
+        self.dataProvider().addAttributes(fields)
+        self.updateFields()
+
+    def add_features(self, features):
+        feats = []
+        for feature in features:
+            feat = QgsFeature(feature)
+            feats.append(feat)
+        if feats:
+            self.dataProvider().addFeatures(feats)
+        iface.mapCanvas().refresh()
+
+def identify_layer(layer_to_find):
+    for layerid, layer in project.mapLayers().items():
         if layer.name() == layer_to_find:
             return layer
 
@@ -326,13 +345,6 @@ def identify_layer_in_group(group_name, layer_to_find):
         if tree_layer.parent().name() == group_name and \
                 tree_layer.layer().name() == layer_to_find:
             return tree_layer.layer()
-
-
-def identify_layer_in_group_by_parts(group_name, layer_to_find):
-    for lr in project.layerTreeRoot().findLayers():
-        if lr.parent().name() == group_name \
-                and lr.name().startswith(layer_to_find):
-            return lr.layer()
 
 
 class IdentifyGeometryByType(QgsMapToolIdentify):

@@ -899,6 +899,11 @@ Kompozje zostaną zaktualizowane.</translation>
         <source>Ortofotomapa archiwalna</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../giap_dynamic_layout.py" line="906"/>
+        <source>Geocoding</source>
+        <translation>Geokodowanie</translation>
+    </message>
 </context>
 <context>
     <name>AddSectionDialog</name>

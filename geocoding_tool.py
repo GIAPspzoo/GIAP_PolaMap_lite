@@ -5,19 +5,22 @@ import urllib
 from ast import literal_eval
 import requests
 import json
+import datetime
 
 from qgis.gui import QgsMapLayerComboBox
-from typing import Tuple, Any, List
-from qgis.PyQt import QtWidgets, uic, QtCore
-from qgis.core import QgsVectorLayer, QgsProject, QgsFeature, QgsGeometry, QgsPointXY, QgsFields, QgsField, \
-    QgsFeatureRequest, QgsWkbTypes, QgsExpression, QgsMapLayerProxyModel, QgsDataSourceUri, QgsFeature, \
+from typing import Tuple, List
+from qgis.PyQt import QtWidgets, uic
+from qgis.core import QgsProject, QgsGeometry, QgsPointXY, \
+    QgsMapLayerProxyModel, QgsFeature, \
     QgsCoordinateReferenceSystem, QgsCoordinateTransform
-from qgis.utils import iface
-from qgis.PyQt.QtWidgets import QApplication, QProgressDialog, QDialog, QRadioButton, QStackedWidget, QMessageBox
+from qgis.PyQt.QtWidgets import QDialog, QRadioButton, QStackedWidget, QMessageBox
 from qgis.gui import QgsProjectionSelectionWidget
+
+from .utils import CustomMessageBox, TmpCopyLayer, add_map_layer_to_group
 
 URL = "http://uldk.gugik.gov.pl/"
 project = QgsProject.instance()
+
 
 def get_request(iddzialki: str, request: str, result: str, srid: str or int) -> str or None:
     PARAMS = {'request': request, 'id': iddzialki, 'result': result, 'srid': srid}
@@ -30,10 +33,12 @@ def get_request(iddzialki: str, request: str, result: str, srid: str or int) -> 
             return r_txt.split('\n')[1]
     return None
 
+
 def get_parcel_by_id(iddzialki: str, srid: str or int) -> str or None:
     request = "GetParcelById"
     result = "geom_wkt"
     return get_request(iddzialki, request, result, srid)
+
 
 def geocode(miasto: str, ulica: str, numer: str, kod: str) -> str or None:
     service = "http://services.gugik.gov.pl/uug/?"
@@ -61,9 +66,11 @@ def geocode(miasto: str, ulica: str, numer: str, kod: str) -> str or None:
             return None
         else:
             geomWkt = w['results']["1"]['geometry_wkt']
-            return geomWkt
+            X, Y = w['results']['1']['x'],w['results']['1']['y']
+            return geomWkt, X, Y
     except KeyError:
         return (str(w), 0)
+
 
 class AddGeometryColumnDialog(QtWidgets.QDialog):
     def __init__(self, parent=None) -> None:
@@ -71,6 +78,7 @@ class AddGeometryColumnDialog(QtWidgets.QDialog):
         super(AddGeometryColumnDialog, self).__init__(parent)
         ui_file = os.path.join(os.path.dirname(__file__), 'addgeometrycolumn.ui')
         uic.loadUi(ui_file, self)
+
 
 class Geocoding(QtWidgets.QDialog):
     def __init__(self, parent=None) -> None:
@@ -80,8 +88,6 @@ class Geocoding(QtWidgets.QDialog):
         uic.loadUi(ui_file, self)
         setup_resize(self)
         self.frame_many.hide()
-        self.setModal(False)
-        self.setWindowModality(QtCore.Qt.ApplicationModal)
 
         self.geocode = {}
 
@@ -135,23 +141,26 @@ class Geocoding(QtWidgets.QDialog):
             self.stacked_widget.setCurrentIndex(2)
 
     def cbbx_menager(self):
-        cbbx_lyr = self.map_layer_cbbx.currentLayer()
-        cbbx_nm = cbbx_lyr.fields().names()
-        cbbx_list = [
-            'adress_col_cbbx',
-            'adress_city_cbbx',
-            'adress_postal_cbbx',
-            'adress_street_cbbx',
-            'adress_building_cbbx',
-            'iddzialki_col',
-            'col_name_xy',
-            'col_x',
-            'col_y'
-        ]
-        for combobox_name in cbbx_list:
-            cbbx_name = getattr(self, combobox_name)
-            cbbx_name.clear()
-            cbbx_name.addItems(cbbx_nm)
+        try:
+            cbbx_lyr = self.map_layer_cbbx.currentLayer()
+            cbbx_nm = cbbx_lyr.fields().names()
+            cbbx_list = [
+                'adress_col_cbbx',
+                'adress_city_cbbx',
+                'adress_postal_cbbx',
+                'adress_street_cbbx',
+                'adress_building_cbbx',
+                'iddzialki_col',
+                'col_name_xy',
+                'col_x',
+                'col_y'
+            ]
+            for combobox_name in cbbx_list:
+                cbbx_name = getattr(self, combobox_name)
+                cbbx_name.clear()
+                cbbx_name.addItems(cbbx_nm)
+        except:
+            pass
 
     def populate_layer_combobox(self):
         if self.map_layer_cbbx:
@@ -165,6 +174,13 @@ class Geocoding(QtWidgets.QDialog):
         return [feat for feat in self.current_layer.getFeatures()]
 
     def perform_geocoding(self):
+        if not self.map_layer_cbbx.currentLayer():
+            CustomMessageBox(self,'Wybierz warstwę do geokodowania!').button_ok()
+            return
+        if not self.map_layer_cbbx.currentLayer().crs().authid() and not hasattr(self, 'tmp_layer'):
+            CustomMessageBox(self, 'Brak określonego układu w warstwie źródłowej!\nDodaj kolumnę geometryczną!').button_ok()
+            return
+        rees = True
         self.geocoding_results.clear()
         if self.geocoding_adress.isChecked():
             if self.findChild(QRadioButton, 'adress_single_column').isChecked():
@@ -174,78 +190,174 @@ class Geocoding(QtWidgets.QDialog):
         elif self.geocoding_parcels.isChecked():
             self.geocode_by_parcel()
         elif self.geocoding_XY.isChecked():
-            self.geocode_by_xy()
-        self.update_layer_with_geocoding_results()
-        self.show_geocoding_result_message()
+            rees = self.geocode_by_xy()
+        if rees:
+            self.update_layer_with_geocoding_results()
+            self.show_geocoding_result_message()
 
     def geocode_by_single_address_column(self):
         separator = self.adress_separator_cbbx.currentText()
         address_field = self.adress_col_cbbx.currentText()
-        features = self.collect_objects_from_layer()
-        for feature in features:
-            address = feature[address_field]
-            address_parts = address.split(separator)
-            if len(address_parts) >= 3:
-                city, street, number = address_parts[:3]
-                postal_code = address_parts[3] if len(address_parts) > 3 else ''
-            else:
-                city, street, number, postal_code = address_parts[0], '', '', ''
-            wkt = geocode(city, street, number, postal_code)
-            self.geocoding_results.append((feature.id(), wkt))
+        transform = QgsCoordinateTransform(QgsCoordinateReferenceSystem("EPSG:2180"), self.tmp_layer.crs(),
+                                           QgsProject.instance())
+        if hasattr(self, 'tmp_layer'):
+            for feature in self.tmp_layer.getFeatures():
+                address = feature[address_field]
+                address_parts = address.split(separator)
+                if len(address_parts) >= 3:
+                    city, street, number = address_parts[:3]
+                    postal_code = address_parts[3] if len(address_parts) > 3 else ''
+                else:
+                    city, street, number, postal_code = address_parts[0], '', '', ''
+                wkt, x, y = geocode(city, street, number, postal_code)
+                point = QgsPointXY(float(x), float(y))
+                transformed_point = transform.transform(point)
+                wkt = f"POINT ({transformed_point.x()} {transformed_point.y()})"
+                self.geocoding_results.append((feature.id(), wkt))
+        else:
+            features = self.collect_objects_from_layer()
+            for feature in features:
+                address = feature[address_field]
+                address_parts = address.split(separator)
+                if len(address_parts) >= 3:
+                    city, street, number = address_parts[:3]
+                    postal_code = address_parts[3] if len(address_parts) > 3 else ''
+                else:
+                    city, street, number, postal_code = address_parts[0], '', '', ''
+                wkt, x, y = geocode(city, street, number, postal_code)
+                point = QgsPointXY(float(x), float(y))
+                transformed_point = transform.transform(point)
+                wkt = f"POINT ({transformed_point.x()} {transformed_point.y()})"
+                self.geocoding_results.append((feature.id(), wkt))
 
     def geocode_by_multi_address_column(self):
-        features = self.collect_objects_from_layer()
-        for feature in features:
-            city = feature[self.adress_city_cbbx.currentText()]
-            postal_code = feature[self.adress_postal_cbbx.currentText()]
-            street = feature[self.adress_street_cbbx.currentText()]
-            building = feature[self.adress_building_cbbx.currentText()]
-            wkt = geocode(city, street, building, postal_code)
-            self.geocoding_results.append((feature.id(), wkt))
+        transform = QgsCoordinateTransform(QgsCoordinateReferenceSystem("EPSG:2180"), self.tmp_layer.crs(),
+                                           QgsProject.instance())
+        if hasattr(self, 'tmp_layer'):
+            for feature in self.tmp_layer.getFeatures():
+                city = feature[self.adress_city_cbbx.currentText()]
+                postal_code = feature[self.adress_postal_cbbx.currentText()]
+                street = feature[self.adress_street_cbbx.currentText()]
+                building = feature[self.adress_building_cbbx.currentText()]
+                wkt, x, y = geocode(city, street, building, postal_code)
+                point = QgsPointXY(float(x), float(y))
+                transformed_point = transform.transform(point)
+                wkt = f"POINT ({transformed_point.x()} {transformed_point.y()})"
+                self.geocoding_results.append((feature.id(), wkt))
+        else:
+            features = self.collect_objects_from_layer()
+            for feature in features:
+                city = feature[self.adress_city_cbbx.currentText()]
+                postal_code = feature[self.adress_postal_cbbx.currentText()]
+                street = feature[self.adress_street_cbbx.currentText()]
+                building = feature[self.adress_building_cbbx.currentText()]
+                wkt, x, y = geocode(city, street, building, postal_code)
+                point = QgsPointXY(float(x), float(y))
+                transformed_point = transform.transform(point)
+                wkt = f"POINT ({transformed_point.x()} {transformed_point.y()})"
+                self.geocoding_results.append((feature.id(), wkt))
 
     def geocode_by_parcel(self):
         separator = self.iddzialki_separator_cbbx.currentText()
         parcel_id_field = self.iddzialki_col_cbbx.currentText()
-        features = self.collect_objects_from_layer()
-        for feature in features:
-            parcel_id = feature[parcel_id_field]
-            wkt = get_parcel_by_id(parcel_id, srid='4326')
-            self.geocoding_results.append((feature.id(), wkt))
+        if hasattr(self, 'tmp_layer'):
+            for feature in self.tmp_layer.getFeatures():
+                parcel_id = feature[parcel_id_field]
+                pracels_id_list = str(parcel_id).split(separator)
+                feat_geom_list = []
+                for parcel_id in pracels_id_list:
+                    wkt = get_parcel_by_id(parcel_id.strip(), srid=str(self.tmp_layer.crs().postgisSrid()))
+                    if wkt:
+                        feat_geom_list.append(QgsGeometry().fromWkt(wkt))
+                if feat_geom_list:
+                    combined_geom = combine_geoms(feat_geom_list)
+                    combined_geom.convertToMultiType()
+                    self.geocoding_results.append((feature.id(), combined_geom))
+        else:
+            features = self.collect_objects_from_layer()
+            for feature in features:
+                parcel_id = feature[parcel_id_field]
+                wkt = get_parcel_by_id(parcel_id, srid=str(self.current_layer.crs().postgisSrid()))
+                self.geocoding_results.append((feature.id(), wkt))
 
     def geocode_by_xy(self):
-        name_field = self.col_name_xy_cbbx.currentText()
-        x_field = self.col_x_cbbx.currentText()
-        y_field = self.col_y_cbbx.currentText()
-        separator = self.col_x_cbbx.currentText()
-        features = self.collect_objects_from_layer()
+        if (self.groupBox_x_and_y.isChecked() and self.groupBox_x_y.isChecked()) or \
+            (not self.groupBox_x_and_y.isChecked() and not self.groupBox_x_y.isChecked()):
+            CustomMessageBox(self, 'Wybierz jedną z opcji!').button_ok()
+            return False
+        if self.groupBox_x_and_y.isChecked():
+            name_field = self.col_name_xy_cbbx.currentText()
+            separator = self.xy_separator.currentText()
+
+        if self.groupBox_x_y.isChecked():
+            x_field = self.col_x_cbbx.currentText()
+            y_field = self.col_y_cbbx.currentText()
         crs = self.col_geom_crs_xy.crs()
-        transform = QgsCoordinateTransform(crs, QgsCoordinateReferenceSystem('EPSG:4326'), QgsProject.instance())
-        for feature in features:
-            x = feature[x_field]
-            y = feature[y_field]
-            try:
+        if hasattr(self, 'tmp_layer'):
+            transform = QgsCoordinateTransform(crs, self.tmp_layer.crs(), QgsProject.instance())
+            for feature in self.tmp_layer.getFeatures():
+                if self.groupBox_x_y.isChecked():
+                    x = feature[x_field]
+                    y = feature[y_field]
+                elif self.groupBox_x_and_y.isChecked():
+                    xy = feature[name_field]
+                    x, y = xy.split(separator)
                 point = QgsPointXY(float(x), float(y))
-                transformed_point = transform.transform(point)
-                wkt = f"POINT ({transformed_point.x()} {transformed_point.y()})"
-            except ValueError:
-                wkt = None
-            self.geocoding_results.append((feature.id(), wkt))
+                try:
+                    transformed_point = transform.transform(point)
+                    wkt = f"POINT ({transformed_point.x()} {transformed_point.y()})"
+                except:
+                    transformed_point = point
+                    wkt = f"POINT ({transformed_point.x()} {transformed_point.y()})"
+                self.geocoding_results.append((feature.id(), wkt))
+        else:
+            features = self.collect_objects_from_layer()
+            transform = QgsCoordinateTransform(crs, self.current_layer.crs(), QgsProject.instance())
+            for feature in features.getFeatures():
+                x = feature[x_field]
+                y = feature[y_field]
+                point = QgsPointXY(float(x), float(y))
+                try:
+                    transformed_point = transform.transform(point)
+                    wkt = f"POINT ({transformed_point.x()} {transformed_point.y()})"
+                except:
+                    transformed_point = point
+                    wkt = f"POINT ({transformed_point.x()} {transformed_point.y()})"
+                self.geocoding_results.append((feature.id(), wkt))
+        return True
 
     def update_layer_with_geocoding_results(self):
-        self.current_layer.startEditing()
-        for feature_id, wkt in self.geocoding_results:
-            if wkt:
-                geom = QgsGeometry.fromWkt(wkt)
-                self.current_layer.changeGeometry(feature_id, geom)
-        self.current_layer.commitChanges()
+        if hasattr(self, 'tmp_layer'):
+            self.tmp_layer.startEditing()
+            for feature_id, wkt in self.geocoding_results:
+                if wkt:
+                    try:
+                        geom = QgsGeometry.fromWkt(wkt)
+                    except:
+                        geom = wkt
+                    self.tmp_layer.changeGeometry(feature_id, geom)
+            self.tmp_layer.commitChanges()
+        else:
+            self.current_layer.startEditing()
+            for feature_id, wkt in self.geocoding_results:
+                if wkt:
+                    try:
+                        geom = QgsGeometry.fromWkt(wkt)
+                    except:
+                        geom = wkt
+                    self.current_layer.changeGeometry(feature_id, geom)
+            self.current_layer.commitChanges()
 
     def show_geocoding_result_message(self):
         success_count = sum(1 for _, wkt in self.geocoding_results if wkt)
         total_count = len(self.geocoding_results)
         if success_count == total_count:
             QMessageBox.information(self, "Geokodowanie zakończone", "Geokodowanie zakończone sukcesem.")
+            if hasattr(self, 'tmp_layer'):
+                del self.tmp_layer
         else:
-            QMessageBox.warning(self, "Geokodowanie zakończone", f"Geokodowanie zakończone z problemami.\nSukces: {success_count}/{total_count}")
+            QMessageBox.warning(self, "Geokodowanie zakończone",
+                                f"Geokodowanie zakończone z problemami.\nSukces: {success_count}/{total_count}")
 
     def run(self):
         self.show()
@@ -253,10 +365,45 @@ class Geocoding(QtWidgets.QDialog):
 
     def show_add_geometry_column_dialog(self):
         dialog = AddGeometryColumnDialog(self)
+        if not self.map_layer_cbbx.currentLayer():
+            CustomMessageBox(self, "Nie wybrano warstwy!").button_ok()
+            return
         if dialog.exec_() == QtWidgets.QDialog.Accepted:
-            print("Git")
-        else:
-            print("Nie git")
+            crs = dialog.mQgsProjectionSelectionWidget.crs().authid()
+            geom_type = ''
+            if dialog.geom_type.currentText() == 'PUNKT':
+                geom_type = 'MultiPoint'
+            elif dialog.geom_type.currentText() == 'POLIGON':
+                geom_type = 'MultiPolygon'
+            data_time = str(str(datetime.datetime.now()).replace(":", "-")).replace(" ", "_")
+            self.tmp_layer = TmpCopyLayer(
+                "{}?crs={}".format(geom_type, crs),
+                f"{self.map_layer_cbbx.currentLayer().name()}_{data_time}",
+                "memory")
+            self.tmp_layer.set_fields_from_layer(self.map_layer_cbbx.currentLayer())
+            features_list = []
+            if self.geocoding_selected_only_cb.isChecked():
+                for feature in self.map_layer_cbbx.currentLayer().selectedFeatures():
+                    features_list.append(feature)
+            else:
+                for feature in self.map_layer_cbbx.currentLayer().getFeatures():
+                    features_list.append(feature)
+            self.tmp_layer.add_features(features_list)
+            add_map_layer_to_group(self.tmp_layer, '')
+            CustomMessageBox(self, f'Dodano kolumnę geometryczną do warstwy: {self.map_layer_cbbx.currentLayer().name()}_{data_time}').button_ok()
+
+def combine_geoms(geoms_list):
+    geoms_list_len = len(geoms_list)
+    if geoms_list_len == 0:
+        return
+    elif geoms_list_len == 1:
+        return geoms_list[0]
+    elif geoms_list_len > 1:
+        union_geoms = geoms_list[0]
+        for geometry in geoms_list[1:]:
+            if geometry.isGeosValid():
+                union_geoms = union_geoms.combine(geometry)
+        return union_geoms
 
 def set_project_config(parameter, key, value):
     if isinstance(project, QgsProject):

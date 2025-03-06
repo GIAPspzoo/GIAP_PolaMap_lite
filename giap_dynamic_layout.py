@@ -903,7 +903,7 @@ class CustomSection(QWidget):
                 self.tbut.setPopupMode(QToolButton.InstantPopup)
 
             if oname == "giapgeokodowanie":
-                self.tbut.setToolTip(tr("geocoding"))
+                self.tbut.setToolTip(tr("Geocoding"))
                 self.geocoding_tool = Geocoding(self)
                 self.tbut.clicked.connect(self.geocoding_tool.run)
 
