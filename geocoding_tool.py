@@ -16,7 +16,7 @@ from qgis.core import QgsProject, QgsGeometry, QgsPointXY, \
 from qgis.PyQt.QtWidgets import QDialog, QRadioButton, QStackedWidget, QMessageBox
 from qgis.gui import QgsProjectionSelectionWidget
 
-from .utils import CustomMessageBox, TmpCopyLayer, add_map_layer_to_group
+from .utils import CustomMessageBox, TmpCopyLayer, add_map_layer_to_group, tr
 
 URL = "http://uldk.gugik.gov.pl/"
 project = QgsProject.instance()
@@ -84,7 +84,7 @@ class Geocoding(QtWidgets.QDialog):
     def __init__(self, parent=None) -> None:
         """Constructor."""
         super(Geocoding, self).__init__(parent)
-        ui_file = os.path.join(os.path.dirname(__file__), 'geocoding_tool_new.ui')
+        ui_file = os.path.join(os.path.dirname(__file__), 'geocoding_tool.ui')
         uic.loadUi(ui_file, self)
         setup_resize(self)
         self.frame_many.hide()
@@ -159,6 +159,8 @@ class Geocoding(QtWidgets.QDialog):
                 cbbx_name = getattr(self, combobox_name)
                 cbbx_name.clear()
                 cbbx_name.addItems(cbbx_nm)
+            if hasattr(self, 'tmp_layer'):
+                del self.tmp_layer
         except:
             pass
 
@@ -175,10 +177,10 @@ class Geocoding(QtWidgets.QDialog):
 
     def perform_geocoding(self):
         if not self.map_layer_cbbx.currentLayer():
-            CustomMessageBox(self,'Wybierz warstwę do geokodowania!').button_ok()
+            CustomMessageBox(self, tr('Select a layer to geocode!')).button_ok()
             return
         if not self.map_layer_cbbx.currentLayer().crs().authid() and not hasattr(self, 'tmp_layer'):
-            CustomMessageBox(self, 'Brak określonego układu w warstwie źródłowej!\nDodaj kolumnę geometryczną!').button_ok()
+            CustomMessageBox(self, tr('No layout specified in source layer! Add geometry column!')).button_ok()
             return
         rees = True
         self.geocoding_results.clear()
@@ -283,7 +285,7 @@ class Geocoding(QtWidgets.QDialog):
     def geocode_by_xy(self):
         if (self.groupBox_x_and_y.isChecked() and self.groupBox_x_y.isChecked()) or \
             (not self.groupBox_x_and_y.isChecked() and not self.groupBox_x_y.isChecked()):
-            CustomMessageBox(self, 'Wybierz jedną z opcji!').button_ok()
+            CustomMessageBox(self, tr('Choose one of the options!')).button_ok()
             return False
         if self.groupBox_x_and_y.isChecked():
             name_field = self.col_name_xy_cbbx.currentText()
@@ -294,7 +296,11 @@ class Geocoding(QtWidgets.QDialog):
             y_field = self.col_y_cbbx.currentText()
         crs = self.col_geom_crs_xy.crs()
         if hasattr(self, 'tmp_layer'):
-            transform = QgsCoordinateTransform(crs, self.tmp_layer.crs(), QgsProject.instance())
+            try:
+                transform = QgsCoordinateTransform(crs, self.tmp_layer.crs(), QgsProject.instance())
+            except:
+                CustomMessageBox(self, tr('No layout specified in source layer! Add geometry column!')).button_ok()
+                return False
             for feature in self.tmp_layer.getFeatures():
                 if self.groupBox_x_y.isChecked():
                     x = feature[x_field]
@@ -352,12 +358,12 @@ class Geocoding(QtWidgets.QDialog):
         success_count = sum(1 for _, wkt in self.geocoding_results if wkt)
         total_count = len(self.geocoding_results)
         if success_count == total_count:
-            QMessageBox.information(self, "Geokodowanie zakończone", "Geokodowanie zakończone sukcesem.")
+            QMessageBox.information(self, tr("Geocoding completed"), tr("Geocoding completed successfully."))
             if hasattr(self, 'tmp_layer'):
                 del self.tmp_layer
         else:
-            QMessageBox.warning(self, "Geokodowanie zakończone",
-                                f"Geokodowanie zakończone z problemami.\nSukces: {success_count}/{total_count}")
+            QMessageBox.warning(self, tr("Geocoding completed"),
+                                f"{tr('Geocoding completed with problems.\nSuccess:')} {success_count}/{total_count}")
 
     def run(self):
         self.show()
@@ -365,15 +371,19 @@ class Geocoding(QtWidgets.QDialog):
 
     def show_add_geometry_column_dialog(self):
         dialog = AddGeometryColumnDialog(self)
+        dialog.geom_type.clear()
+        dialog.geom_type.addItems([tr('POINT'), tr('POLYGON')])
+        projCrs = QgsProject.instance().crs()
+        dialog.mQgsProjectionSelectionWidget.setCrs(projCrs)
         if not self.map_layer_cbbx.currentLayer():
-            CustomMessageBox(self, "Nie wybrano warstwy!").button_ok()
+            CustomMessageBox(self, tr("Select layer!")).button_ok()
             return
         if dialog.exec_() == QtWidgets.QDialog.Accepted:
             crs = dialog.mQgsProjectionSelectionWidget.crs().authid()
             geom_type = ''
-            if dialog.geom_type.currentText() == 'PUNKT':
+            if dialog.geom_type.currentText() in ['PUNKT', 'POINT']:
                 geom_type = 'MultiPoint'
-            elif dialog.geom_type.currentText() == 'POLIGON':
+            elif dialog.geom_type.currentText() in ['POLIGON', 'POLYGON']:
                 geom_type = 'MultiPolygon'
             data_time = str(str(datetime.datetime.now()).replace(":", "-")).replace(" ", "_")
             self.tmp_layer = TmpCopyLayer(
@@ -390,7 +400,7 @@ class Geocoding(QtWidgets.QDialog):
                     features_list.append(feature)
             self.tmp_layer.add_features(features_list)
             add_map_layer_to_group(self.tmp_layer, '')
-            CustomMessageBox(self, f'Dodano kolumnę geometryczną do warstwy: {self.map_layer_cbbx.currentLayer().name()}_{data_time}').button_ok()
+            CustomMessageBox(self, f'{tr('Added geometry column to layer:')} {self.map_layer_cbbx.currentLayer().name()}_{data_time}').button_ok()
 
 def combine_geoms(geoms_list):
     geoms_list_len = len(geoms_list)

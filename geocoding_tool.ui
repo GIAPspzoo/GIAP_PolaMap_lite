@@ -2,18 +2,58 @@
 <ui version="4.0">
  <class>GeocodingDialog</class>
  <widget class="QDialog" name="GeocodingDialog">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>808</width>
-    <height>706</height>
+    <width>1139</width>
+    <height>721</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Geokodowanie GUGiK</string>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>1</horstretch>
+    <verstretch>1</verstretch>
+   </sizepolicy>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>Segoe UI</family>
+    <pointsize>10</pointsize>
+    <weight>50</weight>
+    <italic>false</italic>
+    <bold>false</bold>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Geocoding GUGiK</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>:/plugins/giap_layout/icons/giap_logo.png</normaloff>:/plugins/giap_layout/icons/giap_logo.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <property name="locale">
+   <locale language="English" country="UnitedKingdom"/>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>false</bool>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -26,650 +66,939 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <item>
-    <widget class="QFrame" name="frame">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <item row="1" column="1">
+    <widget class="QStackedWidget" name="stackedWidget">
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
      <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
+      <enum>QFrame::NoFrame</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
+      <enum>QFrame::Plain</enum>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="opis">
+      <layout class="QGridLayout" name="gridLayout_3">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QFrame" name="frame_7">
+         <property name="minimumSize">
+          <size>
+           <width>200</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: #4f5a63;
+</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <widget class="QLabel" name="title_label">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>0</y>
+            <width>151</width>
+            <height>30</height>
+           </rect>
           </property>
-          <property name="maximumSize">
-           <size>
-            <width>110</width>
-            <height>16777215</height>
-           </size>
+          <property name="font">
+           <font>
+            <family>Segoe UI</family>
+            <pointsize>10</pointsize>
+            <weight>75</weight>
+            <italic>false</italic>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color : #EDF6FC;	font-weight: bold;</string>
           </property>
           <property name="text">
-           <string>Wybierz warstwę</string>
+           <string>Geocoding</string>
           </property>
          </widget>
-        </item>
-        <item>
-         <widget class="QgsMapLayerComboBox" name="map_layer_cbbx"/>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="QCheckBox" name="geocoding_selected_only">
-          <property name="text">
-           <string>Geokoduj tylko zaznaczone</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="add_geometry_column">
-          <property name="text">
-           <string>Dodaj kolumnę geometryczną</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Wybierz rodzaj:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QGroupBox" name="groupBox">
-        <property name="title">
-         <string/>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_3">
-         <property name="leftMargin">
-          <number>0</number>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QFrame" name="frame_main">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <property name="topMargin">
-          <number>0</number>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
          </property>
-         <property name="rightMargin">
-          <number>0</number>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
          </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <layout class="QFormLayout" name="formLayout_3">
-           <item row="0" column="0" colspan="2">
-            <widget class="QRadioButton" name="geocoding_adress">
-             <property name="text">
-              <string>Geokodowanie po adresach</string>
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="1" column="0">
+           <widget class="QGroupBox" name="groupBox">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="title">
+             <string>Select type</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_11">
+             <property name="leftMargin">
+              <number>9</number>
              </property>
-             <property name="checked">
-              <bool>true</bool>
+             <property name="topMargin">
+              <number>9</number>
              </property>
-            </widget>
-           </item>
-           <item row="1" column="0" colspan="2">
-            <widget class="QRadioButton" name="geocoding_parcels">
-             <property name="text">
-              <string>Geokodowanie do działek</string>
+             <property name="rightMargin">
+              <number>9</number>
              </property>
-            </widget>
-           </item>
-           <item row="2" column="0" colspan="2">
-            <widget class="QRadioButton" name="geocoding_XY">
-             <property name="text">
-              <string>Geokodowanie po współrzędnych X i Y</string>
+             <property name="bottomMargin">
+              <number>9</number>
              </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-      </item>
+             <item row="0" column="0">
+              <widget class="QRadioButton" name="geocoding_adress">
+               <property name="text">
+                <string>Geocoding by address</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QRadioButton" name="geocoding_XY">
+               <property name="text">
+                <string>Geocoding by X and Y coordinates</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QRadioButton" name="geocoding_parcels">
+               <property name="text">
+                <string>Geocoding to parcels</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QGroupBox" name="groupBox_2">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="title">
+             <string>Data definition</string>
+            </property>
+            <property name="checkable">
+             <bool>false</bool>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_2">
+             <item row="0" column="0">
+              <widget class="QStackedWidget" name="stackedWidget_2">
+               <property name="currentIndex">
+                <number>0</number>
+               </property>
+               <widget class="QWidget" name="page_1">
+                <layout class="QGridLayout" name="gridLayout_5">
+                 <item row="0" column="0">
+                  <widget class="QFrame" name="frame_3">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <layout class="QGridLayout" name="gridLayout_6">
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item row="1" column="0">
+                     <widget class="QFrame" name="frame_single">
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                      <layout class="QFormLayout" name="formLayout_2">
+                       <item row="0" column="0">
+                        <widget class="QLabel" name="adress_col_label">
+                         <property name="minimumSize">
+                          <size>
+                           <width>192</width>
+                           <height>0</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string>Address column</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="1">
+                        <widget class="QComboBox" name="adress_col_cbbx"/>
+                       </item>
+                       <item row="1" column="0">
+                        <widget class="QLabel" name="adress_pattern_label">
+                         <property name="text">
+                          <string>Address template</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="1">
+                        <widget class="QComboBox" name="adress_pattern">
+                         <property name="enabled">
+                          <bool>true</bool>
+                         </property>
+                         <property name="currentText">
+                          <string>miejscowosc,ulica,numer</string>
+                         </property>
+                         <item>
+                          <property name="text">
+                           <string>miejscowosc,ulica,numer</string>
+                          </property>
+                         </item>
+                        </widget>
+                       </item>
+                       <item row="2" column="0">
+                        <widget class="QLabel" name="adress_separator_label">
+                         <property name="maximumSize">
+                          <size>
+                           <width>190</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string>Separator</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="2" column="1">
+                        <widget class="QComboBox" name="adress_separator_cbbx">
+                         <item>
+                          <property name="text">
+                           <string>,</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>;</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>!</string>
+                          </property>
+                         </item>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                    <item row="2" column="0">
+                     <widget class="QFrame" name="frame_many">
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                      <layout class="QGridLayout" name="gridLayout_7">
+                       <item row="1" column="1">
+                        <widget class="QComboBox" name="adress_postal_cbbx">
+                         <property name="editable">
+                          <bool>false</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="3" column="1">
+                        <widget class="QComboBox" name="adress_building_cbbx">
+                         <property name="editable">
+                          <bool>false</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="4" column="0" colspan="2">
+                        <widget class="QLabel" name="label_4">
+                         <property name="text">
+                          <string>* Field required for correct geocoding</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="2" column="0">
+                        <widget class="QLabel" name="adress_street_label">
+                         <property name="text">
+                          <string>Street column</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="0">
+                        <widget class="QLabel" name="adress_postal_label">
+                         <property name="text">
+                          <string>Postcode column</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="1">
+                        <widget class="QComboBox" name="adress_city_cbbx">
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>0</height>
+                          </size>
+                         </property>
+                         <property name="editable">
+                          <bool>false</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="2" column="1">
+                        <widget class="QComboBox" name="adress_street_cbbx">
+                         <property name="editable">
+                          <bool>false</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="0">
+                        <widget class="QLabel" name="adress_city_label">
+                         <property name="text">
+                          <string>Town column*</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="3" column="0">
+                        <widget class="QLabel" name="adress_building_label">
+                         <property name="text">
+                          <string>Column sequence number*</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                    <item row="0" column="0">
+                     <layout class="QFormLayout" name="formLayout">
+                      <item row="0" column="0">
+                       <widget class="QRadioButton" name="adress_single_column">
+                        <property name="text">
+                         <string>One column</string>
+                        </property>
+                        <property name="checked">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="1">
+                       <widget class="QRadioButton" name="adress_multi_column">
+                        <property name="text">
+                         <string>Multiple columns</string>
+                        </property>
+                        <property name="checked">
+                         <bool>false</bool>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item row="3" column="0">
+                     <spacer name="verticalSpacer_5">
+                      <property name="orientation">
+                       <enum>Qt::Vertical</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>20</width>
+                        <height>40</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+               <widget class="QWidget" name="page_2">
+                <layout class="QGridLayout" name="gridLayout_10">
+                 <item row="1" column="0">
+                  <spacer name="verticalSpacer_2">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QFrame" name="frame_5">
+                   <layout class="QGridLayout" name="gridLayout_12">
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item row="0" column="1">
+                     <widget class="QComboBox" name="iddzialki_col">
+                      <property name="minimumSize">
+                       <size>
+                        <width>500</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="1">
+                     <widget class="QComboBox" name="iddzialki_separator">
+                      <item>
+                       <property name="text">
+                        <string>,</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>;</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>:</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>|</string>
+                       </property>
+                      </item>
+                     </widget>
+                    </item>
+                    <item row="1" column="0">
+                     <widget class="QLabel" name="label_6">
+                      <property name="text">
+                       <string>Separator**</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="3" column="0" colspan="2">
+                     <widget class="QLabel" name="label_7">
+                      <property name="text">
+                       <string>**in case of multiple parcels</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="0" colspan="2">
+                     <widget class="QLabel" name="label_5">
+                      <property name="text">
+                       <string>*object identifier (e.g. 141201_1.0008.6519)</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="0">
+                     <widget class="QLabel" name="iddzialki_label_3">
+                      <property name="minimumSize">
+                       <size>
+                        <width>150</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>125</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string>Column with IdDzialki*</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+               <widget class="QWidget" name="page_3">
+                <layout class="QGridLayout" name="gridLayout_9">
+                 <item row="1" column="0">
+                  <spacer name="verticalSpacer">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QFrame" name="frame_7">
+                   <layout class="QGridLayout" name="gridLayout_16">
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="horizontalSpacing">
+                     <number>6</number>
+                    </property>
+                    <property name="verticalSpacing">
+                     <number>12</number>
+                    </property>
+                    <item row="0" column="2">
+                     <widget class="QgsProjectionSelectionWidget" name="col_geom_crs_xy">
+                      <property name="minimumSize">
+                       <size>
+                        <width>500</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QLabel" name="xy_proj_label_3">
+                      <property name="text">
+                       <string>Coordinate system</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="1" colspan="2">
+                     <widget class="QGroupBox" name="groupBox_x_and_y">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="title">
+                       <string/>
+                      </property>
+                      <property name="checkable">
+                       <bool>true</bool>
+                      </property>
+                      <property name="checked">
+                       <bool>false</bool>
+                      </property>
+                      <layout class="QGridLayout" name="gridLayout_13">
+                       <property name="leftMargin">
+                        <number>9</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>9</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>9</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>9</number>
+                       </property>
+                       <item row="0" column="0">
+                        <widget class="QLabel" name="xy_col_label_3">
+                         <property name="text">
+                          <string>Column XY:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="1">
+                        <widget class="QComboBox" name="col_name_xy">
+                         <property name="minimumSize">
+                          <size>
+                           <width>500</width>
+                           <height>0</height>
+                          </size>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="0">
+                        <widget class="QLabel" name="xy_separator_label_3">
+                         <property name="text">
+                          <string>Separator</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="1">
+                        <widget class="QComboBox" name="xy_separator">
+                         <item>
+                          <property name="text">
+                           <string>,</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>;</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>|</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>!</string>
+                          </property>
+                         </item>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                    <item row="2" column="1" colspan="2">
+                     <widget class="QGroupBox" name="groupBox_x_y">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="title">
+                       <string/>
+                      </property>
+                      <property name="checkable">
+                       <bool>true</bool>
+                      </property>
+                      <property name="checked">
+                       <bool>false</bool>
+                      </property>
+                      <layout class="QGridLayout" name="gridLayout_14">
+                       <item row="0" column="0">
+                        <widget class="QLabel" name="col_x_label">
+                         <property name="maximumSize">
+                          <size>
+                           <width>120</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string>Column X:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="1">
+                        <widget class="QComboBox" name="col_x">
+                         <property name="minimumSize">
+                          <size>
+                           <width>500</width>
+                           <height>0</height>
+                          </size>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="0">
+                        <widget class="QLabel" name="col_y_label">
+                         <property name="text">
+                          <string>Column Y:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="1">
+                        <widget class="QComboBox" name="col_y">
+                         <property name="minimumSize">
+                          <size>
+                           <width>500</width>
+                           <height>0</height>
+                          </size>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QFrame" name="frame_4">
+            <layout class="QGridLayout" name="gridLayout_8">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>110</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Select a layer</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QgsMapLayerComboBox" name="map_layer_cbbx"/>
+             </item>
+             <item row="1" column="0">
+              <widget class="QCheckBox" name="geocoding_selected_only">
+               <property name="text">
+                <string>Geocode only selected</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QPushButton" name="add_geometry_column">
+               <property name="text">
+                <string>Add geometry column</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <spacer name="verticalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item row="0" column="0" rowspan="3">
+    <widget class="QFrame" name="frame">
+     <property name="minimumSize">
+      <size>
+       <width>130</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-right: 2px solid #b7d3e8;
+</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>9</number>
+      </property>
+      <property name="leftMargin">
+       <number>12</number>
+      </property>
+      <property name="topMargin">
+       <number>12</number>
+      </property>
+      <property name="rightMargin">
+       <number>12</number>
+      </property>
+      <property name="bottomMargin">
+       <number>5</number>
+      </property>
       <item>
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Definicja danych</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QFrame" name="frame_2">
+       <widget class="QLabel" name="label_side">
         <property name="minimumSize">
          <size>
-          <width>780</width>
-          <height>301</height>
+          <width>106</width>
+          <height>20</height>
          </size>
         </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
+        <property name="styleSheet">
+         <string notr="true">   background-color: #b7d3e8;
+   color:  #0A0C0D;
+
+   font-weight: bold;
+</string>
         </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
+        <property name="text">
+         <string>Geocoding</string>
         </property>
-        <layout class="QGridLayout" name="gridLayout">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item row="1" column="0">
-          <widget class="QStackedWidget" name="stackedWidget">
-           <property name="currentIndex">
-            <number>0</number>
-           </property>
-           <widget class="QWidget" name="page_1">
-            <widget class="QGroupBox" name="groupBox_3">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>0</y>
-               <width>771</width>
-               <height>331</height>
-              </rect>
-             </property>
-             <property name="title">
-              <string/>
-             </property>
-             <property name="flat">
-              <bool>false</bool>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_4">
-              <item row="2" column="0">
-               <widget class="QFrame" name="frame_many">
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <layout class="QGridLayout" name="gridLayout_6">
-                 <item row="1" column="1">
-                  <widget class="QComboBox" name="adress_postal_cbbx">
-                   <property name="editable">
-                    <bool>false</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="3" column="1">
-                  <widget class="QComboBox" name="adress_building_cbbx">
-                   <property name="editable">
-                    <bool>false</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="4" column="0" colspan="2">
-                  <widget class="QLabel" name="label_4">
-                   <property name="text">
-                    <string>* Pole wymagane do prawidłowego geokodowania</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="0">
-                  <widget class="QLabel" name="adress_street_label">
-                   <property name="text">
-                    <string>Kolumna ulica</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="0">
-                  <widget class="QLabel" name="adress_postal_label">
-                   <property name="text">
-                    <string>Kolumna kod pocztowy</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="1">
-                  <widget class="QComboBox" name="adress_city_cbbx">
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="editable">
-                    <bool>false</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="1">
-                  <widget class="QComboBox" name="adress_street_cbbx">
-                   <property name="editable">
-                    <bool>false</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="0">
-                  <widget class="QLabel" name="adress_city_label">
-                   <property name="text">
-                    <string>Kolumna miejscowosc*</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="3" column="0">
-                  <widget class="QLabel" name="adress_building_label">
-                   <property name="text">
-                    <string>Kolumna numer porządkowy*</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QFrame" name="frame_single">
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <layout class="QFormLayout" name="formLayout_2">
-                 <item row="0" column="0">
-                  <widget class="QLabel" name="adress_col_label">
-                   <property name="minimumSize">
-                    <size>
-                     <width>192</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>Kolumna z adresem</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="1">
-                  <widget class="QComboBox" name="adress_col_cbbx"/>
-                 </item>
-                 <item row="1" column="0">
-                  <widget class="QLabel" name="adress_pattern_label">
-                   <property name="text">
-                    <string>Szablon adresu</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="1">
-                  <widget class="QComboBox" name="adress_pattern">
-                   <property name="enabled">
-                    <bool>true</bool>
-                   </property>
-                   <property name="currentText">
-                    <string>kod_pocztowy!miejscowosc!ulica!numer</string>
-                   </property>
-                   <item>
-                    <property name="text">
-                     <string>kod_pocztowy!miejscowosc!ulica!numer</string>
-                    </property>
-                   </item>
-                  </widget>
-                 </item>
-                 <item row="2" column="0">
-                  <widget class="QLabel" name="adress_separator_label">
-                   <property name="maximumSize">
-                    <size>
-                     <width>190</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>Separator</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="1">
-                  <widget class="QComboBox" name="adress_separator_cbbx">
-                   <item>
-                    <property name="text">
-                     <string>!</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>;</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>,</string>
-                    </property>
-                   </item>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item row="0" column="0">
-               <layout class="QFormLayout" name="formLayout">
-                <item row="0" column="0">
-                 <widget class="QRadioButton" name="adress_single_column">
-                  <property name="text">
-                   <string>Jedna kolumna</string>
-                  </property>
-                  <property name="checked">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QRadioButton" name="adress_multi_column">
-                  <property name="text">
-                   <string>Wiele kolumn</string>
-                  </property>
-                  <property name="checked">
-                   <bool>false</bool>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item row="3" column="0">
-               <spacer name="verticalSpacer_2">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>40</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
-            </widget>
-           </widget>
-           <widget class="QWidget" name="page_2">
-            <widget class="QFrame" name="frame_4">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>0</y>
-               <width>771</width>
-               <height>211</height>
-              </rect>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::NoFrame</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
-             </property>
-             <property name="lineWidth">
-              <number>0</number>
-             </property>
-             <layout class="QFormLayout" name="formLayout_4">
-              <property name="verticalSpacing">
-               <number>12</number>
-              </property>
-              <item row="0" column="0">
-               <widget class="QLabel" name="label_8">
-                <property name="text">
-                 <string>Wybór metody</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0" colspan="2">
-               <widget class="QGroupBox" name="groupBox_4">
-                <property name="title">
-                 <string/>
-                </property>
-                <layout class="QGridLayout" name="gridLayout_12">
-                 <item row="0" column="1">
-                  <widget class="QComboBox" name="iddzialki_col">
-                   <property name="minimumSize">
-                    <size>
-                     <width>500</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="1">
-                  <widget class="QComboBox" name="iddzialki_separator">
-                   <item>
-                    <property name="text">
-                     <string>,</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>;</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>:</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>|</string>
-                    </property>
-                   </item>
-                  </widget>
-                 </item>
-                 <item row="1" column="0">
-                  <widget class="QLabel" name="label_6">
-                   <property name="text">
-                    <string>Separator**</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="3" column="0" colspan="2">
-                  <widget class="QLabel" name="label_7">
-                   <property name="text">
-                    <string>**w przypadku wielu działek</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="0" colspan="2">
-                  <widget class="QLabel" name="label_5">
-                   <property name="text">
-                    <string>*identyfikator obiektu (np. 141201_1.0008.6519)</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="0">
-                  <widget class="QLabel" name="iddzialki_label_3">
-                   <property name="minimumSize">
-                    <size>
-                     <width>150</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>125</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>Kolumna z IdDzialki*</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <spacer name="verticalSpacer_3">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>40</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
-            </widget>
-           </widget>
-           <widget class="QWidget" name="page_3">
-            <widget class="QGroupBox" name="groupBox_7">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>0</y>
-               <width>781</width>
-               <height>161</height>
-              </rect>
-             </property>
-             <property name="title">
-              <string/>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_14">
-              <item row="1" column="2">
-               <widget class="QComboBox" name="col_name_xy">
-                <property name="minimumSize">
-                 <size>
-                  <width>500</width>
-                  <height>0</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="1">
-               <widget class="QLabel" name="col_x_label">
-                <property name="maximumSize">
-                 <size>
-                  <width>120</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>Kolumna X:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="2">
-               <widget class="QComboBox" name="col_x">
-                <property name="minimumSize">
-                 <size>
-                  <width>500</width>
-                  <height>0</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="2">
-               <widget class="QComboBox" name="col_y">
-                <property name="minimumSize">
-                 <size>
-                  <width>500</width>
-                  <height>0</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="1">
-               <widget class="QLabel" name="col_y_label">
-                <property name="text">
-                 <string>Kolumna Y:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1">
-               <widget class="QLabel" name="xy_separator_label_3">
-                <property name="text">
-                 <string>Separator</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="2">
-               <widget class="QgsProjectionSelectionWidget" name="col_geom_crs_xy">
-                <property name="minimumSize">
-                 <size>
-                  <width>500</width>
-                  <height>0</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QLabel" name="xy_col_label_3">
-                <property name="text">
-                 <string>Kolumna XY:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="2">
-               <widget class="QComboBox" name="xy_separator">
-                <item>
-                 <property name="text">
-                  <string>,</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>;</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>|</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>!</string>
-                 </property>
-                </item>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QLabel" name="xy_proj_label_3">
-                <property name="text">
-                 <string>Układ współrzędnych</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </widget>
-          </widget>
-         </item>
-        </layout>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
        </widget>
       </item>
       <item>
-       <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="2">
-         <widget class="QPushButton" name="pushButton_reject">
-          <property name="text">
-           <string>Anuluj</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QPushButton" name="geocoding">
-          <property name="text">
-           <string>Geokoduj</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <spacer name="verticalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
+     <zorder>verticalSpacer_3</zorder>
+     <zorder>label_side</zorder>
     </widget>
+   </item>
+   <item row="2" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>5</number>
+     </property>
+     <property name="leftMargin">
+      <number>5</number>
+     </property>
+     <property name="topMargin">
+      <number>5</number>
+     </property>
+     <property name="rightMargin">
+      <number>5</number>
+     </property>
+     <property name="bottomMargin">
+      <number>5</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="geocoding">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Run</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_reject">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
@@ -688,82 +1017,82 @@
  <resources/>
  <connections>
   <connection>
-   <sender>adress_multi_column</sender>
-   <signal>clicked()</signal>
-   <receiver>frame_many</receiver>
-   <slot>show()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>203</x>
-     <y>233</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>234</x>
-     <y>394</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>adress_multi_column</sender>
-   <signal>clicked()</signal>
-   <receiver>frame_single</receiver>
-   <slot>hide()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>185</x>
-     <y>235</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>185</x>
-     <y>285</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>adress_single_column</sender>
-   <signal>clicked()</signal>
-   <receiver>frame_single</receiver>
-   <slot>show()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>74</x>
-     <y>234</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>77</x>
-     <y>284</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>adress_single_column</sender>
-   <signal>clicked()</signal>
-   <receiver>frame_many</receiver>
-   <slot>hide()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>127</x>
-     <y>235</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>115</x>
-     <y>395</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>pushButton_reject</sender>
    <signal>clicked()</signal>
    <receiver>GeocodingDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>553</x>
-     <y>666</y>
+     <x>1133</x>
+     <y>715</y>
     </hint>
     <hint type="destinationlabel">
-     <x>527</x>
-     <y>-11</y>
+     <x>461</x>
+     <y>501</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>adress_single_column</sender>
+   <signal>clicked()</signal>
+   <receiver>frame_single</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>227</x>
+     <y>295</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>237</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>adress_single_column</sender>
+   <signal>clicked()</signal>
+   <receiver>frame_many</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>204</x>
+     <y>299</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>214</x>
+     <y>424</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>adress_multi_column</sender>
+   <signal>clicked()</signal>
+   <receiver>frame_many</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>315</x>
+     <y>289</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>634</x>
+     <y>494</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>adress_multi_column</sender>
+   <signal>clicked()</signal>
+   <receiver>frame_single</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>347</x>
+     <y>297</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>634</x>
+     <y>361</y>
     </hint>
    </hints>
   </connection>
