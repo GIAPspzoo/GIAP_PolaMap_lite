@@ -363,7 +363,7 @@ class Geocoding(QtWidgets.QDialog):
                 del self.tmp_layer
         else:
             QMessageBox.warning(self, tr("Geocoding completed"),
-                                f"{tr('Geocoding completed with problems.\nSuccess:')} {success_count}/{total_count}")
+                                f"""{tr('Geocoding completed with problems. Success:')} {success_count}/{total_count}""")
 
     def run(self):
         self.show()
@@ -400,7 +400,7 @@ class Geocoding(QtWidgets.QDialog):
                     features_list.append(feature)
             self.tmp_layer.add_features(features_list)
             add_map_layer_to_group(self.tmp_layer, '')
-            CustomMessageBox(self, f'{tr('Added geometry column to layer:')} {self.map_layer_cbbx.currentLayer().name()}_{data_time}').button_ok()
+            CustomMessageBox(self, f"""{tr('Added geometry column to layer:')} {self.map_layer_cbbx.currentLayer().name()}_{data_time}""").button_ok()
 
 def combine_geoms(geoms_list):
     geoms_list_len = len(geoms_list)

@@ -936,8 +936,8 @@ Kompozje zostaną zaktualizowane.</translation>
     </message>
     <message>
         <location filename="../geocoding_tool.py" line="360"/>
-        <source>Geocoding completed with problems.\nSuccess:</source>
-        <translation>GGeokodowanie zakończone z problemami.\nSukces:</translation>
+        <source>Geocoding completed with problems. Success:</source>
+        <translation>GGeokodowanie zakończone z problemami. Sukces:</translation>
     </message>
     <message>
         <location filename="../geocoding_tool.py" line="395"/>
