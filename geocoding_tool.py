@@ -319,7 +319,7 @@ class Geocoding(QtWidgets.QDialog):
         else:
             features = self.collect_objects_from_layer()
             transform = QgsCoordinateTransform(crs, self.current_layer.crs(), QgsProject.instance())
-            for feature in features.getFeatures():
+            for feature in features:
                 x = feature[x_field]
                 y = feature[y_field]
                 point = QgsPointXY(float(x), float(y))
