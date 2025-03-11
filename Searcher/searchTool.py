@@ -9,7 +9,7 @@ from qgis.PyQt.QtGui import QFont, QFontMetrics
 from qgis.PyQt.QtCore import QStringListModel
 from qgis.PyQt.QtCore import QTimer
 from qgis.PyQt.QtWidgets import QCompleter
-from qgis.core import QgsVectorLayer, QgsProject
+from qgis.core import QgsVectorLayer, QgsProject, QgsCoordinateTransform, QgsCoordinateReferenceSystem
 from qgis.utils import iface
 from typing import Union, Dict, List
 from qgis.core import QgsField, QgsFeature, QgsGeometry, QgsPointXY, QgsMapLayer
@@ -406,7 +406,11 @@ class SearcherTool:
         if self.clicked_x is not None and self.clicked_y is not None:
             progress = ProgressDialog(None, tr("Waiting for the ULDK website response"))
             progress.start()
-            url = f'https://services.gugik.gov.pl/uug/?request=GetAddressReverse&location=POINT({self.clicked_x} {self.clicked_y})&srid=2180'
+            transform = QgsCoordinateTransform(QgsProject.instance().crs(), QgsCoordinateReferenceSystem("EPSG:2180"),
+                                               QgsProject.instance())
+            point = QgsPointXY(float(self.clicked_x), float(self.clicked_y))
+            self.transformed_point = transform.transform(point)
+            url = f'https://services.gugik.gov.pl/uug/?request=GetAddressReverse&location=POINT({self.transformed_point.x()} {self.transformed_point.y()})&srid=2180'
             try:
                 response = requests.get(url, verify=False)
                 response.raise_for_status()
@@ -422,6 +426,7 @@ class SearcherTool:
 
             except requests.RequestException as e:
                 CustomMessageBox(None, tr('Error.')).button_ok()
+
             progress.stop()
         else:
             CustomMessageBox(None, tr('Error. Invalid coordinates.')).button_ok()
@@ -443,28 +448,27 @@ class SearcherTool:
             QgsField("x", QVariant.Double, "double", 10, 4),
             QgsField("y", QVariant.Double, "double", 10, 4),
         ]
-        # Check the existing layer
+
         org = 'MultiPoint?crs=epsg:2180&index=yes'
         obj_type = 'UUG_pkt'
         qml = os.path.join('layer_style', 'PUNKT_ADRESOWY.qml')
         layer = self.get_layer_data(org, obj_type, qml)
 
         fet = QgsFeature()
-        geometry = QgsGeometry.fromPointXY(QgsPointXY(self.clicked_x, self.clicked_y))
+        geometry = QgsGeometry.fromPointXY(QgsPointXY(self.transformed_point.x(), self.transformed_point.y()))
         fet.setGeometry(geometry)
         fet.setFields(layer.fields())
 
         for field in self.flds:
             field_name = field.name()
-            if field_name in layer.fields().names():  # Ensure the field exists in the layer
+            if field_name in layer.fields().names():
                 if field_name in address:
-                    # Check if the value is "null" and replace it with "Null"
                     value = address[field_name]
                     if value == "null":
                         value = None
                     fet.setAttribute(field_name, value)
                 else:
-                    fet.setAttribute(field_name, None)  # Set default value to None
+                    fet.setAttribute(field_name, None)
 
         pr = layer.dataProvider()
         pr.addFeature(fet)
@@ -497,7 +501,11 @@ class SearcherTool:
             progress = ProgressDialog(None, tr("Waiting for the ULDK website response"))
             progress.start()
             params = '&result=geom_wkt,teryt,voivodeship,county,region,commune,parcel'
-            url = f'https://uldk.gugik.gov.pl/?request=GetParcelByXY&xy={self.clicked_x},{self.clicked_y}{params}'
+            transform = QgsCoordinateTransform(QgsProject.instance().crs(), QgsCoordinateReferenceSystem("EPSG:2180"),
+                                               QgsProject.instance())
+            point = QgsPointXY(float(self.clicked_x), float(self.clicked_y))
+            transformed_point = transform.transform(point)
+            url = f'https://uldk.gugik.gov.pl/?request=GetParcelByXY&xy={transformed_point.x()},{transformed_point.y()}{params}'
             fetcher = FetchULDK()
             if fetcher.fetch(url):
                 parser = ParseResponce()

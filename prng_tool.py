@@ -7,7 +7,7 @@ import os
 import requests
 from qgis.PyQt import QtWidgets, uic, QtCore
 from qgis.core import QgsVectorLayer, QgsProject, QgsFeature, QgsGeometry, QgsFields, QgsField, QgsRasterLayer, \
-    QgsLayerTreeGroup
+    QgsLayerTreeGroup, QgsCoordinateTransform, QgsCoordinateReferenceSystem
 from qgis.utils import iface
 from qgis.PyQt.QtCore import QTimer
 from qgis.PyQt.QtWidgets import QApplication, QProgressDialog
@@ -78,16 +78,25 @@ class PRNGTool(QtWidgets.QDialog):
                     return
 
                 for key, value in data["results"].items():
-                    self.results_data[key] = {
-                        "name": value["city"], "type": "miasto", "voivodeship": value["voivodeship"], "county": value["county"],
-                        "commune": value["commune"], "class": "", "status": "", "x": value["x"], "y": value["y"], "geometry_wkt": value["geometry_wkt"]
-                    }
+                    try:
+                        self.results_data[key] = {
+                            "name": value["city"], "type": "miasto", "voivodeship": value["voivodeship"], "county": value["county"],
+                            "commune": value["commune"], "class": "", "status": "", "x": value["x"], "y": value["y"], "geometry_wkt": value["geometry_wkt"]
+                        }
+                    except:
+                        self.results_data[key] = {
+                            "name": value["city"], "type": "miasto", "street": value["street"], "class": "", "status": "", "x": value["x"], "y": value["y"],
+                            "geometry_wkt": value["geometry_wkt"]
+                        }
             else:
                 self.results_data = data["results"]
 
             items = []
             for key, value in self.results_data.items():
-                items.append(f"{value['name']} ( {value['type']}, {value['voivodeship']}, {value['county']} )")
+                try:
+                    items.append(f"{value['name']} ( {value['type']}, {value['voivodeship']}, {value['county']} )")
+                except:
+                    items.append(f"{value['name'], value['street']}")
 
             model.setStringList(items)
             self.listView.setModel(model)
@@ -162,15 +171,19 @@ class PRNGTool(QtWidgets.QDialog):
         layer.loadNamedStyle(os.path.join(direc, 'Searcher', 'layer_style', 'obiekt_PRNG.qml'))
         return layer
 
-    def change_scale(self, bbox):
-        iface.mapCanvas().zoomToFeatureExtent(bbox)
+    def change_scale(self, geom):
+        transform = QgsCoordinateTransform(QgsCoordinateReferenceSystem("EPSG:2180"), QgsProject.instance().crs(),
+                                           QgsProject.instance())
+        geom_bbox = geom.boundingBox()
+        transform_geom = transform.transformBoundingBox(geom_bbox)
+        iface.mapCanvas().zoomToFeatureExtent(transform_geom)
         iface.mapCanvas().zoomScale(1000)
 
     def zoom_to_feature(self, feature: QgsFeature):
         self.timer = QTimer()
         self.timer.setSingleShot(True)
         self.timer.setInterval(200)
-        self.timer.timeout.connect(lambda: self.change_scale(feature.geometry().boundingBox()))
+        self.timer.timeout.connect(lambda: self.change_scale(feature.geometry()))
         self.timer.start()
 
     def find_features_by_coordinates(self, x, y):
