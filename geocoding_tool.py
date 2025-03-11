@@ -13,10 +13,10 @@ from qgis.PyQt import QtWidgets, uic
 from qgis.core import QgsProject, QgsGeometry, QgsPointXY, \
     QgsMapLayerProxyModel, QgsFeature, \
     QgsCoordinateReferenceSystem, QgsCoordinateTransform
-from qgis.PyQt.QtWidgets import QDialog, QRadioButton, QStackedWidget, QMessageBox
+from qgis.PyQt.QtWidgets import QDialog, QRadioButton, QStackedWidget, QMessageBox, QApplication
 from qgis.gui import QgsProjectionSelectionWidget
 
-from .utils import CustomMessageBox, TmpCopyLayer, add_map_layer_to_group, tr
+from .utils import CustomMessageBox, TmpCopyLayer, add_map_layer_to_group, tr, ProgressDialog, get_simple_progressbar
 
 URL = "http://uldk.gugik.gov.pl/"
 project = QgsProject.instance()
@@ -131,6 +131,16 @@ class Geocoding(QtWidgets.QDialog):
         self.geocoding_button.clicked.connect(self.perform_geocoding)
 
         self.geocoding_results = []
+        self.groupBox_x_and_y.toggled.connect(self.CheckBoxStateChangedXY)
+        self.groupBox_x_y.toggled.connect(self.CheckBoxStateChangedXorY)
+
+    def CheckBoxStateChangedXY(self):
+        if self.groupBox_x_and_y.isChecked():
+            self.groupBox_x_y.setChecked(False)
+
+    def CheckBoxStateChangedXorY(self):
+        if self.groupBox_x_y.isChecked():
+            self.groupBox_x_and_y.setChecked(False)
 
     def switch_page(self):
         if self.geocoding_adress.isChecked():
@@ -184,6 +194,9 @@ class Geocoding(QtWidgets.QDialog):
             return
         rees = True
         self.geocoding_results.clear()
+        self.progress = ProgressDialog(self, tr("ULDK..."))
+        self.progress.start()
+        QApplication.processEvents()
         if self.geocoding_adress.isChecked():
             if self.findChild(QRadioButton, 'adress_single_column').isChecked():
                 self.geocode_by_single_address_column()
@@ -200,10 +213,12 @@ class Geocoding(QtWidgets.QDialog):
     def geocode_by_single_address_column(self):
         separator = self.adress_separator_cbbx.currentText()
         address_field = self.adress_col_cbbx.currentText()
-        transform = QgsCoordinateTransform(QgsCoordinateReferenceSystem("EPSG:2180"), self.tmp_layer.crs(),
-                                           QgsProject.instance())
+
         if hasattr(self, 'tmp_layer'):
+            transform = QgsCoordinateTransform(QgsCoordinateReferenceSystem("EPSG:2180"), self.tmp_layer.crs(),
+                                               QgsProject.instance())
             for feature in self.tmp_layer.getFeatures():
+                QApplication.processEvents()
                 address = feature[address_field]
                 address_parts = address.split(separator)
                 if len(address_parts) >= 3:
@@ -218,7 +233,10 @@ class Geocoding(QtWidgets.QDialog):
                 self.geocoding_results.append((feature.id(), wkt))
         else:
             features = self.collect_objects_from_layer()
+            transform = QgsCoordinateTransform(QgsCoordinateReferenceSystem("EPSG:2180"), self.current_layer.crs(),
+                                               QgsProject.instance())
             for feature in features:
+                QApplication.processEvents()
                 address = feature[address_field]
                 address_parts = address.split(separator)
                 if len(address_parts) >= 3:
@@ -233,10 +251,11 @@ class Geocoding(QtWidgets.QDialog):
                 self.geocoding_results.append((feature.id(), wkt))
 
     def geocode_by_multi_address_column(self):
-        transform = QgsCoordinateTransform(QgsCoordinateReferenceSystem("EPSG:2180"), self.tmp_layer.crs(),
-                                           QgsProject.instance())
         if hasattr(self, 'tmp_layer'):
+            transform = QgsCoordinateTransform(QgsCoordinateReferenceSystem("EPSG:2180"), self.tmp_layer.crs(),
+                                               QgsProject.instance())
             for feature in self.tmp_layer.getFeatures():
+                QApplication.processEvents()
                 city = feature[self.adress_city_cbbx.currentText()]
                 postal_code = feature[self.adress_postal_cbbx.currentText()]
                 street = feature[self.adress_street_cbbx.currentText()]
@@ -248,7 +267,10 @@ class Geocoding(QtWidgets.QDialog):
                 self.geocoding_results.append((feature.id(), wkt))
         else:
             features = self.collect_objects_from_layer()
+            transform = QgsCoordinateTransform(QgsCoordinateReferenceSystem("EPSG:2180"), self.current_layer.crs(),
+                                               QgsProject.instance())
             for feature in features:
+                QApplication.processEvents()
                 city = feature[self.adress_city_cbbx.currentText()]
                 postal_code = feature[self.adress_postal_cbbx.currentText()]
                 street = feature[self.adress_street_cbbx.currentText()]
@@ -264,11 +286,16 @@ class Geocoding(QtWidgets.QDialog):
         parcel_id_field = self.iddzialki_col_cbbx.currentText()
         if hasattr(self, 'tmp_layer'):
             for feature in self.tmp_layer.getFeatures():
+                QApplication.processEvents()
                 parcel_id = feature[parcel_id_field]
                 pracels_id_list = str(parcel_id).split(separator)
                 feat_geom_list = []
                 for parcel_id in pracels_id_list:
-                    wkt = get_parcel_by_id(parcel_id.strip(), srid=str(self.tmp_layer.crs().postgisSrid()))
+                    QApplication.processEvents()
+                    try:
+                        wkt = get_parcel_by_id(parcel_id.strip(), srid=str(self.tmp_layer.crs().postgisSrid()))
+                    except ConnectionError:
+                        continue
                     if wkt:
                         feat_geom_list.append(QgsGeometry().fromWkt(wkt))
                 if feat_geom_list:
@@ -278,14 +305,28 @@ class Geocoding(QtWidgets.QDialog):
         else:
             features = self.collect_objects_from_layer()
             for feature in features:
+                QApplication.processEvents()
                 parcel_id = feature[parcel_id_field]
-                wkt = get_parcel_by_id(parcel_id, srid=str(self.current_layer.crs().postgisSrid()))
-                self.geocoding_results.append((feature.id(), wkt))
+                pracels_id_list = str(parcel_id).split(separator)
+                feat_geom_list = []
+                for parcel_id in pracels_id_list:
+                    QApplication.processEvents()
+                    try:
+                        wkt = get_parcel_by_id(parcel_id.strip(), srid=str(self.tmp_layer.crs().postgisSrid()))
+                    except ConnectionError:
+                        continue
+                    if wkt:
+                        feat_geom_list.append(QgsGeometry().fromWkt(wkt))
+                if feat_geom_list:
+                    combined_geom = combine_geoms(feat_geom_list)
+                    combined_geom.convertToMultiType()
+                    self.geocoding_results.append((feature.id(), combined_geom))
 
     def geocode_by_xy(self):
         if (self.groupBox_x_and_y.isChecked() and self.groupBox_x_y.isChecked()) or \
             (not self.groupBox_x_and_y.isChecked() and not self.groupBox_x_y.isChecked()):
             CustomMessageBox(self, tr('Choose one of the options!')).button_ok()
+            self.progress.stop()
             return False
         if self.groupBox_x_and_y.isChecked():
             name_field = self.col_name_xy_cbbx.currentText()
@@ -300,14 +341,22 @@ class Geocoding(QtWidgets.QDialog):
                 transform = QgsCoordinateTransform(crs, self.tmp_layer.crs(), QgsProject.instance())
             except:
                 CustomMessageBox(self, tr('No layout specified in source layer! Add geometry column!')).button_ok()
+                self.progress.stop()
                 return False
             for feature in self.tmp_layer.getFeatures():
+                QApplication.processEvents()
                 if self.groupBox_x_y.isChecked():
                     x = feature[x_field]
                     y = feature[y_field]
                 elif self.groupBox_x_and_y.isChecked():
                     xy = feature[name_field]
-                    x, y = xy.split(separator)
+                    try:
+                        x, y = xy.split(separator)
+                    except ValueError:
+                        CustomMessageBox(self,
+                                         tr('Bad separator!')).button_ok()
+                        self.progress.stop()
+                        return False
                 point = QgsPointXY(float(x), float(y))
                 try:
                     transformed_point = transform.transform(point)
@@ -320,8 +369,19 @@ class Geocoding(QtWidgets.QDialog):
             features = self.collect_objects_from_layer()
             transform = QgsCoordinateTransform(crs, self.current_layer.crs(), QgsProject.instance())
             for feature in features:
-                x = feature[x_field]
-                y = feature[y_field]
+                QApplication.processEvents()
+                if self.groupBox_x_y.isChecked():
+                    x = feature[x_field]
+                    y = feature[y_field]
+                elif self.groupBox_x_and_y.isChecked():
+                    xy = feature[name_field]
+                    try:
+                        x, y = xy.split(separator)
+                    except ValueError:
+                        CustomMessageBox(self,
+                                         tr('Bad separator!')).button_ok()
+                        self.progress.stop()
+                        return False
                 point = QgsPointXY(float(x), float(y))
                 try:
                     transformed_point = transform.transform(point)
@@ -357,6 +417,7 @@ class Geocoding(QtWidgets.QDialog):
     def show_geocoding_result_message(self):
         success_count = sum(1 for _, wkt in self.geocoding_results if wkt)
         total_count = len(self.geocoding_results)
+        self.progress.stop()
         if success_count == total_count:
             QMessageBox.information(self, tr("Geocoding completed"), tr("Geocoding completed successfully."))
             if hasattr(self, 'tmp_layer'):

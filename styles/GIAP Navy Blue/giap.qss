@@ -497,12 +497,14 @@ QCheckBox:disabled, QRadioButton:disabled, QLabel:disabled, QTabBar:disabled {
 }
 
 QCheckBox::indicator:unchecked, QGroupBox::indicator:unchecked{
+      margin-top: 1px;
       image: url(icons/unchecked.png);
       width: 12px;
       height: 12px;
 }
 
 QCheckBox::indicator:checked, QGroupBox::indicator:checked {
+    margin-top: 1px;
     image: url(icons/checked.png);
     width: 12px;
     height: 12px;
