@@ -954,6 +954,11 @@ Kompozje zostaną zaktualizowane.</translation>
         <source>No layout specified in source layer! Add geometry column!</source>
         <translation>Brak określonego układu w warstwie źródłowej! Dodaj kolumnę geometryczną!</translation>
     </message>
+    <message>
+        <location filename="../geocoding_tool.py" line="357"/>
+        <source>Incorrect field or separator!</source>
+        <translation>Błędne pole lub separator!</translation>
+    </message>
 </context>
 <context>
     <name>AddSectionDialog</name>

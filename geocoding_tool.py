@@ -312,7 +312,7 @@ class Geocoding(QtWidgets.QDialog):
                 for parcel_id in pracels_id_list:
                     QApplication.processEvents()
                     try:
-                        wkt = get_parcel_by_id(parcel_id.strip(), srid=str(self.tmp_layer.crs().postgisSrid()))
+                        wkt = get_parcel_by_id(parcel_id.strip(), srid=str(self.current_layer.crs().postgisSrid()))
                     except ConnectionError:
                         continue
                     if wkt:
@@ -354,7 +354,7 @@ class Geocoding(QtWidgets.QDialog):
                         x, y = xy.split(separator)
                     except ValueError:
                         CustomMessageBox(self,
-                                         tr('Bad separator!')).button_ok()
+                                         tr('Incorrect field or separator!')).button_ok()
                         self.progress.stop()
                         return False
                 point = QgsPointXY(float(x), float(y))
@@ -379,7 +379,7 @@ class Geocoding(QtWidgets.QDialog):
                         x, y = xy.split(separator)
                     except ValueError:
                         CustomMessageBox(self,
-                                         tr('Bad separator!')).button_ok()
+                                         tr('Incorrect field or separator!')).button_ok()
                         self.progress.stop()
                         return False
                 point = QgsPointXY(float(x), float(y))
