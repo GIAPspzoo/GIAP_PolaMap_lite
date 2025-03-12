@@ -226,7 +226,10 @@ class Geocoding(QtWidgets.QDialog):
                     postal_code = address_parts[3] if len(address_parts) > 3 else ''
                 else:
                     city, street, number, postal_code = address_parts[0], '', '', ''
-                wkt, x, y = geocode(city, street, number, postal_code)
+                try:
+                    wkt, x, y = geocode(city, street, number, postal_code)
+                except:
+                    continue
                 point = QgsPointXY(float(x), float(y))
                 transformed_point = transform.transform(point)
                 wkt = f"POINT ({transformed_point.x()} {transformed_point.y()})"
@@ -244,7 +247,10 @@ class Geocoding(QtWidgets.QDialog):
                     postal_code = address_parts[3] if len(address_parts) > 3 else ''
                 else:
                     city, street, number, postal_code = address_parts[0], '', '', ''
-                wkt, x, y = geocode(city, street, number, postal_code)
+                try:
+                    wkt, x, y = geocode(city, street, number, postal_code)
+                except:
+                    continue
                 point = QgsPointXY(float(x), float(y))
                 transformed_point = transform.transform(point)
                 wkt = f"POINT ({transformed_point.x()} {transformed_point.y()})"
@@ -419,7 +425,10 @@ class Geocoding(QtWidgets.QDialog):
         total_count = len(self.geocoding_results)
         self.progress.stop()
         if success_count == total_count:
-            QMessageBox.information(self, tr("Geocoding completed"), tr("Geocoding completed successfully."))
+            if total_count == 0:
+                QMessageBox.information(self, tr("Geocoding completed"), f"""{tr('Geocoding completed with problems. Success:')} 0/0""")
+            else:
+                QMessageBox.information(self, tr("Geocoding completed"), tr("Geocoding completed successfully."))
             if hasattr(self, 'tmp_layer'):
                 del self.tmp_layer
         else:
