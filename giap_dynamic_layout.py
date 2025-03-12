@@ -18,6 +18,7 @@ from qgis.core import QgsApplication, QgsCoordinateReferenceSystem, QgsCoordinat
 from qgis.utils import iface
 from qgis.gui import QgsMapTool
 
+from .geocoding_tool import Geocoding
 from .prng_tool import PRNGTool
 from .OrtoTools import OrtoAddingTool
 from .QuickPrint import PrintMapTool
@@ -900,6 +901,11 @@ class CustomSection(QWidget):
                 self.add_feature_menu.addAction(self.high_res)
                 self.tbut.setMenu(self.add_feature_menu)
                 self.tbut.setPopupMode(QToolButton.InstantPopup)
+
+            if oname == "giapgeokodowanie":
+                self.tbut.setToolTip(tr("Geocoding"))
+                self.geocoding_tool = Geocoding(self)
+                self.tbut.clicked.connect(self.geocoding_tool.run)
 
             self.tbut.setIcon(icon)
 
