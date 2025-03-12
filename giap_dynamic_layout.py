@@ -1146,7 +1146,14 @@ class CustomSection(QWidget):
         else:
             wms_url = 'https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMS/HighResolutionTime'
             img_ras = 'Image'
-        wms_service = WebMapService(wms_url, '1.3.0')
+        try:
+            wms_service = WebMapService(wms_url, '1.3.0')
+        except:
+            for obj in iface.mainWindow().findChildren(QDockWidget):
+                if obj.objectName() == 'Temporal Controller':
+                    obj.setVisible(False)
+            CustomMessageBox(None, "Brak połączenia z usługą WMS.").button_ok()
+            return
         lyr_src_name = wms_service.contents[img_ras].id
         image_type = wms_service.getOperationByName('GetMap').formatOptions[0]
         crs_options = wms_service.contents[img_ras].crsOptions
