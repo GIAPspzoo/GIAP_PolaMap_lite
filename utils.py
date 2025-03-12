@@ -159,6 +159,13 @@ def get_simple_progressbar(max_len, title='Proszę czekać',
     return progress
 
 
+class OtherProperSortFilterProxyModel(QSortFilterProxyModel):
+    def __init__(self):
+        QSortFilterProxyModel.__init__(self)
+        self.setFilterCaseSensitivity(Qt.CaseInsensitive)
+        self.sortOrder()
+
+
 class ProperSortFilterProxyModel(QSortFilterProxyModel):
     SORTING_AS_NUMBERS = []
     SORTING_AS_NAME = []

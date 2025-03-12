@@ -84,6 +84,7 @@ class OrtoActionService(QObject):
         progress = get_simple_progressbar(
             0, txt=tr('Loading layers...'))
         progress.show()
+        QApplication.processEvents()
         online_layers = None
         if 'wfs' in self.url.lower():
             layers_type = 'WFS'
@@ -108,6 +109,7 @@ class OrtoActionService(QObject):
         else:
             checked_list = [layer.name() for layer in group.children()]
         select_dlg = online_layers_dialog.OnlineLayersDialog(online_layers, checked_list)
+        progress.close()
         select_dlg.exec()
         diff_layers = [layer for layer in checked_list if layer not in select_dlg.checked_list]
         for layer in diff_layers:

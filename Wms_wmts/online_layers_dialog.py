@@ -5,10 +5,11 @@ from qgis.PyQt.QtWidgets import QDialog
 from qgis.PyQt.QtGui import QStandardItemModel, QStandardItem
 from qgis.PyQt.uic import loadUiType
 from qgis.PyQt.QtCore import Qt
-from ..utils import CustomMessageBox, ProperSortFilterProxyModel, tr
+from ..utils import CustomMessageBox, tr, OtherProperSortFilterProxyModel
 
 FORM_CLASS, _ = loadUiType(os.path.join(
     os.path.dirname(__file__), 'online_layers_dialog.ui'))
+
 
 class OnlineLayersDialog(QDialog, FORM_CLASS):
     def __init__(self, input_list, checked_layers=[], parent=None):
@@ -50,7 +51,7 @@ class OnlineLayersDialog(QDialog, FORM_CLASS):
             if elem in self.checked_layers:
                 item.setCheckState(Qt.Checked)
             self.base_model.appendRow(item)
-        self.sort = ProperSortFilterProxyModel()
+        self.sort = OtherProperSortFilterProxyModel()
         self.sort.setSourceModel(self.base_model)
         self.sort.setDynamicSortFilter(True)
         self.sort.setFilterKeyColumn(-1)
