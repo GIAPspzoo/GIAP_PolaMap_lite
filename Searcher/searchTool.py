@@ -65,9 +65,13 @@ class SearcherTool:
         self.completer.setMaxVisibleItems(15)
         self.dock.setStyleSheet("QComboBox{combobox-popup: 0;}")
         self.dock.comboBox_gmina.setMaxVisibleItems(15)
+        self.dock.comboBox_gmina.setMinimumWidth(150)
         self.dock.comboBox_obr.setMaxVisibleItems(15)
+        self.dock.comboBox_obr.setMinimumWidth(150)
         self.dock.comboBox_pow.setMaxVisibleItems(15)
+        self.dock.comboBox_pow.setMinimumWidth(150)
         self.dock.comboBox_woj.setMaxVisibleItems(17)
+        self.dock.comboBox_woj.setMinimumWidth(150)
         self.font = QFont('Agency FB')
         self.fontm = QFontMetrics(self.font)
 

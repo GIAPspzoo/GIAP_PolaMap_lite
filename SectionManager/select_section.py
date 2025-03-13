@@ -3,10 +3,9 @@ from copy import deepcopy
 from typing import List, Set, Union
 
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
-from PyQt5.QtWidgets import QStyledItemDelegate
 from plugins.processing.core.ProcessingConfig import ProcessingConfig
 from qgis.PyQt import uic
-from qgis.PyQt.QtCore import QSortFilterProxyModel, QModelIndex
+from qgis.PyQt.QtCore import QModelIndex
 from qgis.PyQt.QtWidgets import QDialog, QListWidget, QListView
 from qgis.gui import QgsProcessingToolboxProxyModel
 

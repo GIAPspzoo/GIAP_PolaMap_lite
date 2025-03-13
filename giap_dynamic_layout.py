@@ -642,7 +642,7 @@ class CustomSection(QWidget):
         self.main_widgets = main_widgets
         self.setAcceptDrops(True)
         self.setMaximumSize(QSize(99999, 110))
-        self.setMinimumSize(QSize(70, 110))
+        self.setMinimumSize(QSize(80, 110))
 
         if parent is not None:
             parent.parent().editChanged.connect(self.edit_toggle)
@@ -786,7 +786,6 @@ class CustomSection(QWidget):
                 else:
                     self.gridLayout.addWidget(it, irow, icol, 1, 1)
         self.gridLayout.update()
-        # self.gridLayoutWidget.adjustSize()
 
     def add_action(self, action: QAction, row: int, col: int, menu: QMenu = None):
         self.tbut = CustomToolButton(self)
@@ -1195,6 +1194,8 @@ class CustomToolButton(QToolButton):
         self.selected_style = '*{border: 3px solid red}'
         self.org_state = True  # True - enabled for click outside edit sesion
         self.drag_state = False
+        self.setMinimumSize(QSize(35, 35))
+        self.setMaximumSize(QSize(35, 35))
 
     def eventFilter(self, widget: QWidget, event: QEvent) -> bool:
         if event.type() == QEvent.MouseButtonRelease and self.edit:
@@ -1271,8 +1272,8 @@ class CustomSectionAdd(QToolButton):
         super(CustomSectionAdd, self).__init__(parent)
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.setObjectName('giapSectionAddButton')
-        self.setMinimumSize(QSize(30, 30))
-        self.setMaximumSize(QSize(30, 30))
+        self.setMinimumSize(QSize(35, 35))
+        self.setMaximumSize(QSize(35, 35))
         self.setText('+')
         self.setStyleSheet('font: 14px; font-weight: bold;')
 

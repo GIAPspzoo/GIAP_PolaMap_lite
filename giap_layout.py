@@ -36,7 +36,7 @@ from .ribbon_config import RIBBON_DEFAULT
 from .tools import StyleManager
 from .utils import tr, Qt, icon_manager, CustomMessageBox, add_action_from_toolbar, GIAP_NEWS_WEB_PAGE
 from qgis.gui import QgsMapTool
-import re
+
 project = QgsProject.instance()
 
 
@@ -291,6 +291,46 @@ class MainTabQgsWidget:
         self.layer_view = self.iface.layerTreeView()
         self.layer_view.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         layer_toolbar = self.layer_view.parent().children()[1]
+        style = layer_toolbar.styleSheet()
+        layer_toolbar.setStyleSheet(style + f"""QToolButton {{
+                                            border: none;
+                                            border-width: 0px;
+                                            border-radius: 3px;
+                                            background-color: none;
+                                            padding: 3px 3px 3px 3px;
+                                            width: 25px;
+                                            height: 25px;
+                                         }}
+                                         
+                                        QToolButton:checked {{
+                                        background-color:#5589B0;
+                                        border-radius: 3px;
+                                        border: solid;
+                                        border-width: 1px;
+                                        border-color: #5589B0;
+                                        }}
+                                        
+                                        QToolButton:hover {{
+                                        background-color: #5589B0;
+                                        border-radius: 3px;
+                                        border: solid;
+                                        border-width: 1px;
+                                        border-color: #E0DECF;
+                                        }}
+                                        
+                                        QToolButton:pressed {{
+                                        background-color:#5589B0;
+                                        border: solid;
+                                        border-width: 1px;
+                                        border-color: #5589B0;
+                                        }}
+                                        
+                                        QToolButton::menu, QToolButton::menu-button {{
+                                        background-color: #263C4E;
+                                        border: solid;
+                                        border-width: 1px;
+                                        border-color: #5589B0;
+                                        }}""")
         widget_w_warstwach = QWidget()
         layout_widgetu = QVBoxLayout()
         layout_widgetu.addWidget(layer_toolbar)

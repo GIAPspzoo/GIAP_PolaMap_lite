@@ -1071,7 +1071,6 @@
   <editform tolerant="1"></editform>
   <editforminit/>
   <editforminitcodesource>0</editforminitcodesource>
-  <editforminitfilepath>../../../Emilka/ZAWIERCIE/ZAWIERCIE_dociąganie/PROJEKTY</editforminitfilepath>
   <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
