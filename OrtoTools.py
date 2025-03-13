@@ -28,7 +28,7 @@ class OrtoAddingTool(object):
             self.data = json.load(json_getaddress)
         self.create_menu()
         self.connect_ortofotomapa_group()
-        orto_action_service.project.projectSaved.connect(self.remove_wms_wmts_temp_group)
+        # orto_action_service.project.projectSaved.connect(self.remove_wms_wmts_temp_group)
 
     def get_group_names(self) -> set:
         return set([value[1] for value in self.data.values() if value])
