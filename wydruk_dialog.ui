@@ -13,7 +13,7 @@
     <x>0</x>
     <y>0</y>
     <width>753</width>
-    <height>721</height>
+    <height>748</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -326,28 +326,14 @@
              <string>Additional options</string>
             </property>
             <layout class="QGridLayout" name="gridLayout_6">
-             <item row="0" column="0">
-              <widget class="QCheckBox" name="scaleCheckBox">
-               <property name="text">
-                <string>Add scale</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
+             <item row="3" column="0">
               <widget class="QCheckBox" name="dateCheckBox">
                <property name="text">
                 <string>Add date</string>
                </property>
               </widget>
              </item>
-             <item row="0" column="1">
-              <widget class="QCheckBox" name="legendCheckBox">
-               <property name="text">
-                <string>Add legend</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
+             <item row="3" column="1">
               <widget class="QLineEdit" name="dateedit">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -357,7 +343,21 @@
                </property>
               </widget>
              </item>
-             <item row="2" column="2">
+             <item row="1" column="1">
+              <widget class="QCheckBox" name="legendCheckBox">
+               <property name="text">
+                <string>Add legend</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QCheckBox" name="scaleCheckBox">
+               <property name="text">
+                <string>Add scale</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="2">
               <widget class="QToolButton" name="date_button">
                <property name="minimumSize">
                 <size>
@@ -367,6 +367,13 @@
                </property>
                <property name="text">
                 <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QCheckBox" name="line_checkBox">
+               <property name="text">
+                <string>Add linear scale</string>
                </property>
               </widget>
              </item>

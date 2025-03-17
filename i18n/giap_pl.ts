@@ -1982,6 +1982,11 @@ p, li { white-space: pre-wrap; }
         <source>Print in the scale of the project</source>
         <translation>Wydruk w skali projektu</translation>
     </message>
+        <message>
+        <location filename="../wydruk_dialog.ui" line="376"/>
+        <source>Add linear scale</source>
+        <translation>Dodaj podziałkę liniową</translation>
+    </message>
 </context>
 <context>
     <name>add_gom_col</name>

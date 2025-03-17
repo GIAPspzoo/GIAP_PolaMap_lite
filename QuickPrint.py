@@ -547,6 +547,34 @@ class PrintMapTool:
             adnotation.adjustSizeToText()
             self.layout.addItem(adnotation)
             adnotation.moveBy(width - adnotation.rectWithFrame().width() - 16, height - 14)
+
+        if self.dialog.line_checkBox.isChecked():
+            map_item = self.get_map_item()
+            scale_label = QgsLayoutItemLabel(self.layout)
+            scale_label.setText("SKALA: 1:{:,.0f}".format(round(map_item.scale())).replace(",", " "))
+            scale_font = QFont()
+            scale_label.setFont(scale_font)
+            if Qgis.QGIS_VERSION_INT < QGIS_LTR_VERSION:
+                scale_label.adjustSizeToText()
+
+            scalebar = QgsLayoutItemScaleBar(self.layout)
+            scalebar.setStyle('Line Ticks Up')
+            scalebar.setUnits(QgsUnitTypes.DistanceMeters)
+            scalebar.setNumberOfSegments(4)
+            scalebar.setNumberOfSegmentsLeft(0)
+            scalebar.setSegmentSizeMode(1)
+            scalebar.setUnitsPerSegment(1000)
+            scalebar.setLinkedMap(map_item)
+            scalebar.setUnitLabel('m')
+            scalebar.setMaximumBarWidth(80)
+            scalebar.setFont(QFont('Arial', 8))
+            scalebar.setBrush(QColor(255, 255, 255))
+            scalebar.setBackgroundEnabled(True)
+            scalebar.setFrameEnabled(True)
+            scalebar.update()
+            self.layout.addItem(scalebar)
+            scalebar.moveBy(16.15, height-29.35)
+
         progress.show()
         progress.setValue(20)
         if filename:
