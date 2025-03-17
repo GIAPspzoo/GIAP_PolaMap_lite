@@ -1185,6 +1185,7 @@ class CustomSection(QWidget):
 
         add_map_layer_to_group(raster_layer_from_cos, 'ORTOFOTOMAPA ARCHIWLANA', force_create=True)
 
+
 class CustomToolButton(QToolButton):
     def __init__(self, parent:QtWidgets) -> None:
         super(CustomToolButton, self).__init__(parent)
@@ -1194,8 +1195,8 @@ class CustomToolButton(QToolButton):
         self.selected_style = '*{border: 3px solid red}'
         self.org_state = True  # True - enabled for click outside edit sesion
         self.drag_state = False
-        self.setMinimumSize(QSize(35, 35))
-        self.setMaximumSize(QSize(35, 35))
+        self.setMinimumSize(QSize(30, 30))
+        self.setMaximumSize(QSize(30, 30))
 
     def eventFilter(self, widget: QWidget, event: QEvent) -> bool:
         if event.type() == QEvent.MouseButtonRelease and self.edit:
@@ -1272,8 +1273,8 @@ class CustomSectionAdd(QToolButton):
         super(CustomSectionAdd, self).__init__(parent)
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.setObjectName('giapSectionAddButton')
-        self.setMinimumSize(QSize(35, 35))
-        self.setMaximumSize(QSize(35, 35))
+        self.setMinimumSize(QSize(30, 30))
+        self.setMaximumSize(QSize(30, 30))
         self.setText('+')
         self.setStyleSheet('font: 14px; font-weight: bold;')
 

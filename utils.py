@@ -815,11 +815,11 @@ STANDARD_TOOLS = [
     {
         'label': tr('Projections'),
         'id': 'Projections',
-        'btn_size': 60,
+        'btn_size': 30,
         'btns': [
             ['mProcessingUserMenu_gdal:warpreproject', 0, 0],
             ['mProcessingUserMenu_gdal:assignprojection', 0, 1],
-            ['mProcessingUserMenu_gdal:extractprojection', 0, 2],
+            ['mProcessingUserMenu_gdal:extractprojection', 1, 0],
         ],
     },
 

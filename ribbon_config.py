@@ -323,35 +323,25 @@ RIBBON_DEFAULT = [
                ],
             },
             {
-                'label': tr('Annotations'),
-                'id': 'Annotations',
+                'label': tr('Digitizing'),
+                'id': 'Digitizing',
                 'btn_size': 30,
                 'btns': [
-                    ['mActionCreateAnnotationLayer', 0, 0],
-                    ['mMainAnnotationLayerProperties', 0, 1],
-                    ['mActionModifyAnnotation', 0, 2],
-                    ['mAnnotationsToolBar_1_action', 0, 3],
-                    ['mAnnotationsToolBar_2_action', 0, 4],
-                    ['mAnnotationsToolBar_3_action', 0, 5],
-                    ['mAnnotationsToolBar_4_action', 1, 0],
-                    ['mActionTextAnnotation', 1, 1],
-                    ['mActionFormAnnotation', 1, 2],
-                    ['mActionHtmlAnnotation', 1, 3],
-                    ['mActionSvgAnnotation', 1, 4],
-                    ['mActionAnnotation', 1, 5],
-                ]
-            },
-            {
-                'label': tr('Mesh digitizing'),
-                'id': 'Mesh',
-                'btn_size': 30,
-                'btns': [
-                    ['mMeshToolBar_0_action', 0, 0],
-                    ['ActionMeshSelectByPolygon', 0, 1],
-                    ['ActionMeshSelectByExpression', 0, 2],
-                    ['mMeshToolBar_1_action', 1, 0],
-                    ['mMeshToolBar_1_menu', 1, 1],
-                ]
+                    ['mActionAllEdits', 0, 0],
+                    ['mActionToggleEditing', 0, 1],
+                    ['mActionSaveLayerEdits', 0, 2],
+                    ['mActionAddFeature', 0, 3],
+                    ['mActionVertexTool', 0, 4],
+                    ['mActionMultiEditAttributes', 0, 5],
+                    ['mActionMultiEditAttributes', 1, 0],
+                    ['mActionDeleteSelected', 1, 1],
+                    ['mActionCutFeatures', 1, 2],
+                    ['mActionCopyFeatures', 1, 3],
+                    ['mActionPasteFeatures', 1, 4],
+                    ['mActionCopyFeatures', 1, 5],
+                    ['mActionUndo', 0, 6],
+                    ['mActionRedo', 1, 6]
+                ],
             },
 
         ]
@@ -397,11 +387,11 @@ RIBBON_DEFAULT = [
             {
                 'label': tr('Projections'),
                 'id': 'Projections',
-                'btn_size': 60,
+                'btn_size': 30,
                 'btns': [
                     ['mProcessingUserMenu_gdal:warpreproject', 0, 0],
                     ['mProcessingUserMenu_gdal:assignprojection', 0, 1],
-                    ['mProcessingUserMenu_gdal:extractprojection', 0, 2],
+                    ['mProcessingUserMenu_gdal:extractprojection', 1, 0],
                 ],
             },
 
