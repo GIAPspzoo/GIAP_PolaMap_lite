@@ -730,12 +730,12 @@ Proszę czekać...</translation>
     <message>
         <location filename="../AreaAndLengthTool/Events/BaseEventPrototype.py" line="80"/>
         <source>Length:</source>
-        <translation>Długość</translation>
+        <translation>Długość:</translation>
     </message>
     <message>
         <location filename="../AreaAndLengthTool/Events/BaseEventPrototype.py" line="87"/>
         <source>Area:</source>
-        <translation>Powierzchnia</translation>
+        <translation>Powierzchnia:</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.py" line="887"/>
