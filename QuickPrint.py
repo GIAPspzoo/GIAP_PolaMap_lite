@@ -18,7 +18,7 @@ from qgis.core import QgsLayoutExporter, QgsWkbTypes, QgsLayoutItemMap, \
     QgsLayoutItemLabel, QgsLayoutItemScaleBar, QgsRasterLayer, \
     QgsRasterFileWriter, QgsVectorFileWriter, QgsCoordinateTransform, QgsCoordinateReferenceSystem, QgsRectangle, \
     QgsProcessingContext, QgsMessageLog, QgsPointXY, Qgis, QgsTextFormat, QgsFillSymbol, QgsLayoutItemShape, \
-    QgsLayoutMeasurement, QgsMapLayer
+    QgsLayoutMeasurement, QgsMapLayer, QgsScaleBarSettings
 from qgis.gui import QgsRubberBand, QgisInterface
 from qgis.utils import iface
 from typing import Union
@@ -562,7 +562,7 @@ class PrintMapTool:
             scalebar.setUnits(QgsUnitTypes.DistanceMeters)
             scalebar.setNumberOfSegments(4)
             scalebar.setNumberOfSegmentsLeft(0)
-            scalebar.setSegmentSizeMode(1)
+            scalebar.setSegmentSizeMode(QgsScaleBarSettings.SegmentSizeFitWidth)
             scalebar.setUnitsPerSegment(1000)
             scalebar.setLinkedMap(map_item)
             scalebar.setUnitLabel('m')
