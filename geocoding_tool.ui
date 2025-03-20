@@ -902,11 +902,7 @@
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">   background-color: #b7d3e8;
-   color:  #0A0C0D;
-
-   font-weight: bold;
-</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>Geocoding</string>
