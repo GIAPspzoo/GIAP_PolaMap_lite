@@ -6,6 +6,8 @@ from .CompositionsLib import get_all_groups_layers, LayersPanel, \
     get_checked_layers_ids_from_composition, get_map_layer
 from ..utils import tr
 
+import uuid
+
 default_compositions = {}
 
 
@@ -47,7 +49,7 @@ def get_compositions():
     update_all_default_compositions()
     comp = {
         tr('All layers'): {
-            'id': '1',
+            'id': str(uuid.uuid4()),
             'order': 0,
             'layers': default_compositions[tr('All layers')],
         }
