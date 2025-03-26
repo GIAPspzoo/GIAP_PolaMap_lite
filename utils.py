@@ -1398,6 +1398,7 @@ custom_icon_dict = {
     'mActionSaveProjectAs': 'mActionSaveProjectAs.png',
     'window_icon': 'giap_logo.png',
     'giapPRNG': 'giapPRNG.png',
+    'giapAddWfsLayer': 'giapAddWfsLayer.png',
     'giapGeoportal': 'giapGeoportal.png',
     'giapOrtoContr': 'giapOrtoContr.png',
     'giapgeokodowanie': 'giapgeokodowanie.png',
