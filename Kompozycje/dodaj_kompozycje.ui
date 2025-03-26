@@ -13,7 +13,7 @@
     <x>0</x>
     <y>0</y>
     <width>984</width>
-    <height>488</height>
+    <height>447</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -213,6 +213,9 @@
               <layout class="QHBoxLayout" name="horizontalLayout_3">
                <item>
                 <widget class="QPushButton" name="dodaj_kompozycje">
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
                  <property name="text">
                   <string>Add</string>
                  </property>
@@ -329,12 +332,34 @@ border-top: none;</string>
                      <property name="styleSheet">
                       <string notr="true">QTableView, QListView
         {
+			background-color: rgb(240, 240, 240);
             gridline-color:#4F5A63;
-            color: #E0DECF;
-            alternate-background-color: #4F5A63;
+            color: #263c4e;
+			alternate-background-color:  rgb(240, 240, 240);
+			alternate-color: #263c4e;
+            border: 1px solid #5589B0;
+        }
+QTableView::item, QListView::item
+        {
+            color: #263c4e;
+        }
+QTableView::item:hover, QListView::item:hover
+        {
+            color: white;
+            background: #5589B0;
             selection-background-color: #5589B0;
-            border: 0px solid #5589B0;
-        }</string>
+        }
+QTableView::item:focus, QListView::item:focus
+        {
+            color: white;
+            background: #263B4E;
+        }
+QTableView::item:selected, QListView::item:selected
+        {
+            color: white;
+            background-color: #5589B0;
+        }
+</string>
                      </property>
                      <property name="editTriggers">
                       <set>QAbstractItemView::NoEditTriggers</set>
@@ -386,9 +411,32 @@ border-top: none;</string>
                      </size>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">border: solid;
+                     <string notr="true">QToolButton {
+padding: 5px;
+border: none;
 border-width: 1px;
-border-color:#5589B0;</string>
+border-radius: 3px;
+background-color: #5589B0;
+}
+QToolButton:checked {
+background-color: #5589B0;
+border: solid;
+border-width: 1px;
+border-color: #5589B0;
+}
+
+QToolButton:disabled  {
+background-color: #465A68;
+color: #7E7F81;
+}
+
+QToolButton:hover {
+background-color: #5589B0;
+border-radius: 3px;
+border: solid;
+border-width: 1px;
+border-color: #E0DECF;
+}</string>
                     </property>
                     <property name="text">
                      <string>...</string>
@@ -410,9 +458,32 @@ border-color:#5589B0;</string>
                      <bool>false</bool>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">border: solid;
+                     <string notr="true">QToolButton {
+padding: 5px;
+border: none;
 border-width: 1px;
-border-color:#5589B0;</string>
+border-radius: 3px;
+background-color: #5589B0;
+}
+QToolButton:checked {
+background-color: #5589B0;
+border: solid;
+border-width: 1px;
+border-color: #5589B0;
+}
+
+QToolButton:disabled  {
+background-color: #465A68;
+color: #7E7F81;
+}
+
+QToolButton:hover {
+background-color: #5589B0;
+border-radius: 3px;
+border: solid;
+border-width: 1px;
+border-color: #E0DECF;
+}</string>
                     </property>
                     <property name="text">
                      <string>...</string>
@@ -573,16 +644,7 @@ border-color:#5589B0;</string>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">
-* {
-	color: #EDF6FC;
-}
-
-QFrame {
-	border-right: 2px solid #b7d3e8;
-}
-
-</string>
+      <string notr="true"/>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="spacing">
@@ -603,11 +665,7 @@ QFrame {
       <item>
        <widget class="QLabel" name="pushButton_side">
         <property name="styleSheet">
-         <string notr="true">   background-color: #b7d3e8;
-   color: #0A0C0D;
-   font-weight: bold;
-   padding-left: 5px;
-   padding-right: 5px;</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>User compositions</string>

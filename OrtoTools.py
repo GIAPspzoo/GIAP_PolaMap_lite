@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-import json
 from typing import Union
 
 from qgis.PyQt.QtCore import QVariant, NULL
-from qgis.core import QgsMapLayer, Qgis
+from qgis.core import QgsLayerTreeLayer, QgsLayerTreeGroup
 from qgis.PyQt.QtWidgets import QToolButton, QMenu, QAction
 
 from .Wms_wmts import WMS_WMTS
@@ -23,9 +22,7 @@ class OrtoAddingTool(object):
         self.group_names = group_names
         self.layer_actions_dict = {}
         self.services = []
-        self.json_file = orto_action_service.wms_wmts_json_path()
-        with open(self.json_file, 'r+') as json_getaddress:
-            self.data = json.load(json_getaddress)
+        self.data = orto_action_service.get_wms_config()
         self.create_menu()
         self.connect_ortofotomapa_group()
         orto_action_service.project.projectSaved.connect(self.remove_wms_wmts_temp_group)
@@ -74,8 +71,7 @@ class OrtoAddingTool(object):
             item.setItemVisibilityCheckedRecursive(action.isChecked())
 
     def my_refresh_menu(self):
-        with open(self.json_file, 'r+') as json_getaddress:
-            self.data = json.load(json_getaddress)
+        self.data = orto_action_service.get_wms_config()
         try:
             self.create_menu(self.parent.runOrtoTool)
         except:
@@ -172,11 +168,26 @@ class OrtoAddingTool(object):
         return source, group_name
 
     def remove_wms_wmts_temp_group(self):
-        group = orto_action_service.root.findGroup(orto_action_service.temp_group_name)
-        if not group:
+        group_names = list(self.get_group_names())
+        group_names.append(orto_action_service.temp_group_name)
+        groups = []
+        for group_name in group_names:
+            if orto_action_service.root.findGroup(group_name):
+                groups.append(orto_action_service.root.findGroup(group_name))
+        if not groups:
             return
-        for child in group.children():
-            if isinstance(child, QgsMapLayer):
-                orto_action_service.project.removeMapLayer(child)
-        group.removeAllChildren()
-        orto_action_service.root.removeChildNode(group)
+        self.layers_list = []
+        for group in groups:
+            self.get_recursive_layer(group)
+        for ll in self.layers_list:
+            if ll.layer().dataProvider().name() in ['WFS', 'wms']:
+                orto_action_service.project.removeMapLayer(ll.layer())
+
+    def get_recursive_layer(self, group):
+            for child in group.children():
+                if isinstance(child, QgsLayerTreeGroup):
+                    self.get_recursive_layer(child)
+                if isinstance(child, QgsLayerTreeLayer):
+                    self.layers_list.append(child)
+
+

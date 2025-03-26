@@ -256,18 +256,36 @@ border-top: none;</string>
          <item>
           <widget class="QListView" name="warstwy_w_grupie_table">
            <property name="styleSheet">
-            <string notr="true">QListView {
-	border: 0;
-	color: #0A0C0D;
-}
-
-QScrollBar:horizontal {
-	border: None;
-}
-
-QScrollBar:vertical{
-	border: None;
-}</string>
+            <string notr="true">QTableView, QListView
+        {
+			background-color: rgb(240, 240, 240);
+            gridline-color:#4F5A63;
+            color: #263c4e;
+			alternate-background-color:  rgb(240, 240, 240);
+			alternate-color: #263c4e;
+            border: 1px solid #5589B0;
+        }
+QTableView::item, QListView::item
+        {
+            color: #263c4e;
+        }
+QTableView::item:hover, QListView::item:hover
+        {
+            color: white;
+            background: #5589B0;
+            selection-background-color: #5589B0;
+        }
+QTableView::item:focus, QListView::item:focus
+        {
+            color: white;
+            background: #263B4E;
+        }
+QTableView::item:selected, QListView::item:selected
+        {
+            color: white;
+            background-color: #5589B0;
+        }
+</string>
            </property>
            <property name="editTriggers">
             <set>QAbstractItemView::NoEditTriggers</set>
@@ -340,21 +358,44 @@ border-top: none;</string>
          <item>
           <widget class="QListView" name="warstwy_table">
            <property name="styleSheet">
-            <string notr="true">QListView {
-	border: 0;
-	color: #0A0C0D;
-}
+            <string notr="true">QTableView, QListView
+        {
+			background-color: rgb(240, 240, 240);
+            gridline-color:#4F5A63;
+            color: #263c4e;
+			alternate-background-color:  rgb(240, 240, 240);
+			alternate-color: #263c4e;
+            border: 1px solid #5589B0;
+        }
+QTableView::item, QListView::item
+        {
+            color: #263c4e;
+        }
 
-QScrollBar:horizontal {
-	border: None;
-}
+QTableView::item:hover, QListView::item:hover
+        {
+            color: white;
+            background: #5589B0;
+            selection-background-color: #5589B0;
+        }
 
-QScrollBar:vertical{
-	border: None;
-}</string>
+QTableView::item:focus, QListView::item:focus
+        {
+            color: white;
+            background: #263B4E;
+        }
+
+QTableView::item:selected, QListView::item:selected
+        {
+            color: white;
+            background-color: #5589B0;
+        }</string>
            </property>
            <property name="editTriggers">
             <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="showDropIndicator" stdset="0">
+            <bool>true</bool>
            </property>
            <property name="dragEnabled">
             <bool>false</bool>
@@ -369,13 +410,16 @@ QScrollBar:vertical{
             <enum>Qt::MoveAction</enum>
            </property>
            <property name="alternatingRowColors">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
            <property name="selectionMode">
             <enum>QAbstractItemView::MultiSelection</enum>
            </property>
            <property name="selectionBehavior">
             <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+           <property name="layoutMode">
+            <enum>QListView::SinglePass</enum>
            </property>
           </widget>
          </item>
@@ -472,18 +516,36 @@ border-top: none;</string>
          <item>
           <widget class="QListView" name="grupy_table">
            <property name="styleSheet">
-            <string notr="true">QListView {
-	border: 0px;
-	color: #0A0C0D;
-}
-
-QScrollBar:horizontal {
-	border: None;
-}
-
-QScrollBar:vertical{
-	border: None;
-}</string>
+            <string notr="true">QTableView, QListView
+        {
+			background-color: rgb(240, 240, 240);
+            gridline-color:#4F5A63;
+            color: #263c4e;
+			alternate-background-color:  rgb(240, 240, 240);
+			alternate-color: #263c4e;
+            border: 1px solid #5589B0;
+        }
+QTableView::item, QListView::item
+        {
+            color: #263c4e;
+        }
+QTableView::item:hover, QListView::item:hover
+        {
+            color: white;
+            background: #5589B0;
+            selection-background-color: #5589B0;
+        }
+QTableView::item:focus, QListView::item:focus
+        {
+            color: white;
+            background: #263B4E;
+        }
+QTableView::item:selected, QListView::item:selected
+        {
+            color: white;
+            background-color: #5589B0;
+        }
+</string>
            </property>
            <property name="editTriggers">
             <set>QAbstractItemView::NoEditTriggers</set>
@@ -548,9 +610,32 @@ QScrollBar:vertical{
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">border: solid;
+           <string notr="true">QToolButton {
+padding: 5px;
+border: none;
 border-width: 1px;
-border-color:#5589B0;</string>
+border-radius: 3px;
+background-color: #5589B0;
+}
+QToolButton:checked {
+background-color: #5589B0;
+border: solid;
+border-width: 1px;
+border-color: #5589B0;
+}
+
+QToolButton:disabled  {
+background-color: #465A68;
+color: #7E7F81;
+}
+
+QToolButton:hover {
+background-color: #5589B0;
+border-radius: 3px;
+border: solid;
+border-width: 1px;
+border-color: #E0DECF;
+}</string>
           </property>
           <property name="text">
            <string>...</string>
@@ -569,9 +654,32 @@ border-color:#5589B0;</string>
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">border: solid;
+           <string notr="true">QToolButton {
+padding: 5px;
+border: none;
 border-width: 1px;
-border-color:#5589B0;</string>
+border-radius: 3px;
+background-color: #5589B0;
+}
+QToolButton:checked {
+background-color: #5589B0;
+border: solid;
+border-width: 1px;
+border-color: #5589B0;
+}
+
+QToolButton:disabled  {
+background-color: #465A68;
+color: #7E7F81;
+}
+
+QToolButton:hover {
+background-color: #5589B0;
+border-radius: 3px;
+border: solid;
+border-width: 1px;
+border-color: #E0DECF;
+}</string>
           </property>
           <property name="text">
            <string>...</string>
@@ -592,6 +700,9 @@ border-color:#5589B0;</string>
             <width>150</width>
             <height>35</height>
            </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>...</string>

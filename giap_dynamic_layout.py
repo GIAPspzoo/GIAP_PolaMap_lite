@@ -1,6 +1,8 @@
 import os
 import webbrowser
 from math import ceil
+from owslib.wms import WebMapService
+from PyQt5.QtWidgets import QDockWidget
 from plugins.processing.tools.general import execAlgorithmDialog
 from qgis.PyQt import uic, QtWidgets
 from qgis.PyQt.QtCore import Qt, QSize, QEvent, pyqtSignal, QMimeData, QRect, \
@@ -11,10 +13,12 @@ from qgis.PyQt.QtWidgets import QWidget, QApplication, QHBoxLayout, \
     QFrame, QLabel, QPushButton, QTabBar, QToolButton, QVBoxLayout, \
     QGridLayout, QSpacerItem, QLineEdit, QWidgetItem, QAction, \
     QBoxLayout, QMessageBox, QScrollArea, QMenu, QToolBar
-from qgis.core import QgsApplication
+from qgis.core import QgsApplication, QgsCoordinateReferenceSystem, QgsCoordinateTransform, QgsProject, \
+    QgsTemporalNavigationObject, QgsRasterLayer, QgsInterval, QgsMapLayer
 from qgis.utils import iface
 from qgis.gui import QgsMapTool
 
+from .geocoding_tool import Geocoding
 from .prng_tool import PRNGTool
 from .OrtoTools import OrtoAddingTool
 from .QuickPrint import PrintMapTool
@@ -27,7 +31,8 @@ from .SectionManager.CustomSectionManager import CustomSectionManager
 from .SectionManager.select_section import SelectSection
 from .config import Config
 from .utils import STANDARD_TOOLS, DEFAULT_TABS, tr, TOOLS_HEADERS, \
-    STANDARD_QGIS_TOOLS, icon_manager, CustomMessageBox, add_action_from_toolbar
+    STANDARD_QGIS_TOOLS, icon_manager, CustomMessageBox, add_action_from_toolbar, identify_layer_by_name, \
+    add_map_layer_to_group
 
 from .AreaAndLengthTool.AreaAndLengthTool import AreaAndLengthTool
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -263,6 +268,7 @@ class MainWidget(QWidget, FORM_CLASS):
         """
         self.dlg = SelectSection(self)
         self.run_select_section()
+        self.dlg.show()
         response = self.dlg.exec_()
         if not response:
             return
@@ -275,7 +281,7 @@ class MainWidget(QWidget, FORM_CLASS):
         if self.custom_sections:
             all_available_tools.extend([tool for tool in self.custom_sections])
         selected = [str(item.data(0)) for item in
-                    self.dlg.toolList.selectionModel().selectedRows()
+                    self.dlg.treeView.selectionModel().selectedRows()
                     if str(item.data(0)) not in section_names]
         self.tabWidget.setUpdatesEnabled(True)
         print_trig = False
@@ -315,6 +321,8 @@ class MainWidget(QWidget, FORM_CLASS):
         self.dlg.searchBox.textChanged.connect(self.search_tree)
         self.dlg.add_searchBox.textChanged.connect(
             self.search_add_sections_tree)
+        self.dlg.add_custom_searchBox.textChanged.connect(
+            self.search_add_custom_sections_tree)
         self.connect_checking_signal()
 
     def add_to_ribbon(self) -> None:
@@ -365,7 +373,18 @@ class MainWidget(QWidget, FORM_CLASS):
         self.dlg.algorithmTree.setFilterString(self.dlg.searchBox.value())
 
     def search_add_sections_tree(self) -> None:
-        self.dlg.sort.setFilterFixedString(self.dlg.add_searchBox.value())
+        search_text = self.dlg.add_searchBox.value()
+        self.dlg.sort.setFilterRegExp(search_text)
+        self.dlg.sort.setFilterKeyColumn(0)
+        self.dlg.sort.setFilterCaseSensitivity(Qt.CaseInsensitive)
+        self.dlg.treeView.expandAll()
+
+    def search_add_custom_sections_tree(self) -> None:
+        search_text = self.dlg.add_custom_searchBox.value()
+        self.dlg.sort_custom.setFilterRegExp(search_text)
+        self.dlg.sort_custom.setFilterKeyColumn(0)
+        self.dlg.sort_custom.setFilterCaseSensitivity(Qt.CaseInsensitive)
+        self.dlg.treeView_2.expandAll()
 
     def section_tab(self) -> None:
         self.dlg.stackedWidget.setCurrentIndex(0)
@@ -417,9 +436,9 @@ class MainWidget(QWidget, FORM_CLASS):
                 self.add_tab()
 
     def connect_checking_signal(self) -> None:
-        self.dlg.customToolList.selectionModel(). \
+        self.dlg.treeView_2.selectionModel(). \
             selectionChanged.disconnect()
-        self.dlg.customToolList.selectionModel(). \
+        self.dlg.treeView_2.selectionModel(). \
             selectionChanged.connect(self.check_for_remove)
 
     def add_custom_section(self) -> None:
@@ -444,9 +463,9 @@ class MainWidget(QWidget, FORM_CLASS):
     def check_for_remove(self) -> None:
         if not hasattr(self, 'custom_section_dlg'):
             self.custom_section_dlg = CustomSectionManager(self, 'remove')
+
         row = self.dlg.get_selected_row()
-        if not row or self.custom_section_dlg.manage_editing_option(
-                row[0].row()):
+        if not row:
             self.dlg.pushButton_remove_custom.setEnabled(False)
         else:
             self.dlg.pushButton_remove_custom.setEnabled(True)
@@ -628,7 +647,7 @@ class CustomSection(QWidget):
         self.main_widgets = main_widgets
         self.setAcceptDrops(True)
         self.setMaximumSize(QSize(99999, 110))
-        self.setMinimumSize(QSize(70, 110))
+        self.setMinimumSize(QSize(80, 110))
 
         if parent is not None:
             parent.parent().editChanged.connect(self.edit_toggle)
@@ -772,7 +791,6 @@ class CustomSection(QWidget):
                 else:
                     self.gridLayout.addWidget(it, irow, icol, 1, 1)
         self.gridLayout.update()
-        # self.gridLayoutWidget.adjustSize()
 
     def add_action(self, action: QAction, row: int, col: int, menu: QMenu = None):
         self.tbut = CustomToolButton(self)
@@ -881,6 +899,25 @@ class CustomSection(QWidget):
                 self.tbut.setToolTip(tr("PRNG Tool"))
                 self.prng_tool = PRNGTool(self)
                 self.tbut.clicked.connect(self.prng_tool.run)
+            if oname == "giapGeoportal":
+                self.tbut.setToolTip(tr("Geoportal"))
+                self.tbut.clicked.connect(self.open_geoportal)
+            if oname == "giapOrtoContr":
+                self.tbut.setToolTip(tr("Ortofotomapa archiwalna"))
+                self.add_feature_menu = QMenu(iface.mainWindow())
+                self.standard_res = QAction('Ortofotomapa archiwalna standardowa', iface.mainWindow())
+                self.high_res = QAction('Ortofotomapa archiwalna o wysokiej rozdzielczości', iface.mainWindow())
+                self.standard_res.triggered.connect(lambda: self.open_temporal_controller('StandardResolution'))
+                self.high_res.triggered.connect(lambda: self.open_temporal_controller('HighResolution'))
+                self.add_feature_menu.addAction(self.standard_res)
+                self.add_feature_menu.addAction(self.high_res)
+                self.tbut.setMenu(self.add_feature_menu)
+                self.tbut.setPopupMode(QToolButton.InstantPopup)
+
+            if oname == "giapgeokodowanie":
+                self.tbut.setToolTip(tr("Geocoding"))
+                self.geocoding_tool = Geocoding(self)
+                self.tbut.clicked.connect(self.geocoding_tool.run)
 
             self.tbut.setIcon(icon)
 
@@ -1065,6 +1102,103 @@ class CustomSection(QWidget):
             else:
                 self.gridLayout.addWidget(item, 1, ind -max_col, 1, 1)
 
+    def open_geoportal(self):
+        crs = iface.mapCanvas().mapSettings().destinationCrs()
+        extent = iface.mapCanvas().extent()
+        crsDest = QgsCoordinateReferenceSystem("EPSG:2180")
+        transformContext = QgsProject.instance().transformContext()
+        xform = QgsCoordinateTransform(crs, crsDest, transformContext)
+        extent_2180 = xform.transformBoundingBox(extent)
+        xmin_2180 = extent_2180.xMinimum()
+        ymin_2180 = extent_2180.yMinimum()
+        xmax_2180 = extent_2180.xMaximum()
+        ymax_2180 = extent_2180.yMaximum()
+        url = f"https://mapy.geoportal.gov.pl/imap/Imgp_2.html?composition=default&bbox={str(xmin_2180)},{str(ymin_2180)},{str(xmax_2180)},{str(ymax_2180)}"
+        webbrowser.open(url, new=2)
+
+    def remove_raster(self):
+        project = QgsProject.instance()
+        root = project.layerTreeRoot()
+        group = root.findGroup('ORTOFOTOMAPA ARCHIWLANA')
+        if not group:
+            return
+        for child in group.children():
+            if isinstance(child, QgsMapLayer):
+                project.removeMapLayer(child)
+        group.removeAllChildren()
+        root.removeChildNode(group)
+
+    def open_temporal_controller(self, resolution):
+        self.remove_raster()
+
+        for obj in iface.mainWindow().findChildren(QDockWidget):
+            if obj.objectName() == 'Temporal Controller':
+                obj.setVisible(True)
+                obj.visibilityChanged.connect(self.remove_raster)
+                break
+
+        temporalController = iface.mapCanvas().temporalController()
+        temporalController.setNavigationMode(QgsTemporalNavigationObject.Animated)
+        WMS_EXAMPLE_SRC = "IgnoreGetMapUrl=1" \
+                          "&allowTemporalUpdates=true" \
+                          "&contextualWMSLegend=0" \
+                          "&crs={crs}" \
+                          "&enableTime=true" \
+                          "&dpiMode=7" \
+                          "&featureCount=10" \
+                          "&format={image_type}" \
+                          "&layers={table_name}" \
+                          "&styles&temporalSource=provider" \
+                          "&timeDimensionExtent={time_dimis}" \
+                          "&type=wmst" \
+                          "&url={url}?TIME={time}"
+        if resolution == 'StandardResolution':
+            wms_url = 'https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMS/StandardResolutionTime'
+            img_ras = 'Raster'
+        else:
+            wms_url = 'https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMS/HighResolutionTime'
+            img_ras = 'Image'
+        try:
+            wms_service = WebMapService(wms_url, '1.3.0')
+        except:
+            for obj in iface.mainWindow().findChildren(QDockWidget):
+                if obj.objectName() == 'Temporal Controller':
+                    obj.setVisible(False)
+            CustomMessageBox(None, "Brak połączenia z usługą WMS.").button_ok()
+            return
+        lyr_src_name = wms_service.contents[img_ras].id
+        image_type = wms_service.getOperationByName('GetMap').formatOptions[0]
+        crs_options = wms_service.contents[img_ras].crsOptions
+
+        try:
+            time_dimis = wms_service.contents[img_ras].timepositions[0]
+        except TypeError:
+            CustomMessageBox(None, "Brak znacznika czasu dla wybranej warstwy.").button_ok()
+            for obj in iface.mainWindow().findChildren(QDockWidget):
+                if obj.objectName() == 'Temporal Controller':
+                    obj.setVisible(False)
+            return
+
+        values_map = {
+            'url': wms_url,
+            'crs': ('EPSG:2180' if 'EPSG:2180' in crs_options
+                    else crs_options[0]) if crs_options else 'EPSG:2180',
+            'table_name': lyr_src_name,
+            'image_type': image_type,
+            'time_dimis': time_dimis,
+            'time': time_dimis.split('/')[1]
+        }
+
+        ls = WMS_EXAMPLE_SRC.format_map(values_map)
+        raster_layer_from_cos = QgsRasterLayer(ls, 'ORTOFOTOMAPA ARCHIWLANA', 'wms')
+
+        interval = QgsInterval()
+        interval.setYears(1.0)
+        temporalController.setFrameDuration(interval)
+
+        add_map_layer_to_group(raster_layer_from_cos, 'ORTOFOTOMAPA ARCHIWLANA', force_create=True)
+
+
 class CustomToolButton(QToolButton):
     def __init__(self, parent:QtWidgets) -> None:
         super(CustomToolButton, self).__init__(parent)
@@ -1074,6 +1208,8 @@ class CustomToolButton(QToolButton):
         self.selected_style = '*{border: 3px solid red}'
         self.org_state = True  # True - enabled for click outside edit sesion
         self.drag_state = False
+        self.setMinimumSize(QSize(30, 30))
+        self.setMaximumSize(QSize(30, 30))
 
     def eventFilter(self, widget: QWidget, event: QEvent) -> bool:
         if event.type() == QEvent.MouseButtonRelease and self.edit:

@@ -1,4 +1,4 @@
-from qgis.PyQt.QtCore import QPointF, pyqtSlot, QObject
+from qgis.PyQt.QtCore import QPointF, QSizeF, pyqtSlot, QObject
 from qgis.PyQt.QtGui import QFont, QTextDocument
 from qgis.core import QgsProject, QgsTextAnnotation, QgsFillSymbol, \
     QgsMarkerSymbol, QgsPointXY
@@ -25,7 +25,7 @@ class AnnotationHandler(QObject):
         text_document = QTextDocument(text)
         text_document.setDefaultFont(font)
         self.annot.setFrameOffsetFromReferencePointMm(QPointF(0, 0))
-        self.annot.setFrameSizeMm(text_document.size())
+        self.annot.setFrameSizeMm(QSizeF(80, 14))
         self.annot.setDocument(text_document)
 
         self.annot.setVisible(True)
@@ -54,7 +54,7 @@ class AnnotationHandler(QObject):
 
     def _create(self) -> None:
         annot = QgsTextAnnotation()
-        opacity = 0.5
+        opacity = 0.8
         symbolization_dict = {
             'fill': {
                 'create': QgsFillSymbol.createSimple,

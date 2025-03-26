@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1291</width>
-    <height>179</height>
+    <width>1360</width>
+    <height>181</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1291</width>
+    <width>1360</width>
     <height>150</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>1291000</width>
-    <height>179</height>
+    <width>16777215</width>
+    <height>184</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -49,6 +49,12 @@
    </property>
    <item>
     <widget class="QTabWidget" name="tabWidget">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -80,7 +86,13 @@
      <property name="spacing">
       <number>5</number>
      </property>
+     <property name="leftMargin">
+      <number>2</number>
+     </property>
      <property name="topMargin">
+      <number>2</number>
+     </property>
+     <property name="rightMargin">
       <number>2</number>
      </property>
      <property name="bottomMargin">
@@ -129,9 +141,15 @@
      </item>
      <item>
       <widget class="QComboBox" name="comboBox_woj">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="minimumSize">
         <size>
-         <width>150</width>
+         <width>0</width>
          <height>30</height>
         </size>
        </property>
@@ -150,9 +168,15 @@
      </item>
      <item>
       <widget class="QComboBox" name="comboBox_pow">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="minimumSize">
         <size>
-         <width>150</width>
+         <width>0</width>
          <height>30</height>
         </size>
        </property>
@@ -171,9 +195,15 @@
      </item>
      <item>
       <widget class="QComboBox" name="comboBox_gmina">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="minimumSize">
         <size>
-         <width>150</width>
+         <width>0</width>
          <height>30</height>
         </size>
        </property>
@@ -192,9 +222,15 @@
      </item>
      <item>
       <widget class="QComboBox" name="comboBox_obr">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="minimumSize">
         <size>
-         <width>150</width>
+         <width>0</width>
          <height>30</height>
         </size>
        </property>
@@ -215,7 +251,7 @@
       <widget class="QLineEdit" name="lineEdit_parcel">
        <property name="minimumSize">
         <size>
-         <width>150</width>
+         <width>0</width>
          <height>30</height>
         </size>
        </property>
@@ -245,6 +281,19 @@ or fill in the previous fields and indicate the parcel number e.g. 17/2</string>
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="wyszukaj_pushButton">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Search</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="buttonParcelNr">
        <property name="minimumSize">
         <size>
@@ -259,7 +308,7 @@ or fill in the previous fields and indicate the parcel number e.g. 17/2</string>
         </size>
        </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wskaż punkt na mapie, aby pobrać działkę&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a point on the map to download a parcel&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>Select from map</string>
@@ -301,6 +350,19 @@ for the street: Warszawa, Pasaż Ursynowski</string>
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="wyszukaj_adres_pushButton">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Search</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="buttonAdress">
        <property name="minimumSize">
         <size>
@@ -315,7 +377,7 @@ for the street: Warszawa, Pasaż Ursynowski</string>
         </size>
        </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wskaż punkt na mapie, aby pobrać punkt adresowy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a point on the map to download an address point&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>Select from map</string>
@@ -324,19 +386,6 @@ for the street: Warszawa, Pasaż Ursynowski</string>
      </item>
      <item>
       <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>

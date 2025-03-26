@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>640</width>
-    <height>550</height>
+    <height>557</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -101,7 +101,7 @@
        <property name="font">
         <font>
          <family>Segoe UI</family>
-         <pointsize>10</pointsize>
+         <pointsize>8</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -170,6 +170,12 @@
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
           <widget class="QPushButton" name="addSectionTab">
+           <property name="font">
+            <font>
+             <family>Segoe UI</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
            <property name="styleSheet">
             <string notr="true"/>
            </property>
@@ -180,6 +186,12 @@
          </item>
          <item>
           <widget class="QPushButton" name="searchToolTab">
+           <property name="font">
+            <font>
+             <family>Segoe UI</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
            <property name="styleSheet">
             <string notr="true"/>
            </property>
@@ -195,6 +207,12 @@
              <width>155</width>
              <height>0</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Segoe UI</family>
+             <pointsize>10</pointsize>
+            </font>
            </property>
            <property name="styleSheet">
             <string notr="true"/>
@@ -308,17 +326,42 @@
              <item>
               <widget class="QListView" name="toolList">
                <property name="styleSheet">
-                <string notr="true">QListView {
-	border: 0;
-	color: #0A0C0D;
-}</string>
+                <string notr="true"/>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
+               </property>
+               <property name="editTriggers">
+                <set>QAbstractItemView::NoEditTriggers</set>
+               </property>
+               <property name="defaultDropAction">
+                <enum>Qt::IgnoreAction</enum>
                </property>
                <property name="selectionMode">
-                <enum>QAbstractItemView::MultiSelection</enum>
+                <enum>QAbstractItemView::ExtendedSelection</enum>
                </property>
                <property name="selectionBehavior">
                 <enum>QAbstractItemView::SelectRows</enum>
                </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QTreeView" name="treeView">
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="editTriggers">
+                <set>QAbstractItemView::NoEditTriggers</set>
+               </property>
+               <property name="alternatingRowColors">
+                <bool>false</bool>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::ExtendedSelection</enum>
+               </property>
+               <attribute name="headerVisible">
+                <bool>false</bool>
+               </attribute>
               </widget>
              </item>
              <item>
@@ -342,6 +385,24 @@
           </item>
           <item row="2" column="1">
            <widget class="QPushButton" name="pushButton_add">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Segoe UI</family>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>Add selection</string>
             </property>
@@ -361,8 +422,14 @@
             <property name="placeholderText">
              <string>Search...</string>
             </property>
+            <property name="nullValue">
+             <string/>
+            </property>
             <property name="showSearchIcon">
              <bool>true</bool>
+            </property>
+            <property name="showSpinner">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -486,7 +553,7 @@
          </property>
          <layout class="QGridLayout" name="gridLayout_8">
           <property name="leftMargin">
-           <number>10</number>
+           <number>9</number>
           </property>
           <property name="topMargin">
            <number>0</number>
@@ -509,7 +576,7 @@
              <string notr="true"/>
             </property>
             <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
+             <enum>QFrame::NoFrame</enum>
             </property>
             <property name="frameShadow">
              <enum>QFrame::Raised</enum>
@@ -538,11 +605,14 @@
                <property name="frameShape">
                 <enum>QFrame::NoFrame</enum>
                </property>
+               <property name="editTriggers">
+                <set>QAbstractItemView::NoEditTriggers</set>
+               </property>
                <property name="showDropIndicator" stdset="0">
                 <bool>false</bool>
                </property>
                <property name="selectionMode">
-                <enum>QAbstractItemView::MultiSelection</enum>
+                <enum>QAbstractItemView::ExtendedSelection</enum>
                </property>
                <property name="headerHidden">
                 <bool>true</bool>
@@ -574,16 +644,19 @@
        <item row="4" column="0">
         <layout class="QGridLayout" name="gridLayout_6">
          <property name="leftMargin">
-          <number>10</number>
+          <number>5</number>
          </property>
          <property name="topMargin">
-          <number>6</number>
+          <number>5</number>
          </property>
          <property name="rightMargin">
-          <number>9</number>
+          <number>5</number>
          </property>
          <property name="bottomMargin">
-          <number>9</number>
+          <number>5</number>
+         </property>
+         <property name="spacing">
+          <number>0</number>
          </property>
          <item row="0" column="0">
           <widget class="QPushButton" name="addAlgButton">
@@ -592,6 +665,18 @@
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>25</height>
+            </size>
            </property>
            <property name="font">
             <font>
@@ -736,7 +821,7 @@
           <string notr="true"/>
          </property>
          <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
+          <enum>QFrame::NoFrame</enum>
          </property>
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
@@ -748,7 +833,7 @@
              <string notr="true"/>
             </property>
             <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
+             <enum>QFrame::NoFrame</enum>
             </property>
             <property name="frameShadow">
              <enum>QFrame::Raised</enum>
@@ -763,10 +848,7 @@
              <item>
               <widget class="QListView" name="customToolList">
                <property name="styleSheet">
-                <string notr="true">QListView {
-	border: 0;
-	color: #0A0C0D;
-}</string>
+                <string notr="true"/>
                </property>
                <property name="frameShape">
                 <enum>QFrame::NoFrame</enum>
@@ -783,6 +865,16 @@
                <property name="selectionBehavior">
                 <enum>QAbstractItemView::SelectRows</enum>
                </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QTreeView" name="treeView_2">
+               <property name="editTriggers">
+                <set>QAbstractItemView::NoEditTriggers</set>
+               </property>
+               <attribute name="headerVisible">
+                <bool>false</bool>
+               </attribute>
               </widget>
              </item>
              <item>
@@ -813,12 +905,15 @@
              </size>
             </property>
             <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
+             <enum>QFrame::NoFrame</enum>
             </property>
             <property name="frameShadow">
              <enum>QFrame::Raised</enum>
             </property>
-            <layout class="QGridLayout" name="gridLayout_3">
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <property name="spacing">
+              <number>5</number>
+             </property>
              <property name="leftMargin">
               <number>0</number>
              </property>
@@ -831,22 +926,76 @@
              <property name="bottomMargin">
               <number>0</number>
              </property>
-             <item row="0" column="0">
+             <item>
               <widget class="QPushButton" name="pushButton_add_custom">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Segoe UI</family>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
                <property name="text">
                 <string>Add</string>
                </property>
               </widget>
              </item>
-             <item row="0" column="1">
+             <item>
               <widget class="QPushButton" name="pushButton_edit_custom">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Segoe UI</family>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
                <property name="text">
                 <string>Edit</string>
                </property>
               </widget>
              </item>
-             <item row="0" column="2">
+             <item>
               <widget class="QPushButton" name="pushButton_remove_custom">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Segoe UI</family>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
                <property name="text">
                 <string>Remove</string>
                </property>

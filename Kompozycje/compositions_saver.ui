@@ -60,7 +60,7 @@
    <property name="spacing">
     <number>0</number>
    </property>
-   <item row="1" column="1">
+   <item row="0" column="0">
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="font">
       <font>
@@ -154,10 +154,10 @@
        <item row="1" column="0">
         <widget class="QFrame" name="frame_17">
          <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
+          <enum>QFrame::NoFrame</enum>
          </property>
          <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
+          <enum>QFrame::Plain</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout_17">
           <item row="0" column="1">
@@ -253,9 +253,10 @@ color: white;</string>
                 <item>
                  <widget class="QTableView" name="tabela">
                   <property name="styleSheet">
-                   <string notr="true">QTableView {
-border-width: 0;
-color: #0A0C0D;
+                   <string notr="true">* {
+background-color: rgb(240, 240, 240);
+color:black;
+font: 10pt &quot;Segoe UI&quot;;
 }</string>
                   </property>
                   <property name="selectionMode">
@@ -360,7 +361,7 @@ color: #0A0C0D;
      </widget>
     </widget>
    </item>
-   <item row="2" column="1">
+   <item row="1" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="spacing">
       <number>5</number>
@@ -419,80 +420,6 @@ color: #0A0C0D;
       </widget>
      </item>
     </layout>
-   </item>
-   <item row="0" column="0" rowspan="3">
-    <widget class="QFrame" name="frame">
-     <property name="minimumSize">
-      <size>
-       <width>120</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Segoe UI</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <italic>false</italic>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">
-       QFrame {
-       border-right: 2px solid #b7d3e8;
-       }</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <property name="spacing">
-       <number>20</number>
-      </property>
-      <property name="leftMargin">
-       <number>5</number>
-      </property>
-      <property name="topMargin">
-       <number>5</number>
-      </property>
-      <property name="rightMargin">
-       <number>5</number>
-      </property>
-      <property name="bottomMargin">
-       <number>5</number>
-      </property>
-      <item>
-       <widget class="QLabel" name="label_side">
-        <property name="styleSheet">
-         <string notr="true">
-background-color: #5589B0;
-border: solid;
-border-width: 1px;
-border-color:#5589B0;</string>
-        </property>
-        <property name="text">
-         <string>Select Composition</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="verticalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-     <zorder>verticalSpacer_3</zorder>
-     <zorder>label_side</zorder>
-    </widget>
    </item>
   </layout>
  </widget>

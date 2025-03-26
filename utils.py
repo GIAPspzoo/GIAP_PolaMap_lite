@@ -12,7 +12,8 @@ from qgis.PyQt.QtWidgets import QApplication, QProgressDialog, \
     QStyledItemDelegate, QAction, QMessageBox, QScrollArea, QWidget, \
     QGridLayout, QLabel, QDialogButtonBox, QToolButton, QToolBar
 from qgis.core import QgsProject, QgsMessageLog, Qgis, QgsApplication, \
-    QgsVectorLayer, QgsMapLayer, QgsCoordinateTransform, QgsGeometry, QgsPointXY, QgsRectangle
+    QgsVectorLayer, QgsMapLayer, QgsCoordinateTransform, QgsGeometry, QgsPointXY, QgsRectangle, QgsEditFormConfig, \
+    QgsFeature
 from qgis.utils import iface
 import qgis
 
@@ -159,6 +160,13 @@ def get_simple_progressbar(max_len, title='Proszę czekać',
     return progress
 
 
+class OtherProperSortFilterProxyModel(QSortFilterProxyModel):
+    def __init__(self):
+        QSortFilterProxyModel.__init__(self)
+        self.setFilterCaseSensitivity(Qt.CaseInsensitive)
+        self.sortOrder()
+
+
 class ProperSortFilterProxyModel(QSortFilterProxyModel):
     SORTING_AS_NUMBERS = []
     SORTING_AS_NAME = []
@@ -171,6 +179,25 @@ class ProperSortFilterProxyModel(QSortFilterProxyModel):
         }
         self.setFilterCaseSensitivity(Qt.CaseInsensitive)
         self.sortOrder()
+
+    def flags(self, index):
+        source_index = self.mapToSource(index)
+        if not source_index.parent().isValid():
+            return Qt.NoItemFlags | Qt.ItemIsEnabled
+        return super().flags(index)
+
+    def filterAcceptsRow(self, source_row, source_parent):
+        if not source_parent.isValid():
+            return True
+
+        source_index = self.sourceModel().index(source_row, 0, source_parent)
+        if not source_index.isValid():
+            return False
+        text = source_index.data()
+        if text is None:
+            return False
+
+        return self.filterRegExp().pattern().lower() in text.lower()
 
     def lessThan(self, left, right):
         col_num = left.column()
@@ -290,8 +317,26 @@ class ProgressDialog(QProgressDialog, SingletonModel):
         self.close()
 
 
-def identify_layer(ls, layer_to_find):
-    for layer in list(ls.values()):
+class TmpCopyLayer(QgsVectorLayer):
+    def __init__(self, *args, **kwargs):
+        super(TmpCopyLayer, self).__init__(*args, **kwargs)
+
+    def set_fields_from_layer(self, layer):
+        fields = layer.dataProvider().fields()
+        self.dataProvider().addAttributes(fields)
+        self.updateFields()
+
+    def add_features(self, features):
+        feats = []
+        for feature in features:
+            feat = QgsFeature(feature)
+            feats.append(feat)
+        if feats:
+            self.dataProvider().addFeatures(feats)
+        iface.mapCanvas().refresh()
+
+def identify_layer(layer_to_find):
+    for layerid, layer in project.mapLayers().items():
         if layer.name() == layer_to_find:
             return layer
 
@@ -307,13 +352,6 @@ def identify_layer_in_group(group_name, layer_to_find):
         if tree_layer.parent().name() == group_name and \
                 tree_layer.layer().name() == layer_to_find:
             return tree_layer.layer()
-
-
-def identify_layer_in_group_by_parts(group_name, layer_to_find):
-    for lr in project.layerTreeRoot().findLayers():
-        if lr.parent().name() == group_name \
-                and lr.name().startswith(layer_to_find):
-            return lr.layer()
 
 
 class IdentifyGeometryByType(QgsMapToolIdentify):
@@ -645,13 +683,15 @@ STANDARD_TOOLS = [
             ['giapAreaLength', 0, 3],
         ]
     },
-
     {
         'label': tr('Extras'),
         'id': 'Extras',
         'btn_size': 30,
         'btns': [
             ['giapPRNG', 0, 0],
+            ['giapgeokodowanie', 1, 0],
+            ['giapGeoportal', 0, 1],
+            ['giapOrtoContr', 1, 1],
         ]
     },
     {
@@ -775,11 +815,11 @@ STANDARD_TOOLS = [
     {
         'label': tr('Projections'),
         'id': 'Projections',
-        'btn_size': 60,
+        'btn_size': 30,
         'btns': [
             ['mProcessingUserMenu_gdal:warpreproject', 0, 0],
             ['mProcessingUserMenu_gdal:assignprojection', 0, 1],
-            ['mProcessingUserMenu_gdal:extractprojection', 0, 2],
+            ['mProcessingUserMenu_gdal:extractprojection', 1, 0],
         ],
     },
 
@@ -1359,6 +1399,9 @@ custom_icon_dict = {
     'window_icon': 'giap_logo.png',
     'giapPRNG': 'giapPRNG.png',
     'giapAddWfsLayer': 'giapAddWfsLayer.png',
+    'giapGeoportal': 'giapGeoportal.png',
+    'giapOrtoContr': 'giapOrtoContr.png',
+    'giapgeokodowanie': 'giapgeokodowanie.png',
 }
 
 custom_label_dict = {
@@ -1367,7 +1410,10 @@ custom_label_dict = {
     "giapQuickPrint": "Map quick print",
     "giapMyPrints": "My Prints",
     "giapAreaLength": 'Area and length',
-    'giapPRNG': 'PRNG Tool'
+    'giapPRNG': 'PRNG Tool',
+    'giapGeoportal': 'Geoportal',
+    'giapOrtoContr': 'Ortofotomapa archiwalna',
+    "giapgeokodowanie": 'geokodowanie',
 }
 
 max_ele_nazwy = 4

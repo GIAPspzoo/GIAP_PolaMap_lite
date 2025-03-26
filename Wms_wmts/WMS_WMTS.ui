@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>720</width>
-    <height>390</height>
+    <height>372</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -60,7 +60,33 @@
    <property name="spacing">
     <number>0</number>
    </property>
-   <item row="0" column="1">
+   <item row="1" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="close_btn">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="0">
     <widget class="QStackedWidget" name="stackedWidget">
      <widget class="QWidget" name="page">
       <property name="autoFillBackground">
@@ -159,7 +185,40 @@
               </spacer>
              </item>
              <item row="0" column="0" colspan="3">
-              <widget class="QListWidget" name="listWidget"/>
+              <widget class="QListWidget" name="listWidget">
+               <property name="styleSheet">
+                <string notr="true">QTableView, QListView
+        {
+			background-color: rgb(240, 240, 240);
+            gridline-color:#4F5A63;
+            color: #263c4e;
+			alternate-background-color:  rgb(240, 240, 240);
+			alternate-color: #263c4e;
+            border: 1px solid #5589B0;
+        }
+QTableView::item, QListView::item
+        {
+            color: #263c4e;
+        }
+QTableView::item:hover, QListView::item:hover
+        {
+            color: white;
+            background: #5589B0;
+            selection-background-color: #5589B0;
+        }
+QTableView::item:focus, QListView::item:focus
+        {
+            color: white;
+            background: #263B4E;
+        }
+QTableView::item:selected, QListView::item:selected
+        {
+            color: white;
+            background-color: #5589B0;
+        }
+</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </widget>
@@ -170,119 +229,6 @@
       </layout>
      </widget>
      <widget class="QWidget" name="page_2"/>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <property name="spacing">
-      <number>0</number>
-     </property>
-     <property name="leftMargin">
-      <number>0</number>
-     </property>
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <property name="rightMargin">
-      <number>0</number>
-     </property>
-     <property name="bottomMargin">
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="QPushButton" name="close_btn">
-       <property name="text">
-        <string>Close</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="0" column="0" rowspan="2">
-    <widget class="QFrame" name="frame">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>220</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>300</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Segoe UI</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <italic>false</italic>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">
-          * {
-          color: #0A0C0D;
-          }
-          QFrame {
-          border-right: 2px solid #b7d3e8;
-          }
-      </string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <property name="spacing">
-       <number>9</number>
-      </property>
-      <property name="leftMargin">
-       <number>5</number>
-      </property>
-      <property name="topMargin">
-       <number>5</number>
-      </property>
-      <property name="rightMargin">
-       <number>5</number>
-      </property>
-      <property name="bottomMargin">
-       <number>5</number>
-      </property>
-      <item>
-       <widget class="QLabel" name="dodaj_wms_wmts">
-        <property name="styleSheet">
-         <string notr="true">   background-color: #b7d3e8;
-   color: #0A0C0D;
-   font-weight: bold;
-   padding-left: 5px;
-   padding-right: 5px;</string>
-        </property>
-        <property name="text">
-         <string>ADD WMS / WMTS / WFS</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="verticalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-     <zorder>verticalSpacer_3</zorder>
-     <zorder>dodaj_wms_wmts</zorder>
     </widget>
    </item>
   </layout>
