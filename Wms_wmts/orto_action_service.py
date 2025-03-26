@@ -1,5 +1,3 @@
-import json
-import os
 from typing import Dict
 import re
 
@@ -11,6 +9,7 @@ from owslib.wms import WebMapService
 from owslib.wmts import WebMapTileService, ServiceException
 from qgis.core import QgsLayerTreeGroup, QgsLayerTree, QgsRasterLayer, QgsVectorLayer, QgsProject
 from . import online_layers_dialog
+from .utils import get_wms_config
 
 from ..utils import CustomMessageBox, get_simple_progressbar, tr
 
@@ -29,10 +28,6 @@ root = project.layerTreeRoot()
 temp_group_name = "Dane dodatkowe - temp"
 
 
-def wms_wmts_json_path(json_name: str = 'WMS_WMTS.json') -> str:
-    return os.path.join(os.path.dirname(__file__), json_name)
-
-
 class OrtoActionService(QObject):
     orto_added = pyqtSignal()
     orto_group_added = pyqtSignal()
@@ -42,9 +37,7 @@ class OrtoActionService(QObject):
         self.button = action
         self.url = url
         self.name = name
-        self.json_file = wms_wmts_json_path()
-        with open(self.json_file, 'r+') as json_getaddress:
-            self.data = json.load(json_getaddress)
+        self.data = get_wms_config()
         try:
             self.group_name = self.data[self.name][1]
         except KeyError:

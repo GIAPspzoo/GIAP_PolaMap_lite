@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-import json
 from typing import Union
 
 from qgis.PyQt.QtCore import QVariant, NULL
-from qgis.core import QgsMapLayer, Qgis, QgsLayerTreeLayer, QgsLayerTreeGroup
+from qgis.core import QgsLayerTreeLayer, QgsLayerTreeGroup
 from qgis.PyQt.QtWidgets import QToolButton, QMenu, QAction
 
 from .Wms_wmts import WMS_WMTS
@@ -23,9 +22,7 @@ class OrtoAddingTool(object):
         self.group_names = group_names
         self.layer_actions_dict = {}
         self.services = []
-        self.json_file = orto_action_service.wms_wmts_json_path()
-        with open(self.json_file, 'r+') as json_getaddress:
-            self.data = json.load(json_getaddress)
+        self.data = orto_action_service.get_wms_config()
         self.create_menu()
         self.connect_ortofotomapa_group()
         orto_action_service.project.projectSaved.connect(self.remove_wms_wmts_temp_group)
@@ -74,8 +71,7 @@ class OrtoAddingTool(object):
             item.setItemVisibilityCheckedRecursive(action.isChecked())
 
     def my_refresh_menu(self):
-        with open(self.json_file, 'r+') as json_getaddress:
-            self.data = json.load(json_getaddress)
+        self.data = orto_action_service.get_wms_config()
         try:
             self.create_menu(self.parent.runOrtoTool)
         except:
