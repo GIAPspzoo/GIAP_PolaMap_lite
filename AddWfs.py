@@ -109,7 +109,7 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
         tmp_geom.transform(QgsCoordinateTransform(input_crs, base_crs, QgsProject.instance()))
         return tmp_geom
 
-    def create_WFS_layer(self, layer_name):
+    def create_WFS_layer(self, layer_name, group_name=None):
         service_url = self.serviceAddressEdit.text().strip()
         dsu = QgsDataSourceUri()
         dsu.setParam( 'url', service_url)
@@ -120,7 +120,10 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
         layer = QgsVectorLayer(dsu.uri(), layer_name, "WFS")
         if not layer.isValid():
             return None
-        QgsProject.instance().addMapLayer(layer)
+        if group_name:
+            add_map_layer_to_group(layer, group_name, force_create=True)
+        else:
+            QgsProject.instance().addMapLayer(layer)
         return identify_layer_by_name(layer_name)
 
     def apply_bbox_to_layer(self, layer):
@@ -146,12 +149,14 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
         total_layers = len(self.selected_layers)
         progress_dialog = ProgressDialog(title=tr('Adding Layers to Map'))
         progress_dialog.start_steped()
-
+        date_formatted = datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')
         for index, layer_name in enumerate(self.selected_layers, start=1):
-            layer = self.create_WFS_layer(layer_name)
+            layer = self.create_WFS_layer(layer_name, group_name=date_formatted)
             if layer:
                 processed_layer = self.apply_bbox_to_layer(layer)
-                QgsProject.instance().addMapLayer(processed_layer)
+                if layer != processed_layer:
+                    layer.setName(f'{layer.name()} ')
+                    add_map_layer_to_group(processed_layer, date_formatted, force_create=True)
             progress_dialog.make_percent_step(step=(100 // total_layers), new_text=f"""{tr('Adding layer')} {index}/{total_layers}""")
         progress_dialog.stop()
 
@@ -277,7 +282,6 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
         progress_dialog.start()
         date_formatted = datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')
         for layer_path, layer_name in self.layer_dir:
-            print(layer_path)
             layer_from_path = QgsVectorLayer(layer_path, layer_name, "ogr")
             add_map_layer_to_group(layer_from_path, date_formatted, force_create=True)
         progress_dialog.stop()
