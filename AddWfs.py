@@ -144,7 +144,7 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
     def add_selected_layers_to_map(self):
         self.get_selected_layers()
         total_layers = len(self.selected_layers)
-        progress_dialog = ProgressDialog(title='Adding Layers to Map')
+        progress_dialog = ProgressDialog(title=tr('Adding Layers to Map'))
         progress_dialog.start_steped()
 
         for index, layer_name in enumerate(self.selected_layers, start=1):
@@ -152,7 +152,7 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
             if layer:
                 processed_layer = self.apply_bbox_to_layer(layer)
                 QgsProject.instance().addMapLayer(processed_layer)
-            progress_dialog.make_percent_step(step=(100 // total_layers), new_text=f"Adding layer {index}/{total_layers}")
+            progress_dialog.make_percent_step(step=(100 // total_layers), new_text=f"""{tr('Adding layer')} {index}/{total_layers}""")
         progress_dialog.stop()
 
     def add_layer_to_qgis(self, layer_name):
@@ -208,7 +208,7 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
 
     def process_selected_object(self, results):
         if not results:
-            CustomMessageBox(self, 'Nie udało wskazać się obiektu!').button_ok()
+            CustomMessageBox(self, tr('Failed to locate object!')).button_ok()
             self.activateWindow()
             return
         feature = results[0].mFeature
@@ -273,7 +273,7 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
         self.bbox = None
 
     def add_results_to_map(self):
-        progress_dialog = ProgressDialog(title='Adding Results to Map')
+        progress_dialog = ProgressDialog(title=tr('Adding Results to Map'))
         progress_dialog.start()
         date_formatted = datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')
         for layer_path, layer_name in self.layer_dir:
@@ -332,7 +332,7 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
             'csv': "CSV (*.csv)"
         }.get(format, "All Files (*)")
         date_formatted = datetime.strftime(datetime.now(), '%Y-%m-%d %H_%M_%S')
-        file_path, _ = QFileDialog.getSaveFileName(self, "Save Data", f"{layer_name.split(':')[1]} {date_formatted}.{format}", file_filter, options=options)
+        file_path, _ = QFileDialog.getSaveFileName(self, tr("Save Data"), f"{layer_name.split(':')[1]} {date_formatted}.{format}", file_filter, options=options)
         if not file_path:
             return
         progress = get_simple_progressbar(
