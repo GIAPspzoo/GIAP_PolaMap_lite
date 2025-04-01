@@ -7,7 +7,8 @@ FORMS = ./giap_dynamic_layout.ui \
         Kompozycje/dodaj_kompozycje.ui \
         Kompozycje/nowa_kompozycja.ui \
         ./addgeometrycolumn.ui \
-        ./geocoding_tool.ui
+        ./geocoding_tool.ui \
+        ./wfs_dialog.ui
 
 SOURCES = ./giap_layout.py \
     ./giap_dynamic_layout.py \
@@ -24,6 +25,7 @@ SOURCES = ./giap_layout.py \
     ./Searcher/searchAddress.py \
     ./Searcher/searchParcel.py \
     ./Searcher/searchTool.py \
-    ./geocoding_tool.py
+    ./geocoding_tool.py \
+    ./AddWfs.py
 
 TRANSLATIONS = i18n/giap_pl.ts
