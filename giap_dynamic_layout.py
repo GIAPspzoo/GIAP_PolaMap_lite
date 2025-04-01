@@ -875,14 +875,10 @@ class CustomSection(QWidget):
                 self.quick_print = PrintMapTool(iface, self)
                 self.tbut.clicked.connect(self.quick_print.run)
                 self.tbut.setToolTip(tr("Map quick print"))
-                
-            ########################################################################
             if oname == "giapAddWfsLayer":
                 self.add_wfs = AddWfsTool()
                 self.tbut.clicked.connect(self.add_wfs.run)
                 self.tbut.setToolTip(tr("Add Wfs"))
-            ########################################################################
-                
             if oname == "giapMyPrints":
                 self.tbut.setToolTip(tr("My Prints"))
             if oname == "giapAreaLength":
