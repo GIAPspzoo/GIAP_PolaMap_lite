@@ -13,7 +13,7 @@
     <x>0</x>
     <y>0</y>
     <width>753</width>
-    <height>781</height>
+    <height>866</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -169,7 +169,27 @@
           <enum>QFrame::Plain</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout_4">
-          <item row="3" column="0">
+          <item row="5" column="0">
+           <widget class="QCheckBox" name="addResultsCheckBox">
+            <property name="text">
+             <string>Add analysis results to the map</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="4" column="0">
            <widget class="QGroupBox" name="groupBox_4">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
@@ -268,6 +288,48 @@
             </layout>
            </widget>
           </item>
+          <item row="0" column="0">
+           <widget class="QGroupBox" name="groupBox">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="title">
+             <string>Address</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_2">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label">
+               <property name="text">
+                <string>Service address</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="serviceAddressEdit">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0" colspan="2">
+              <widget class="QPushButton" name="connectButton">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Connect</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
           <item row="2" column="0">
            <widget class="QGroupBox" name="groupBox_5">
             <property name="sizePolicy">
@@ -318,6 +380,12 @@
                <property name="text">
                 <string>select entire layer</string>
                </property>
+               <property name="checkable">
+                <bool>true</bool>
+               </property>
+               <property name="checked">
+                <bool>false</bool>
+               </property>
               </widget>
              </item>
              <item row="8" column="0">
@@ -357,62 +425,26 @@
             </layout>
            </widget>
           </item>
-          <item row="5" column="0">
-           <spacer name="verticalSpacer">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="4" column="0">
-           <widget class="QCheckBox" name="addResultsCheckBox">
-            <property name="text">
-             <string>Add analysis results to the map</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QGroupBox" name="groupBox">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
+          <item row="3" column="0">
+           <widget class="QGroupBox" name="groupBox_3">
             <property name="title">
-             <string>Address</string>
+             <string>Data download range</string>
             </property>
-            <layout class="QGridLayout" name="gridLayout_2">
+            <layout class="QGridLayout" name="gridLayout_5">
              <item row="0" column="0">
-              <widget class="QLabel" name="label">
+              <widget class="QRadioButton" name="radioButton_bbox">
                <property name="text">
-                <string>Service address</string>
+                <string>bounding box</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
                </property>
               </widget>
              </item>
-             <item row="0" column="1">
-              <widget class="QLineEdit" name="serviceAddressEdit">
+             <item row="1" column="0">
+              <widget class="QRadioButton" name="radioButton_inter">
                <property name="text">
-                <string/>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0" colspan="2">
-              <widget class="QPushButton" name="connectButton">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>Connect</string>
+                <string>intersect</string>
                </property>
               </widget>
              </item>

@@ -2063,94 +2063,109 @@ p, li { white-space: pre-wrap; }
         <translation>GIAP-PolaMap(lite)</translation>
     </message>
     <message>
-        <location filename="../wfs_dialog.ui" line="536"/>
+        <location filename="../wfs_dialog.ui" line="565"/>
         <source>Download WFS data</source>
         <translation>Pobierz dane WFS</translation>
     </message>
     <message>
-        <location filename="../wfs_dialog.ui" line="181"/>
+        <location filename="../wfs_dialog.ui" line="201"/>
         <source>Analysis result format</source>
         <translation>Format wyniku analizy</translation>
     </message>
     <message>
-        <location filename="../wfs_dialog.ui" line="190"/>
+        <location filename="../wfs_dialog.ui" line="210"/>
         <source>xls table</source>
         <translation>Wykaz xls</translation>
     </message>
     <message>
-        <location filename="../wfs_dialog.ui" line="197"/>
+        <location filename="../wfs_dialog.ui" line="217"/>
         <source>shp file</source>
         <translation>Plik shp</translation>
     </message>
     <message>
-        <location filename="../wfs_dialog.ui" line="204"/>
+        <location filename="../wfs_dialog.ui" line="224"/>
         <source>csv table</source>
         <translation>Wykaz csv</translation>
     </message>
     <message>
-        <location filename="../wfs_dialog.ui" line="220"/>
+        <location filename="../wfs_dialog.ui" line="240"/>
         <source>Layer selection</source>
         <translation>Wybór obszaru analizy</translation>
     </message>
     <message>
-        <location filename="../wfs_dialog.ui" line="248"/>
+        <location filename="../wfs_dialog.ui" line="268"/>
         <source>Add a layer to the map</source>
         <translation>Dodaj warstwę do mapy</translation>
     </message>
     <message>
-        <location filename="../wfs_dialog.ui" line="280"/>
+        <location filename="../wfs_dialog.ui" line="342"/>
         <source>Selecting the analysis area</source>
         <translation>Wybór obszaru analizy</translation>
     </message>
     <message>
-        <location filename="../wfs_dialog.ui" line="289"/>
+        <location filename="../wfs_dialog.ui" line="351"/>
         <source>entire range</source>
         <translation>Cały zasięg WFS</translation>
     </message>
     <message>
-        <location filename="../wfs_dialog.ui" line="296"/>
+        <location filename="../wfs_dialog.ui" line="358"/>
         <source>select a single object</source>
         <translation>Wybierz pojędynczy obiekt</translation>
     </message>
     <message>
-        <location filename="../wfs_dialog.ui" line="319"/>
+        <location filename="../wfs_dialog.ui" line="381"/>
         <source>select entire layer</source>
         <translation>Wskaż całą warstwę</translation>
     </message>
     <message>
-        <location filename="../wfs_dialog.ui" line="326"/>
+        <location filename="../wfs_dialog.ui" line="391"/>
         <source>draw your own object</source>
         <translation>Rysuj własny obiekt</translation>
     </message>
     <message>
-        <location filename="../wfs_dialog.ui" line="338"/>
+        <location filename="../wfs_dialog.ui" line="403"/>
         <source>Draw polygon</source>
         <translation>Rysuj poligon</translation>
     </message>
     <message>
-        <location filename="../wfs_dialog.ui" line="376"/>
+        <location filename="../wfs_dialog.ui" line="175"/>
         <source>Add analysis results to the map</source>
         <translation>Dodaj wynik analizy do mapy</translation>
     </message>
     <message>
-        <location filename="../wfs_dialog.ui" line="389"/>
+        <location filename="../wfs_dialog.ui" line="300"/>
         <source>Address</source>
         <translation>Adres usługi</translation>
     </message>
     <message>
-        <location filename="../wfs_dialog.ui" line="395"/>
+        <location filename="../wfs_dialog.ui" line="306"/>
         <source>Service address</source>
         <translation>Adres usługi</translation>
     </message>
     <message>
-        <location filename="../wfs_dialog.ui" line="415"/>
+        <location filename="../wfs_dialog.ui" line="326"/>
         <source>Connect</source>
         <translation>Połącz z usługą</translation>
     </message>
     <message>
-        <location filename="../wfs_dialog.ui" line="455"/>
+        <location filename="../wfs_dialog.ui" line="484"/>
         <source>Download data</source>
         <translation>Pobierz dane</translation>
+    </message>
+    <message>
+        <location filename="../wfs_dialog.ui" line="428"/>
+        <source>Data download range</source>
+        <translation>Zasięg pobierania danych</translation>
+    </message>
+    <message>
+        <location filename="../wfs_dialog.ui" line="434"/>
+        <source>bounding box</source>
+        <translation>ramka obiektu</translation>
+    </message>
+    <message>
+        <location filename="../wfs_dialog.ui" line="444"/>
+        <source>intersect</source>
+        <translation>przecięcie</translation>
     </message>
 </context>
 <context>

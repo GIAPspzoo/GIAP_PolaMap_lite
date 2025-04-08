@@ -27,6 +27,18 @@ def identify_layer_by_name(layername_to_find):
         if layer.name() == layername_to_find:
             return layer
 
+def combine_geoms(geoms_list):
+    geoms_list_len = len(geoms_list)
+    if geoms_list_len == 0:
+        return
+    elif geoms_list_len == 1:
+        return geoms_list[0]
+    elif geoms_list_len > 1:
+        union_geoms = geoms_list[0]
+        for geometry in geoms_list[1:]:
+            if geometry.isGeosValid():
+                union_geoms = union_geoms.combine(geometry)
+        return union_geoms
 
 class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
     def __init__(self, parent=None):
@@ -37,6 +49,7 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
         self.addToMapButton.clicked.connect(self.add_selected_layers_to_map)
         self.chooseLayerEdit.textChanged.connect(self.search_available_layers)
         self.entireLayerButton.clicked.connect(self.handle_entire_layer)
+        self.yourObjectButton.clicked.connect(self.enabled_groupbox)
         self.singleObjectButton.clicked.connect(self.handle_single_object)
         self.drawPolygonButton.clicked.connect(self.start_polygon_drawing)
         self.entireRangeButton.clicked.connect(self.handle_entire_wfs)
@@ -129,13 +142,45 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
     def apply_bbox_to_layer(self, layer):
         if self.bbox:
             bbox_geom = QgsGeometry.fromRect(QgsRectangle(*map(float, self.bbox.split(','))))
-            bbox_geom.transform(QgsCoordinateTransform(QgsCoordinateReferenceSystem('EPSG:2180'), layer.crs(), QgsProject.instance()))
+            bbox_geom.transform(QgsCoordinateTransform(QgsCoordinateReferenceSystem('EPSG:2180'), layer.crs(),
+                                                       QgsProject.instance()))
             request = QgsFeatureRequest().setFilterRect(bbox_geom.boundingBox()).setSubsetOfAttributes([])
             intersected_features = []
-            for feature in identify_layer_by_name(layer.name()).getFeatures(request):
-                if feature.geometry().intersects(bbox_geom):
-                    feat = next(identify_layer_by_name(layer.name()).getFeatures(QgsFeatureRequest().setFilterFid(int(feature.id()))))
-                    intersected_features.append(feat)
+            if self.radioButton_bbox.isChecked():
+                for feature in identify_layer_by_name(layer.name()).getFeatures(request):
+                    if feature.geometry().intersects(bbox_geom):
+                        feat = next(identify_layer_by_name(layer.name()).getFeatures(QgsFeatureRequest().setFilterFid(int(feature.id()))))
+                        intersected_features.append(feat)
+            elif self.radioButton_inter.isChecked():
+                intersected_features = []
+                if self.singleObjectButton.isChecked():
+                    for feature in identify_layer_by_name(layer.name()).getFeatures(request):
+                        if feature.geometry().intersects(self.transformed_geom):
+                            feat = next(identify_layer_by_name(layer.name()).getFeatures(
+                                QgsFeatureRequest().setFilterFid(int(feature.id()))))
+                            intersected_features.append(feat)
+                elif self.entireLayerButton.isChecked():
+                    chosen_layer = self.mMapLayerComboBox.currentLayer()
+                    if chosen_layer:
+                        for feature in identify_layer_by_name(layer.name()).getFeatures(request):
+                            for feat in chosen_layer.getFeatures():
+                                if feature.geometry().intersects(feat.geometry()):
+                                    feat = next(identify_layer_by_name(layer.name()).getFeatures(
+                                        QgsFeatureRequest().setFilterFid(int(feature.id()))))
+                                    intersected_features.append(feat)
+                    pass
+                elif self.yourObjectButton.isChecked():
+                    source_layer = identify_layer_by_name(layer.name())
+                    for feature in source_layer.getFeatures(request):
+                        for feat in self.tmp_layer.getFeatures():
+                            if self.tmp_layer.crs() != source_layer.crs():
+                                geom = self.transform_feature_geometry(feat.geometry(), self.tmp_layer.crs().postgisSrid(), 2180)
+                            else:
+                                geom = feat.geometry()
+                            if feature.geometry().intersects(geom):
+                                feat = next(identify_layer_by_name(layer.name()).getFeatures(
+                                    QgsFeatureRequest().setFilterFid(int(feature.id()))))
+                                intersected_features.append(feat)
             crs = layer.crs().authid()
             tmp_layer = QgsVectorLayer(f"Polygon?crs={crs}", f"{layer.name()}_intersected", "memory")
             tmp_layer.dataProvider().addAttributes(layer.dataProvider().fields())
@@ -198,9 +243,11 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
             self.bbox = f"{x_min}, {y_min}, {x_max}, {y_max}"
 
     def handle_entire_layer(self):
+        self.groupBox_3.setEnabled(True)
         self.update_bbox()
 
     def handle_single_object(self):
+        self.groupBox_3.setEnabled(True)
         if self.singleObjectButton.isChecked():
             self.previous_tool = iface.mapCanvas().mapTool()
             iface.mainWindow().activateWindow()
@@ -219,8 +266,8 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
         feature = results[0].mFeature
         layer = results[0].mLayer
         geometry = feature.geometry()
-        transformed_geom = self.transform_feature_geometry(geometry, layer.crs().postgisSrid(), 2180)
-        bounding_box = transformed_geom.boundingBox()
+        self.transformed_geom = self.transform_feature_geometry(geometry, layer.crs().postgisSrid(), 2180)
+        bounding_box = self.transformed_geom.boundingBox()
         x_min, y_min, x_max, y_max = bounding_box.xMinimum(), bounding_box.yMinimum(), bounding_box.xMaximum(), bounding_box.yMaximum()
         self.bbox = f"{x_min}, {y_min}, {x_max}, {y_max}"
         iface.mapCanvas().setMapTool(self.previous_tool)
@@ -241,10 +288,17 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
         self.tmp_layer.set_fields(fields)
         QgsProject.instance().addMapLayer(self.tmp_layer)
         return self.tmp_layer
-        
+
+    def enabled_groupbox(self):
+        self.groupBox_3.setEnabled(True)
+
     def start_polygon_drawing(self):
+        self.groupBox_3.setEnabled(True)
         if self.yourObjectButton.isChecked():
-            if not self.tmp_layer:
+            try:
+                if not self.tmp_layer:
+                    self._create_tmp_layer()
+            except:
                 self._create_tmp_layer()
             iface.setActiveLayer(self.tmp_layer)
             self.tmp_layer.startEditing()
@@ -264,18 +318,30 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
         iface.actionAddFeature().trigger()
         
     def add_drawed_geom(self, point):
-        geom = next(self.tmp_layer.getFeatures(QgsFeatureRequest().setFilterFid(point))).geometry()
+        geom_list = []
+        for feat in self.tmp_layer.getFeatures():
+            geom_list.append(feat.geometry())
+        if geom_list:
+            combined_geom = combine_geoms(geom_list)
+            combined_geom.convertToMultiType()
         transformed_geom  = self.transform_feature_geometry(
-            geom, self.tmp_layer.crs().postgisSrid(), 2180)
+            combined_geom, self.tmp_layer.crs().postgisSrid(), 2180)
         bounding_box = transformed_geom.boundingBox()
         x_min, y_min, x_max, y_max = bounding_box.xMinimum(), bounding_box.yMinimum(), bounding_box.xMaximum(), bounding_box.yMaximum()
         self.bbox = f"{x_min}, {y_min}, {x_max}, {y_max}"
         iface.mapCanvas().setMapTool(self.previous_tool)
+        try:
+            self.tmp_layer.featureAdded.disconnect()
+        except TypeError:
+            pass
+        self.tmp_layer.commitChanges()
+        self.tmp_layer.triggerRepaint()
         self.activateWindow()
         self.yourObjectButton.setChecked(False)
 
     def handle_entire_wfs(self):
         self.bbox = None
+        self.groupBox_3.setEnabled(False)
 
     def add_results_to_map(self):
         progress_dialog = ProgressDialog(title=tr('Adding Results to Map'))
@@ -285,41 +351,6 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
             layer_from_path = QgsVectorLayer(layer_path, layer_name, "ogr")
             add_map_layer_to_group(layer_from_path, date_formatted, force_create=True)
         progress_dialog.stop()
-
-        # self.get_selected_layers()
-        # layers = self.selected_layers
-        # progress_dialog = ProgressDialog(title='Adding Results to Map')
-        # progress_dialog.start()
-        # if self.entireRangeButton.isChecked():
-        #     for i, layer_name in enumerate(layers):
-        #         layer = self.create_WFS_layer(layer_name)
-        #         if layer:
-        #             QgsProject.instance().addMapLayer(layer)
-        #             progress_dialog.make_percent_step(step=int((i + 10) / len(layers) * 100), new_text=f'Adding layer: {layer_name}')
-        #     progress_dialog.stop()
-        # else:
-        #     if self.entireLayerButton.isChecked():
-        #         if not self.bbox:
-        #             CustomMessageBox(self,
-        #                              f"""{tr('Please determine the entire range to determine the bounding box.')}""").button_ok()
-        #             return
-        #     elif self.singleObjectButton.isChecked():
-        #         if not self.bbox:
-        #             CustomMessageBox(self,
-        #                              f"""{tr('Please select a single object to determine the bounding box.')}""").button_ok()
-        #             return
-        #     elif self.yourObjectButton.isChecked():
-        #         if not self.bbox:
-        #             CustomMessageBox(self, f"""{tr('Please draw a polygon to determine the bounding box.')}""").button_ok()
-        #             return
-        #     for i, layer_name in enumerate(layers):
-        #         layer = self.create_WFS_layer(layer_name)
-        #         if layer:
-        #             processed_layer = self.apply_bbox_to_layer(layer)
-        #             QgsProject.instance().addMapLayer(processed_layer)
-        #             QgsProject.instance().removeMapLayer(layer.id())
-        #             progress_dialog.make_percent_step(step=int((i + 10) / len(layers) * 100), new_text=f'Processing layer: {layer_name}')
-        #     progress_dialog.stop()
 
     def handle_save(self, format):
         self.get_selected_layers()
@@ -389,6 +420,9 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
             self.handle_save(format)
         if self.addResultsCheckBox.isChecked():
             self.add_results_to_map()
+        QgsProject.instance().removeMapLayer(self.tmp_layer)
+        self.tmp_layer = None
+        iface.mapCanvas().refresh()
 
     def run(self):
         self.show()
