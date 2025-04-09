@@ -155,7 +155,8 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
                 intersected_features = []
                 if self.singleObjectButton.isChecked():
                     for feature in identify_layer_by_name(layer.name()).getFeatures(request):
-                        if feature.geometry().intersects(self.transformed_geom):
+                        if feature.geometry().intersects(self.transformed_geom) and \
+                            feature.geometry().intersection(self.transformed_geom).area() > 0.1:
                             feat = next(identify_layer_by_name(layer.name()).getFeatures(
                                 QgsFeatureRequest().setFilterFid(int(feature.id()))))
                             intersected_features.append(feat)
@@ -164,7 +165,8 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
                     if chosen_layer:
                         for feature in identify_layer_by_name(layer.name()).getFeatures(request):
                             for feat in chosen_layer.getFeatures():
-                                if feature.geometry().intersects(feat.geometry()):
+                                if feature.geometry().intersects(feat.geometry()) and \
+                                        feature.geometry().intersection(feat.geometry()).area() > 0.1:
                                     feat = next(identify_layer_by_name(layer.name()).getFeatures(
                                         QgsFeatureRequest().setFilterFid(int(feature.id()))))
                                     intersected_features.append(feat)
@@ -177,7 +179,8 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
                                 geom = self.transform_feature_geometry(feat.geometry(), self.tmp_layer.crs().postgisSrid(), 2180)
                             else:
                                 geom = feat.geometry()
-                            if feature.geometry().intersects(geom):
+                            if feature.geometry().intersects(geom) and \
+                                    feature.geometry().intersection(geom).area() > 0.1:
                                 feat = next(identify_layer_by_name(layer.name()).getFeatures(
                                     QgsFeatureRequest().setFilterFid(int(feature.id()))))
                                 intersected_features.append(feat)
