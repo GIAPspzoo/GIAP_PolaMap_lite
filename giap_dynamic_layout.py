@@ -22,6 +22,11 @@ from .geocoding_tool import Geocoding
 from .prng_tool import PRNGTool
 from .OrtoTools import OrtoAddingTool
 from .QuickPrint import PrintMapTool
+
+########################################################################
+from .AddWfs import AddWfsTool
+########################################################################
+
 from .SectionManager.CustomSectionManager import CustomSectionManager
 from .SectionManager.select_section import SelectSection
 from .config import Config
@@ -870,6 +875,10 @@ class CustomSection(QWidget):
                 self.quick_print = PrintMapTool(iface, self)
                 self.tbut.clicked.connect(self.quick_print.run)
                 self.tbut.setToolTip(tr("Map quick print"))
+            if oname == "giapAddWfsLayer":
+                self.add_wfs = AddWfsTool()
+                self.tbut.clicked.connect(self.add_wfs.run)
+                self.tbut.setToolTip(tr("Add Wfs"))
             if oname == "giapMyPrints":
                 self.tbut.setToolTip(tr("My Prints"))
             if oname == "giapAreaLength":

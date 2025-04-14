@@ -2,20 +2,17 @@ import os
 import re
 from typing import List, Any, Dict, Optional, Union
 
-from PyQt5.QtCore import Qt, QSortFilterProxyModel
-from PyQt5.QtWidgets import QPushButton
 from qgis.gui import QgsMapToolIdentify
 from qgis.PyQt import QtCore, QtGui
-from qgis.PyQt.QtCore import QThread, QObject, QSettings, Qt, pyqtSignal, NULL
+from qgis.PyQt.QtCore import QThread, QObject, Qt, pyqtSignal, NULL, QSortFilterProxyModel
 from qgis.PyQt.QtGui import QPen, QBrush, QIcon, QPixmap
 from qgis.PyQt.QtWidgets import QApplication, QProgressDialog, \
     QStyledItemDelegate, QAction, QMessageBox, QScrollArea, QWidget, \
-    QGridLayout, QLabel, QDialogButtonBox, QToolButton, QToolBar
+    QGridLayout, QLabel, QDialogButtonBox, QToolButton, QToolBar, QPushButton
 from qgis.core import QgsProject, QgsMessageLog, Qgis, QgsApplication, \
-    QgsVectorLayer, QgsMapLayer, QgsCoordinateTransform, QgsGeometry, QgsPointXY, QgsRectangle, QgsEditFormConfig, \
+    QgsVectorLayer, QgsMapLayer, QgsCoordinateTransform, QgsGeometry, QgsPointXY, QgsRectangle, \
     QgsFeature
 from qgis.utils import iface
-import qgis
 
 project = QgsProject.instance()
 root = project.layerTreeRoot()
@@ -283,7 +280,6 @@ class ProgressDialog(QProgressDialog, SingletonModel):
         self.setWindowModality(Qt.WindowModal)
 
     def make_percent_step(self, step=100, new_text=None):
-        self.setStyleSheet(self.stylesheet)
         if new_text:
             self.setLabelText(new_text)
             if "wczytywanie" in new_text:
@@ -326,6 +322,10 @@ class TmpCopyLayer(QgsVectorLayer):
         self.dataProvider().addAttributes(fields)
         self.updateFields()
 
+    def set_fields(self, fields):
+        self.dataProvider().addAttributes(fields)
+        self.updateFields()
+
     def add_features(self, features):
         feats = []
         for feature in features:
@@ -352,6 +352,23 @@ def identify_layer_in_group(group_name, layer_to_find):
         if tree_layer.parent().name() == group_name and \
                 tree_layer.layer().name() == layer_to_find:
             return tree_layer.layer()
+
+
+class IdentifyGeometry(QgsMapToolIdentify):
+    geomIdentified = pyqtSignal(list)
+
+    def canvasReleaseEvent(self, mouseEvent):
+        layerList = []
+        layers = project.mapLayers()
+        for layer in layers.values():
+            if layer.type().value == 0:
+                found_layer = QgsProject.instance().layerTreeRoot().findLayer(layer)
+                if found_layer and found_layer.isVisible():
+                    layerList.append(layer)
+
+        results = self.identify(mouseEvent.x(), mouseEvent.y(),
+                                layerList=layerList, mode=self.LayerSelection)
+        self.geomIdentified.emit(results)
 
 
 class IdentifyGeometryByType(QgsMapToolIdentify):
@@ -681,6 +698,7 @@ STANDARD_TOOLS = [
             ['giapWMS', 0, 1],
             ['giapQuickPrint', 0, 2],
             ['giapAreaLength', 0, 3],
+            ['giapAddWfsLayer', 0, 4],
         ]
     },
     {
@@ -1398,6 +1416,7 @@ custom_icon_dict = {
     'mActionSaveProjectAs': 'mActionSaveProjectAs.png',
     'window_icon': 'giap_logo.png',
     'giapPRNG': 'giapPRNG.png',
+    'giapAddWfsLayer': 'giapAddWfsLayer.png',
     'giapGeoportal': 'giapGeoportal.png',
     'giapOrtoContr': 'giapOrtoContr.png',
     'giapgeokodowanie': 'giapgeokodowanie.png',

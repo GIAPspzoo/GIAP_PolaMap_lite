@@ -122,6 +122,7 @@ RIBBON_DEFAULT = [
                     ['giapWMS', 0, 1],
                     ['giapQuickPrint', 0, 2],
                     ['giapAreaLength', 0, 3],
+                    ['giapAddWfsLayer', 0, 4],
                 ]
             },
 
