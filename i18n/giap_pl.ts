@@ -2110,7 +2110,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../wfs_dialog.ui" line="358"/>
         <source>select a single object</source>
-        <translation>Wybierz pojędynczy obiekt</translation>
+        <translation>Wybierz pojedynczy obiekt</translation>
     </message>
     <message>
         <location filename="../wfs_dialog.ui" line="381"/>
