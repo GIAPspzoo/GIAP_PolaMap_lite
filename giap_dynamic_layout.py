@@ -878,7 +878,7 @@ class CustomSection(QWidget):
             if oname == "giapAddWfsLayer":
                 self.add_wfs = AddWfsTool()
                 self.tbut.clicked.connect(self.add_wfs.run)
-                self.tbut.setToolTip(tr("Add Wfs"))
+                self.tbut.setToolTip(tr("Download data from WFS"))
             if oname == "giapMyPrints":
                 self.tbut.setToolTip(tr("My Prints"))
             if oname == "giapAreaLength":

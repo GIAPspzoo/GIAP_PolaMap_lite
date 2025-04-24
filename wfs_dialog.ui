@@ -13,7 +13,7 @@
     <x>0</x>
     <y>0</y>
     <width>753</width>
-    <height>866</height>
+    <height>895</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -243,17 +243,7 @@
              <property name="topMargin">
               <number>9</number>
              </property>
-             <item row="1" column="0">
-              <widget class="QLineEdit" name="chooseLayerEdit">
-               <property name="inputMask">
-                <string/>
-               </property>
-               <property name="maxLength">
-                <number>32767</number>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
+             <item row="4" column="0">
               <widget class="QPushButton" name="addToMapButton">
                <property name="enabled">
                 <bool>true</bool>
@@ -285,6 +275,19 @@
                </property>
               </widget>
              </item>
+             <item row="1" column="0">
+              <widget class="QLineEdit" name="chooseLayerEdit">
+               <property name="inputMask">
+                <string/>
+               </property>
+               <property name="maxLength">
+                <number>32767</number>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QComboBox" name="crs_comboBox"/>
+             </item>
             </layout>
            </widget>
           </item>
@@ -314,7 +317,7 @@
                </property>
               </widget>
              </item>
-             <item row="1" column="0" colspan="2">
+             <item row="2" column="0" colspan="2">
               <widget class="QPushButton" name="connectButton">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -324,6 +327,13 @@
                </property>
                <property name="text">
                 <string>Connect</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0" colspan="2">
+              <widget class="QComboBox" name="listlayer_comboBox">
+               <property name="editable">
+                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -345,21 +355,7 @@
              <property name="topMargin">
               <number>9</number>
              </property>
-             <item row="10" column="0">
-              <widget class="QRadioButton" name="entireRangeButton">
-               <property name="text">
-                <string>entire range</string>
-               </property>
-              </widget>
-             </item>
              <item row="2" column="0">
-              <widget class="QRadioButton" name="singleObjectButton">
-               <property name="text">
-                <string>select a single object</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
               <widget class="QgsMapLayerComboBox" name="mMapLayerComboBox">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -369,33 +365,7 @@
                </property>
               </widget>
              </item>
-             <item row="0" column="0">
-              <widget class="QRadioButton" name="entireLayerButton">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>select entire layer</string>
-               </property>
-               <property name="checkable">
-                <bool>true</bool>
-               </property>
-               <property name="checked">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="8" column="0">
-              <widget class="QRadioButton" name="yourObjectButton">
-               <property name="text">
-                <string>draw your own object</string>
-               </property>
-              </widget>
-             </item>
-             <item row="9" column="0">
+             <item row="10" column="0">
               <layout class="QHBoxLayout" name="horizontalLayout_2">
                <item>
                 <widget class="QPushButton" name="drawPolygonButton">
@@ -421,6 +391,49 @@
                 </spacer>
                </item>
               </layout>
+             </item>
+             <item row="9" column="0">
+              <widget class="QRadioButton" name="yourObjectButton">
+               <property name="text">
+                <string>draw your own object</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QRadioButton" name="entireLayerButton">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>select entire layer</string>
+               </property>
+               <property name="checkable">
+                <bool>true</bool>
+               </property>
+               <property name="checked">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QRadioButton" name="singleObjectButton">
+               <property name="text">
+                <string>select a single object</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QRadioButton" name="entireRangeButton">
+               <property name="text">
+                <string>entire range</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
              </item>
             </layout>
            </widget>

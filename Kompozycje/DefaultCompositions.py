@@ -23,10 +23,11 @@ def update_all_default_compositions():
         layer_name = group_layer[colon_index + 1:]
         map_layer, layer_group, layer_name = get_map_layer(
             layer_group, layer_name)
-        active = True if map_layer.id() in sel_list else False
-        all_layers_list.append(
-            (layer_group, layer_name, map_layer.id(), active)
-        )
+        if map_layer:
+            active = True if map_layer.id() in sel_list else False
+            all_layers_list.append(
+                (layer_group, layer_name, map_layer.id(), active)
+            )
     if {False} != set([x[3] for x in all_layers_list]):
         default_compositions[tr('All layers')] = all_layers_list
 

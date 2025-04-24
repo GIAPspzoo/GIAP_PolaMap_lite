@@ -1026,8 +1026,8 @@ Kompozje zostaną zaktualizowane.</translation>
     </message>
     <message>
         <location filename="../giap_dynamic_layout.py" line="883"/>
-        <source>Add Wfs</source>
-        <translation>Dodaj WFS</translation>
+        <source>Download data from WFS</source>
+        <translation>Pobierz dane z WFS</translation>
     </message>
 </context>
 <context>

@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 import os
+import json
 from qgis.PyQt import QtWidgets, uic
 from qgis.core import (QgsVectorLayer, QgsProject, QgsGeometry,
                        QgsRectangle, QgsVectorFileWriter, QgsDataSourceUri, 
@@ -16,7 +17,7 @@ from qgis.PyQt.QtGui import QStandardItemModel, QStandardItem
 from owslib.wfs import WebFeatureService
 
 from .utils import tr, project, ProgressDialog, TmpCopyLayer, IdentifyGeometry, get_simple_progressbar, \
-    CustomMessageBox, add_map_layer_to_group
+    CustomMessageBox, add_map_layer_to_group, unpack_nested_lists, get_project_config, set_project_config
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'wfs_dialog.ui'))
@@ -39,6 +40,31 @@ def combine_geoms(geoms_list):
             if geometry.isGeosValid():
                 union_geoms = union_geoms.combine(geometry)
         return union_geoms
+
+CONFIG_SCOPE = 'WMS_WMTS'
+CONFIG_KEY = 'json_file'
+
+def get_wms_config() -> dict:
+    current_config = get_project_config(CONFIG_SCOPE, CONFIG_KEY)
+    if current_config:
+        return json.loads(current_config)
+    else:
+        json_dict = read_json_file()
+        if json_dict:
+            return json_dict
+
+def set_wms_config(data: dict) -> None:
+    set_project_config(CONFIG_SCOPE, CONFIG_KEY, json.dumps(data))
+
+def get_json_path() -> str:
+    return os.path.join(os.path.dirname(__file__), 'Wms_wmts', 'WMS_WMTS.json')
+
+def read_json_file(json_name: str = None) -> dict:
+    if json_name is None:
+        json_path = get_json_path()
+    with open(json_path, "r+") as json_read:
+        return json.load(json_read)
+
 
 class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
     def __init__(self, parent=None):
@@ -65,26 +91,36 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
 
     def connect_to_service(self):
         service_url = self.serviceAddressEdit.text().strip()
+        model = QStandardItemModel()
         try:
-            wfs = WebFeatureService(url=service_url, version='2.0.0')
-            layers = list(wfs.contents.keys())
-            self.populate_layer_list(layers)
+            self.crs_options = []
+            wfs_service = WebFeatureService(url=service_url, version='2.0.0')
+            layers = list(wfs_service.contents.keys())
+            for layer_name in list(wfs_service.contents):
+                self.crs_options.append([crs.getcode() for crs in
+                               wfs_service.contents[layer_name].crsOptions])
+                item = QStandardItem(layer_name)
+                item.setCheckable(True)
+                item.setCheckState(Qt.Unchecked)
+                crs_list = []
+                for crs in [crs.getcode() for crs in
+                               wfs_service.contents[layer_name].crsOptions]:
+                    crs_list.append(QStandardItem(crs))
+                model.appendRow(item)
+            self.populate_layer_list(model)
+            self.entireRangeButton.click()
         except Exception:
             CustomMessageBox(self, f"""{tr('Please provide a valid service address.')}""").button_ok()
             return
 
-    def populate_layer_list(self, layers):
-        model = QStandardItemModel()
-        for layer in layers:
-            item = QStandardItem(layer)
-            item.setCheckable(True)
-            item.setCheckState(Qt.Unchecked)
-            model.appendRow(item)
+    def populate_layer_list(self, model):
         self.availableLayer = QSortFilterProxyModel()
         self.availableLayer.setSourceModel(model)
         self.availableLayer.setFilterCaseSensitivity(Qt.CaseInsensitive)
         self.availableLayer.sort(1, Qt.AscendingOrder)
         self.listView.setModel(self.availableLayer)
+        self.crs_comboBox.clear()
+        self.crs_comboBox.addItems(set(unpack_nested_lists(self.crs_options)))
         
     def search_available_layers(self) -> None:
         try:
@@ -129,7 +165,7 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
         dsu.setParam( 'version', 'auto' )
         dsu.setParam( 'typename', layer_name)
         dsu.setParam( 'IgnoreAxisOrientation ', '1' )
-        dsu.setParam('srsname', 'EPSG:2180')
+        dsu.setParam('srsname', self.crs_comboBox.currentText())
         layer = QgsVectorLayer(dsu.uri(), layer_name, "WFS")
         if not layer.isValid():
             return None
@@ -197,14 +233,15 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
         total_layers = len(self.selected_layers)
         progress_dialog = ProgressDialog(title=tr('Adding Layers to Map'))
         progress_dialog.start_steped()
-        date_formatted = datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')
+        date_formatted = datetime.strftime(datetime.now(), '%Y_%m_%d %H_%M_%S')
         for index, layer_name in enumerate(self.selected_layers, start=1):
             layer = self.create_WFS_layer(layer_name, group_name=date_formatted)
             if layer:
-                processed_layer = self.apply_bbox_to_layer(layer)
-                if layer != processed_layer:
-                    layer.setName(f'{layer.name()} ')
-                    add_map_layer_to_group(processed_layer, date_formatted, force_create=True)
+                if not self.entireRangeButton.isChecked():
+                    processed_layer = self.apply_bbox_to_layer(layer)
+                    if layer != processed_layer:
+                        layer.setName(f'{layer.name()} ')
+                        add_map_layer_to_group(processed_layer, date_formatted, force_create=True)
             progress_dialog.make_percent_step(step=(100 // total_layers), new_text=f"""{tr('Adding layer')} {index}/{total_layers}""")
         progress_dialog.stop()
 
@@ -296,8 +333,8 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
         self.groupBox_3.setEnabled(True)
 
     def start_polygon_drawing(self):
-        self.groupBox_3.setEnabled(True)
         if self.yourObjectButton.isChecked():
+            self.groupBox_3.setEnabled(True)
             try:
                 if not self.tmp_layer:
                     self._create_tmp_layer()
@@ -349,7 +386,7 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
     def add_results_to_map(self):
         progress_dialog = ProgressDialog(title=tr('Adding Results to Map'))
         progress_dialog.start()
-        date_formatted = datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')
+        date_formatted = datetime.strftime(datetime.now(), '%Y_%m_%d %H_%M_%S')
         for layer_path, layer_name in self.layer_dir:
             layer_from_path = QgsVectorLayer(layer_path, layer_name, "ogr")
             add_map_layer_to_group(layer_from_path, date_formatted, force_create=True)
@@ -369,7 +406,7 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
             'xlsx': "Excel (*.xlsx)",
             'csv': "CSV (*.csv)"
         }.get(format, "All Files (*)")
-        date_formatted = datetime.strftime(datetime.now(), '%Y-%m-%d %H_%M_%S')
+        date_formatted = datetime.strftime(datetime.now(), '%Y_%m_%d %H_%M_%S')
         file_path, _ = QFileDialog.getSaveFileName(self, tr("Save Data"), f"{layer_name.split(':')[1]} {date_formatted}.{format}", file_filter, options=options)
         if not file_path:
             return
@@ -392,7 +429,7 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
         }.get(format, 'ESRI Shapefile')
         save_options.fileEncoding = 'utf-8'
         save_options.actionOnExistingFile = QgsVectorFileWriter.CreateOrOverwriteFile
-        save_options.ct = QgsCoordinateTransform(crs, crs, QgsProject.instance())
+        save_options.ct = QgsCoordinateTransform(QgsCoordinateReferenceSystem(self.crs_comboBox.currentText()), crs, QgsProject.instance())
         QApplication.processEvents()
         error = QgsVectorFileWriter.writeAsVectorFormatV2(processed_layer, file_path, QgsProject.instance().transformContext(), save_options)
         if error == QgsVectorFileWriter.NoError or error[0] == 0:
@@ -428,5 +465,12 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
         iface.mapCanvas().refresh()
 
     def run(self):
-        self.show()
-        self.exec_()
+        if not self.isActiveWindow():
+            self.setWindowFlags(Qt.Window)
+            self.show()
+            self.activateWindow()
+            self.listlayer_comboBox.clear()
+            self.data = get_wms_config()
+            for key, value in self.data.items():
+                self.listlayer_comboBox.addItem(value[0])
+            self.listlayer_comboBox.hide()
