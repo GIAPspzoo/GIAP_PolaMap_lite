@@ -581,7 +581,7 @@ QDialog QTreeView::item:hover
 QDialog QTreeView::item:focus
         {
             color: white;
-            background: #263B4E;
+            background-color: #5589B0;
         }
 QDialog QTreeView::item:selected
         {
@@ -591,10 +591,16 @@ QDialog QTreeView::item:selected
 
 QWidget QFrame QFrame QTreeView, QWidget QFrame QFrame QFrame QTreeView {
     background: white;
+    color: black;
     border: 1px solid;
     border-color: #5589B0;
     margin: 2px;
    show-decoration-selected: 1;
+}
+QWidget QFrame QFrame QFrame QTreeView {
+			alternate-background-color:white;
+			alternate-color: black;
+            border: 1px solid #5589B0;
 }
 
 QWidget QFrame QFrame QTreeView::item,
