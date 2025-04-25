@@ -4,11 +4,13 @@ from __future__ import unicode_literals
 
 import os
 import json
+
+from qgis.gui import QgsMapToolPan
 from qgis.PyQt import QtWidgets, uic
 from qgis.core import (QgsVectorLayer, QgsProject, QgsGeometry,
-                       QgsRectangle, QgsVectorFileWriter, QgsDataSourceUri, 
-                       QgsCoordinateReferenceSystem, QgsField, QgsEditFormConfig, 
-                       QgsCoordinateTransform, QgsFeatureRequest)
+                       QgsRectangle, QgsVectorFileWriter, QgsDataSourceUri,
+                       QgsCoordinateReferenceSystem, QgsField, QgsEditFormConfig,
+                       QgsCoordinateTransform, QgsFeatureRequest, QgsFeature)
 from datetime import datetime
 from qgis.utils import iface
 from qgis.PyQt.QtWidgets import QFileDialog, QApplication
@@ -88,6 +90,9 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
         self.tmp_layer = None
         
         self.mMapLayerComboBox.layerChanged.connect(self.update_bbox)
+
+        self.pan_tool = QgsMapToolPan(iface.mapCanvas())
+        self.pan_tool.setCursor(Qt.OpenHandCursor)
 
     def connect_to_service(self):
         service_url = self.serviceAddressEdit.text().strip()
@@ -283,12 +288,23 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
             self.bbox = f"{x_min}, {y_min}, {x_max}, {y_max}"
 
     def handle_entire_layer(self):
+        QgsProject.instance().removeMapLayer(self.tmp_layer)
+        self.tmp_layer = None
+        iface.mapCanvas().refresh()
         self.groupBox_3.setEnabled(True)
         self.update_bbox()
 
     def handle_single_object(self):
+        QgsProject.instance().removeMapLayer(self.tmp_layer)
+        self.tmp_layer = None
+        iface.mapCanvas().refresh()
         self.groupBox_3.setEnabled(True)
         if self.singleObjectButton.isChecked():
+            try:
+                if not self.tmp_layer:
+                    self._create_tmp_layer()
+            except:
+                self._create_tmp_layer()
             self.previous_tool = iface.mapCanvas().mapTool()
             iface.mainWindow().activateWindow()
             self.mapTool = IdentifyGeometry(iface.mapCanvas())
@@ -296,7 +312,7 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
             iface.mapCanvas().setMapTool(self.mapTool)
         else:
             self.mapTool.deactivate()
-            iface.mapCanvas().setMapTool(self.previous_tool)
+            iface.mapCanvas().setMapTool(self.pan_tool)
 
     def process_selected_object(self, results):
         if not results:
@@ -310,7 +326,17 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
         bounding_box = self.transformed_geom.boundingBox()
         x_min, y_min, x_max, y_max = bounding_box.xMinimum(), bounding_box.yMinimum(), bounding_box.xMaximum(), bounding_box.yMaximum()
         self.bbox = f"{x_min}, {y_min}, {x_max}, {y_max}"
-        iface.mapCanvas().setMapTool(self.previous_tool)
+
+        self.tmp_layer.startEditing()
+        feat = QgsFeature()
+        feat.setGeometry(self.transformed_geom)
+        pr = self.tmp_layer.dataProvider()
+        QApplication.processEvents()
+        pr.addFeatures([feat])
+        self.tmp_layer.commitChanges()
+        self.tmp_layer.triggerRepaint()
+
+        iface.mapCanvas().setMapTool(self.pan_tool)
         self.singleObjectButton.setChecked(False)
         self.mapTool.deactivate()
         self.activateWindow()
@@ -330,6 +356,9 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
         return self.tmp_layer
 
     def enabled_groupbox(self):
+        QgsProject.instance().removeMapLayer(self.tmp_layer)
+        self.tmp_layer = None
+        iface.mapCanvas().refresh()
         self.groupBox_3.setEnabled(True)
 
     def start_polygon_drawing(self):
@@ -357,7 +386,7 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
         self.tmp_layer.setEditFormConfig(form_config)
         iface.actionAddFeature().trigger()
         
-    def add_drawed_geom(self, point):
+    def add_drawed_geom(self):
         geom_list = []
         for feat in self.tmp_layer.getFeatures():
             geom_list.append(feat.geometry())
@@ -369,7 +398,7 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
         bounding_box = transformed_geom.boundingBox()
         x_min, y_min, x_max, y_max = bounding_box.xMinimum(), bounding_box.yMinimum(), bounding_box.xMaximum(), bounding_box.yMaximum()
         self.bbox = f"{x_min}, {y_min}, {x_max}, {y_max}"
-        iface.mapCanvas().setMapTool(self.previous_tool)
+        iface.mapCanvas().setMapTool(self.pan_tool)
         try:
             self.tmp_layer.featureAdded.disconnect()
         except TypeError:
@@ -380,6 +409,9 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
         self.yourObjectButton.setChecked(False)
 
     def handle_entire_wfs(self):
+        QgsProject.instance().removeMapLayer(self.tmp_layer)
+        self.tmp_layer = None
+        iface.mapCanvas().refresh()
         self.bbox = None
         self.groupBox_3.setEnabled(False)
 
@@ -466,11 +498,9 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
 
     def run(self):
         if not self.isActiveWindow():
-            self.setWindowFlags(Qt.Window)
             self.show()
             self.activateWindow()
-            self.listlayer_comboBox.clear()
-            self.data = get_wms_config()
-            for key, value in self.data.items():
-                self.listlayer_comboBox.addItem(value[0])
             self.listlayer_comboBox.hide()
+        else:
+            self.show()
+            self.exec_()
