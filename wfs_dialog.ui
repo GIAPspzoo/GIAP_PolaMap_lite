@@ -13,7 +13,7 @@
     <x>0</x>
     <y>0</y>
     <width>753</width>
-    <height>895</height>
+    <height>924</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -355,6 +355,13 @@
              <property name="topMargin">
               <number>9</number>
              </property>
+             <item row="3" column="0">
+              <widget class="QRadioButton" name="singleObjectButton">
+               <property name="text">
+                <string>select a single object</string>
+               </property>
+              </widget>
+             </item>
              <item row="2" column="0">
               <widget class="QgsMapLayerComboBox" name="mMapLayerComboBox">
                <property name="sizePolicy">
@@ -367,6 +374,9 @@
              </item>
              <item row="10" column="0">
               <layout class="QHBoxLayout" name="horizontalLayout_2">
+               <property name="leftMargin">
+                <number>18</number>
+               </property>
                <item>
                 <widget class="QPushButton" name="drawPolygonButton">
                  <property name="enabled">
@@ -392,13 +402,6 @@
                </item>
               </layout>
              </item>
-             <item row="9" column="0">
-              <widget class="QRadioButton" name="yourObjectButton">
-               <property name="text">
-                <string>draw your own object</string>
-               </property>
-              </widget>
-             </item>
              <item row="1" column="0">
               <widget class="QRadioButton" name="entireLayerButton">
                <property name="sizePolicy">
@@ -418,10 +421,10 @@
                </property>
               </widget>
              </item>
-             <item row="3" column="0">
-              <widget class="QRadioButton" name="singleObjectButton">
+             <item row="9" column="0">
+              <widget class="QRadioButton" name="yourObjectButton">
                <property name="text">
-                <string>select a single object</string>
+                <string>draw your own object</string>
                </property>
               </widget>
              </item>
@@ -434,6 +437,36 @@
                 <bool>true</bool>
                </property>
               </widget>
+             </item>
+             <item row="4" column="0">
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <property name="leftMargin">
+                <number>18</number>
+               </property>
+               <item>
+                <widget class="QPushButton" name="selectPolygonButton">
+                 <property name="enabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="text">
+                  <string>Select polygon</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_5">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
              </item>
             </layout>
            </widget>

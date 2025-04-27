@@ -78,7 +78,8 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
         self.chooseLayerEdit.textChanged.connect(self.search_available_layers)
         self.entireLayerButton.clicked.connect(self.handle_entire_layer)
         self.yourObjectButton.clicked.connect(self.enabled_groupbox)
-        self.singleObjectButton.clicked.connect(self.handle_single_object)
+        self.singleObjectButton.clicked.connect(self.enabled_groupbox)
+        self.selectPolygonButton.clicked.connect(self.handle_single_object)
         self.drawPolygonButton.clicked.connect(self.start_polygon_drawing)
         self.entireRangeButton.clicked.connect(self.handle_entire_wfs)
         self.downloadButton.clicked.connect(self.save_selected_layers)
@@ -206,8 +207,13 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
                     if chosen_layer:
                         for feature in identify_layer_by_name(layer.name()).getFeatures(request):
                             for feat in chosen_layer.getFeatures():
-                                if feature.geometry().intersects(feat.geometry()) and \
-                                        feature.geometry().intersection(feat.geometry()).area() > 0.1:
+                                if chosen_layer.crs() != layer.crs():
+                                    geom = self.transform_feature_geometry(feat.geometry(),
+                                                                           chosen_layer.crs().postgisSrid(), layer.crs().postgisSrid())
+                                else:
+                                    geom = feat.geometry()
+                                if feature.geometry().intersects(geom) and \
+                                        feature.geometry().intersection(geom).area() > 0.1:
                                     feat = next(identify_layer_by_name(layer.name()).getFeatures(
                                         QgsFeatureRequest().setFilterFid(int(feature.id()))))
                                     intersected_features.append(feat)
@@ -310,9 +316,6 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
             self.mapTool = IdentifyGeometry(iface.mapCanvas())
             self.mapTool.geomIdentified.connect(self.process_selected_object)
             iface.mapCanvas().setMapTool(self.mapTool)
-        else:
-            self.mapTool.deactivate()
-            iface.mapCanvas().setMapTool(self.pan_tool)
 
     def process_selected_object(self, results):
         if not results:
@@ -494,13 +497,22 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
             self.add_results_to_map()
         QgsProject.instance().removeMapLayer(self.tmp_layer)
         self.tmp_layer = None
+        self.entireRangeButton.click()
         iface.mapCanvas().refresh()
+
+    def reject(self):
+        if self.tmp_layer:
+            QgsProject.instance().removeMapLayer(self.tmp_layer)
+            self.tmp_layer = None
+            iface.mapCanvas().refresh()
+        super().reject()
+
+    def closeEvent(self, event):
+        self.close()
+        self.reject()
 
     def run(self):
         if not self.isActiveWindow():
             self.show()
             self.activateWindow()
             self.listlayer_comboBox.hide()
-        else:
-            self.show()
-            self.exec_()

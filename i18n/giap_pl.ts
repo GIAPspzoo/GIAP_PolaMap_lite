@@ -2128,6 +2128,11 @@ p, li { white-space: pre-wrap; }
         <translation>Rysuj poligon</translation>
     </message>
     <message>
+        <location filename="../wfs_dialog.ui" line="447"/>
+        <source>Select polygon</source>
+        <translation>Wybierz poligon</translation>
+    </message>
+    <message>
         <location filename="../wfs_dialog.ui" line="175"/>
         <source>Add analysis results to the map</source>
         <translation>Dodaj wynik analizy do mapy</translation>
