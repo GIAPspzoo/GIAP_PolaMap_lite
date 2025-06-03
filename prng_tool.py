@@ -136,14 +136,15 @@ class PRNGTool(QtWidgets.QDialog):
                 self.zoom_to_feature(existing_features[0])
                 self.close()
                 return
-
-            layer = self.get_layer("MultiPoint?crs=epsg:2180&index=yes", "UUG_obiekty_fizjograficzne", "")
+            layer_name = "UUG_obiekty_fizjograficzne"
+            layer = self.get_layer("MultiPoint?crs=epsg:2180&index=yes", layer_name, "")
             feature = QgsFeature()
             feature.setGeometry(QgsGeometry.fromWkt(coordinates))
             feature.setAttributes(attributes)
             layer.dataProvider().addFeature(feature)
             layer.updateExtents()
-            add_map_layer_to_group(layer, search_group_name, force_create=True)
+            if not QgsProject.instance().mapLayersByName(layer_name):
+                add_map_layer_to_group(layer, search_group_name, force_create=True)
             self.zoom_to_feature(feature)
             self.close()
         else:
