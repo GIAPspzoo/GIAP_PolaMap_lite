@@ -7,7 +7,7 @@ from qgis.PyQt.QtWidgets import QApplication
 from owslib.wfs import WebFeatureService
 from owslib.wms import WebMapService
 from owslib.wmts import WebMapTileService, ServiceException
-from qgis.core import QgsLayerTreeGroup, QgsLayerTree, QgsRasterLayer, QgsVectorLayer, QgsProject
+from qgis.core import QgsLayerTreeGroup, QgsLayerTree, QgsRasterLayer, QgsVectorLayer, QgsProject, QgsLayerTreeLayer
 from . import online_layers_dialog
 from .utils import get_wms_config
 
@@ -44,6 +44,7 @@ class OrtoActionService(QObject):
             self.group_name = None
             CustomMessageBox(None, tr('Failed to load layer'))
         self.button.triggered.connect(self.add_to_map)
+        project.layerWillBeRemoved.connect(self.remove_groups_before_close)
 
     def __add_orto_group(self, parent_group: QgsLayerTreeGroup or QgsLayerTree = root) -> QgsLayerTreeGroup:
         if self.group_name:
@@ -157,6 +158,29 @@ class OrtoActionService(QObject):
                     group = root.addGroup(temp_group_name)
                 self.add_layer_to_group(layer, root.findGroup(temp_group_name))
         self.orto_added.emit()
+
+    def remove_groups_before_close(self):
+        def remove_empty_groups(group: QgsLayerTreeGroup):
+            for child in list(group.children()):
+                if isinstance(child, QgsLayerTreeGroup):
+                    remove_empty_groups(child)
+                    if not len(child.children()):
+                        group.removeChildNode(child)
+
+        for group in list(root.children()):
+            if isinstance(group, QgsLayerTreeGroup):
+                layer_children = [
+                    child for child in group.children()
+                    if isinstance(child, QgsLayerTreeLayer) and child.layer() is not None
+                ]
+                has_wms = any(
+                    child.layer().dataProvider().name().lower() in ["wms", "wmts", "wfs"]
+                    for child in layer_children
+                )
+                if not has_wms:
+                    remove_empty_groups(group)
+                    if not len(group.children()):
+                        root.removeChildNode(group)
 
     def add_layer_to_group(self, layer: QgsVectorLayer or QgsRasterLayer, group: QgsLayerTreeGroup) -> None:
         project.addMapLayer(layer)

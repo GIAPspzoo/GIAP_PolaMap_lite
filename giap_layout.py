@@ -20,7 +20,7 @@ from qgis.PyQt.QtWidgets import QAction, QToolBar, QToolButton, QWidget, \
     QHBoxLayout, QMenu, QMessageBox, QApplication
 from qgis.PyQt.QtWidgets import QDockWidget, QVBoxLayout
 from qgis.PyQt.QtWidgets import QPushButton
-from qgis.core import QgsProject, Qgis, QgsSettings, QgsApplication
+from qgis.core import QgsProject, Qgis, QgsSettings, QgsApplication, QgsMapLayer
 from qgis.utils import iface
 
 from .Kompozycje.Kompozycje import CompositionsTool
@@ -645,6 +645,9 @@ class MainTabQgsWidget:
         self.repair_layers_names_for_compositions()
         self.kompozycje.start()
         self.kompozycje.modify_tool.check_for_changes_in_comps()
+        for layer in project.mapLayers().values():
+            if layer.customProperty("do_not_save", False):
+                project.removeMapLayer(layer.id())
 
     def delete_animation(self, animation: QPropertyAnimation, widget: QObject, mode: str) -> None:
         del animation
