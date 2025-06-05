@@ -138,6 +138,7 @@ class PRNGTool(QtWidgets.QDialog):
                 return
             layer_name = "UUG_obiekty_fizjograficzne"
             layer = self.get_layer("MultiPoint?crs=epsg:2180&index=yes", layer_name, "")
+            layer.setCustomProperty("do_not_save", True)
             feature = QgsFeature()
             feature.setGeometry(QgsGeometry.fromWkt(coordinates))
             feature.setAttributes(attributes)
