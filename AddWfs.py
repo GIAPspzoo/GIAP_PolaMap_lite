@@ -197,8 +197,13 @@ class AddWfsTool(QtWidgets.QDialog, FORM_CLASS):
                 intersected_features = []
                 if self.singleObjectButton.isChecked():
                     for feature in identify_layer_by_name(layer.name()).getFeatures(request):
-                        if feature.geometry().intersects(self.transformed_geom) and \
-                            feature.geometry().intersection(self.transformed_geom).area() > 0.1:
+                        if layer.crs().authid() != 'EPSG:2180':
+                            geom = self.transform_feature_geometry(feature.geometry(),
+                                                                   layer.crs().postgisSrid(), 2180)
+                        else:
+                            geom = feature.geometry()
+                        if geom.intersects(self.transformed_geom) and \
+                                geom.intersection(self.transformed_geom).area() > 0.1:
                             feat = next(identify_layer_by_name(layer.name()).getFeatures(
                                 QgsFeatureRequest().setFilterFid(int(feature.id()))))
                             intersected_features.append(feat)
