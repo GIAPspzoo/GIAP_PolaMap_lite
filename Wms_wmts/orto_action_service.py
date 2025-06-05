@@ -166,7 +166,6 @@ class OrtoActionService(QObject):
                     remove_empty_groups(child)
                     if not len(child.children()):
                         group.removeChildNode(child)
-
         for group in list(root.children()):
             if isinstance(group, QgsLayerTreeGroup):
                 layer_children = [
