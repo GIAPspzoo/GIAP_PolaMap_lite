@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DockWidget</class>
+ <widget class="QDockWidget" name="DockWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>527</width>
+    <height>329</height>
+   </rect>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDockWidget {
+    background-color: lightgray;
+    color: white;
+}
+
+QWidget{
+    background-color: #2b4d60; 
+}
+
+</string>
+  </property>
+  <property name="windowTitle">
+   <string>DockWidget</string>
+  </property>
+  <widget class="QWidget" name="dockWidgetContents">
+   <widget class="QTableWidget" name="tableWidget">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>20</y>
+      <width>471</width>
+      <height>171</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QTableWidget {
+    background-color: #29404f;
+    color: white;
+    gridline-color: #3d5b6d;
+    selection-background-color: #5b90af;
+	border-radius: 6px;
+    border: 2px solid #5a85b4;
+    padding: 2px;
+	
+}
+
+QHeaderView::section {
+    background-color: #3d5b6d;
+    color: white;
+    padding: 2px;
+    border: 1px solid #2e4a59;
+    font-weight: bold;
+    text-align: center;
+}</string>
+    </property>
+    <column>
+     <property name="text">
+      <string>X</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Y</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Wysokość</string>
+     </property>
+    </column>
+   </widget>
+   <widget class="QPushButton" name="pushButton_3">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>210</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color: #466d89;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+QPushButton:hover {
+    background-color: #5e88a5;
+}</string>
+    </property>
+    <property name="text">
+     <string>Nowy pomiar</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>210</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color: #466d89;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+QPushButton:hover {
+    background-color: #5e88a5;
+}</string>
+    </property>
+    <property name="text">
+     <string>Kopiuj wartości</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>210</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color: #466d89;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+QPushButton:hover {
+    background-color: #5e88a5;
+}</string>
+    </property>
+    <property name="text">
+     <string>Zapisz</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
