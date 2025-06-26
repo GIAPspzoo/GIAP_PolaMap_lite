@@ -12,13 +12,13 @@ from PyQt5.QtWidgets import QMessageBox
 from qgis.PyQt.QtWidgets import QVBoxLayout, QPushButton, QMenu, QApplication, QDialog, QTableWidget, QHBoxLayout, \
     QDockWidget
 from qgis.PyQt import QtWidgets, uic, QtCore
-from qgis._core import QgsPointXY, QgsFeatureRequest, QgsRectangle, QgsWkbTypes, QgsMapLayer
+from qgis._core import QgsPointXY, QgsFeatureRequest, QgsRectangle, QgsWkbTypes, QgsMapLayer, QgsDataSourceUri
 from qgis._gui import QgsMapToolCapture, QgsMapTool, QgsRubberBand
 from qgis.gui import QgsMapToolEmitPoint
 from qgis.core import QgsVectorLayer, QgsProject, QgsFeature, QgsGeometry, QgsFields, QgsField, QgsRasterLayer, \
     QgsLayerTreeGroup, QgsCoordinateTransform, QgsCoordinateReferenceSystem
 from qgis.utils import iface
-
+import time
 
 project = QgsProject.instance()
 
@@ -68,7 +68,8 @@ class PolygonDrawingTool(QgsMapTool):
         self.callback(polygon_wkt)
 
         if self.show_temp_layer:
-            temp_layer = QgsVectorLayer("Polygon?crs=EPSG:2180", "Zasięg", "memory")
+            crs = QgsProject.instance().crs()
+            temp_layer = QgsVectorLayer(f"Polygon?crs={crs}", "Zasięg", "memory")
             pr = temp_layer.dataProvider()
             pr.addAttributes([QgsField("id", QVariant.Int)])
             temp_layer.updateFields()
@@ -114,8 +115,8 @@ class ObrysTool(QgsMapToolEmitPoint):
 
             polygon_wkt = geom.asWkt()
             self.callback(polygon_wkt)
-
-            temp_layer = QgsVectorLayer("Polygon?crs=EPSG:2180", "Obrys", "memory")
+            crs = QgsProject.instance().crs()
+            temp_layer = QgsVectorLayer(f"Polygon?crs={crs}", "Obrys", "memory")
             pr = temp_layer.dataProvider()
             pr.addAttributes([QgsField("id", QVariant.Int)])
             temp_layer.updateFields()
@@ -138,7 +139,6 @@ class HeightPoint(QDockWidget):
         super().__init__(parent)
         self.ui = FORM_CLASS()
         self.ui.setupUi(self)
-        # self.setWindowFlags(Qt.Window)
         self.setMinimumSize(550,300)
         self.setMaximumSize(550,300)
         self.setWindowOpacity(1.0)
@@ -184,15 +184,35 @@ class HeightPoint(QDockWidget):
     def nowy_pomiar(self):
         self.ui.tableWidget.clearContents()
         self.ui.tableWidget.setRowCount(0)
+        crs_src = self.map_canvas.mapSettings().destinationCrs()
+        crs_dst = QgsCoordinateReferenceSystem("EPSG: 2180")
+
+        transformer = None
+        if crs_src.authid() != crs_dst.authid():
+            transformer = QgsCoordinateTransform(crs_src, crs_dst, QgsProject.instance())
+
         try:
             self.tool.canvasClicked.disconnect()
         except Exception:
             pass
         self.tool = QgsMapToolEmitPoint(self.map_canvas)
+
         def punkt(point, button):
+            if transformer:
+                try:
+                    pt_2180 = transformer.transform(point)
+                except Exception as e:
+                    QtWidgets.QMessageBox.warning(self, "Błąd", f"Transformacja nieudana: {e}")
+                    return
+            else:
+                pt_2180 = point
+
             self.map_canvas.unsetMapTool(self.tool)
             self.pobierz_i_dodaj_punkt(point)
-
+        try:
+            self.tool.canvasClicked.disconnect()
+        except:
+            pass
         self.tool.canvasClicked.connect(punkt)
         self.map_canvas.setMapTool(self.tool)
 
@@ -271,7 +291,26 @@ class HeightMultiPoints(QDockWidget):
 
         self.tool = QgsMapToolEmitPoint(self.map_canvas)
 
+        crs_src = self.map_canvas.mapSettings().destinationCrs()
+        crs_dst = QgsCoordinateReferenceSystem("EPSG: 2180")
+
+        transformer = None
+        if crs_src.authid() != crs_dst.authid():
+            transformer = QgsCoordinateTransform(crs_src, crs_dst, QgsProject.instance())
+
+
         def punkt(point, button):
+
+            if transformer:
+                try:
+                    pt_2180 = transformer.transform(point)
+                except Exception as e:
+                    QtWidgets.QMessageBox.warning(self, "Błąd", f"Transformacja nieudana: {e}")
+                    return
+            else:
+                pt_2180 = point
+
+
             x = round(point.x())
             y = round(point.y())
 
@@ -307,6 +346,11 @@ class HeightMultiPoints(QDockWidget):
             except Exception as e:
                 QtWidgets.QMessageBox.critical(self, "Błąd", f"Nie udało się pobrać danych:\n{str(e)}")
 
+
+        try:
+            self.tool.canvasClicked.disconnect()
+        except:
+            pass
         self.tool.canvasClicked.connect(punkt)
         self.map_canvas.setMapTool(self.tool)
 
@@ -373,9 +417,7 @@ class HeightMultiPoints(QDockWidget):
 class LowestHeighesPunkt(QDockWidget, FORM_CLASS_LHP1):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
-        # self.ui = FORM_CLASS_LHP1()
         self.setupUi(self)
-        # self.setWindowFlags(Qt.Window)
         self.setMinimumSize(550,100)
         self.setMaximumSize(550,100)
         self.setWindowOpacity(1.0)
@@ -528,13 +570,14 @@ class AnalizaKoniec(QDockWidget, FORM_CLASS_LHP3):
         self.wkt_polygon = wkt_polygon
         print("WKT poligonu:", self.wkt_polygon)
         self.min_max_data = None
-
-        self.min_max_point_data()
-
+        if not self.min_max_point_data():
+            self.deleteLater()
+            return
         self.show()
 
     def min_max_point_data(self):
         url_template = "https://services.gugik.gov.pl/nmt/?request=GetMinMaxByPolygon&polygon={}&json"
+        url_template_1 = "https://integracja.gugik.gov.pl/nmt/?request=GetVolume&polygon={}&level={}&json"
         wkt_clean = self.wkt_polygon.strip().strip('\'"')
 
         wkt_clean = re.sub(r'^polygon\s*\(\(', 'POLYGON((', wkt_clean, flags=re.IGNORECASE)
@@ -546,27 +589,39 @@ class AnalizaKoniec(QDockWidget, FORM_CLASS_LHP3):
             if area > 100000:
                 QMessageBox.warning(self, "Za duży obszar",
                                     f"Powierzchnia wynosi {area:.2f} m².\nLimit GUGiK to 100 000 m².")
-                return
+                return False
+            elif area < 1:
+                QMessageBox.warning(self, "Zbyt mały obszar",
+                                    f"Powierzchnia wynosi {area:.2f} m².\nMinimum GUGiK to 1 m2.")
+                return False
         except Exception as e:
             QMessageBox.warning(self, "Błąd geometrii", f"Nieprawidłowy WKT:\n{e}")
-            return
+            return False
 
         encoded_wkt = quote(wkt_clean)
         url = url_template.format(encoded_wkt)
+        url_pow = url_template_1.format(encoded_wkt, 0)
 
         try:
             response = requests.get(url)
             response.raise_for_status()
+            response_pow = requests.get(url_pow)
             data = response.json()
+            data_pow = response_pow.json()
             self.min_max_data = data
-
-            self.MIn.setText(f"Wysokość minimalna: {data['Hmin']} m")
-            self.Max.setText(f"Wysokość maksymalna: {data['Hmax']} m")
-            self.Pow.setText(f"Powierzchnia obszaru: {data['Polygon area']} m²")
+            self.MIn.setText(f"Wysokość minimalna: {data.get('Hmin', 'brak danych')} m")
+            self.Max.setText(f"Wysokość maksymalna: {data.get('Hmax', 'brak danych')} m")
+            self.Pow.setText(
+                f"Powierzchnia obszaru: {data['Polygon area']} m2"
+                if data.get("Polygon area") is not None else f"Powierzchnia obszaru: {data_pow['Polygon area']} m2"
+            )
             self.siatka.setText(f"Rozdzielczość siatki: {data['Grid size [m]']} m")
+            return True
+
 
         except requests.RequestException as e:
             QMessageBox.warning(self, "Błąd połączenia", f"Nie udało się pobrać danych:\n{e}")
+            return False
 
     def low_point(self):
         if "Hmin geom" not in self.min_max_data or not self.min_max_data["Hmin geom"]:
@@ -750,13 +805,16 @@ class AnalizaMassZiemi(QDockWidget, FORM_CLASS_EM2):
         self.min_max_data = None
         self.wys = wys
         self.wkt_polygon = wkt_polygon
-        self.earth_mass()
+        if not self.earth_mass():
+            self.deleteLater()
+            return
         self.show()
 
     def earth_mass(self):
         url_template_1 = "https://integracja.gugik.gov.pl/nmt/?request=GetVolume&polygon={}&level={}&json"
         url_template_zbliz = "https://services.gugik.gov.pl/nmt/?request=GetMinMaxByPolygon&polygon={}&json"
-        wkt_clean = self.wkt_polygon.strip().strip('\'"')
+        wkt_clean = self.wkt_polygon.strip().replace('"', '').replace("'", "")
+        wkt_clean = re.sub(r'\s+', ' ', wkt_clean).strip()
 
         wkt_clean = re.sub(r'^polygon\s*\(\(', 'POLYGON((', wkt_clean, flags=re.IGNORECASE)
         wkt_clean = re.sub(r'POLYGON\s*\(\(', 'POLYGON((', wkt_clean)
@@ -767,19 +825,31 @@ class AnalizaMassZiemi(QDockWidget, FORM_CLASS_EM2):
             area = geom.area()
             if area > 100000:
                 QMessageBox.warning(self, "Za duży obszar",
-                                    f"Powierzchnia wynosi {area:.2f} m².\nLimit GUGiK to 100 000 m².")
-                return
+                                    f"Powierzchnia wynosi {area:.2f} m².\nLimit GUGiK to 100 000 m2.")
+                return False
+            elif area < 1:
+                QMessageBox.warning(self, "Zbyt mały obszar",
+                                    f"Powierzchnia wynosi {area:.2f} m².\nMinimum GUGiK to 1 m2.")
+                return False
         except Exception as e:
             QMessageBox.warning(self, "Błąd geometrii", f"Nieprawidłowy WKT:\n{e}")
-            return
+            return False
 
         encoded_wkt = quote(wkt_clean)
         url = url_template_1.format(encoded_wkt, self.wys)
         url_zbliz = url_template_zbliz.format(encoded_wkt)
 
         try:
-            response = requests.get(url)
-            response.raise_for_status()
+            for i in range(3):
+                try:
+                    response = requests.get(url, timeout=20)
+                    response.raise_for_status()
+                    break
+                except requests.exceptions.RequestException:
+                    time.sleep(2)
+            else:
+                QtWidgets.QMessageBox.warning(self, "Błąd", "Nie udało się pobrać danych z NMT (timeout).")
+                return False
             data = response.json()
             response_zbliz = requests.get(url_zbliz)
             response_zbliz.raise_for_status()
@@ -791,9 +861,11 @@ class AnalizaMassZiemi(QDockWidget, FORM_CLASS_EM2):
             self.Pow.setText(f"Powierzchnia obszaru: {data['Polygon area']} m2")
             self.siatka.setText(f"Objętość powyżej podanej wysokości: {data['Volume above']} m3")
             self.label.setText(f"Objętość poniżej podanej wysokości: {data['Volume below']} m3")
+            return True
 
         except requests.RequestException as e:
             QMessageBox.warning(self, "Błąd połączenia", f"Nie udało się pobrać danych:\n{e}")
+            return False
 
     def low_point(self):
         AnalizaKoniec.low_point(self)
@@ -858,6 +930,54 @@ class GUGiKTool(QDockWidget):
         self.emc = EarthMassCal()
         iface.addDockWidget(Qt.RightDockWidgetArea, self.emc)
         self.emc.show()
+
+    def add_nmt_wms_layer(self):
+        layer_name = "Numeryczny Model Terenu (WMS - Cieniowanie)"
+        url = "https://mapy.geoportal.gov.pl/wss/service/PZGIK/NMT/GRID1/WMS/ShadedRelief"
+
+        wms_uri = (
+            f"contextualWMSLegend=0&"
+            f"url={url}?&"
+            f"layers=Raster&"
+            f"styles=&"
+            f"format=image/png&"
+            f"crs=EPSG:2180&"
+            f"version=1.3.0&"
+            f"transparent=true"
+        )
+
+        wms_layer = QgsRasterLayer(wms_uri, layer_name, "wms")
+
+        if wms_layer.isValid():
+            QgsProject.instance().addMapLayer(wms_layer)
+            QMessageBox.information(None, "Sukces", "Dodano warstwę WMS.")
+        else:
+            QMessageBox.warning(None, "Błąd", "Nie udało się dodać warstwy WMS. Sprawdź nazwę warstwy i połączenie.")
+
+    def add_nmt_wmts_layer(self):
+        layer_name = "Numeryczny Model Terenu (WMTS - Cieniowanie)"
+        uri = (
+            "contextualWMSLegend=0&"
+            "crs=EPSG:2180&"
+            "dpiMode=7&"
+            "featureCount=10&"
+            "format=image/jpeg&"
+            "layers=Cieniowanie&"
+            "styles=default&"
+            "tileMatrixSet=EPSG:2180&"
+            "tilePixelRatio=0&"
+            "url=https://mapy.geoportal.gov.pl/wss/service/PZGIK/NMT/GRID1/WMTS/ShadedRelief?Service%3DWMTS%26Request%3DGetCapabilities"
+        )
+
+        layer = QgsRasterLayer(uri, layer_name, "wms")
+
+        if layer.isValid():
+            QgsProject.instance().addMapLayer(layer)
+            QMessageBox.information(None, "Sukces", "Dodano warstwę WMTS.")
+        else:
+            QMessageBox.warning(None, "Błąd", "Nie udało się dodać warstwy WMTS. Sprawdź nazwę warstwy i połączenie.")
+
+
 
 
 

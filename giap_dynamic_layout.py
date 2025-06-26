@@ -942,6 +942,14 @@ class CustomSection(QWidget):
                 self.gugik_nmt_point_action4.triggered.connect(lambda: self.gugik_tool.earth_mass_cal())
                 self.gugik_menu.addAction(self.gugik_nmt_point_action4)
 
+                self.gugik_nmt_point_action5 = QAction("Numeryczny model terenu (WMS)", iface.mainWindow())
+                self.gugik_nmt_point_action5.triggered.connect(lambda: self.gugik_tool.add_nmt_wms_layer())
+                self.gugik_menu.addAction(self.gugik_nmt_point_action5)
+
+                self.gugik_nmt_point_action6 = QAction("Numeryczny model terenu (WMTS)", iface.mainWindow())
+                self.gugik_nmt_point_action6.triggered.connect(lambda: self.gugik_tool.add_nmt_wmts_layer())
+                self.gugik_menu.addAction(self.gugik_nmt_point_action6)
+
                 self.tbut.setMenu(self.gugik_menu)
                 self.tbut.setPopupMode(QToolButton.InstantPopup)
 
