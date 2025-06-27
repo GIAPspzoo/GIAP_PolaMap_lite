@@ -17,7 +17,7 @@ class WMS_WMTS_dialog(QDialog, FORM_CLASS):
         self.setupUi(self)
         self.OrtoAddingTool = OrtoAddingTool
         self.data = get_wms_config()
-        self.close_btn.clicked.connect(self.accept)
+        self.close_btn.clicked.connect(self.reject)
         self.add_btn.clicked.connect(self.run_add_service)
         self.edit_btn.clicked.connect(self.run_edit_service)
         self.remove_btn.clicked.connect(self.remove_selected)
