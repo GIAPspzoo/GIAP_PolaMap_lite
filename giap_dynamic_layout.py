@@ -18,6 +18,7 @@ from qgis.core import QgsApplication, QgsCoordinateReferenceSystem, QgsCoordinat
 from qgis.utils import iface
 from qgis.gui import QgsMapTool
 
+from .GUGiK_NMT import GUGiKTool
 from .geocoding_tool import Geocoding
 from .prng_tool import PRNGTool
 from .OrtoTools import OrtoAddingTool
@@ -914,6 +915,43 @@ class CustomSection(QWidget):
                 self.tbut.setToolTip(tr("Geocoding"))
                 self.geocoding_tool = Geocoding(self)
                 self.tbut.clicked.connect(self.geocoding_tool.run)
+
+            if oname == "giapwykorzystanieGUGiK":
+                self.tbut.setToolTip(tr("Wykorzystanie NMT GUGiK"))
+                self.gugik_tool = GUGiKTool(self)
+
+                self.gugik_menu = QMenu()
+
+                self.gugik_nmt_point_action1 = QAction("Wysokość punktów z NMT", iface.mainWindow())
+                self.gugik_nmt_point_action1.triggered.connect(lambda: self.gugik_tool.height_point_NMT())
+                self.gugik_menu.addAction(self.gugik_nmt_point_action1)
+
+
+                self.gugik_nmt_point_action2 = QAction("Wysokość wielu punktów z NMT", iface.mainWindow())
+                self.gugik_nmt_point_action2.triggered.connect(lambda: self.gugik_tool.height_multiple_points())
+                self.gugik_menu.addAction(self.gugik_nmt_point_action2)
+
+
+                self.gugik_nmt_point_action3 = QAction("Wyznaczenie najniższego i najwyższego punktu",
+                                                       iface.mainWindow())
+                self.gugik_nmt_point_action3.triggered.connect(lambda: self.gugik_tool.lowest_heighest_punkt())
+                self.gugik_menu.addAction(self.gugik_nmt_point_action3)
+
+
+                self.gugik_nmt_point_action4 = QAction("Obliczenie objętości mas ziemnych", iface.mainWindow())
+                self.gugik_nmt_point_action4.triggered.connect(lambda: self.gugik_tool.earth_mass_cal())
+                self.gugik_menu.addAction(self.gugik_nmt_point_action4)
+
+                self.gugik_nmt_point_action5 = QAction("Numeryczny model terenu (WMS)", iface.mainWindow())
+                self.gugik_nmt_point_action5.triggered.connect(lambda: self.gugik_tool.add_nmt_wms_layer())
+                self.gugik_menu.addAction(self.gugik_nmt_point_action5)
+
+                self.gugik_nmt_point_action6 = QAction("Numeryczny model terenu (WMTS)", iface.mainWindow())
+                self.gugik_nmt_point_action6.triggered.connect(lambda: self.gugik_tool.add_nmt_wmts_layer())
+                self.gugik_menu.addAction(self.gugik_nmt_point_action6)
+
+                self.tbut.setMenu(self.gugik_menu)
+                self.tbut.setPopupMode(QToolButton.InstantPopup)
 
             self.tbut.setIcon(icon)
 
