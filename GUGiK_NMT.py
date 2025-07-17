@@ -43,14 +43,6 @@ class PolygonDrawingTool(QgsMapTool):
         self.rubberBand = QgsRubberBand(self.canvas, QgsWkbTypes.PolygonGeometry)
         self.rubberBand.setColor(QColor(255, 0, 0, 100))
         self.rubberBand.setWidth(2)
-        self.colors = [
-            QColor(255,0,0),
-            QColor(0,255,0),
-            QColor(0,0,255),
-            QColor(255,0,255),
-            QColor(255,255,0),
-            QColor(0,255,255)
-        ]
 
 
     def canvasPressEvent(self, event):
@@ -89,10 +81,10 @@ class PolygonDrawingTool(QgsMapTool):
             feat.setGeometry(geom)
             feat.setAttribute("id", 1)
             pr.addFeature(feat)
-            color = random.choice(self.colors)
+            # color = random.choice(self.colors)
             symbol = QgsFillSymbol.createSimple({
-                'color' : f"{color.red()},{color.green()},{color.blue()},50",
-                'outline_color' : f"{color.red()},{color.green()},{color.blue()},100",
+                'color' : f"255,255,0,50",
+                'outline_color' : f"255,255,0,100",
                 'outline_width' : '0.5'
             })
             temp_layer.renderer().setSymbol(symbol)
@@ -190,6 +182,15 @@ class HeightPoint(QDockWidget):
 
         self.dodaj_pomiar(x, y, h)
 
+        if hasattr(self, "mem_layer") and self.mem_layer is not None:
+            feat = QgsFeature(self.mem_layer.fields())
+            feat.setGeometry(QgsGeometry.fromPointXY(QgsPointXY(point)))
+            feat.setAttributes([x, y, h])
+            self.mem_layer.startEditing()
+            self.mem_layer.dataProvider().addFeatures([feat])
+            self.mem_layer.commitChanges()
+            self.mem_layer.triggerRepaint()
+
     def punkt_na_mapie(self, point, button):
         self.pobierz_i_dodaj_punkt(point)
 
@@ -203,6 +204,14 @@ class HeightPoint(QDockWidget):
     def nowy_pomiar(self):
         self.ui.tableWidget.clearContents()
         self.ui.tableWidget.setRowCount(0)
+
+        if not hasattr(self, 'mem_layer') or self.mem_layer is None:
+            self.mem_layer = self.stworz_warstwe_tymczasowa()
+            QgsProject.instance().addMapLayer(self.mem_layer)
+        else:
+            self.mem_layer.dataProvider().truncate()
+            self.mem_layer.triggerRepaint()
+
         crs_src = self.map_canvas.mapSettings().destinationCrs()
         crs_dst = QgsCoordinateReferenceSystem("EPSG:2180")
 
@@ -234,6 +243,50 @@ class HeightPoint(QDockWidget):
             pass
         self.tool.canvasClicked.connect(punkt)
         self.map_canvas.setMapTool(self.tool)
+
+    def stworz_warstwe_tymczasowa(self):
+        fields = [
+            QgsField("X", QVariant.Int),
+            QgsField("Y", QVariant.Int),
+            QgsField("Wysokosc", QVariant.String)
+        ]
+
+        crs = self.map_canvas.mapSettings().destinationCrs()
+        nazwa_warstwy = "Pomiar punktu - wysokość NMT GUGiK"
+
+        mem_layer = QgsVectorLayer(f"Point?crs={crs.authid()}", nazwa_warstwy, "memory")
+        mem_layer.setCustomProperty("embedded", True)
+        mem_layer.setReadOnly(True)
+        mem_layer.dataProvider().addAttributes(fields)
+        mem_layer.updateFields()
+
+        qml_path = "znacznik_wysokośc.qml"
+        if mem_layer.loadNamedStyle(qml_path):
+            mem_layer.setLabelsEnabled(True)
+            label_settings = QgsPalLayerSettings()
+            label_settings.fieldName = "Wysokosc"
+            label_settings.enabled = True
+
+            text_format = QgsTextFormat()
+            text_format.setSize(9)
+            text_format.setColor(QColor("black"))
+
+            buffer_settings = QgsTextBufferSettings()
+            buffer_settings.setEnabled(True)
+            buffer_settings.setColor(QColor("white"))
+            buffer_settings.setSize(0.5)
+            text_format.setBuffer(buffer_settings)
+
+            label_settings.setFormat(text_format)
+            labeling = QgsVectorLayerSimpleLabeling(label_settings)
+            mem_layer.setLabeling(labeling)
+            mem_layer.setLabelsEnabled(True)
+            mem_layer.triggerRepaint()
+        else:
+            print("Nie udało się załadować stylu QML")
+
+        QgsProject.instance().addMapLayer(mem_layer)
+        return mem_layer
 
 
     def kopiuj(self):
@@ -306,11 +359,9 @@ class HeightMultiPoints(QDockWidget):
             self.mem_layer = self.stworz_warstwe_tymczasowa()
             QgsProject.instance().addMapLayer(self.mem_layer)
         else:
-            # Wyczyść dane z istniejącej warstwy
             self.mem_layer.dataProvider().truncate()
             self.mem_layer.triggerRepaint()
 
-            # Odłącz poprzednie narzędzie, jeśli było
         try:
             self.tool.canvasClicked.disconnect()
         except Exception:
@@ -399,6 +450,25 @@ class HeightMultiPoints(QDockWidget):
 
         qml_path = "znacznik_wysokośc.qml"
         if mem_layer.loadNamedStyle(qml_path):
+            mem_layer.setLabelsEnabled(True)
+            label_settings = QgsPalLayerSettings()
+            label_settings.fieldName = "Wysokosc"
+            label_settings.enabled = True
+
+            text_format = QgsTextFormat()
+            text_format.setSize(9)
+            text_format.setColor(QColor("blue"))
+
+            buffer_settings = QgsTextBufferSettings()
+            buffer_settings.setEnabled(True)
+            buffer_settings.setColor(QColor("white"))
+            buffer_settings.setSize(0.5)
+            text_format.setBuffer(buffer_settings)
+
+            label_settings.setFormat(text_format)
+            labeling = QgsVectorLayerSimpleLabeling(label_settings)
+            mem_layer.setLabeling(labeling)
+            mem_layer.setLabelsEnabled(True)
             mem_layer.triggerRepaint()
         else:
             print("Nie udało się załadować stylu QML")
@@ -638,6 +708,11 @@ class AnalizaKoniec(QDockWidget, FORM_CLASS_LHP3):
             response_pow = requests.get(url_pow)
             data = response.json()
             data_pow = response_pow.json()
+
+            if "error" in data:
+                QMessageBox.warning(self, "Błąd serwera GUGiK", f"{data['error']}")
+                return False
+
             self.min_max_data = data
             self.MIn.setText(f"Wysokość minimalna: {data.get('Hmin', 'brak danych')} m")
             self.Max.setText(f"Wysokość maksymalna: {data.get('Hmax', 'brak danych')} m")
@@ -654,87 +729,91 @@ class AnalizaKoniec(QDockWidget, FORM_CLASS_LHP3):
             return False
 
     def low_point(self):
-        label = f"{self.min_max_data.get('Hmin', 'brak danych')}"
-        if "Hmin geom" not in self.min_max_data or not self.min_max_data["Hmin geom"]:
-            QMessageBox.warning(self, "Brak danych", "Brak danych wysokościowych – nie można przybliżyć.")
-            return
-
         try:
             geom_str = self.min_max_data["Hmin geom"][0]
             coords = geom_str.replace("POINT(", "").replace(")", "").split()
             x, y = float(coords[0]), float(coords[1])
             point = QgsPointXY(x, y)
-            layer = QgsVectorLayer(f"Point?crs={self.crs}", "Max", "memory")
+            label = str(self.min_max_data.get("Hmin", "brak danych"))
+        except Exception as e:
+            QMessageBox.warning(self, "Błąd", f"Nie można sparsować geometrii:\n{e}")
+            return
+
+
+        layer = self.get_existing_layer_by_name('Min')
+        if layer is None:
+            layer = QgsVectorLayer(f"Point?crs={self.crs}", 'Min', "memory")
             pr = layer.dataProvider()
             pr.addAttributes([QgsField("label", QVariant.String)])
             layer.updateFields()
 
-            feat = QgsFeature(layer.fields())
-            feat.setGeometry(QgsGeometry.fromPointXY(point))
-            feat.setAttribute("label", label)
-            pr.addFeature(feat)
             symbol = QgsMarkerSymbol.createSimple({
                 'name': 'circle',
                 'color': '0,0,255,70',
                 'size': '3',
-                'outline_color': '0,0,255',
+                'outline_color': 'blue',
                 'outline_width': '1'
             })
             layer.renderer().setSymbol(symbol)
 
-            layer.setLabelsEnabled(True)
             label_settings = QgsPalLayerSettings()
             label_settings.fieldName = "label"
             label_settings.enabled = True
-
             text_format = QgsTextFormat()
             text_format.setSize(9)
             text_format.setColor(QColor("blue"))
-
             buffer_settings = QgsTextBufferSettings()
             buffer_settings.setEnabled(True)
             buffer_settings.setColor(QColor("white"))
             buffer_settings.setSize(0.5)
             text_format.setBuffer(buffer_settings)
-
             label_settings.setFormat(text_format)
-
             layer.setLabeling(QgsVectorLayerSimpleLabeling(label_settings))
+            layer.setLabelsEnabled(True)
 
-            layer.triggerRepaint()
             QgsProject.instance().addMapLayer(layer)
 
-            buffer = 50
-            rect = QgsRectangle(x - buffer, y - buffer, x + buffer, y + buffer)
 
-            self.map_canvas.setExtent(rect)
-            self.map_canvas.refresh()
-        except Exception as e:
-            QMessageBox.warning(self, "Błąd", f"Nie można przybliżyć do punktu:\n{e}")
+        feat = QgsFeature(layer.fields())
+        feat.setGeometry(QgsGeometry.fromPointXY(point))
+        feat.setAttribute("label", label)
+
+        layer.startEditing()
+        layer.dataProvider().addFeature(feat)
+        layer.commitChanges()
+        layer.updateExtents()
+        layer.triggerRepaint()
 
 
+        buffer = 50
+        rect = QgsRectangle(x - buffer, y - buffer, x + buffer, y + buffer)
+        self.map_canvas.setExtent(rect)
+        self.map_canvas.refresh()
+
+    def get_existing_layer_by_name(self, layer_name):
+        for layer in QgsProject.instance().mapLayers().values():
+            if layer.name() == layer_name:
+                return layer
+        return None
 
     def height_point(self):
-        label = f"{self.min_max_data.get('Hmin', 'brak danych')}"
-        if "Hmax geom" not in self.min_max_data or not self.min_max_data["Hmax geom"]:
-            QMessageBox.warning(self, "Brak danych", "Brak danych wysokościowych – nie można przybliżyć.")
-            return
-
         try:
             geom_str = self.min_max_data["Hmax geom"][0]
             coords = geom_str.replace("POINT(", "").replace(")", "").split()
             x, y = float(coords[0]), float(coords[1])
-            point = QgsPointXY(x,y)
+            point = QgsPointXY(x, y)
+            label = str(self.min_max_data.get("Hmax", "brak danych"))
+        except Exception as e:
+            QMessageBox.warning(self, "Błąd", f"Nie można sparsować geometrii:\n{e}")
+            return
 
-            layer = QgsVectorLayer(f"Point?crs={self.crs}", "Min", "memory")
+
+        layer = self.get_existing_layer_by_name('Max')
+        if layer is None:
+            layer = QgsVectorLayer(f"Point?crs={self.crs}",'Max', "memory")
             pr = layer.dataProvider()
             pr.addAttributes([QgsField("label", QVariant.String)])
             layer.updateFields()
-
-            feat = QgsFeature(layer.fields())
-            feat.setGeometry(QgsGeometry.fromPointXY(point))
-            feat.setAttribute("label", label)
-            pr.addFeature(feat)
 
             symbol = QgsMarkerSymbol.createSimple({
                 'name': 'circle',
@@ -745,35 +824,40 @@ class AnalizaKoniec(QDockWidget, FORM_CLASS_LHP3):
             })
             layer.renderer().setSymbol(symbol)
 
-            layer.setLabelsEnabled(True)
+
             label_settings = QgsPalLayerSettings()
             label_settings.fieldName = "label"
             label_settings.enabled = True
-
             text_format = QgsTextFormat()
             text_format.setSize(9)
             text_format.setColor(QColor("red"))
-
             buffer_settings = QgsTextBufferSettings()
             buffer_settings.setEnabled(True)
             buffer_settings.setColor(QColor("white"))
             buffer_settings.setSize(0.5)
             text_format.setBuffer(buffer_settings)
-
             label_settings.setFormat(text_format)
-
             layer.setLabeling(QgsVectorLayerSimpleLabeling(label_settings))
+            layer.setLabelsEnabled(True)
 
-            layer.triggerRepaint()
             QgsProject.instance().addMapLayer(layer)
 
-            buffer = 50
-            rect = QgsRectangle(x - buffer, y - buffer, x + buffer, y + buffer)
 
-            self.map_canvas.setExtent(rect)
-            self.map_canvas.refresh()
-        except Exception as e:
-            QMessageBox.warning(self, "Błąd", f"Nie można przybliżyć do punktu:\n{e}")
+        feat = QgsFeature(layer.fields())
+        feat.setGeometry(QgsGeometry.fromPointXY(point))
+        feat.setAttribute("label", label)
+
+        layer.startEditing()
+        layer.dataProvider().addFeature(feat)
+        layer.commitChanges()
+        layer.updateExtents()
+        layer.triggerRepaint()
+
+
+        buffer = 50
+        rect = QgsRectangle(x - buffer, y - buffer, x + buffer, y + buffer)
+        self.map_canvas.setExtent(rect)
+        self.map_canvas.refresh()
 
     def nowy_pomiar(self):
         self.close()
@@ -922,6 +1006,12 @@ class AnalizaMassZiemi(QDockWidget, FORM_CLASS_EM2):
             self.deleteLater()
             return
         self.show()
+
+    def get_existing_layer_by_name(self, layer_name):
+        for layer in QgsProject.instance().mapLayers().values():
+            if layer.name() == layer_name:
+                return layer
+        return None
 
     def earth_mass(self):
         url_template_1 = "https://integracja.gugik.gov.pl/nmt/?request=GetVolume&polygon={}&level={}&json"
