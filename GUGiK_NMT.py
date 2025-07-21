@@ -71,25 +71,40 @@ class PolygonDrawingTool(QgsMapTool):
         self.callback(polygon_wkt)
 
         if self.show_temp_layer:
-            crs = QgsProject.instance().crs()
-            temp_layer = QgsVectorLayer(f"Polygon?crs={crs}", "Zasięg", "memory")
-            pr = temp_layer.dataProvider()
-            pr.addAttributes([QgsField("id", QVariant.Int)])
-            temp_layer.updateFields()
+            temp_layer = self.get_existing_layer_by_name("Zasięg")
+            if temp_layer is None:
+                crs = QgsProject.instance().crs()
+                temp_layer = QgsVectorLayer(f"Polygon?crs={crs}", "Zasięg", "memory")
+                pr = temp_layer.dataProvider()
+                pr.addAttributes([QgsField("id", QVariant.Int)])
+                temp_layer.updateFields()
+
+                feat = QgsFeature(temp_layer.fields())
+                feat.setGeometry(geom)
+                feat.setAttribute("id", 1)
+                pr.addFeature(feat)
+                # color = random.choice(self.colors)
+                symbol = QgsFillSymbol.createSimple({
+                    'color' : f"255,255,0,50",
+                    'outline_color' : f"255,255,0,100",
+                    'outline_width' : '0.5'
+                })
+                temp_layer.renderer().setSymbol(symbol)
+                temp_layer.triggerRepaint()
+                QgsProject.instance().addMapLayer(temp_layer)
+            else:
+                pr = temp_layer.dataProvider()
 
             feat = QgsFeature(temp_layer.fields())
             feat.setGeometry(geom)
-            feat.setAttribute("id", 1)
+
+            existing_ids = [f["id"] for f in temp_layer.getFeatures()]
+            new_id = max(existing_ids) + 1 if existing_ids else 1
+            feat.setAttribute("id", new_id)
+
             pr.addFeature(feat)
-            # color = random.choice(self.colors)
-            symbol = QgsFillSymbol.createSimple({
-                'color' : f"255,255,0,50",
-                'outline_color' : f"255,255,0,100",
-                'outline_width' : '0.5'
-            })
-            temp_layer.renderer().setSymbol(symbol)
+            temp_layer.updateExtents()
             temp_layer.triggerRepaint()
-            QgsProject.instance().addMapLayer(temp_layer)
 
         self.reset()
         self.canvas.unsetMapTool(self)
@@ -99,6 +114,12 @@ class PolygonDrawingTool(QgsMapTool):
     def reset(self):
         self.points.clear()
         self.rubberBand.reset(QgsWkbTypes.PolygonGeometry)
+
+    def get_existing_layer_by_name(self, layer_name):
+        for layer in QgsProject.instance().mapLayers().values():
+            if layer.name() == layer_name:
+                return layer
+        return None
 
 class ObrysTool(QgsMapToolEmitPoint):
     def __init__(self, canvas, callback, close_callback=None):
@@ -721,12 +742,19 @@ class AnalizaKoniec(QDockWidget, FORM_CLASS_LHP3):
                 if data.get("Polygon area") is not None else f"Powierzchnia obszaru: {data_pow['Polygon area']} m2"
             )
             self.siatka.setText(f"Rozdzielczość siatki: {data['Grid size [m]']} m")
+
+
+            self.low_point()
+            self.height_point()
+
+            self.zoom_to_min_max_points()
             return True
 
 
         except requests.RequestException as e:
             QMessageBox.warning(self, "Błąd połączenia", f"Nie udało się pobrać danych:\n{e}")
             return False
+
 
     def low_point(self):
         try:
@@ -856,6 +884,26 @@ class AnalizaKoniec(QDockWidget, FORM_CLASS_LHP3):
 
         buffer = 50
         rect = QgsRectangle(x - buffer, y - buffer, x + buffer, y + buffer)
+        self.map_canvas.setExtent(rect)
+        self.map_canvas.refresh()
+
+    def zoom_to_min_max_points(self):
+        min_layer = self.get_existing_layer_by_name('Min')
+        max_layer = self.get_existing_layer_by_name('Max')
+        if not min_layer or not max_layer:
+            return
+
+        min_feats = list(min_layer.getFeatures())
+        max_feats = list(max_layer.getFeatures())
+        if not min_feats or not max_feats:
+            return
+
+        min_point = min_feats[-1].geometry().asPoint()
+        max_point = max_feats[-1].geometry().asPoint()
+
+        rect = QgsRectangle(min_point, max_point)
+        rect.grow(50)
+
         self.map_canvas.setExtent(rect)
         self.map_canvas.refresh()
 
@@ -1064,6 +1112,12 @@ class AnalizaMassZiemi(QDockWidget, FORM_CLASS_EM2):
             self.Pow.setText(f"Powierzchnia obszaru: {data['Polygon area']} m2")
             self.siatka.setText(f"Objętość powyżej podanej wysokości: {data['Volume above']} m3")
             self.label.setText(f"Objętość poniżej podanej wysokości: {data['Volume below']} m3")
+
+            self.low_point()
+            self.height_point()
+
+            self.zoom_to_min_max_points()
+
             return True
 
         except requests.RequestException as e:
@@ -1075,6 +1129,9 @@ class AnalizaMassZiemi(QDockWidget, FORM_CLASS_EM2):
 
     def height_point(self):
         AnalizaKoniec.height_point(self)
+
+    def zoom_to_min_max_points(self):
+        AnalizaKoniec.zoom_to_min_max_points(self)
 
     def nowy_pomiar(self):
         self.close()
