@@ -710,6 +710,7 @@ STANDARD_TOOLS = [
             ['giapgeokodowanie', 1, 0],
             ['giapGeoportal', 0, 1],
             ['giapOrtoContr', 1, 1],
+            ['giapInfoCard', 0, 2],
         ]
     },
     {
@@ -1411,6 +1412,7 @@ custom_icon_dict = {
     "giapQuickPrint": 'quick_print.png',
     "giapMyPrints": 'my_prints.png',
     "giapAreaLength": 'measuring.png',
+    "giapInfoCard": 'karta_info.png',
     'mActionShowAlignRasterTool': 'mActionShowAlignRasterTool.png',
     'mActionNewMemoryLayer': 'mActionNewMemoryLayer.png',
     'mActionSaveProjectAs': 'mActionSaveProjectAs.png',
@@ -1432,9 +1434,10 @@ custom_label_dict = {
     'giapGeoportal': 'Geoportal',
     'giapOrtoContr': 'Ortofotomapa archiwalna',
     "giapgeokodowanie": 'geokodowanie',
+    "giapInfoCard": 'Info card',
 }
 
-max_ele_nazwy = 4
+max_ele_nazwy = 5
 
 
 def icon_manager(tool_list: List[str], main_qgs_widget: QObject = None) -> \

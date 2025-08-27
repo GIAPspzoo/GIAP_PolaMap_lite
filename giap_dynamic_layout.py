@@ -18,6 +18,7 @@ from qgis.core import QgsApplication, QgsCoordinateReferenceSystem, QgsCoordinat
 from qgis.utils import iface
 from qgis.gui import QgsMapTool
 
+from .InfoTools import InfoTool
 from .geocoding_tool import Geocoding
 from .prng_tool import PRNGTool
 from .OrtoTools import OrtoAddingTool
@@ -879,6 +880,10 @@ class CustomSection(QWidget):
                 self.add_wfs = AddWfsTool()
                 self.tbut.clicked.connect(self.add_wfs.run)
                 self.tbut.setToolTip(tr("Download data from WFS"))
+            if oname == 'giapInfoCard':
+                self.info_card = InfoTool(iface)
+                self.tbut.clicked.connect(self.info_card.run)
+                self.tbut.setToolTip(tr("Info card"))
             if oname == "giapMyPrints":
                 self.tbut.setToolTip(tr("My Prints"))
             if oname == "giapAreaLength":

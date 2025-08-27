@@ -222,10 +222,16 @@ class MainTabQgsWidget:
         area_length_tool = QgsMapTool(self.iface.mapCanvas())
         area_length_tool.setAction(self.main_widget.area_length_action)
         self.main_widget.runArea.setDefaultAction(self.main_widget.area_length_action)
-
+        info_card_tool = QgsMapTool(self.iface.mapCanvas())
+        info_card_tool.setAction(self.main_widget.area_length_action)
+        self.main_widget.runArea.setDefaultAction(self.main_widget.area_length_action)
         orto_button = self.main_widget.runOrtoTool
         orto_button.setIcon(QIcon(os.path.join(self.plugin_dir, 'icons', 'orto_icon2.png')))
         self.orto_add = OrtoAddingTool(self.main_widget, orto_button, self.iface)
+
+        # self.main_widget.infoCardButton.clicked.connect(self.info_card.run)
+        self.main_widget.infoCardButton.setIcon(
+            QIcon(os.path.join(self.plugin_dir, 'icons', 'karta_info.png')))
 
         self.visibility_search_tool = False
         self.main_widget.offOnSearchButton.clicked.connect(
